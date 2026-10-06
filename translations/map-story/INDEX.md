@@ -1,6 +1,6 @@
 # Map/Story Translation Manifest Index
 
-Checkpoint: **2,283 / 4,361 map/story strings complete (~52.4%)**
+Checkpoint: **2,492 / 4,361 map/story strings complete (~57.1%)**
 
 This index is the canonical inventory for committed map/story translation manifests. The compressed `sootopolis.vi.json.gz` is a duplicate convenience artifact and is **not** counted separately.
 
@@ -28,7 +28,12 @@ This index is the canonical inventory for committed map/story translation manife
 | `lilycove-department-store.vi.json` | 29 |
 | `lilycove-museum.vi.json` | 43 |
 | `lilycove-trainer-fan-club.vi.json` | 38 |
-| **TOTAL** | **2,283** |
+| `route123.vi.json` | 6 |
+| `aqua-hideout.vi.json` | 34 |
+| `mossdeep-core.vi.json` | 52 |
+| `mossdeep-gym.vi.json` | 52 |
+| `mossdeep-space-center-steven.vi.json` | 65 |
+| **TOTAL** | **2,492** |
 
 ## Integrity audit — 2026-10-07
 
@@ -46,12 +51,16 @@ A repository-wide search after repair found **no remaining occurrence** of the b
 
 ## Next translation block
 
-Lilycove is now **270 / 270 complete** across core + Contest + Department Store + Museum + Trainer Fan Club.
+Route 122 / Safari Zone have no map-local `.string` entries in this source scope. Route 123 is complete.
 
-Continue:
-- Route 122 / Route 123
-- Safari Zone
-- Aqua Hideout
-- Mossdeep
+Aqua Hideout is **34 / 34** complete.
+Mossdeep is **169 / 169** complete across core + Gym + Space Center / Steven.
+
+Continue with the next story-heavy block after Mossdeep:
+- Route 124 / Route 125 / Shoal Cave
+- Route 126 / Route 127 / Route 128
+- Seafloor Cavern
+- Route 129 / Route 130 / Route 131 / Sky Pillar
+- remaining late-game / post-game map-story gaps
 
 Project rules remain unchanged: **v0.4 baseline, no screenshot-by-screenshot patching, no mass-repoint.**
