@@ -1,107 +1,118 @@
 # Tiến độ Việt hóa Pokémon Emerald Arena
 
-Cập nhật: 2026-10-06
+Cập nhật: 2026-10-06 — handoff cuối phiên
 
-## Baseline đã chốt
+## Baseline hiện tại
 
-**v0.3 – No Repoint / Dấu Tiếng Việt**
+### v0.4 – Text Cluster Pass
 
-Người test đã xác nhận:
-
-- [x] Logo Pokémon đầu game bình thường.
-- [x] Intro khởi động bình thường.
-- [x] Font tiếng Việt có dấu hoạt động.
-- [x] Battle đầu tiên chạy.
-- [x] Sau battle quay lại overworld và chơi tiếp được.
-- [x] Không còn freeze hậu battle như Test 1/2.
-- [x] Không repoint pointer ở baseline ổn định.
-
-SHA-256 v0.3:
-
-`8234d3945fc6d3a87a9669887a114114904b85c00fd9b3ddd026aaea40d636ec`
-
-## Pass mới: v0.4 – Text Cluster Pass
-
-Mục tiêu của pass này là xử lý nhóm câu mà v0.3 cố tình bỏ qua do **nhiều label/string dùng chung suffix hoặc chồng lấn vùng text**.
-
-Kết quả build:
-
-- [x] Khôi phục thêm **462 cụm text shared/overlap** từ bản dịch cũ.
-- [x] Chỉ chép **byte text** trong các cụm đã xác minh.
-- [x] **Không ghi pointer mới**.
-- [x] Vùng startup/title trước `0x1F0000` giữ nguyên byte-for-byte so với v0.3.
-- [x] Mọi byte thay đổi mới đều nằm trong các cluster text được chấp nhận.
-- [ ] Cần người chơi test lại logo + intro + battle + hậu battle trước khi nâng v0.4 thành baseline.
-
-SHA-256 v0.4 candidate:
+ROM v0.4:
 
 `c500bb1cdb0f2cf43d24c04a943854bbd9b1b83b0569f0a5f9c8d13480be83f9`
 
-## Tình trạng còn lại
+Được dựng trên v0.3:
 
-Vấn đề chính vẫn là **độ phủ bản dịch**: vẫn còn text tiếng Anh ở những chuỗi:
+`8234d3945fc6d3a87a9669887a114114904b85c00fd9b3ddd026aaea40d636ec`
 
-1. bản AowVN không có bản dịch tương ứng;
-2. bản dịch dài hơn allocation gốc;
-3. text mới do Emerald Arena thêm riêng;
-4. reference cần repoint nhưng chưa được chứng minh chắc chắn là script/code thật.
+Arena 0.13.0 sạch:
 
-Từ v0.3 trở đi **không quay lại cách quét/repoint pointer toàn ROM**, vì phương pháp đó từng gây vỡ logo và freeze hậu battle.
+- SHA-256: `a8d36c0c398f5281694c2d8dc5094a54a2276bd3092f5802cef6ef99369c645b`
+- SHA-1: `a3247882b469fecb491e2875d45ddc3b4b49e310`
+- Size: `33,554,432` bytes
 
-## Chiến lược hoàn thiện
+## QA thực tế đã đạt
 
-### Pass A — catalog an toàn
-- [x] Xác định baseline ROM Arena 0.13.0.
-- [x] Giữ font AowVN đã hiển thị tiếng Việt đúng.
-- [x] Khóa vùng startup/title khỏi mọi patch text.
-- [x] Tách riêng nhóm text overlap/shared và xử lý bằng cluster pass.
-- [ ] Catalog toàn bộ string được script/code tham chiếu thật sự.
-- [ ] Loại substring/suffix target và pointer giả.
+- [x] Logo Pokémon không còn lỗi.
+- [x] Intro chạy được.
+- [x] Font dấu tiếng Việt hoạt động.
+- [x] Battle đầu tiên chạy được.
+- [x] Sau battle đi tiếp được, không freeze.
+- [x] Người chơi đã tiếp tục tới khu vực sâu hơn sau phần đầu game bằng v0.4.
+- [x] Không có pointer write mới trong v0.4.
+- [x] Startup/title v0.4 giống byte-for-byte v0.3.
 
-### Pass B — phủ bản dịch Emerald gốc
-- [x] Chép các câu vừa allocation ở chế độ in-place.
-- [x] Khôi phục thêm text shared/overlap không cần repoint ở v0.4.
-- [ ] Viết lại tiếng Việt gọn cho chuỗi dài nhưng vẫn tự nhiên.
-- [ ] Chỉ dùng text pool/repoint với reference đã xác minh là script/code thật.
-- [ ] Quét và xử lý nốt các đoạn story/map còn English.
-- [ ] Không sửa graphics, battle engine hoặc bảng dữ liệu gameplay.
+**Chưa được coi là QA toàn game.** Save/load, toàn bộ story, menu/UI và các battle case đặc biệt vẫn cần kiểm tra.
 
-### Pass C — text riêng Emerald Arena
-- [ ] UI real-time battle.
-- [ ] Hướng dẫn điều khiển Arena.
-- [ ] HUD/status/battle messages mới.
-- [ ] Text/options mới không tồn tại trong Emerald vanilla.
+## Vấn đề hiện tại
 
-### Pass D — QA
-- [x] Logo/title trên v0.3.
-- [x] Battle đầu + hậu battle trên v0.3.
-- [ ] Re-test v0.4: title → intro → overworld → battle → post-battle.
-- [ ] Littleroot / Route 101 / Oldale / Route 103.
-- [ ] Petalburg → Rustboro → Dewford.
-- [ ] Menu / Bag / Pokémon / Pokédex.
-- [ ] Save / load / tiếp tục game.
-- [ ] Battle dài / faint / level up / item / capture.
-- [ ] Toàn bộ main story và post-game.
+Mục tiêu số 1 bây giờ không còn là sửa crash mà là **xóa tình trạng Anh–Việt xen kẽ**.
 
-## Nguyên tắc release
+Checkpoint người chơi mới nhất vẫn gặp text tiếng Anh:
 
-Không gọi bản là "hoàn thiện" chỉ vì boot được. Bản release cuối phải đồng thời:
+`There could be treasures just waiting to be discovered down there.`
 
-- không lỗi logo/title;
-- không crash/freeze;
-- không còn Anh–Việt xen kẽ ở nội dung người chơi nhìn thấy;
-- font dấu hiển thị ổn định;
-- giữ nguyên gameplay của Emerald Arena 0.13.0.
+Điều này chứng minh cluster pass vẫn chưa phủ hết user-facing text.
 
-## Lịch sử test
+## Kết quả phân tích text cuối phiên
+
+Trên ROM Arena sạch 32 MiB:
+
+- Target text theo bộ lọc rộng: **24,916**
+- Target text theo bộ lọc English/plausibility chặt hơn: **20,383**
+
+Các target này được suy ra từ giá trị ROM pointer trỏ vào vùng decode được như text. **Không được tự động repoint toàn bộ 20,383 target**; đây chỉ là catalog candidate để tiếp tục đối chiếu với source/map.
+
+## Build/source mapping
+
+Đã tạo:
+
+`.github/workflows/arena-map.yml`
+
+Workflow:
+
+1. checkout đúng `pret/pokeemerald@5eff78649e7170a877b961ef0b3da13b81a16038`;
+2. checkout `agbcc@da598c1d918402c42c0c0d7128ba14567f3175e9`;
+3. lấy `GBurgardt/pokemon-emerald-arena v0.13.0`;
+4. apply `game/native-engine.patch` + overlay;
+5. build Arena;
+6. xuất `pokeemerald.map`, `pokeemerald.sym`, SHA-1/SHA-256 dưới dạng GitHub Actions artifact.
+
+Mục tiêu của map/symbol là biến việc patch từ **đoán pointer nhị phân** thành **mapping symbol/source → ROM address**.
+
+## Những gì đã học được từ Test 1 → v0.4
 
 | Bản | Kết quả |
 |---|---|
 | Test 1 | Có dấu nhưng corrupt logo + crash intro |
-| Test 2 | Logo vẫn lỗi, text lẫn Anh–Việt, freeze hậu battle |
-| Test 3 | Không repoint rộng nhưng vẫn còn lỗi do nền vá cũ |
-| Test 4 | Gameplay ổn, logo ổn, nhưng chủ yếu không dấu |
-| v0.1 | Nền gameplay ổn định, độ phủ đầu game tăng |
-| v0.2 | Có dấu hơn nhưng repoint vẫn làm logo lỗi |
-| **v0.3** | **Baseline đã xác nhận: logo ổn + battle/post-battle ổn + font dấu** |
-| **v0.4 candidate** | **Thêm 462 cụm text shared/overlap, 0 pointer write; chờ test gameplay** |
+| Test 2 | Logo lỗi, text lẫn Anh–Việt, freeze hậu battle |
+| Test 3 | Giảm repoint nhưng vẫn dựa nền vá chưa sạch |
+| Test 4 | Gameplay ổn, logo ổn, phần lớn text không dấu |
+| v0.1 | Nền gameplay ổn định |
+| v0.2 | Repoint lọc vẫn làm logo lỗi |
+| v0.3 | No-repoint, logo + battle + post-battle ổn |
+| **v0.4** | **Thêm 462 cluster shared/overlap, 0 pointer write; đã chơi tiếp được nhưng vẫn còn English** |
+
+## Việc tiếp theo — ưu tiên
+
+### 1. Lấy symbol map thật
+- [ ] Chạy/kiểm tra GitHub Actions `Build Arena symbol map`.
+- [ ] Tải artifact `arena-0.13.0-symbol-map`.
+- [ ] Xác nhận hash ROM build so với shipping Arena.
+- [ ] Nếu build hash lệch, vẫn dùng map nếu layout tương ứng và ghi rõ chênh lệch; tốt nhất sửa workflow/build tới khi map đáng tin.
+
+### 2. Dựng catalog có provenance
+- [ ] Mỗi string cần: label/source file, ROM address, references, English source, Vietnamese candidate, length/allocation, strategy.
+- [ ] Tách các nhóm: map/story, system/UI, battle vanilla, Arena-only.
+- [ ] Loại false positive và substring/suffix target khỏi danh sách “cần dịch độc lập”.
+
+### 3. Hoàn thiện bản dịch
+- [ ] Ưu tiên toàn bộ user-facing story/map English còn sót.
+- [ ] Dịch tự nhiên, có dấu; không dịch từng mảnh làm câu nửa Anh nửa Việt.
+- [ ] Chuỗi dài: rút gọn hợp lý hoặc repoint **đúng reference đã xác minh**.
+- [ ] Dịch text riêng của Arena sau khi vanilla coverage sạch.
+
+### 4. QA
+- [ ] Title/intro sau mỗi batch.
+- [ ] Battle/post-battle sau mỗi batch có repoint.
+- [ ] Save/load.
+- [ ] Menu / Bag / Pokémon / Pokédex.
+- [ ] Story từ Littleroot tới Elite Four + post-game.
+- [ ] Arena UI/control/help/HUD.
+
+## Nguyên tắc bất biến
+
+- Không quét/repoint pointer toàn ROM.
+- Không chép nguyên patch AowVN vào Arena.
+- Không sửa graphics/code chỉ vì byte pattern “trông giống text pointer”.
+- Không gọi bản “hoàn thiện” khi còn English user-facing.
+- Repo không lưu ROM thương mại đầy đủ.
