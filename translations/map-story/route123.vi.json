@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "scope": "map-story",
+  "area": "Route 123",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "6/6 Route 123 map-local strings. Route 122 and Safari Zone maps contain no local .string entries in this source scope. No ROM patch or pointer write performed.",
+  "translations": {
+    "Route123_Text_LoveGrassMonsHaveAny": "Tôi mê GRASS-type POKéMON lắm!\\pBạn có GRASS-type POKéMON nào không?$",
+    "Route123_Text_YouLikeGrassMonsTooHaveThis": "Ồ?\\pBạn cũng thích GRASS-type POKéMON đúng không?\\pTôi vui quá, tặng bạn cái này!\\nCoi như kỷ niệm tình bạn nhé.$",
+    "Route123_Text_CheckTreesWithMyGrassMon": "Tôi cùng GRASS-type POKéMON kiểm tra cây cối.\\nCứ như bác sĩ cây vậy.$",
+    "Route123_Text_RouteSign": "{RIGHT_ARROW} ROUTE 123\\n{LEFT_ARROW} ROUTE 118$",
+    "Route123_Text_RouteSignMtPyre": "{UP_ARROW} MT. PYRE\\n“Người yếu tim xin đừng vào.”$",
+    "Route123_Text_BerryMastersHouse": "NHÀ BERRY MASTER$"
+  }
+}
