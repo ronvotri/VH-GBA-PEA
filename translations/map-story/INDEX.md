@@ -1,6 +1,6 @@
 # Map/Story Translation Manifest Index
 
-Checkpoint: **2,120 / 4,361 map/story strings complete (~48.6%)**
+Checkpoint: **2,283 / 4,361 map/story strings complete (~52.4%)**
 
 This index is the canonical inventory for committed map/story translation manifests. The compressed `sootopolis.vi.json.gz` is a duplicate convenience artifact and is **not** counted separately.
 
@@ -24,7 +24,11 @@ This index is the canonical inventory for committed map/story translation manife
 | `fortree-city.vi.json` | 78 |
 | `route120-route121-mtpyre.vi.json` | 92 |
 | `lilycove-core.vi.json` | 107 |
-| **TOTAL** | **2,120** |
+| `lilycove-contest.vi.json` | 53 |
+| `lilycove-department-store.vi.json` | 29 |
+| `lilycove-museum.vi.json` | 43 |
+| `lilycove-trainer-fan-club.vi.json` | 38 |
+| **TOTAL** | **2,283** |
 
 ## Integrity audit — 2026-10-07
 
@@ -42,12 +46,12 @@ A repository-wide search after repair found **no remaining occurrence** of the b
 
 ## Next translation block
 
-Lilycove remainder: **163 strings**
-- Contest Hall / Lobby
-- Department Store
-- Lilycove Museum
-- Pokémon Trainer Fan Club
+Lilycove is now **270 / 270 complete** across core + Contest + Department Store + Museum + Trainer Fan Club.
 
-After that, continue Route 122/123 → Safari Zone / Aqua Hideout / Mossdeep.
+Continue:
+- Route 122 / Route 123
+- Safari Zone
+- Aqua Hideout
+- Mossdeep
 
 Project rules remain unchanged: **v0.4 baseline, no screenshot-by-screenshot patching, no mass-repoint.**
