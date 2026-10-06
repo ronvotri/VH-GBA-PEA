@@ -152,3 +152,39 @@ Tool mới: `tools/resolve_shipping_catalog.py`.
 - Không mass-repoint.
 
 Bước tiếp theo: dùng catalog shipping-verified để đánh dấu coverage của baseline v0.4, ghép bản dịch đáng tin, ưu tiên map/story → system text → Arena-only → UI/battle; chỉ repoint reference đã xác minh khi bản dịch không thể vừa allocation.
+
+
+## Translation pass — map/story (2026-10-06)
+
+Đã chuyển hẳn sang **dịch nội dung**, không tiếp tục mở rộng nghiên cứu kỹ thuật nếu không có lỗi thật sự.
+
+Các manifest đã QA và commit:
+
+- `translations/map-story/early-game-littleroot-route101-oldale.vi.json`
+  - Littleroot Town: **119 / 119**
+  - Route 101: **7 / 7**
+  - Oldale Town: **20 / 20**
+  - Tổng: **146**
+- `translations/map-story/route102-petalburg.vi.json`
+  - Route 102: **7 / 7**
+  - Petalburg City (gồm Gym/nhà/Mart/Center/Wally): **105 / 105**
+  - Tổng: **112**
+- `translations/map-story/route103-route104-petalburgwoods.vi.json`
+  - Route 103: **11 / 11**
+  - Route 104 + Mr. Briney: **41 / 41**
+  - Petalburg Woods: **29 / 29**
+  - Tổng: **81**
+- `translations/map-story/sootopolis.vi.json`
+  - Sootopolis toàn khu: **155 / 155**
+
+Tổng manifest map/story đã hoàn chỉnh: **494 string**.
+
+QA của các batch trên:
+- không thiếu label trong phạm vi;
+- placeholder `{...}` giữ đúng thứ tự;
+- số paragraph control `\p` giữ nguyên;
+- terminator `$` giữ nguyên;
+- `\n/\l` được reflow khi cần cho tiếng Việt tự nhiên;
+- chưa patch ROM / chưa ghi pointer ở bước dịch.
+
+**Bước dịch kế tiếp:** Rustboro City và khu liên quan. Không quay lại font/pointer/catalog trừ khi việc build/patch thật sự phát hiện lỗi.
