@@ -242,3 +242,26 @@ QA cho cả 4 batch:
 - chưa patch ROM / chưa ghi pointer ở bước dịch.
 
 **Bước kế tiếp:** Route 111 (**40**) + Route 112 (**11**), sau đó Jagged Pass / Lavaridge. Tiếp tục dịch; không mở lại font/pointer/catalog nếu chưa có blocker thật.
+
+
+## Translation pass — Route 111 → Lavaridge checkpoint (2026-10-06)
+
+Tiếp tục sau checkpoint 1,448 string:
+
+- `translations/map-story/route111-route112.vi.json`
+  - Route 111 + Old Lady's Rest Stop + Winstrate House + Route 112 + Cable Car Station: **51 / 51**
+- `translations/map-story/mtchimney-jaggedpass-lavaridge.vi.json`
+  - Mt. Chimney + Cable Car Station + Jagged Pass + toàn Lavaridge/Gym: **159 / 159**
+
+Lượt bổ sung này: **210 string**.
+
+Tổng map/story manifest hoàn chỉnh hiện tại: **1,658 string**.
+
+Toàn bộ batch tiếp tục đạt:
+- 0 label thiếu;
+- placeholder `{...}` đúng thứ tự;
+- số `\p` khớp source;
+- terminator `$` đầy đủ;
+- chưa patch ROM / chưa ghi pointer.
+
+**Bước kế tiếp nên lấp đoạn story đã bỏ qua trước Mt. Chimney:** Route 113 (**21**) + Fallarbor (**40**) + Route 114 (**21**) + Meteor Falls (**37**) = **119 string**.
