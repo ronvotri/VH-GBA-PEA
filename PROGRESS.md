@@ -288,3 +288,30 @@ QA:
 - chưa patch ROM / chưa ghi pointer ở bước dịch.
 
 **Bước kế tiếp:** tiếp tục theo tuyến sau Lavaridge/Petalburg, ưu tiên Route 115 / các đoạn story còn hở trước khi sang Fortree.
+
+
+## Translation pass — Route 115 → Fortree checkpoint (2026-10-06)
+
+Đã tiếp tục lấp tuyến sau Petalburg/Lavaridge tới Fortree:
+
+- `translations/map-story/route115-route118-route119-weather-institute.vi.json`
+  - Route 115: **3 / 3**
+  - Route 118: **9 / 9**
+  - Route 119 + House: **20 / 20**
+  - Weather Institute 1F/2F: **34 / 34**
+  - Tổng: **66 / 66**
+- `translations/map-story/fortree-city.vi.json`
+  - Fortree City + Gym + Decoration Shop + houses + Mart + Pokemon Center 1F: **78 / 78**
+
+Lượt này thêm: **144 string**.
+
+Tổng map/story manifest hoàn chỉnh hiện tại: **1,921 string**.
+
+QA cho cả hai batch:
+- 0 label thiếu;
+- placeholder `{...}` giữ đúng thứ tự;
+- số paragraph control `\p` khớp source;
+- terminator `$` đầy đủ;
+- chưa patch ROM / chưa ghi pointer ở bước dịch.
+
+**Bước kế tiếp:** Route 120 → Route 121 → Lilycove/Mt. Pyre, tiếp tục theo tuyến story chính. Không mở lại technical discovery nếu chưa có blocker thật.
