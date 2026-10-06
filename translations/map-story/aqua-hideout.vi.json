@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Aqua Hideout",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "34/34 Aqua Hideout strings. No ROM patch or pointer write performed.",
+  "status": "translation-complete-source-qa",
+  "notes": "34/34 Aqua Hideout strings. Source QA clean: labels/placeholders/paragraph controls/terminators verified. No ROM patch or pointer write performed.",
   "translations": {
     "AquaHideout_1F_Text_OurBossIsSnatchingSomething": "Gì? Gì? Muốn gì ở TEAM AQUA?\\pBOSS của bọn ta không có đây! Ông ấy đi lấy một thứ quan trọng rồi!\\p… …\\nĐi đâu á?\\pWahaha! Ngươi nghĩ ta sẽ nói chuyện quan trọng thế cho ngươi sao?$",
     "AquaHideout_1F_Text_WhereMightMagmaHideoutBe": "Gì? Gì?\\nNgươi là GRUNT của TEAM MAGMA à?\\pNghe nói TEAM MAGMA đang định đánh thức một POKéMON cực kỳ ghê gớm trong HIDEOUT của chúng.\\pNhưng HIDEOUT của chúng nằm ở đâu nhỉ?$",
