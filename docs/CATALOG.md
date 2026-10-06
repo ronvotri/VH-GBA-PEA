@@ -55,3 +55,15 @@ belongs to:
 - build symbol: `0x0823BF5F` in the current source build
 
 The released-ROM offset is intentionally not inferred from that build address until shipping-ROM alignment is proven.
+
+
+## Shipping resolver
+
+`tools/resolve_shipping_catalog.py` verifies the catalog against a user-supplied clean Arena 0.13.0 ROM. It refuses a ROM whose SHA-256 does not match the known shipping hash and records a shipping offset only when the encoded source string matches byte-for-byte at the build offset.
+
+Current verified coverage on the clean shipping ROM:
+
+- map/story: **4,361 / 4,361 exact**
+- system-text: **2,319 / 2,319 exact**
+
+This is stronger evidence than the earlier whole-ROM pointer-candidate scan and is now the preferred provenance path for localization work.
