@@ -216,3 +216,22 @@ Remaining map/story: **2,078**.
 All 163 newly added strings passed source-level label / placeholder / paragraph / terminator QA.
 
 Continue next with **Route 122 / Route 123 → Safari Zone → Aqua Hideout → Mossdeep**. Use `translations/map-story/INDEX.md` as the canonical inventory and do not reopen technical discovery unless an actual patch/build QA failure blocks progress.
+
+
+## Translation checkpoint — Mossdeep complete
+
+New complete manifests after Lilycove:
+- Route 123: **6 / 6**
+- Aqua Hideout: **34 / 34**
+- Mossdeep core: **52 / 52**
+- Mossdeep Gym: **52 / 52**
+- Mossdeep Space Center + Steven: **65 / 65**
+
+Route 122 and Safari Zone have no map-local `.string` entries in this source scope.
+
+Current committed map/story coverage: **2,492 / 4,361 (~57.1%)**.
+Remaining map/story: **1,869**.
+
+All 209 newly added strings passed source-level label / placeholder / paragraph / terminator QA.
+
+Continue next with **Route 124/125 + Shoal Cave → Route 126/127/128 → Seafloor Cavern → Route 129/130/131/Sky Pillar**. Use `translations/map-story/INDEX.md` as canonical inventory.
