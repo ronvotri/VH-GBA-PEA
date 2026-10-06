@@ -385,3 +385,32 @@ QA 163 string mới:
 - chưa patch ROM / chưa ghi pointer ở bước dịch.
 
 **Bước kế tiếp:** Route 122 / Route 123 → Safari Zone → Aqua Hideout → Mossdeep.
+
+
+## Translation pass — Route 123 / Aqua Hideout / Mossdeep checkpoint (2026-10-07)
+
+Sau checkpoint Lilycove **2,283 / 4,361**, đã hoàn tất thêm:
+
+- `translations/map-story/route123.vi.json`: **6 / 6**
+  - Route 122 và Safari Zone không có map-local `.string` entry trong source scope này.
+- `translations/map-story/aqua-hideout.vi.json`: **34 / 34**
+- `translations/map-story/mossdeep-core.vi.json`: **52 / 52**
+- `translations/map-story/mossdeep-gym.vi.json`: **52 / 52**
+- `translations/map-story/mossdeep-space-center-steven.vi.json`: **65 / 65**
+
+Lượt bổ sung sau Lilycove: **209 string**.
+
+Tổng map/story manifest hoàn chỉnh hiện tại: **2,492 / 4,361 (~57.1%)**.
+Còn **1,869 map/story string** chưa có manifest hoàn chỉnh.
+
+QA:
+- Route 123: 6/6 sạch;
+- Aqua Hideout: 34/34 sạch;
+- Mossdeep: 169/169 sạch;
+- 0 label thiếu / dư;
+- placeholder `{...}` đúng thứ tự;
+- paragraph control `\p` khớp source;
+- terminator `$` đầy đủ;
+- chưa patch ROM / chưa ghi pointer.
+
+**Bước kế tiếp:** Route 124/125 + Shoal Cave → Route 126/127/128 → Seafloor Cavern → Route 129/130/131/Sky Pillar.
