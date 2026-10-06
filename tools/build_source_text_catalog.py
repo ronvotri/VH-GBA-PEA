@@ -300,7 +300,9 @@ def parse_c_file(path: Path, workspace: Path, symbols: dict[str, Symbol], ranges
         if not parts:
             continue
         line = text.count("\n", 0, m.start()) + 1
-        label = f"@anon:{rel}:{line}"
+        line_start = text.rfind("\n", 0, m.start()) + 1
+        column = m.start() - line_start + 1
+        label = f"@anon:{rel}:{line}:{column}"
         out.append({
             "label": label,
             "kind": "c-anonymous-string",
