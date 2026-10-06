@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Mossdeep City core / houses / Mart / Center / RS Mystery house",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "52/52 Mossdeep non-Gym/non-Space-Center strings. No ROM patch or pointer write performed.",
+  "status": "translation-complete-source-qa",
+  "notes": "52/52 Mossdeep non-Gym/non-Space-Center strings. Source QA clean: labels/placeholders/paragraph controls/terminators verified. No ROM patch or pointer write performed.",
   "translations": {
     "MossdeepCity_Text_WantKingsRockStevenGaveMe": "Tôi được STEVEN cho thứ này, nhưng chẳng biết dùng làm gì.\\pHình như nó tên KING'S ROCK.\\nBạn muốn lấy không?$",
     "MossdeepCity_Text_YouCanKeepIt": "Sao bạn lại muốn nó nhỉ?\\nLạ thật.\\pBạn cứ giữ đi, nhưng nhớ giấu STEVEN nhé.$",
