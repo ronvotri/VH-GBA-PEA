@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Mossdeep City Gym",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "52/52 Mossdeep Gym strings. No ROM patch or pointer write performed.",
+  "status": "translation-complete-source-qa",
+  "notes": "52/52 Mossdeep Gym strings. Source QA clean: labels/placeholders/paragraph controls/terminators verified. No ROM patch or pointer write performed.",
   "translations": {
     "MossdeepCity_Gym_Text_GymGuideAdvice": "Yo, sao rồi, {PLAYER} đang nhắm tới CHAMPION?\\pGYM LEADER ở đây dùng PSYCHIC-type POKéMON.\\pNếu đem FIGHTING- hoặc POISON-type POKéMON đối đầu, chúng sẽ gây sát thương cực khủng!\\pChưa hết, họ còn tung những đòn phối hợp xuất sắc.\\pMuốn thắng, bạn phải cho họ thấy mình gắn bó với POKéMON chặt đến mức nào. Cố lên!$",
     "MossdeepCity_Gym_Text_GymGuidePostVictory": "Wow, bạn tuyệt thật!\\nĐúng là một TRAINER xuất sắc!$",
