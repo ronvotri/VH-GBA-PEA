@@ -169,3 +169,17 @@ Latest complete manifests:
 Current total complete map/story manifests: **1,921 strings**.
 
 Continue next with **Route 120 → Route 121 → Lilycove / Mt. Pyre**. Keep translating directly; no font/pointer/catalog research unless an actual patch/build QA failure blocks progress.
+
+
+## Translation checkpoint — Lilycove core
+
+Latest complete manifests:
+- Route 120 + Route 121 + Mt. Pyre: **92 / 92**
+- Lilycove core / Harbor / Motel / houses / Move Deleter / Pokemon Center: **107 / 107**
+
+Current map/story manifest coverage: **2,120 / 4,361 (~48.6%)**.
+Remaining map/story: **2,241**.
+
+Lilycove remainder: **163 strings** (Contest Hall/Lobby, Department Store, Museum, Trainer Fan Club).
+
+Continue translation directly. Do not reopen font/pointer/catalog research unless patch/build QA exposes an actual blocker.
