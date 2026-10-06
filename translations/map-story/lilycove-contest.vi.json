@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Lilycove Contest Hall / Contest Lobby",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "53/53 Lilycove Contest strings. No ROM patch or pointer write performed.",
+  "status": "translation-complete-source-qa",
+  "notes": "53/53 Lilycove Contest strings. Source QA clean: labels/placeholders/paragraph controls/terminators verified. No ROM patch or pointer write performed.",
   "translations": {
     "LilycoveCity_ContestHall_Text_TodayWonSmartnessContest": "POKéMON này từng thắng BEAUTY CONTEST ở đây.\\pĐoán xem? Hôm nay tôi còn giúp nó thắng SMARTNESS CONTEST nữa!\\pTài năng của chính tôi còn làm tôi sợ luôn…$",
     "LilycoveCity_ContestHall_Text_EnteredBunchOfContests": "Tôi đã dự khá nhiều CONTEST nên cũng hiểu cách mọi thứ vận hành.\\pNếu là COOLNESS CONTEST, các move ngầu sẽ ghi điểm khi biểu diễn.\\pNhưng move thông minh hay dễ thương thì chẳng hạn, lại không được đánh giá cao.$",
