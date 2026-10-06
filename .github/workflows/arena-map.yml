@@ -71,6 +71,16 @@ jobs:
           sha1sum workspace/pokeemerald.gba > artifact/ROM_SHA1.txt
           sha256sum workspace/pokeemerald.gba > artifact/ROM_SHA256.txt
 
+      - name: Build source-provenance text catalog
+        run: |
+          python3 tools/build_source_text_catalog.py \
+            --workspace workspace \
+            --sym artifact/pokeemerald.sym \
+            --build-rom workspace/pokeemerald.gba \
+            --out-csv artifact/text-catalog.csv \
+            --out-json artifact/text-catalog.json \
+            --summary artifact/text-catalog-summary.json
+
       - uses: actions/upload-artifact@v4
         with:
           name: arena-0.13.0-symbol-map
