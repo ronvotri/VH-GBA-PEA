@@ -16,23 +16,37 @@ Người test đã xác nhận:
 - [x] Không còn freeze hậu battle như Test 1/2.
 - [x] Không repoint pointer ở baseline ổn định.
 
-SHA-256:
+SHA-256 v0.3:
 
 `8234d3945fc6d3a87a9669887a114114904b85c00fd9b3ddd026aaea40d636ec`
 
-## Tình trạng hiện tại
+## Pass mới: v0.4 – Text Cluster Pass
 
-Vấn đề còn lại chính là **độ phủ bản dịch**: trong game vẫn có đoạn tiếng Anh xen lẫn tiếng Việt.
+Mục tiêu của pass này là xử lý nhóm câu mà v0.3 cố tình bỏ qua do **nhiều label/string dùng chung suffix hoặc chồng lấn vùng text**.
 
-Nguyên nhân đã xác định:
+Kết quả build:
 
-1. Một số chuỗi tiếng Việt dài hơn vùng text gốc.
-2. Nhiều chuỗi Emerald dùng chung suffix/địa chỉ con bên trong cùng một câu.
-3. Quét/repoint pointer toàn ROM có thể nhận nhầm dữ liệu graphics/code và từng làm:
-   - vỡ logo Pokémon;
-   - crash intro;
-   - freeze sau battle.
-4. Vì vậy từ v0.3 trở đi không dùng lại phương pháp repoint toàn ROM.
+- [x] Khôi phục thêm **462 cụm text shared/overlap** từ bản dịch cũ.
+- [x] Chỉ chép **byte text** trong các cụm đã xác minh.
+- [x] **Không ghi pointer mới**.
+- [x] Vùng startup/title trước `0x1F0000` giữ nguyên byte-for-byte so với v0.3.
+- [x] Mọi byte thay đổi mới đều nằm trong các cluster text được chấp nhận.
+- [ ] Cần người chơi test lại logo + intro + battle + hậu battle trước khi nâng v0.4 thành baseline.
+
+SHA-256 v0.4 candidate:
+
+`c500bb1cdb0f2cf43d24c04a943854bbd9b1b83b0569f0a5f9c8d13480be83f9`
+
+## Tình trạng còn lại
+
+Vấn đề chính vẫn là **độ phủ bản dịch**: vẫn còn text tiếng Anh ở những chuỗi:
+
+1. bản AowVN không có bản dịch tương ứng;
+2. bản dịch dài hơn allocation gốc;
+3. text mới do Emerald Arena thêm riêng;
+4. reference cần repoint nhưng chưa được chứng minh chắc chắn là script/code thật.
+
+Từ v0.3 trở đi **không quay lại cách quét/repoint pointer toàn ROM**, vì phương pháp đó từng gây vỡ logo và freeze hậu battle.
 
 ## Chiến lược hoàn thiện
 
@@ -40,14 +54,16 @@ Nguyên nhân đã xác định:
 - [x] Xác định baseline ROM Arena 0.13.0.
 - [x] Giữ font AowVN đã hiển thị tiếng Việt đúng.
 - [x] Khóa vùng startup/title khỏi mọi patch text.
+- [x] Tách riêng nhóm text overlap/shared và xử lý bằng cluster pass.
 - [ ] Catalog toàn bộ string được script/code tham chiếu thật sự.
 - [ ] Loại substring/suffix target và pointer giả.
 
 ### Pass B — phủ bản dịch Emerald gốc
-- [ ] Ghép catalog tiếng Anh Arena với nội dung tiếng Việt AowVN.
-- [ ] Chuỗi vừa allocation: ghi tại chỗ.
-- [ ] Chuỗi dài: viết lại tiếng Việt gọn nhưng tự nhiên để vừa allocation khi có thể.
+- [x] Chép các câu vừa allocation ở chế độ in-place.
+- [x] Khôi phục thêm text shared/overlap không cần repoint ở v0.4.
+- [ ] Viết lại tiếng Việt gọn cho chuỗi dài nhưng vẫn tự nhiên.
 - [ ] Chỉ dùng text pool/repoint với reference đã xác minh là script/code thật.
+- [ ] Quét và xử lý nốt các đoạn story/map còn English.
 - [ ] Không sửa graphics, battle engine hoặc bảng dữ liệu gameplay.
 
 ### Pass C — text riêng Emerald Arena
@@ -57,9 +73,10 @@ Nguyên nhân đã xác định:
 - [ ] Text/options mới không tồn tại trong Emerald vanilla.
 
 ### Pass D — QA
-- [ ] Intro từ đầu đến khi nhận Pokémon.
+- [x] Logo/title trên v0.3.
+- [x] Battle đầu + hậu battle trên v0.3.
+- [ ] Re-test v0.4: title → intro → overworld → battle → post-battle.
 - [ ] Littleroot / Route 101 / Oldale / Route 103.
-- [ ] Rival battle + hậu battle.
 - [ ] Petalburg → Rustboro → Dewford.
 - [ ] Menu / Bag / Pokémon / Pokédex.
 - [ ] Save / load / tiếp tục game.
@@ -86,4 +103,5 @@ Không gọi bản là "hoàn thiện" chỉ vì boot được. Bản release cu
 | Test 4 | Gameplay ổn, logo ổn, nhưng chủ yếu không dấu |
 | v0.1 | Nền gameplay ổn định, độ phủ đầu game tăng |
 | v0.2 | Có dấu hơn nhưng repoint vẫn làm logo lỗi |
-| **v0.3** | **Baseline hiện tại: logo ổn + battle/post-battle ổn + có font dấu** |
+| **v0.3** | **Baseline đã xác nhận: logo ổn + battle/post-battle ổn + font dấu** |
+| **v0.4 candidate** | **Thêm 462 cụm text shared/overlap, 0 pointer write; chờ test gameplay** |
