@@ -46,6 +46,8 @@ jobs:
           # Arena's host-side asset packers use hypot()/math on Linux.
           sed -i 's/-lpng -o/-lpng -lm -o/g' workspace/tools/arena/dev.sh
           sed -i 's/-Werror //g' workspace/tools/arena/dev.sh
+          # v0.13.0 source references this assembler label from C without a public declaration.
+          sed -i '1i extern const unsigned char BattleScript_ArenaEvolutionLearn[];' workspace/src/arena_evolution.inc
 
       - name: Generate Arena assets
         working-directory: workspace
