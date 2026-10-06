@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Mossdeep Space Center / Steven's House",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "65/65 Space Center + Steven strings. No ROM patch or pointer write performed.",
+  "status": "translation-complete-source-qa",
+  "notes": "65/65 Space Center + Steven strings. Source QA clean: labels/placeholders/paragraph controls/terminators verified. No ROM patch or pointer write performed.",
   "translations": {
     "MossdeepCity_SpaceCenter_1F_Text_RocketLaunchImminent": "Tên lửa sắp được phóng rồi!$",
     "MossdeepCity_SpaceCenter_1F_Text_SuccessfulLaunchNumber": "Tên lửa đã phóng an toàn!\\nĐó là lần phóng thành công thứ {STR_VAR_1}!$",
