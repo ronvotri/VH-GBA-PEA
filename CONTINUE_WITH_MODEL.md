@@ -105,3 +105,15 @@ Current completed map/story manifests:
 - **Total: 494**
 
 All were source-catalog driven and passed placeholder / paragraph-control QA. Continue next with **Rustboro City**. Preserve the project rule: v0.4 baseline, no screenshot-by-screenshot patching, no mass-repoint.
+
+
+## Translation checkpoint — Rustboro to Dewford
+
+Completed after the prior 494-string checkpoint:
+- Rustboro City: **177 / 177**
+- Route 116 + Rusturf Tunnel: **38 / 38**
+- Dewford + Route 106 + Granite Cave: **103 / 103**
+
+Current total complete map/story manifests: **812 strings**.
+
+Continue next with **Route 109 + Slateport City (257 catalog strings)**. Keep translating; do not reopen technical discovery unless patch/build QA exposes an actual blocker.
