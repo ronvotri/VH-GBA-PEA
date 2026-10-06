@@ -91,3 +91,17 @@ Tiếng Việt tự nhiên, dễ đọc, có dấu. Giữ tên riêng/Pokémon p
 ## Câu người dùng có thể gửi để tiếp tục
 
 `Tiếp tục VH-GBA-PEA. Đọc CONTINUE_WITH_MODEL.md và các checkpoint trong repo, kiểm tra workflow arena-map rồi tiếp tục dựng catalog để Việt hóa toàn bộ text còn sót. Dùng v0.4 làm baseline, không vá theo từng ảnh và không mass-repoint.`
+
+
+## Translation checkpoint (late 2026-10-06)
+
+Technical discovery is sufficiently complete for translation work. **Do not spend another session expanding pointer/font/catalog research unless an actual patch/build QA failure requires it.**
+
+Current completed map/story manifests:
+- Littleroot + Route 101 + Oldale: 146
+- Route 102 + Petalburg: 112
+- Route 103 + Route 104 + Petalburg Woods: 81
+- Sootopolis: 155
+- **Total: 494**
+
+All were source-catalog driven and passed placeholder / paragraph-control QA. Continue next with **Rustboro City**. Preserve the project rule: v0.4 baseline, no screenshot-by-screenshot patching, no mass-repoint.
