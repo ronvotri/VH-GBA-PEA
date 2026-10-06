@@ -158,3 +158,14 @@ Latest complete manifest:
 Current total complete map/story manifests: **1,777 strings**.
 
 Continue translation directly from the post-Lavaridge / post-Petalburg route coverage. Prefer filling any remaining story gaps before Fortree. Do not reopen font/pointer/catalog research unless an actual patch/build QA failure blocks progress.
+
+
+## Translation checkpoint — Fortree
+
+Latest complete manifests:
+- Route 115 + Route 118 + Route 119 + Weather Institute: **66 / 66**
+- Fortree City: **78 / 78**
+
+Current total complete map/story manifests: **1,921 strings**.
+
+Continue next with **Route 120 → Route 121 → Lilycove / Mt. Pyre**. Keep translating directly; no font/pointer/catalog research unless an actual patch/build QA failure blocks progress.
