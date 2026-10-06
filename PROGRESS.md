@@ -315,3 +315,30 @@ QA cho cả hai batch:
 - chưa patch ROM / chưa ghi pointer ở bước dịch.
 
 **Bước kế tiếp:** Route 120 → Route 121 → Lilycove/Mt. Pyre, tiếp tục theo tuyến story chính. Không mở lại technical discovery nếu chưa có blocker thật.
+
+
+## Translation pass — Route 120 → Lilycove core checkpoint (2026-10-07)
+
+Đã hoàn tất:
+
+- `translations/map-story/route120-route121-mtpyre.vi.json`
+  - Route 120 + Route 121 + toàn Mt. Pyre/Summit: **92 / 92**
+- `translations/map-story/lilycove-core.vi.json`
+  - Lilycove city core + Harbor + Cove Lily Motel + houses + Move Deleter + Pokemon Center 1F: **107 / 107**
+
+Lượt này thêm: **199 string**.
+
+Tổng map/story manifest hoàn chỉnh hiện tại: **2,120 / 4,361 string (~48.6%)**.
+Còn **2,241 map/story string** chưa có manifest hoàn chỉnh.
+
+QA:
+- 0 label thiếu;
+- placeholder `{...}` giữ đúng thứ tự;
+- số paragraph control `\p` khớp source;
+- terminator `$` đầy đủ;
+- chưa patch ROM / chưa ghi pointer ở bước dịch.
+
+Phần Lilycove còn lại đã đếm chính xác:
+- Contest Hall/Lobby + Department Store + Museum + Trainer Fan Club: **163 string**.
+
+**Bước kế tiếp:** hoàn tất 163 Lilycove còn lại, sau đó Route 122/123 → Safari Zone / Aqua Hideout / Mossdeep.
