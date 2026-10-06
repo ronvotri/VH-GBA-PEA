@@ -2,31 +2,90 @@
 
 ## ROM mục tiêu
 
-- Pokémon Emerald Arena 0.13.0
-- Dựa trên pret/pokeemerald + patch/overlay của Emerald Arena.
-- ROM Arena phát hành: 32 MiB.
-- ROM AowVN dùng làm nguồn tham chiếu Việt hóa: 16 MiB.
+- Pokémon Emerald Arena 0.13.0.
+- Dựa trên pret/pokeemerald + patch/overlay Emerald Arena.
+- Shipping ROM: 32 MiB / 33,554,432 bytes.
+- SHA-256 shipping Arena: `a8d36c0c398f5281694c2d8dc5094a54a2276bd3092f5802cef6ef99369c645b`.
+- SHA-1 shipping Arena: `a3247882b469fecb491e2875d45ddc3b4b49e310`.
+- AowVN 16 MiB được dùng làm nguồn tham chiếu font/nội dung Việt hóa, không được chép gameplay/mod của AowVN sang Arena.
 
-## Bài học từ các bản test
+## Baseline patch
 
-### Không được quét pointer toàn ROM
+### v0.3
 
-Một giá trị 32-bit trông giống địa chỉ GBA không có nghĩa nó là pointer text. Graphics, compressed data và code có thể tình cờ chứa byte pattern giống pointer. Các bản đầu đã sửa nhầm những vị trí này, dẫn tới title graphics bị phá và luồng hậu battle bị treo.
+No-repoint baseline đã được test:
 
-### Baseline v0.3
+- logo OK;
+- intro OK;
+- font dấu OK;
+- battle đầu OK;
+- post-battle OK.
 
-v0.3 giữ cơ chế **no-repoint** cho phần đã test ổn định. Các chuỗi tiếng Việt có thể ghi đè tại chỗ chỉ khi không vượt allocation gốc và không chồng lên chuỗi/suffix khác.
+### v0.4
 
-### Font
+Text Cluster Pass:
 
-Font tiếng Việt đang dùng dựa trên glyph từ bản AowVN đã được xác nhận hiển thị dấu đúng. Lỗi logo ở các test đầu không phải do glyph tiếng Việt tự thân mà do patch ngoài vùng font.
+- thêm 462 cụm text shared/overlap;
+- 43,044 byte thay đổi so với v0.3;
+- 0 pointer write;
+- startup/title giữ nguyên so với v0.3;
+- người chơi đã đi tiếp qua phần đầu game nhưng vẫn gặp English user-facing.
 
-## Mục tiêu bước tiếp theo
+## Vì sao không được quét pointer toàn ROM
 
-Chuyển từ vá nhị phân suy đoán sang catalog text có provenance rõ:
+Giá trị 32-bit nằm trong dải `0x08000000..0x09FFFFFF` không nhất thiết là pointer text. Nó có thể là:
 
-1. target phải là string thực;
-2. reference phải đến từ script/code/table text đã xác minh;
-3. nếu cần repoint, chỉ sửa đúng reference đó;
-4. text mới đặt trong vùng trống được kiểm chứng;
-5. mọi pass phải so diff với baseline và QA boot/battle/post-battle.
+- literal trong code;
+- dữ liệu graphics/compression;
+- table khác;
+- byte ngẫu nhiên trùng pattern.
+
+Test 1/2 đã chứng minh thay pointer kiểu heuristic có thể phá title graphics và flow hậu battle.
+
+## Catalog text
+
+Hai bộ lọc cuối phiên trên shipping Arena:
+
+- broad text-like pointer targets: 24,916;
+- stricter plausible-English targets: 20,383.
+
+Con số này **không phải số string cần dịch cuối cùng**. Nhiều target là suffix/substrings hoặc data dùng chung. Bước tiếp theo phải dùng symbol map/source provenance để thu hẹp.
+
+## Source build / symbol map
+
+Workflow: `.github/workflows/arena-map.yml`.
+
+Pinned inputs:
+
+- `pret/pokeemerald@5eff78649e7170a877b961ef0b3da13b81a16038`
+- `pret/agbcc@da598c1d918402c42c0c0d7128ba14567f3175e9`
+- `GBurgardt/pokemon-emerald-arena@v0.13.0`
+
+Artifact mong đợi:
+
+- `pokeemerald.map`
+- `pokeemerald.sym`
+- `ROM_SHA1.txt`
+- `ROM_SHA256.txt`
+
+Mục tiêu: biết chính xác label nào nằm ở địa chỉ ROM nào và C/ASM/script reference nào cần đổi.
+
+## Chiến lược patch cuối
+
+1. Build catalog từ source labels + symbol map.
+2. Match English shipping Arena ↔ AowVN translation khi đáng tin.
+3. Giữ control code/placeholders nguyên nghĩa.
+4. In-place khi translated payload <= allocation.
+5. Nếu dài hơn:
+   - ưu tiên biên tập tiếng Việt gọn;
+   - nếu vẫn không vừa, đưa text vào pool và repoint **chỉ reference đã xác minh**.
+6. Arena-only text dịch riêng từ source Arena.
+7. Mỗi batch có manifest + diff + QA checkpoint.
+
+## Checkpoint English còn sót
+
+Ví dụ mới nhất từ test thực tế:
+
+`There could be treasures just waiting to be discovered down there.`
+
+Đây là loại string mà pass kế tiếp phải bắt được từ source/catalog thay vì chờ người chơi chụp từng ảnh.
