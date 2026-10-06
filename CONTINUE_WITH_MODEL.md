@@ -117,3 +117,16 @@ Completed after the prior 494-string checkpoint:
 Current total complete map/story manifests: **812 strings**.
 
 Continue next with **Route 109 + Slateport City (257 catalog strings)**. Keep translating; do not reopen technical discovery unless patch/build QA exposes an actual blocker.
+
+
+## Translation checkpoint — Slateport to Verdanturf
+
+New complete manifests after the 812-string checkpoint:
+- Route 109 + Slateport: **257 / 257**
+- Route 110 + Mauville: **178 / 178**
+- Route 110 Trick House: **146 / 146**
+- Route 117 + Verdanturf: **55 / 55**
+
+Current total complete map/story manifests: **1,448 strings**.
+
+All batches passed source-level placeholder / paragraph / terminator QA. Continue next with **Route 111 (40) + Route 112 (11)**, then Jagged Pass / Lavaridge. Keep translating; do not reopen technical discovery unless patch/build QA exposes an actual blocker.
