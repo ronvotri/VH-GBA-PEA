@@ -130,3 +130,21 @@ New complete manifests after the 812-string checkpoint:
 Current total complete map/story manifests: **1,448 strings**.
 
 All batches passed source-level placeholder / paragraph / terminator QA. Continue next with **Route 111 (40) + Route 112 (11)**, then Jagged Pass / Lavaridge. Keep translating; do not reopen technical discovery unless patch/build QA exposes an actual blocker.
+
+
+## Translation checkpoint — Lavaridge
+
+Current total complete map/story manifests: **1,658 strings**.
+
+Latest complete batches:
+- Route 111 + Route 112: **51 / 51**
+- Mt. Chimney + Jagged Pass + Lavaridge: **159 / 159**
+
+Next, fill the story segment skipped before Mt. Chimney:
+- Route 113: 21
+- Fallarbor: 40
+- Route 114: 21
+- Meteor Falls: 37
+- total: **119 strings**
+
+Continue translation directly. No font/pointer/catalog research unless an actual patch/build QA failure blocks progress.
