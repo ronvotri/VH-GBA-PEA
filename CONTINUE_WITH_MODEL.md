@@ -148,3 +148,13 @@ Next, fill the story segment skipped before Mt. Chimney:
 - total: **119 strings**
 
 Continue translation directly. No font/pointer/catalog research unless an actual patch/build QA failure blocks progress.
+
+
+## Translation checkpoint — Fallarbor / Meteor Falls
+
+Latest complete manifest:
+- Route 113 + Fallarbor + Route 114 + Meteor Falls: **119 / 119**
+
+Current total complete map/story manifests: **1,777 strings**.
+
+Continue translation directly from the post-Lavaridge / post-Petalburg route coverage. Prefer filling any remaining story gaps before Fortree. Do not reopen font/pointer/catalog research unless an actual patch/build QA failure blocks progress.
