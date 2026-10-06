@@ -265,3 +265,26 @@ Toàn bộ batch tiếp tục đạt:
 - chưa patch ROM / chưa ghi pointer.
 
 **Bước kế tiếp nên lấp đoạn story đã bỏ qua trước Mt. Chimney:** Route 113 (**21**) + Fallarbor (**40**) + Route 114 (**21**) + Meteor Falls (**37**) = **119 string**.
+
+
+## Translation pass — Fallarbor / Meteor Falls checkpoint (2026-10-06)
+
+Đã hoàn tất batch story bị bỏ qua trước Mt. Chimney:
+
+- `translations/map-story/route113-fallarbor-route114-meteorfalls.vi.json`
+  - Route 113 + Glass Workshop: **21 / 21**
+  - Fallarbor Town + Battle Tent + nhà/phụ trợ: **40 / 40**
+  - Route 114 + Fossil Maniac + Lanette: **21 / 21**
+  - Meteor Falls + Steven's Cave: **37 / 37**
+  - Tổng: **119 / 119**
+
+Tổng map/story manifest hoàn chỉnh hiện tại: **1,777 string**.
+
+QA:
+- 0 label thiếu;
+- placeholder `{...}` giữ đúng thứ tự;
+- số paragraph control `\p` khớp source;
+- terminator `$` đầy đủ;
+- chưa patch ROM / chưa ghi pointer ở bước dịch.
+
+**Bước kế tiếp:** tiếp tục theo tuyến sau Lavaridge/Petalburg, ưu tiên Route 115 / các đoạn story còn hở trước khi sang Fortree.
