@@ -1,0 +1,11 @@
+*.gba
+*.sav
+*.sgm
+*.state
+*.zip
+*.7z
+*.rar
+__pycache__/
+*.pyc
+
+# Không commit ROM thương mại đầy đủ.
