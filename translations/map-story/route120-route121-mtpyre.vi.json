@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Route 120 / Route 121 / Mt. Pyre",
   "baseline": "v0.4",
-  "status": "translation-complete-pending-source-qa",
-  "notes": "Catalog-driven batch for Route 120, Route 121 and Mt. Pyre. No ROM patch or pointer write performed.",
+  "status": "translation-complete-source-qa",
+  "notes": "Catalog-driven complete batch (92/92) for Route 120, Route 121 and Mt. Pyre. Placeholders, paragraph controls and terminators QA-clean. No ROM patch or pointer write performed.",
   "translations": {
     "MtPyre_1F_Text_TakeThisForYourOwnGood": "Đủ thứ sinh linh lang thang trên sườn MT. PYRE…\\pKhông ai biết chuyện gì có thể xảy ra.\\nCầm lấy cái này đi. Vì an toàn của cậu.$",
     "MtPyre_1F_Text_ExplainCleanseTag": "Cho một POKéMON giữ CLEANSE TAG đó.\\pNó sẽ giúp xua bớt POKéMON hoang dã.$",
