@@ -342,3 +342,21 @@ Phần Lilycove còn lại đã đếm chính xác:
 - Contest Hall/Lobby + Department Store + Museum + Trainer Fan Club: **163 string**.
 
 **Bước kế tiếp:** hoàn tất 163 Lilycove còn lại, sau đó Route 122/123 → Safari Zone / Aqua Hideout / Mossdeep.
+
+
+## Repository integrity audit — 2026-10-07
+
+Đã rà lại trực tiếp `translations/map-story` trên GitHub để chắc chắn không bị sót khi handoff.
+
+Phát hiện và sửa 2 manifest từng bị commit nhầm thành nội dung lỗi file-reference thay vì JSON:
+
+- `route103-route104-petalburgwoods.vi.json` — phục hồi **81 translations**
+- `route110-mauville.vi.json` — phục hồi **178 translations**
+
+Sau sửa:
+- cả hai file đã có kích thước/nội dung JSON bình thường trên `main`;
+- quét toàn repo không còn chuỗi lỗi `The requested file reference is not currently visible`;
+- đã thêm `translations/map-story/INDEX.md` làm inventory chuẩn của **18 manifest**, tổng **2,120 / 4,361** map/story strings;
+- `sootopolis.vi.json.gz` chỉ là duplicate convenience artifact, không tính hai lần.
+
+Từ checkpoint này, khi tiếp tục dịch phải đối chiếu `translations/map-story/INDEX.md` trước khi tăng tổng coverage.
