@@ -1,0 +1,70 @@
+name: Build Arena symbol map
+
+on:
+  push:
+    paths:
+      - '.github/workflows/arena-map.yml'
+      - 'tools/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-map:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential binutils-arm-none-eabi libpng-dev git python3 nodejs npm
+
+      - name: Checkout exact sources
+        run: |
+          git clone https://github.com/pret/pokeemerald.git workspace
+          git -C workspace checkout 5eff78649e7170a877b961ef0b3da13b81a16038
+          git clone https://github.com/pret/agbcc.git agbcc
+          git -C agbcc checkout da598c1d918402c42c0c0d7128ba14567f3175e9
+          git clone --branch v0.13.0 --depth 1 https://github.com/GBurgardt/pokemon-emerald-arena.git arena
+
+      - name: Install agbcc
+        run: |
+          cd agbcc
+          ./build.sh
+          ./install.sh ../workspace
+
+      - name: Apply Emerald Arena 0.13.0
+        run: |
+          git -C workspace apply ../arena/game/native-engine.patch
+          cp -R arena/game/overlay/. workspace/
+
+      - name: Generate Arena assets
+        working-directory: workspace
+        run: ./tools/arena/dev.sh assets
+
+      - name: Build Arena
+        working-directory: workspace
+        run: |
+          make -j2
+          echo "Built ROM hashes:"
+          sha1sum pokeemerald.gba
+          sha256sum pokeemerald.gba
+          echo "Expected shipping Arena SHA256: a8d36c0c398f5281694c2d8dc5094a54a2276bd3092f5802cef6ef99369c645b"
+          ls -lah pokeemerald.gba pokeemerald.elf pokeemerald.map || true
+
+      - name: Collect non-ROM build metadata
+        run: |
+          mkdir -p artifact
+          cp workspace/pokeemerald.map artifact/ 2>/dev/null || true
+          arm-none-eabi-nm -n workspace/pokeemerald.elf > artifact/pokeemerald.sym
+          sha1sum workspace/pokeemerald.gba > artifact/ROM_SHA1.txt
+          sha256sum workspace/pokeemerald.gba > artifact/ROM_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: arena-0.13.0-symbol-map
+          path: artifact/
+          retention-days: 7
