@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Lilycove Museum",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "43/43 Lilycove Museum strings. No ROM patch or pointer write performed.",
+  "status": "translation-complete-source-qa",
+  "notes": "43/43 Lilycove Museum strings. Source QA clean: labels/placeholders/paragraph controls/terminators verified. No ROM patch or pointer write performed.",
   "translations": {
     "LilycoveCity_LilycoveMuseum_1F_Text_WelcomeToLilycoveMuseum": "Chào mừng đến LILYCOVE MUSEUM.\\pXin hãy thong thả thưởng thức bộ sưu tập tác phẩm nghệ thuật tuyệt vời về POKéMON của chúng tôi.$",
     "LilycoveCity_LilycoveMuseum_1F_Text_ImCuratorHaveYouViewedOurPaintings": "Tôi là CURATOR của bảo tàng mỹ thuật này.\\pThật vui khi thấy một người trẻ như bạn ghé thăm MUSEUM.\\pBạn đã xem bộ sưu tập tranh của chúng tôi chưa?$",
