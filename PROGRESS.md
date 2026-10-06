@@ -188,3 +188,29 @@ QA của các batch trên:
 - chưa patch ROM / chưa ghi pointer ở bước dịch.
 
 **Bước dịch kế tiếp:** Rustboro City và khu liên quan. Không quay lại font/pointer/catalog trừ khi việc build/patch thật sự phát hiện lỗi.
+
+
+## Translation pass — Rustboro → Dewford checkpoint (2026-10-06)
+
+Đã dịch tiếp theo tuyến chơi chính và QA source-level:
+
+- `translations/map-story/rustboro-city.vi.json`
+  - Rustboro City toàn khu: **177 / 177**
+- `translations/map-story/route116-rusturf-tunnel.vi.json`
+  - Route 116 + Tunneler's Rest House + Rusturf Tunnel: **38 / 38**
+- `translations/map-story/dewford-route106-granite-cave.vi.json`
+  - Dewford Town + Gym + Hall + Route 106 + Granite Cave: **103 / 103**
+
+Lượt này thêm: **318 string**.
+
+Tổng map/story manifest hoàn chỉnh hiện tại: **812 string**.
+
+QA:
+- 0 label thiếu trong phạm vi batch;
+- placeholder `{...}` giữ đúng thứ tự;
+- số paragraph control `\p` giữ nguyên;
+- terminator `$` giữ nguyên;
+- `\n/\l` chỉ reflow cho tiếng Việt dễ đọc;
+- chưa patch ROM / chưa ghi pointer ở bước dịch.
+
+**Bước kế tiếp:** Route 109 + Slateport City (catalog hiện có **257 map/story string** trong cụm này).
