@@ -214,3 +214,31 @@ QA:
 - chưa patch ROM / chưa ghi pointer ở bước dịch.
 
 **Bước kế tiếp:** Route 109 + Slateport City (catalog hiện có **257 map/story string** trong cụm này).
+
+
+## Translation pass — Slateport → Verdanturf checkpoint (2026-10-06)
+
+Đã tiếp tục dịch map/story theo tuyến chơi chính, không quay lại technical discovery:
+
+- `translations/map-story/route109-slateport.vi.json`
+  - Route 109 + Seashore House + toàn Slateport: **257 / 257**
+- `translations/map-story/route110-mauville.vi.json`
+  - Route 110 main + hai cổng Cycling Road + toàn Mauville: **178 / 178**
+- `translations/map-story/route110-trick-house.vi.json`
+  - Trick House Entrance + Puzzle 1–8 + End: **146 / 146**
+- `translations/map-story/route117-verdanturf.vi.json`
+  - Route 117 + toàn Verdanturf: **55 / 55**
+
+Lượt này thêm: **636 string**.
+
+Tổng map/story manifest hoàn chỉnh hiện tại: **1,448 string**.
+
+QA cho cả 4 batch:
+- 0 label thiếu;
+- placeholder `{...}` giữ đúng thứ tự;
+- số paragraph control `\p` giữ nguyên;
+- terminator `$` giữ nguyên;
+- `\n/\l` chỉ reflow cho tiếng Việt dễ đọc;
+- chưa patch ROM / chưa ghi pointer ở bước dịch.
+
+**Bước kế tiếp:** Route 111 (**40**) + Route 112 (**11**), sau đó Jagged Pass / Lavaridge. Tiếp tục dịch; không mở lại font/pointer/catalog nếu chưa có blocker thật.
