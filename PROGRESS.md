@@ -116,3 +116,39 @@ Mục tiêu của map/symbol là biến việc patch từ **đoán pointer nhị
 - Không sửa graphics/code chỉ vì byte pattern “trông giống text pointer”.
 - Không gọi bản “hoàn thiện” khi còn English user-facing.
 - Repo không lưu ROM thương mại đầy đủ.
+
+
+## Checkpoint catalog source → shipping (2026-10-06)
+
+Workflow `Build Arena symbol map` run #9 đã **PASS** sau khi mở parser cho cả C-style `.inc`.
+
+Catalog provenance hiện tại:
+
+- **17,513** source text entries.
+- **13,833** named entries + **3,680** anonymous source strings.
+- **13,827** entry nối được ELF symbol.
+- **13,171** entry có source-level reference.
+- **4,361** map/story.
+- **2,319** system text.
+- **8,279** system/UI.
+- **2,223** battle.
+- **46** Arena-only.
+- **285** debug/internal.
+
+Đối chiếu trực tiếp với ROM Arena 0.13.0 shipping sạch (SHA-256 `a8d36c0c...c645b`) đã xác minh:
+
+- **4,361 / 4,361 map/story** khớp byte-for-byte tại build offset.
+- **2,319 / 2,319 system-text** khớp byte-for-byte tại build offset.
+- Checkpoint English từng thấy trong game `There could be treasures just waiting to be discovered down there.` được neo đúng vào `SootopolisCity_House4_Text_AncientTreasuresWaitingInSea` tại ROM offset **`0x23BF5F`**, reference từ `SootopolisCity_House4_EventScript_Man`.
+
+Điều này cho phép dùng symbol/source để định vị hai nhóm user-facing lớn nhất mà **không suy diễn từ pointer scan**.
+
+Tool mới: `tools/resolve_shipping_catalog.py`.
+
+- Chỉ ghi shipping offset khi encoded source bytes khớp tuyệt đối.
+- Từ chối ROM sai SHA-256.
+- Không sửa ROM.
+- Không quét pointer.
+- Không mass-repoint.
+
+Bước tiếp theo: dùng catalog shipping-verified để đánh dấu coverage của baseline v0.4, ghép bản dịch đáng tin, ưu tiên map/story → system text → Arena-only → UI/battle; chỉ repoint reference đã xác minh khi bản dịch không thể vừa allocation.
