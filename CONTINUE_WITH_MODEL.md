@@ -198,3 +198,21 @@ These files had previously been accidentally committed as a file-reference error
 Current committed map/story coverage remains **2,120 / 4,361 (~48.6%)** across **18 real JSON manifests**. Do not count `sootopolis.vi.json.gz` separately.
 
 Next: Lilycove remainder **163 strings**, then Route 122/123 → Safari Zone / Aqua Hideout / Mossdeep.
+
+
+## Translation checkpoint — Lilycove complete
+
+Lilycove is now fully covered:
+- core / Harbor / Motel / houses / Move Deleter / Center: **107 / 107**
+- Contest Hall / Lobby: **53 / 53**
+- Department Store: **29 / 29**
+- Museum: **43 / 43**
+- Trainer Fan Club: **38 / 38**
+- total Lilycove: **270 / 270**
+
+Current committed map/story coverage: **2,283 / 4,361 (~52.4%)**.
+Remaining map/story: **2,078**.
+
+All 163 newly added strings passed source-level label / placeholder / paragraph / terminator QA.
+
+Continue next with **Route 122 / Route 123 → Safari Zone → Aqua Hideout → Mossdeep**. Use `translations/map-story/INDEX.md` as the canonical inventory and do not reopen technical discovery unless an actual patch/build QA failure blocks progress.
