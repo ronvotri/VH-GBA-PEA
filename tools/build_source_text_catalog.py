@@ -312,7 +312,7 @@ def parse_c_file(path: Path, workspace: Path, symbols: dict[str, Symbol], ranges
     return out
 
 
-def collect_reference_sites(files: list[Path], workspace: Path, labels: set[str], definitions: dict[str, tuple[str, int]]) -> tuple[dict[str, list[str]], Counter]:
+def collect_reference_sites(files: list[Path], workspace: Path, labels: set[str], definitions: dict[str, set[tuple[str, int]]]) -> tuple[dict[str, list[str]], Counter]:
     refs: dict[str, list[str]] = defaultdict(list)
     counts: Counter = Counter()
     for p in files:
@@ -328,7 +328,7 @@ def collect_reference_sites(files: list[Path], workspace: Path, labels: set[str]
             for token in set(IDENT_RE.findall(line)):
                 if token not in labels:
                     continue
-                if definitions.get(token) == (rel, lineno):
+                if (rel, lineno) in definitions.get(token, set()):
                     continue
                 counts[token] += 1
                 if len(refs[token]) < 32:
@@ -381,8 +381,16 @@ def main() -> int:
     raw_entries = deduped
 
     named_labels = {e["label"] for e in raw_entries if not e["label"].startswith("@anon:")}
-    definitions = {e["label"]: (e["file"], e["line"]) for e in raw_entries if e["label"] in named_labels}
-    refs, ref_counts = collect_reference_sites(files, workspace, named_labels, definitions)
+    label_counts = Counter(e["label"] for e in raw_entries if e["label"] in named_labels)
+    definitions: dict[str, set[tuple[str, int]]] = defaultdict(set)
+    for e in raw_entries:
+        if e["label"] in named_labels:
+            definitions[e["label"]].add((e["file"], e["line"]))
+    # Only symbols proven to exist in the built ELF get reference-site scans.
+    # Generic function-local names such as "title"/"help" otherwise create
+    # thousands of unrelated lexical matches across the tree.
+    reference_labels = {label for label in named_labels if label in symbols}
+    refs, ref_counts = collect_reference_sites(files, workspace, reference_labels, definitions)
 
     entries: list[Entry] = []
     for e in raw_entries:
@@ -421,9 +429,10 @@ def main() -> int:
             shipping_rom_offset="",
             shipping_match_status="unresolved: build hash/layout must not be assumed shipping-identical",
             vietnamese="",
-            translation_status="untranslated/cataloged",
+            translation_status="baseline-coverage-unresolved",
             patch_strategy=strategy_for(category, build_offset, sym is not None),
-            notes="",
+            notes=("duplicate source label/preprocessor variant; verify active build branch"
+                   if label_counts.get(label, 0) > 1 else ""),
         ))
 
     # Stable order: user-facing map/story first, then Arena-touched, then by source.
@@ -448,6 +457,8 @@ def main() -> int:
         "anonymous_entries": sum(e.source_label.startswith("@anon:") for e in entries),
         "symbol_mapped_entries": sum(bool(e.build_address) for e in entries),
         "entries_with_source_references": sum(e.reference_count > 0 for e in entries),
+        "duplicate_named_labels": sum(1 for n in label_counts.values() if n > 1),
+        "source_only_named_entries": sum((not e.source_label.startswith("@anon:")) and not e.build_address for e in entries),
         "category_counts": dict(Counter(e.category for e in entries)),
         "arena_provenance_counts": dict(Counter(e.arena_provenance for e in entries)),
         "build_rom_sha256": build_sha,
