@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Lilycove Department Store",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "29/29 Lilycove Department Store strings. No ROM patch or pointer write performed.",
+  "status": "translation-complete-source-qa",
+  "notes": "29/29 Lilycove Department Store strings. Source QA clean: labels/placeholders/paragraph controls/terminators verified. No ROM patch or pointer write performed.",
   "translations": {
     "LilycoveCity_DepartmentStoreRooftop_Text_SetDatesForClearOutSales": "Không biết họ có ngày cố định cho đợt xả kho không nhỉ?\\pTôi xem TV hoài mà chẳng thấy quảng cáo gì.$",
     "LilycoveCity_DepartmentStoreRooftop_Text_BeenWaitingForClearOutSale": "Yes! Tôi chờ đợt xả kho này lâu lắm rồi!\\pCó những món chỉ mua được ở đây thôi. Tôi phải gom thật nhiều mới được!$",
