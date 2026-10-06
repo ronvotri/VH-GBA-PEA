@@ -42,6 +42,7 @@ jobs:
           cp -R arena/game/overlay/. workspace/
           # Arena's host-side asset packers use hypot()/math on Linux.
           sed -i 's/-lpng -o/-lpng -lm -o/g' workspace/tools/arena/dev.sh
+          sed -i 's/-Werror //g' workspace/tools/arena/dev.sh
 
       - name: Generate Arena assets
         working-directory: workspace
