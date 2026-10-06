@@ -360,3 +360,28 @@ Sau sửa:
 - `sootopolis.vi.json.gz` chỉ là duplicate convenience artifact, không tính hai lần.
 
 Từ checkpoint này, khi tiếp tục dịch phải đối chiếu `translations/map-story/INDEX.md` trước khi tăng tổng coverage.
+
+
+## Translation pass — Lilycove complete checkpoint (2026-10-07)
+
+Đã hoàn tất toàn bộ **163 string Lilycove còn lại** và QA chéo trực tiếp với source:
+
+- `translations/map-story/lilycove-contest.vi.json`: **53 / 53**
+- `translations/map-story/lilycove-department-store.vi.json`: **29 / 29**
+- `translations/map-story/lilycove-museum.vi.json`: **43 / 43**
+- `translations/map-story/lilycove-trainer-fan-club.vi.json`: **38 / 38**
+
+Cộng với `lilycove-core.vi.json` **107 / 107**, toàn Lilycove hiện là **270 / 270**.
+
+Tổng map/story manifest hoàn chỉnh hiện tại: **2,283 / 4,361 (~52.4%)**.
+Còn **2,078 map/story string** chưa có manifest hoàn chỉnh.
+
+QA 163 string mới:
+- 0 label thiếu / dư;
+- placeholder `{...}` giữ đúng thứ tự;
+- số paragraph control `\p` khớp source;
+- terminator `$` đầy đủ;
+- cả 4 manifest đã chuyển sang `translation-complete-source-qa`;
+- chưa patch ROM / chưa ghi pointer ở bước dịch.
+
+**Bước kế tiếp:** Route 122 / Route 123 → Safari Zone → Aqua Hideout → Mossdeep.
