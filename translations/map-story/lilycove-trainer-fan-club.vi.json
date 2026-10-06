@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Lilycove Pokemon Trainer Fan Club",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "38/38 Lilycove Trainer Fan Club strings. No ROM patch or pointer write performed.",
+  "status": "translation-complete-source-qa",
+  "notes": "38/38 Lilycove Trainer Fan Club strings. Source QA clean: labels/placeholders/paragraph controls/terminators verified. No ROM patch or pointer write performed.",
   "translations": {
     "LilycoveCity_PokemonTrainerFanClub_Text_OhWowItsPlayer": "Oh, wow!\\nLà {PLAYER}!$",
     "LilycoveCity_PokemonTrainerFanClub_Text_HeardAboutYouImYourFan": "Tôi nghe tin về bạn rồi!\\nBạn mạnh lắm đúng không?\\pỞ đây bọn tôi lúc nào cũng tranh cãi xem TRAINER nào mạnh nhất.\\pNghe về bạn xong, tôi quyết định thành fan của bạn!\\pHy vọng bạn sẽ tiếp tục battle với những TRAINER mạnh.\\pNhư vậy bọn tôi sẽ được xem thêm nhiều trận nóng bỏng của bạn.\\pRồi mọi người ở đây sẽ thấy bạn tuyệt đến mức nào.\\pNhớ nhé, tôi luôn cổ vũ cho bạn, {PLAYER}!$",
