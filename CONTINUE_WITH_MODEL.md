@@ -183,3 +183,18 @@ Remaining map/story: **2,241**.
 Lilycove remainder: **163 strings** (Contest Hall/Lobby, Department Store, Museum, Trainer Fan Club).
 
 Continue translation directly. Do not reopen font/pointer/catalog research unless patch/build QA exposes an actual blocker.
+
+
+## Repository integrity checkpoint — 2026-10-07
+
+Before continuing translation, use `translations/map-story/INDEX.md` as the canonical committed-manifest inventory.
+
+Important repair already completed:
+- `route103-route104-petalburgwoods.vi.json`: restored to **81 translations**
+- `route110-mauville.vi.json`: restored to **178 translations**
+
+These files had previously been accidentally committed as a file-reference error string. A repo-wide search after repair found no remaining occurrence of that error text.
+
+Current committed map/story coverage remains **2,120 / 4,361 (~48.6%)** across **18 real JSON manifests**. Do not count `sootopolis.vi.json.gz` separately.
+
+Next: Lilycove remainder **163 strings**, then Route 122/123 → Safari Zone / Aqua Hideout / Mossdeep.
