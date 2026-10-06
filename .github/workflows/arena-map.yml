@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/arena-map.yml'
       - 'tools/**'
+      - 'translations/**'
   workflow_dispatch:
 
 permissions:
@@ -80,6 +81,12 @@ jobs:
             --out-csv artifact/text-catalog.csv \
             --out-json artifact/text-catalog.json \
             --summary artifact/text-catalog-summary.json
+
+      - name: Validate Vietnamese translation manifests
+        run: |
+          python3 tools/validate_translation_manifest.py \
+            --catalog artifact/text-catalog.csv \
+            --translations translations
 
       - uses: actions/upload-artifact@v4
         with:
