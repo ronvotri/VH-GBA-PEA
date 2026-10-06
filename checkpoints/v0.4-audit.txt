@@ -1,0 +1,22 @@
+Emerald Arena 0.13.0 Vietnamese v0.4 - Text Cluster Pass
+
+Base: v0.3 stable (user confirmed logo + post-battle OK)
+Overlapping/shared text clusters safely recovered: 462
+Bytes changed vs v0.3: 43044
+Pointer writes performed: 0
+Startup/title region < 0x1F0000: byte-for-byte identical to v0.3
+All new writes are confined to validated overlapping text clusters.
+
+SHA-256:
+c500bb1cdb0f2cf43d24c04a943854bbd9b1b83b0569f0a5f9c8d13480be83f9
+
+Purpose:
+Recover Vietnamese text that v0.3 intentionally skipped because multiple
+labels shared suffixes / overlapped. This pass copies only the text bytes
+from the old translated build, not its dangerous pointer edits.
+
+Safety notes:
+- No new pointer writes.
+- No startup/title writes.
+- No graphics writes outside accepted text clusters.
+- Candidate still requires real gameplay QA before becoming the new baseline.
