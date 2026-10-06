@@ -368,7 +368,9 @@ def main() -> int:
     for p in files:
         if p.suffix.lower() in {".inc", ".s"} or p.suffix == ".S":
             raw_entries.extend(parse_asm_file(p, workspace, symbols, ranges, untracked))
-        if p.suffix.lower() in {".c", ".h"}:
+        # Arena also keeps C code/text fragments in src/*.inc. Parsing .inc
+        # with both readers is safe: each reader only accepts its own syntax.
+        if p.suffix.lower() in {".c", ".h", ".inc"}:
             raw_entries.extend(parse_c_file(p, workspace, symbols, ranges, untracked))
 
     # Deduplicate exact same source definitions; preserve same English at different labels.
