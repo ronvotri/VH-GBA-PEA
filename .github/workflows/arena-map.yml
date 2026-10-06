@@ -20,7 +20,10 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential binutils-arm-none-eabi libpng-dev git python3 python3-pil nodejs npm
+          sudo apt-get install -y build-essential binutils-arm-none-eabi libpng-dev git python3 python3-pip nodejs npm
+
+      - name: Install current Pillow
+        run: python3 -m pip install --user --upgrade Pillow
 
       - name: Checkout exact sources
         run: |
