@@ -877,3 +877,20 @@ TV repository QA:
 - all source slices were validated for placeholder/control-token order and terminators before commit
 
 Only `data/text/trainers.inc` remains in system-text. No ROM bytes or pointers were modified.
+
+
+## System-text checkpoint — 1,608 / 2,319 — 2026-10-08
+
+Completed after the 1,488 checkpoint:
+- `data/text/trainers.inc`: **120 / 831**
+  - `trainers-01.vi.json`: 40
+  - `trainers-02.vi.json`: 40
+  - `trainers-03.vi.json`: 40
+
+Coverage now:
+- map/story: **4,361 / 4,361 (100%)**
+- Arena-only: **46 / 46 (100%)**
+- system-text: **1,608 / 2,319**
+- remaining system-text: **711**
+
+All three trainer slices were validated for exact placeholder/control-token order and terminators before commit. GitHub `main` remains authoritative. No ROM bytes or pointers were modified.
