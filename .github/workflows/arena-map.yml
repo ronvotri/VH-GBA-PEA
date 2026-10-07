@@ -82,6 +82,14 @@ jobs:
             --out-json artifact/text-catalog.json \
             --summary artifact/text-catalog-summary.json
 
+      - name: Audit remaining map/story catalog
+        run: |
+          python3 tools/audit_remaining_map_story.py \
+            --catalog artifact/text-catalog.csv \
+            --translations translations/map-story \
+            --out artifact/map-story-remaining.json \
+            --summary artifact/map-story-remaining-summary.txt
+
       - name: Validate Vietnamese translation manifests
         run: |
           python3 tools/validate_translation_manifest.py \
@@ -89,6 +97,7 @@ jobs:
             --translations translations
 
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: arena-0.13.0-symbol-map
           path: artifact/
