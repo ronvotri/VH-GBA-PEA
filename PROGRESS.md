@@ -795,3 +795,25 @@ Source QA for the new translations:
 - All committed manifests were fetched back from GitHub `main` and parsed successfully.
 
 No ROM bytes or pointers were modified.
+
+
+## System-text checkpoint — 1,152 / 2,319 — 2026-10-08
+
+Completed:
+- `data/text/apprentice.inc`: **288 / 288**
+  - `apprentice-01.vi.json`: 40
+  - `apprentice-02.vi.json`: 40
+  - `apprentice-03.vi.json`: 40
+  - `apprentice-04.vi.json`: 40
+  - `apprentice-05.vi.json`: 40
+  - `apprentice-06.vi.json`: 40
+  - `apprentice-07.vi.json`: 40
+  - `apprentice-08.vi.json`: 8
+
+Coverage now:
+- map/story: **4,361 / 4,361 (100%)**
+- Arena-only: **46 / 46 (100%)**
+- system-text: **1,152 / 2,319**
+- remaining system-text: **1,167**
+
+The eight Apprentice manifests were fetched back from GitHub `main`; total unique labels = **288**, with no duplicate manifest labels. No ROM bytes or pointers were modified.
