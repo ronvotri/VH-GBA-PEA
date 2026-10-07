@@ -894,3 +894,24 @@ Coverage now:
 - remaining system-text: **711**
 
 All three trainer slices were validated for exact placeholder/control-token order and terminators before commit. GitHub `main` remains authoritative. No ROM bytes or pointers were modified.
+
+
+## System-text checkpoint — 1,928 / 2,319 — 2026-10-08
+
+Trainer progress:
+- `data/text/trainers.inc`: **440 / 831**
+- `trainers-01.vi.json` through `trainers-11.vi.json`: 40 strings each
+
+Coverage now:
+- map/story: **4,361 / 4,361 (100%)**
+- Arena-only: **46 / 46 (100%)**
+- system-text: **1,928 / 2,319**
+- remaining system-text: **391**
+
+Repository QA:
+- all 11 trainer manifests fetched back from GitHub `main`
+- total unique trainer labels committed: **440**
+- duplicate trainer manifest labels: **0**
+- all source slices validated for control-token order and terminators before commit
+
+No ROM bytes or pointers were modified.
