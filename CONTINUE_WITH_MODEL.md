@@ -684,3 +684,14 @@ System-ui total:
 - **8,213 remaining**
 
 Continue system-ui source-catalog-first. Good next targets include player-facing text blocks such as abilities, item descriptions, move descriptions, item names, region-map entries, and strings.c. Keep manifests bounded and commit each completed slice immediately to GitHub `main`.
+
+
+## Canonical Pokémon terminology rule — 2026-10-08
+
+Do **not** translate canonical Pokémon terms used as names/identifiers:
+- Pokémon species names
+- move names
+- item names
+- TM/HM names and identifiers
+
+Translate surrounding UI/help/description text, but keep those canonical names exactly in English. This rule is authoritative for all remaining `system-ui` and `battle` work.
