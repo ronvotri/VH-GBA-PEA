@@ -315,3 +315,11 @@ QA-clean:
 Current map/story coverage: **3,429 / 4,361 (~78.6%)**; remaining **932**.
 
 Continue by auditing/translating remaining Battle Frontier shared lounges/services, Battle Tent leftovers, and optional/post-game map/story gaps. Use `translations/map-story/INDEX.md` as canonical inventory.
+
+
+## Translation checkpoint — Shared Battle Frontier
+
+QA-clean shared batches: Exchange/Lounges **87**, Outside/Mart **72**, Services/Scott **60**.
+Current map/story coverage: **3,648 / 4,361 (~83.7%)**; remaining **713**.
+
+Next: audit the remaining 713 source-map strings exactly, then translate Battle Tent and optional/post-game gaps. Use `translations/map-story/INDEX.md` as canonical inventory.
