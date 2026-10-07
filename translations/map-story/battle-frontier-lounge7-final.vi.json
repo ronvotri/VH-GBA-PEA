@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "scope": "map-story",
+  "area": "Battle Frontier / Lounge 7 remaining move descriptions",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Authoritative remaining-catalog batch: 20 Lounge 7 MOVE descriptions. Placeholder order, paragraph controls and terminators QA-clean. No ROM patch or pointer write performed.",
+  "translations": {
+    "BattleFrontier_Lounge7_Text_SoftboiledDesc": "Hồi phục tối đa\\nmột nửa HP tối đa\\ncủa người dùng.$",
+    "BattleFrontier_Lounge7_Text_SeismicTossDesc": "Gây lượng sát thương\\nbằng đúng Level\\ncủa người dùng.$",
+    "BattleFrontier_Lounge7_Text_DreamEaterDesc": "Hồi phục một nửa\\nsát thương gây lên\\nđối thủ đang ngủ.$",
+    "BattleFrontier_Lounge7_Text_MegaPunchDesc": "Một cú đấm mạnh\\ntung ra với\\nsức lực khủng khiếp.$",
+    "BattleFrontier_Lounge7_Text_MegaKickDesc": "Một cú đá cực mạnh\\nvới lực\\nvô cùng dữ dội.$",
+    "BattleFrontier_Lounge7_Text_BodySlamDesc": "Lao cả cơ thể vào đối thủ,\\ncó thể gây\\nPARALYSIS.$",
+    "BattleFrontier_Lounge7_Text_RockSlideDesc": "Ném những tảng đá lớn.\\nCó thể khiến đối thủ\\nchùn bước.$",
+    "BattleFrontier_Lounge7_Text_CounterDesc": "Phản lại đòn vật lý\\nvới sức mạnh\\ngấp đôi.$",
+    "BattleFrontier_Lounge7_Text_ThunderWaveDesc": "Phóng luồng điện yếu\\nkhiến đối thủ\\nbị PARALYSIS.$",
+    "BattleFrontier_Lounge7_Text_SwordsDanceDesc": "Điệu múa chiến đấu\\ngiúp tăng mạnh\\nATTACK.$",
+    "BattleFrontier_Lounge7_Text_DefenseCurlDesc": "Cuộn tròn để che\\nđiểm yếu và\\ntăng DEFENSE.$",
+    "BattleFrontier_Lounge7_Text_SnoreDesc": "Đòn tấn công ồn ào\\nchỉ dùng được\\nkhi đang ngủ.$",
+    "BattleFrontier_Lounge7_Text_MudSlapDesc": "Hất bùn vào mặt\\nđối thủ để giảm\\nđộ chính xác.$",
+    "BattleFrontier_Lounge7_Text_SwiftDesc": "Bắn ra những tia\\nhình ngôi sao\\nkhông bao giờ trượt.$",
+    "BattleFrontier_Lounge7_Text_IcyWindDesc": "Đòn tấn công lạnh buốt\\nlàm giảm SPEED\\ncủa đối thủ.$",
+    "BattleFrontier_Lounge7_Text_EndureDesc": "Chịu được mọi đòn\\ntrong 1 lượt và\\ncòn lại 1 HP.$",
+    "BattleFrontier_Lounge7_Text_PsychUpDesc": "Sao chép các hiệu ứng\\ncủa đối thủ\\ncho người dùng.$",
+    "BattleFrontier_Lounge7_Text_IcePunchDesc": "Cú đấm băng giá\\ncó thể khiến\\nđối thủ bị FREEZE.$",
+    "BattleFrontier_Lounge7_Text_ThunderPunchDesc": "Cú đấm điện\\ncó thể khiến\\nđối thủ bị PARALYSIS.$",
+    "BattleFrontier_Lounge7_Text_FirePunchDesc": "Cú đấm rực lửa\\ncó thể khiến\\nđối thủ bị BURN.$"
+  }
+}
