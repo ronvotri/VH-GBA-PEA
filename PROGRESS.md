@@ -1017,3 +1017,12 @@ System-ui committed coverage: **655 / 8,279**
 Remaining system-ui: **7,624**
 
 No ROM bytes or pointers were modified.
+
+
+### Pre-pass GitHub sync — 2026-10-08
+Confirmed `main` is synchronized before continuing localization:
+- system-text: **2,319 / 2,319**
+- system-ui committed: **655 / 8,279**
+- move descriptions: **354 / 354 real descriptions complete**
+- item descriptions: **80 / 309**
+- canonical Pokémon / MOVE / ITEM / TM / HM names remain English
