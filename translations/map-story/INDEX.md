@@ -1,6 +1,6 @@
 # Map/Story Translation Manifest Index
 
-Checkpoint: **2,679 / 4,361 map/story strings complete (~61.4%)**
+Checkpoint: **2,797 / 4,361 map/story strings complete (~64.1%)**
 
 This index is the canonical inventory for committed map/story translation manifests. The compressed `sootopolis.vi.json.gz` is a duplicate convenience artifact and is **not** counted separately.
 
@@ -37,7 +37,9 @@ This index is the canonical inventory for committed map/story translation manife
 | `pacifidlog-route132-134.vi.json` | 34 |
 | `victory-road.vi.json` | 54 |
 | `ever-grande-pokemon-league.vi.json` | 36 |
-| **TOTAL** | **2,679** |
+| `new-mauville-abandoned-ship.vi.json` | 62 |
+| `magma-hideout.vi.json` | 56 |
+| **TOTAL** | **2,797** |
 
 ## Integrity audit — 2026-10-07
 
@@ -55,13 +57,12 @@ A repository-wide search after repair found **no remaining occurrence** of the b
 
 ## Next translation block
 
-Main-story coverage through **Pokémon League / Hall of Fame** is now represented by committed QA-clean manifests.
+Main-story coverage through **Pokémon League / Hall of Fame** is represented by committed QA-clean manifests, and New Mauville / Abandoned Ship / Magma Hideout are now covered.
 
 Next, audit and translate the remaining map/story gaps, prioritizing:
-- New Mauville / Abandoned Ship
-- Magma Hideout and remaining villain/post-story areas
-- sealed/legendary locations and optional islands
+- sealed / legendary locations and optional islands
+- post-game towns / facilities
 - Battle Frontier / Battle Tent / remaining post-game map-local text
-- any other cataloged map/story entries not yet represented in this index
+- any cataloged map/story entries not yet represented in this index
 
 Project rules remain unchanged: **v0.4 baseline, no screenshot-by-screenshot patching, no mass-repoint.**
