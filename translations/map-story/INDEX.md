@@ -1,6 +1,6 @@
 # Map/Story Translation Manifest Index
 
-Checkpoint: **2,864 / 4,361 map/story strings complete (~65.7%)**
+Checkpoint: **3,139 / 4,361 map/story strings complete (~72.0%)**
 
 This index is the canonical inventory for committed map/story translation manifests. The compressed `sootopolis.vi.json.gz` is a duplicate convenience artifact and is **not** counted separately.
 
@@ -40,8 +40,11 @@ This index is the canonical inventory for committed map/story translation manife
 | `new-mauville-abandoned-ship.vi.json` | 62 |
 | `magma-hideout.vi.json` | 56 |
 | `battle-frontier-arena.vi.json` | 66 |
+| `battle-frontier-dome.vi.json` | 113 |
+| `battle-frontier-factory.vi.json` | 95 |
+| `battle-frontier-palace.vi.json` | 67 |
 | `optional-legendary-islands.vi.json` | 1 |
-| **TOTAL** | **2,864** |
+| **TOTAL** | **3,139** |
 
 ## Integrity audit — 2026-10-07
 
@@ -59,11 +62,14 @@ A repository-wide search after repair found **no remaining occurrence** of the b
 
 ## Next translation block
 
-Main-story coverage through **Pokémon League / Hall of Fame** is represented by committed QA-clean manifests. New Mauville / Abandoned Ship / Magma Hideout are covered, and Battle Arena plus the only discovered Faraway Island local-text line are now covered.
+Main-story coverage through **Pokémon League / Hall of Fame** is represented by committed QA-clean manifests. Battle Arena, Dome, Factory and Palace are also QA-clean.
 
-Next, prioritize:
-- Battle Dome (**113 map-local strings already inventoried**)
-- remaining Battle Frontier facilities (Factory / Palace / Pike / Pyramid / Tower / shared lounges & services)
-- any optional/post-game catalog gaps not yet represented in this index
+Next Battle Frontier facilities already inventoried:
+- Battle Pike: **97 map-local strings**
+- Battle Pyramid: **81**
+- Battle Tower: **112**
+- subtotal: **290**
+
+After those, continue remaining Battle Frontier shared lounges/services and any post-game map/story gaps not yet represented in this index.
 
 Project rules remain unchanged: **v0.4 baseline, no screenshot-by-screenshot patching, no mass-repoint.**
