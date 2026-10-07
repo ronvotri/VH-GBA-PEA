@@ -96,6 +96,14 @@ jobs:
             --catalog artifact/text-catalog.csv \
             --translations translations
 
+      - name: Plan map story integration
+        run: |
+          python3 tools/plan_map_story_integration.py \
+            --catalog artifact/text-catalog.csv \
+            --translations translations/map-story \
+            --out artifact/map-story-integration-plan.json \
+            --summary artifact/map-story-integration-summary.json
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
