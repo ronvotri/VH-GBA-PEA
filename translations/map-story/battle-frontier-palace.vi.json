@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Battle Frontier / Battle Palace",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "Catalog-driven complete Battle Palace map-local text batch.",
+  "status": "translation-complete-source-qa",
+  "notes": "Catalog-driven complete Battle Palace map-local text batch. Label / placeholder / paragraph-control / terminator QA passed. No ROM patch or pointer write performed.",
   "translations": {
     "BattleFrontier_BattlePalaceBattleRoom_Text_LetMeRestoreYourMons": "Tốt lắm…\\nĐể ta hồi phục POKéMON của cậu.$",
     "BattleFrontier_BattlePalaceBattleRoom_Text_PreparedFor2ndOpponent": "Đối thủ thứ 2 tiếp theo.\\nCậu đã chuẩn bị chưa?$",
