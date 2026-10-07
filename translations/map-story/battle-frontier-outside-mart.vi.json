@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Battle Frontier / Outside East-West / Mart",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "Catalog-driven complete Battle Frontier outside areas and Mart map-local text batch.",
+  "status": "translation-complete-source-qa",
+  "notes": "Catalog-driven complete Battle Frontier outside areas and Mart map-local text batch. Label / placeholder / paragraph-control / terminator QA passed. No ROM patch or pointer write performed.",
   "translations": {
     "BattleFrontier_Mart_Text_ChaperonGrandson": "Chúng tôi tới đây để trông chừng\ncháu trai.\\pNhưng đã tới rồi thì cũng nên\nmua chút quà lưu niệm.$",
     "BattleFrontier_Mart_Text_ProteinMakeNiceGift": "Ông ơi, ông thấy món này sao?\nLàm quà chắc đẹp lắm nhỉ?\\pNó tên là… PRO…TE…IN?\nNghe ngon ghê, đúng không?$",
