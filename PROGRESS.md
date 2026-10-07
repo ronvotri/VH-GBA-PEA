@@ -444,3 +444,27 @@ QA:
 Main-story progression hiện đã có manifest QA-clean tới **Pokémon League / Hall of Fame**.
 
 **Bước kế tiếp:** audit và dịch các gap map/story còn lại, ưu tiên New Mauville / Abandoned Ship / Magma Hideout / legendary & post-game / Battle Frontier.
+
+
+## Translation pass — New Mauville / Abandoned Ship / Magma Hideout (2026-10-07)
+
+Đã hoàn tất:
+
+- `translations/map-story/new-mauville-abandoned-ship.vi.json`: **62 / 62**
+  - New Mauville: 6
+  - Abandoned Ship: 56
+- `translations/map-story/magma-hideout.vi.json`: **56 / 56**
+
+Lượt này thêm: **118 string**.
+
+Tổng map/story manifest hoàn chỉnh hiện tại: **2,797 / 4,361 (~64.1%)**.
+Còn **1,564 map/story string** chưa có manifest hoàn chỉnh.
+
+QA:
+- 0 label thiếu / dư;
+- placeholder `{...}` đúng thứ tự;
+- paragraph control `\p` khớp source;
+- terminator `$` đầy đủ;
+- chưa patch ROM / chưa ghi pointer.
+
+**Bước kế tiếp:** audit/dịch các gap optional/post-game còn lại, ưu tiên legendary/sealed/island content rồi Battle Frontier/Battle Tent.
