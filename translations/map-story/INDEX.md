@@ -1,6 +1,6 @@
 # Map/Story Translation Manifest Index
 
-Checkpoint: **3,429 / 4,361 map/story strings complete (~78.6%)**
+Checkpoint: **3,648 / 4,361 map/story strings complete (~83.7%)**
 
 This index is the canonical inventory for committed map/story translation manifests. The compressed `sootopolis.vi.json.gz` is a duplicate convenience artifact and is **not** counted separately.
 
@@ -46,8 +46,11 @@ This index is the canonical inventory for committed map/story translation manife
 | `battle-frontier-pike.vi.json` | 97 |
 | `battle-frontier-pyramid.vi.json` | 81 |
 | `battle-frontier-tower.vi.json` | 112 |
+| `battle-frontier-exchange-lounges.vi.json` | 87 |
+| `battle-frontier-outside-mart.vi.json` | 72 |
+| `battle-frontier-services-scott.vi.json` | 60 |
 | `optional-legendary-islands.vi.json` | 1 |
-| **TOTAL** | **3,429** |
+| **TOTAL** | **3,648** |
 
 ## Integrity audit — 2026-10-07
 
@@ -67,6 +70,6 @@ A repository-wide search after repair found **no remaining occurrence** of the b
 
 Main-story coverage through **Pokémon League / Hall of Fame** is represented by committed QA-clean manifests. Battle Arena, Dome, Factory and Palace are also QA-clean.
 
-Battle Pike, Pyramid and Tower are now QA-clean. Continue with remaining Battle Frontier shared lounges/services, Battle Tent leftovers, and any optional/post-game map/story gaps not yet represented in this index.
+Battle Frontier main facilities and shared lounges/services are now QA-clean. Continue with Battle Tent leftovers and remaining optional/post-game map/story gaps not yet represented in this index.
 
 Project rules remain unchanged: **v0.4 baseline, no screenshot-by-screenshot patching, no mass-repoint.**
