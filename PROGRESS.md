@@ -545,3 +545,18 @@ Còn **932** map/story string.
 QA: 0 label thiếu/dư; placeholder đúng thứ tự; `\p` khớp; `$` đầy đủ.
 
 **Bước kế tiếp:** remaining Battle Frontier shared services / Battle Tent / optional-postgame map/story gaps.
+
+
+## Translation pass — Shared Battle Frontier (2026-10-07)
+
+QA-clean:
+- `battle-frontier-exchange-lounges.vi.json`: **87 / 87**
+- `battle-frontier-outside-mart.vi.json`: **72 / 72**
+- `battle-frontier-services-scott.vi.json`: **60 / 60**
+
+Lượt này thêm **219 string** sau Tower.
+
+Tổng map/story: **3,648 / 4,361 (~83.7%)**.
+Còn **713** map/story string.
+
+**Bước kế tiếp:** audit chính xác 713 string còn lại theo source map, ưu tiên Battle Tent + optional/post-game gaps.
