@@ -303,3 +303,15 @@ Battle Pike is complete and QA-clean: **97 / 97**.
 Current map/story coverage: **3,236 / 4,361 (~74.2%)**; remaining **1,125**.
 
 Continue next with **Battle Pyramid (81)** then **Battle Tower (112)**. Use `translations/map-story/INDEX.md` as canonical inventory.
+
+
+## Translation checkpoint — Pyramid / Tower
+
+QA-clean:
+- Battle Pike: **97 / 97**
+- Battle Pyramid: **81 / 81**
+- Battle Tower: **112 / 112**
+
+Current map/story coverage: **3,429 / 4,361 (~78.6%)**; remaining **932**.
+
+Continue by auditing/translating remaining Battle Frontier shared lounges/services, Battle Tent leftovers, and optional/post-game map/story gaps. Use `translations/map-story/INDEX.md` as canonical inventory.
