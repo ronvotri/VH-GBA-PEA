@@ -799,3 +799,21 @@ Completed system-ui groups remain:
 - decoration descriptions 120
 
 Mandatory terminology rule remains unchanged: keep Pokémon / MOVE / ITEM / TM / HM names and IDs in English; translate surrounding prose only.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 1,204 / 8,279 — 2026-10-08
+
+Pokédex descriptive text progress:
+- **200 / 387**
+- continue from Pokédex row **201**
+
+Five Pokédex manifests are on GitHub `main`; QA confirmed 200 unique labels and correct four-line structure after correcting TENTACOOL.
+
+Completed system-ui groups remain:
+- trainer classes 66
+- abilities 155
+- move descriptions 354
+- item descriptions 309
+- decoration descriptions 120
+
+Keep canonical Pokémon / MOVE / ITEM / TM / HM names in English.
