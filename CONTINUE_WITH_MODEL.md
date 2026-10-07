@@ -761,3 +761,15 @@ Mandatory canonical terminology:
 - translate descriptive/help/UI prose only
 
 Continue with another bounded player-facing system-ui source group. GitHub `main` remains authoritative.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 1,004 / 8,279 — 2026-10-08
+
+Completed player-facing system-ui groups now include:
+- trainer classes 66
+- abilities 155
+- move descriptions 354
+- item descriptions 309
+- decoration descriptions 120
+
+Next system-ui work should continue source-catalog-first. Mandatory rule remains: Pokémon / MOVE / ITEM / TM / HM names and IDs stay English; translate surrounding prose only.
