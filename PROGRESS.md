@@ -491,3 +491,31 @@ QA:
 - chưa patch ROM / chưa ghi pointer.
 
 **Bước kế tiếp:** Battle Dome (**113 string đã inventory**) rồi các facility Battle Frontier còn lại.
+
+
+## Translation pass — Battle Dome / Factory / Palace (2026-10-07)
+
+Đã hoàn tất và QA sạch:
+
+- `translations/map-story/battle-frontier-dome.vi.json`: **113 / 113**
+- `translations/map-story/battle-frontier-factory.vi.json`: **95 / 95**
+- `translations/map-story/battle-frontier-palace.vi.json`: **67 / 67**
+
+Lượt này thêm: **275 string**.
+
+Tổng map/story manifest hoàn chỉnh hiện tại: **3,139 / 4,361 (~72.0%)**.
+Còn **1,222 map/story string** chưa có manifest hoàn chỉnh.
+
+QA cả ba batch:
+- 0 label thiếu / dư;
+- placeholder `{...}` đúng thứ tự;
+- paragraph control `\p` khớp source;
+- terminator `$` đầy đủ;
+- chưa patch ROM / chưa ghi pointer.
+
+Đã inventory sẵn bước kế:
+- Battle Pike: **97**
+- Battle Pyramid: **81**
+- Battle Tower: **112**
+
+**Bước kế tiếp:** Battle Pike → Battle Pyramid → Battle Tower, sau đó shared Battle Frontier services/post-game gaps.
