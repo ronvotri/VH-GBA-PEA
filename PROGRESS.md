@@ -519,3 +519,14 @@ QA cả ba batch:
 - Battle Tower: **112**
 
 **Bước kế tiếp:** Battle Pike → Battle Pyramid → Battle Tower, sau đó shared Battle Frontier services/post-game gaps.
+
+
+## Translation pass — Battle Pike (2026-10-07)
+
+- `translations/map-story/battle-frontier-pike.vi.json`: **97 / 97**
+- QA: 0 label thiếu/dư; placeholder đúng thứ tự; `\p` khớp; `$` đầy đủ.
+
+Tổng map/story hiện tại: **3,236 / 4,361 (~74.2%)**.
+Còn **1,125** map/story string.
+
+**Bước kế tiếp:** Battle Pyramid (**81**) → Battle Tower (**112**), sau đó shared Battle Frontier services/post-game gaps.
