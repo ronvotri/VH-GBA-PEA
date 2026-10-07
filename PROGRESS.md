@@ -1,6 +1,6 @@
 # Tiến độ Việt hóa Pokémon Emerald Arena
 
-Cập nhật: 2026-10-06 — handoff cuối phiên
+Cập nhật: 2026-10-07 — map/story catalog hoàn tất 100%
 
 ## Baseline hiện tại
 
@@ -582,3 +582,46 @@ Integrity:
 - all previously repaired manifests remain present on `main`.
 
 **Next chat:** audit the exact remaining 585 source-map strings, then translate Battle Tent leftovers and remaining optional/post-game gaps. Do not reopen font/pointer/catalog research unless patch/build QA exposes a real blocker. Still no ROM patch/pointer-write step yet.
+
+
+## Translation pass — map/story catalog complete (2026-10-07)
+
+Đã hoàn tất **toàn bộ 585 map/story string còn lại** từ checkpoint 3,776 / 4,361.
+
+Audit mới:
+- thêm `tools/audit_remaining_map_story.py`;
+- workflow xuất `map-story-remaining.json` + `map-story-remaining-summary.txt`;
+- catalog authoritative xác nhận trước batch cuối: **4,270 / 4,361**, còn đúng **91** label;
+- cả 91 label đều thuộc `BattleFrontier_BattleTowerMultiPartnerRoom`;
+- manifest cuối chứa đúng 91 label đó và đã qua QA placeholder / `\p` / terminator.
+
+Các batch đóng backlog 585:
+- Trainer Hill: **27**
+- S.S. Tidal: **48**
+- Route 105 + Desert Underpass + Mirage Tower: **8**
+- Cave of Origin / Wallace: **6**
+- Battle Frontier Exchange + Lounges 2/3/5/7: **150**
+- misc map/story: **5**
+- Battle Tower Multi Partner Room: **341**
+  - regular partner roster: **250**
+  - apprentice/shared roster: **91**
+
+**Coverage map/story hiện tại: 4,361 / 4,361 = 100%.**
+**Backlog map/story theo catalog: 0.**
+
+Lưu ý QA/CI:
+- workflow từng đỏ không phải do batch dịch mới mà vì validator đếm `sootopolis.vi.json.gz` như một manifest độc lập và báo duplicate với `sootopolis.vi.json`;
+- validator đã được sửa để chỉ xem các manifest JSON canonical, bỏ qua bản nén convenience duplicate.
+
+### Bước tiếp theo
+
+Map/story đã xong ở mức **manifest/source QA**, nhưng **chưa được áp toàn bộ vào ROM**.
+
+Tiếp theo:
+1. dùng v0.4 làm baseline;
+2. ghép 4,361 bản dịch map/story vào shipping-verified catalog;
+3. inplace khi vừa allocation; chỉ relocate/repoint đúng reference đã xác minh khi cần;
+4. tiếp tục các nhóm còn lại: system-text → Arena-only → system/UI/battle user-facing;
+5. build candidate ROM rồi QA title/intro/overworld/battle/post-battle/save-load/story/post-game.
+
+Nguyên tắc vẫn giữ: **không screenshot-by-screenshot patch, không mass-repoint, không ghi pointer khi chưa có provenance.**
