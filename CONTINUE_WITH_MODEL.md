@@ -744,3 +744,20 @@ Confirmed `main` is synchronized before continuing localization:
 - move descriptions: **354 / 354 real descriptions complete**
 - item descriptions: **80 / 309**
 - canonical Pokémon / MOVE / ITEM / TM / HM names remain English
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 884 / 8,279 — 2026-10-08
+
+System-text remains complete: **2,319 / 2,319**.
+
+System-ui completed/reviewed:
+- trainer classes: 66
+- abilities: 155
+- move descriptions: 354 / 354 real descriptions
+- item descriptions: 309 / 309 real descriptions
+
+Mandatory canonical terminology:
+- Pokémon / MOVE / ITEM / TM / HM names and IDs remain English
+- translate descriptive/help/UI prose only
+
+Continue with another bounded player-facing system-ui source group. GitHub `main` remains authoritative.
