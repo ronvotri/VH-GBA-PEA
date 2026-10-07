@@ -414,3 +414,33 @@ QA:
 - chưa patch ROM / chưa ghi pointer.
 
 **Bước kế tiếp:** Route 124/125 + Shoal Cave → Route 126/127/128 → Seafloor Cavern → Route 129/130/131/Sky Pillar.
+
+
+## Translation pass — Seafloor → Pokémon League checkpoint (2026-10-07)
+
+Đã hoàn tất thêm 4 manifest:
+
+- `translations/map-story/route124-131-shoal-seafloor-skypillar.vi.json`: **63 / 63**
+  - Route 124/Treasure Hunter, Route 128, Seafloor Cavern, Shoal Cave local text, Sky Pillar
+  - Route 125/126/127/129/130/131 và nhiều phòng cave có 0 map-local `.string` trong scope này
+- `translations/map-story/pacifidlog-route132-134.vi.json`: **34 / 34**
+  - Pacifidlog Town; Route 132/133/134 có 0 map-local `.string`
+- `translations/map-story/victory-road.vi.json`: **54 / 54**
+- `translations/map-story/ever-grande-pokemon-league.vi.json`: **36 / 36**
+  - Ever Grande + Elite Four + Champion + Hall of Fame
+
+Lượt này thêm: **187 string**.
+
+Tổng map/story manifest hoàn chỉnh hiện tại: **2,679 / 4,361 (~61.4%)**.
+Còn **1,682 map/story string** chưa có manifest hoàn chỉnh.
+
+QA:
+- 0 label thiếu / dư;
+- placeholder `{...}` đúng thứ tự;
+- paragraph control `\p` khớp source;
+- terminator `$` đầy đủ;
+- chưa patch ROM / chưa ghi pointer.
+
+Main-story progression hiện đã có manifest QA-clean tới **Pokémon League / Hall of Fame**.
+
+**Bước kế tiếp:** audit và dịch các gap map/story còn lại, ưu tiên New Mauville / Abandoned Ship / Magma Hideout / legendary & post-game / Battle Frontier.
