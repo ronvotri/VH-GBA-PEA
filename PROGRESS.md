@@ -745,3 +745,29 @@ Contest source QA:
 - all four manifests fetched back from GitHub `main` and parsed successfully.
 
 No ROM bytes or pointers were modified.
+
+
+## System-text checkpoint — 864 / 2,319 — 2026-10-07
+
+Completed after the 688 checkpoint:
+- `data/text/match_call.inc`: **176 / 176**
+  - `translations/system-text/match-call-01.vi.json`: 44
+  - `translations/system-text/match-call-02.vi.json`: 44
+  - `translations/system-text/match-call-03.vi.json`: 44
+  - `translations/system-text/match-call-04.vi.json`: 44
+
+Coverage now:
+- map/story: **4,361 / 4,361 (100%)**
+- Arena-only: **46 / 46 (100%)**
+- system-text: **864 / 2,319**
+- remaining system-text: **1,455**
+
+Match Call source QA:
+- exact source labels: **176 / 176**
+- missing labels: **0**
+- extra labels: **0**
+- placeholder/control-token order mismatches: **0**
+- missing terminators: **0**
+- all four final manifests fetched back from GitHub `main` and parsed successfully.
+
+No ROM bytes or pointers were modified.
