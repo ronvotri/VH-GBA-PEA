@@ -523,3 +523,23 @@ Next large blocks:
 4. `trainers.inc`: 831
 
 Commit each completed chunk/manfiest immediately, then update this handoff. Do not leave translations only outside the repository. Translation-only passes must not modify ROM bytes or pointers.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-TEXT 864 / 2,319 — 2026-10-07
+
+`match_call.inc` is now complete: **176 / 176** translated and committed across four 44-string manifests.
+
+Current coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **864 / 2,319 complete**
+- remaining system-text: **1,455**
+
+Match Call QA is clean: 0 missing/extra labels, 0 placeholder/control-token-order mismatches, 0 missing terminators. GitHub `main` remains authoritative.
+
+Next large blocks:
+1. `apprentice.inc`: 288
+2. `tv.inc`: 336
+3. `trainers.inc`: 831
+
+Continue committing each completed source slice to GitHub `main` immediately. Translation-only passes must not modify ROM bytes or pointers.
