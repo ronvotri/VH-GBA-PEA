@@ -1,6 +1,6 @@
 # Map/Story Translation Manifest Index
 
-Checkpoint: **3,776 / 4,361 map/story strings complete (~86.6%)**
+Checkpoint: **4,361 / 4,361 map/story strings complete (100%)**
 
 This index is the canonical inventory for committed map/story translation manifests. The compressed `sootopolis.vi.json.gz` is a duplicate convenience artifact and is **not** counted separately.
 
@@ -51,7 +51,19 @@ This index is the canonical inventory for committed map/story translation manife
 | `battle-frontier-outside-mart.vi.json` | 72 |
 | `battle-frontier-services-scott.vi.json` | 60 |
 | `optional-legendary-islands.vi.json` | 1 |
-| **TOTAL** | **3,776** |
+| `trainer-hill.vi.json` | 27 |
+| `ss-tidal.vi.json` | 48 |
+| `route105-desert-mirage.vi.json` | 8 |
+| `cave-of-origin.vi.json` | 6 |
+| `battle-frontier-exchange-final.vi.json` | 26 |
+| `battle-frontier-lounge7-final.vi.json` | 20 |
+| `battle-frontier-lounge5-final.vi.json` | 28 |
+| `battle-frontier-lounge2-final.vi.json` | 35 |
+| `battle-frontier-lounge3-final.vi.json` | 41 |
+| `map-story-final-misc.vi.json` | 5 |
+| `battle-frontier-multi-partners-regular.vi.json` | 250 |
+| `battle-frontier-multi-partners-apprentices.vi.json` | 91 |
+| **TOTAL** | **4,361** |
 
 ## Integrity audit — 2026-10-07
 
@@ -67,10 +79,19 @@ Both were restored from their preserved Library copies and rechecked on `main`:
 
 A repository-wide search after repair found **no remaining occurrence** of the bad file-reference error text.
 
-## Next translation block
+## Map/story catalog complete — 2026-10-07
 
-Main-story coverage through **Pokémon League / Hall of Fame** is represented by committed QA-clean manifests. Battle Arena, Dome, Factory and Palace are also QA-clean.
+The authoritative source catalog contains **4,361 map/story strings**, and every one is now represented by a committed canonical Vietnamese manifest in this index.
 
-Battle Frontier main facilities, shared lounges/services, and the Battle Pyramid dynamic floor-hint catalog are now QA-clean. Continue with Battle Tent leftovers and remaining optional/post-game map/story gaps not yet represented in this index. Current remaining map/story backlog: **585 strings**.
+Final 585-string closeout:
+- Trainer Hill: **27**
+- S.S. Tidal: **48**
+- Route 105 / Desert Underpass / Mirage Tower fossils: **8**
+- Cave of Origin / Wallace: **6**
+- remaining Battle Frontier Exchange/Lounges: **150**
+- final misc map/story strings: **5**
+- Battle Tower Multi Partner Room: **341** (**250** regular partner strings + **91** apprentice/shared strings)
 
-Project rules remain unchanged: **v0.4 baseline, no screenshot-by-screenshot patching, no mass-repoint.**
+The workflow audit introduced in `tools/audit_remaining_map_story.py` reduced the remaining set from **585 → 91** after the regular partner batch; the final 91-label apprentice manifest matches that exact authoritative remainder.
+
+**Next phase is integration, not more map/story translation:** apply the completed manifests to the v0.4 baseline using shipping-verified source/reference provenance, then continue with remaining system/UI/Arena-only categories and ROM QA. Do not screenshot-patch or mass-repoint.
