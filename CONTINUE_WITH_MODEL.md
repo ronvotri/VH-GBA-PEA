@@ -295,3 +295,11 @@ Next facilities already inventoried:
 - Battle Tower: **112**
 
 Continue directly with Pike → Pyramid → Tower. Use `translations/map-story/INDEX.md` as canonical inventory and do not reopen technical discovery unless an actual patch/build QA failure blocks progress.
+
+
+## Translation checkpoint — Battle Pike
+
+Battle Pike is complete and QA-clean: **97 / 97**.
+Current map/story coverage: **3,236 / 4,361 (~74.2%)**; remaining **1,125**.
+
+Continue next with **Battle Pyramid (81)** then **Battle Tower (112)**. Use `translations/map-story/INDEX.md` as canonical inventory.
