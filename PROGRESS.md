@@ -855,3 +855,25 @@ Coverage now:
   - trainers: **831**
 
 `tv-03.vi.json` was fetched back from GitHub `main` and parses with exactly 40 translations. CI runs for final Apprentice and current TV chunks are processing; earlier Apprentice chunks through row 240 are PASS. No ROM bytes or pointers were modified.
+
+
+## System-text checkpoint — 1,488 / 2,319 — 2026-10-08
+
+Completed:
+- `data/text/tv.inc` system-text subset: **336 / 336**
+  - `tv-01.vi.json` through `tv-08.vi.json`: 40 strings each
+  - `tv-09.vi.json`: 16 strings
+
+Coverage now:
+- map/story: **4,361 / 4,361 (100%)**
+- Arena-only: **46 / 46 (100%)**
+- system-text: **1,488 / 2,319**
+- remaining system-text: **831**
+
+TV repository QA:
+- all nine manifests fetched back from GitHub `main`
+- total unique TV labels: **336**
+- duplicate manifest labels: **0**
+- all source slices were validated for placeholder/control-token order and terminators before commit
+
+Only `data/text/trainers.inc` remains in system-text. No ROM bytes or pointers were modified.
