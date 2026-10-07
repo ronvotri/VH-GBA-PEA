@@ -938,3 +938,22 @@ Trainer completion QA:
 - no ROM bytes, pointers, or mass-repoint operations were performed during translation-only work
 
 Next localization phase is **not** more system-text. Continue with the remaining user-facing categories, primarily `system-ui` and `battle`, using the same source-catalog sweep approach.
+
+
+## System-UI started — 66 / 8,279 — 2026-10-08
+
+First completed system-ui group:
+- `src/data/text/trainer_class_names.h`: **66 / 66**
+- manifest: `translations/system-ui/trainer-class-names.vi.json`
+
+System-ui coverage:
+- translated: **66 / 8,279**
+- remaining: **8,213**
+
+Translation choices:
+- canonical names/terms such as TEAM AQUA, TEAM MAGMA, ELITE FOUR, LEADER, CHAMPION and {PKMN} TRAINER are retained where appropriate
+- ordinary trainer classes are localized into concise Vietnamese suitable for UI width
+- anonymous catalog source identities are used as manifest keys
+- placeholders are preserved
+
+System-text remains complete at **2,319 / 2,319**. No ROM bytes or pointers were modified.
