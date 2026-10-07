@@ -575,3 +575,17 @@ Only two major system-text source blocks remain:
 2. `trainers.inc`: **831**
 
 GitHub `main` is authoritative. Continue with `tv.inc` first, commit each source slice immediately, then finish `trainers.inc`. Translation-only passes must not modify ROM bytes or pointers.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-TEXT 1,232 / 2,319 — 2026-10-08
+
+Current translation coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **1,232 / 2,319 complete**
+- remaining system-text: **1,087**
+
+`apprentice.inc`: **288 / 288 complete**.
+`tv.inc` system-text subset: **80 / 336 translated**, rows 1-80 committed as `tv-01.vi.json` and `tv-02.vi.json`.
+
+Continue `tv.inc` from system-text row **81**. After the remaining 256 TV strings, only `trainers.inc` (831) remains. GitHub `main` is authoritative; commit each completed source slice immediately.
