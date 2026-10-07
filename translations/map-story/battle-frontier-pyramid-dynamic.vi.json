@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Battle Frontier / Battle Pyramid floor dynamic text",
   "baseline": "v0.4",
-  "status": "translation-complete-catalog-qa-pending",
-  "notes": "Catalog-driven supplemental batch for Battle Pyramid floor hints and dynamic text not captured by the adjacent .string parser.",
+  "status": "translation-complete-source-qa",
+  "notes": "Catalog-driven supplemental Battle Pyramid floor hints/dynamic text. Source QA passed after correcting six OneItemRemaining labels; placeholder order, paragraph controls and terminators verified. BattleFacility_TrainerBattle_PlaceholderText is intentionally excluded as sample/debug placeholder text. No ROM patch or pointer write performed.",
   "translations": {
     "gText_BattlePyramidConfirmRest": "Hành trình BATTLE PYRAMID của bạn sẽ được\nlưu để bạn có thể tạm thoát.\\lĐược chứ?$",
     "gText_BattlePyramidConfirmRetire": "Bạn chắc muốn kết thúc\nhành trình PYRAMID chứ?$",
@@ -74,12 +74,6 @@
     "BattlePyramid_Text_TwoItemsRemaining4": "Bạn mạnh đấy, nên tôi cho\nmột gợi ý!\\pCó vẻ dưới đất còn hai\nitem nữa.$",
     "BattlePyramid_Text_TwoItemsRemaining5": "Ở tầng này của PYRAMID,\ntôi nghe nói có hai item…$",
     "BattlePyramid_Text_TwoItemsRemaining6": "Bạn đã nhặt được item nào chưa?\\pTôi tin tầng này còn hai item nữa.$",
-    "BattlePyramid_Text_OneItemsRemaining1": "Bạn đang tìm item à?\\pCòn một item\nchưa được tìm thấy.$",
-    "BattlePyramid_Text_OneItemsRemaining2": "Vì bạn thắng, tôi bật mí\nmột bí mật nhé!\\pQuanh đây còn một item\nnằm đâu đó.$",
-    "BattlePyramid_Text_OneItemsRemaining3": "Kho item của bạn ổn chứ?\\pTheo tôi đoán, tầng này còn một item\nđang chờ được tìm thấy.$",
-    "BattlePyramid_Text_OneItemsRemaining4": "Bạn mạnh đấy, nên tôi cho\nmột gợi ý!\\pCó vẻ dưới đất còn một\nitem nữa.$",
-    "BattlePyramid_Text_OneItemsRemaining5": "Ở tầng này của PYRAMID,\ntôi nghe nói có một item…$",
-    "BattlePyramid_Text_OneItemsRemaining6": "Bạn đã nhặt được item nào chưa?\\pTôi tin tầng này còn một item nữa.$",
     "BattlePyramid_Text_ZeroItemsRemaining1": "Bạn đang tìm item à?\\pChẳng còn gì\nđể tìm nữa!$",
     "BattlePyramid_Text_ZeroItemsRemaining2": "Vì bạn thắng, tôi bật mí\nmột bí mật nhé!\\pQuanh đây chẳng còn\nitem nào nữa.$",
     "BattlePyramid_Text_ZeroItemsRemaining3": "Kho item của bạn ổn chứ?\\pTheo tôi đoán, tầng này\nkhông còn item nào để tìm nữa.\\lCẩn thận nhé!$",
@@ -133,6 +127,12 @@
     "BattlePyramid_Text_ZeroTrainersRemaining3": "Khá ấn tượng đấy!\\pBạn đã vượt qua tất cả TRAINER\ntrên tầng này.$",
     "BattlePyramid_Text_ZeroTrainersRemaining4": "Giờ chẳng còn một ai\ncó thể đánh bại bạn nữa…$",
     "BattlePyramid_Text_ZeroTrainersRemaining5": "Kỹ năng của bạn không còn gì để chê.\\pKhông còn TRAINER nào ở đây\ncó cơ hội đánh bại bạn.$",
-    "BattlePyramid_Text_ZeroTrainersRemaining6": "Giờ không còn TRAINER nào\ncó thể đấu với bạn nữa…$"
+    "BattlePyramid_Text_ZeroTrainersRemaining6": "Giờ không còn TRAINER nào\ncó thể đấu với bạn nữa…$",
+    "BattlePyramid_Text_OneItemRemaining1": "Bạn đang tìm item à?\\pCòn một item\nchưa được tìm thấy.$",
+    "BattlePyramid_Text_OneItemRemaining2": "Vì bạn thắng, tôi bật mí\nmột bí mật nhé!\\pQuanh đây còn một item\nnằm đâu đó.$",
+    "BattlePyramid_Text_OneItemRemaining3": "Kho item của bạn ổn chứ?\\pTheo tôi đoán, tầng này còn một item\nđang chờ được tìm thấy.$",
+    "BattlePyramid_Text_OneItemRemaining4": "Bạn mạnh đấy, nên tôi cho\nmột gợi ý!\\pCó vẻ dưới đất còn một\nitem nữa.$",
+    "BattlePyramid_Text_OneItemRemaining5": "Ở tầng này của PYRAMID,\ntôi nghe nói có một item…$",
+    "BattlePyramid_Text_OneItemRemaining6": "Bạn đã nhặt được item nào chưa?\\pTôi tin tầng này còn một item nữa.$"
   }
 }
