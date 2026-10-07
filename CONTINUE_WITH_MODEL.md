@@ -502,3 +502,24 @@ Authoritative coverage:
 - remaining system-text: **1,831**
 
 The small bounded player-facing groups are now cleared. Continue with the larger blocks next: `contest_strings.inc` (200), `match_call.inc` (176), `apprentice.inc` (288), `tv.inc` (336), then `trainers.inc` (831). Preserve exact source label coverage plus placeholder/control-token order. Commit every completed manifest to GitHub `main` immediately; no translation file should exist only outside the repository.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-TEXT 688 / 2,319 — 2026-10-07
+
+`contest_strings.inc` is now complete: **200 / 200** translated and committed across four 50-string manifests.
+
+Current coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **688 / 2,319 complete**
+- remaining system-text: **1,631**
+
+GitHub `main` is the authoritative source. Current system-text directory contains **18 manifests**. The 200 Contest strings have 0 missing/extra labels and 0 placeholder/control-token-order mismatches.
+
+Next large blocks:
+1. `match_call.inc`: 176
+2. `apprentice.inc`: 288
+3. `tv.inc`: 336
+4. `trainers.inc`: 831
+
+Commit each completed chunk/manfiest immediately, then update this handoff. Do not leave translations only outside the repository. Translation-only passes must not modify ROM bytes or pointers.
