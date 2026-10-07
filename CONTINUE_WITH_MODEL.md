@@ -652,3 +652,20 @@ Current coverage:
 `trainers.inc` is **440 / 831** across 11 manifests. Continue from trainer row **441**.
 
 GitHub `main` is authoritative. Keep committing bounded source slices immediately. Preserve exact source labels, placeholder/control-token order and terminators. No ROM/pointer writes in translation-only passes.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-TEXT COMPLETE 2,319 / 2,319 — 2026-10-08
+
+Major completed categories:
+- map/story: **4,361 / 4,361**
+- Arena-only: **46 / 46**
+- system-text: **2,319 / 2,319**
+
+`trainers.inc` is complete: **831 / 831** across 21 manifests (`trainers-01.vi.json` ... `trainers-21.vi.json`).
+
+Do **not** continue searching for untranslated system-text unless a concrete QA defect is found. The next work phase should sweep the remaining user-facing categories:
+1. `system-ui`: **8,279 source rows**
+2. `battle`: **2,223 source rows**
+3. later QA/exclusion review for debug/internal as appropriate
+
+GitHub `main` is authoritative. Continue source-catalog-first, not screenshot-by-screenshot. Preserve placeholders/control codes and do not mass-repoint or write ROM pointers during translation-only passes.
