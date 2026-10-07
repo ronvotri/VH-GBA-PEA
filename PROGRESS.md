@@ -1081,3 +1081,23 @@ Confirmed `main` is synchronized before continuing:
 - item descriptions: **309 / 309**
 - decoration descriptions: **120 / 120**
 - canonical Pokémon / MOVE / ITEM / TM / HM names remain English
+
+
+## System-UI checkpoint — 1,124 / 8,279 — 2026-10-08
+
+New completed work:
+- Pokédex descriptive text: **120 / 387**
+  - `pokedex-text-01.vi.json`: 40
+  - `pokedex-text-02.vi.json`: 40
+  - `pokedex-text-03.vi.json`: 40
+
+Pokédex QA:
+- 120 unique labels
+- duplicate labels: 0
+- all 120 entries preserve the source 4-line structure (3 `\n` tokens)
+- Pokémon species names and canonical MOVE / ITEM / TM / HM names remain English
+
+System-ui committed coverage: **1,124 / 8,279**
+Remaining system-ui: **7,155**
+
+No ROM bytes or pointers were modified.
