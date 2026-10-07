@@ -558,3 +558,20 @@ Authoritative coverage:
 - remaining system-text: **1,375**
 
 Continue `apprentice.inc` from source row 81; **208 Apprentice strings remain**. After Apprentice, continue `tv.inc` (336) then `trainers.inc` (831). GitHub `main` is authoritative; commit each completed source slice immediately. Translation-only passes must not modify ROM bytes or pointers.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-TEXT 1,152 / 2,319 — 2026-10-08
+
+`apprentice.inc` is now **288 / 288 complete** and committed in eight manifests.
+
+Current coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **1,152 / 2,319 complete**
+- remaining system-text: **1,167**
+
+Only two major system-text source blocks remain:
+1. `tv.inc`: **336**
+2. `trainers.inc`: **831**
+
+GitHub `main` is authoritative. Continue with `tv.inc` first, commit each source slice immediately, then finish `trainers.inc`. Translation-only passes must not modify ROM bytes or pointers.
