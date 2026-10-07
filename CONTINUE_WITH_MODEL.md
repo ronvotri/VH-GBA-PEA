@@ -459,3 +459,27 @@ Authoritative coverage:
 - remaining system-text: **2,024**
 
 Continue system-text from the shipping-verified catalog. Recommended next bounded groups: Trick House Mechadolls (45), Secret Base Trainers (30), Frontier Brain (28), Contest Painting (27), Pokédex Rating (25), Mauville Man (18), Contest Link (11), furniture checks (7), record mix (2), then the larger contest/match-call/apprentice/TV/trainer blocks. Preserve placeholders/control tokens and do not perform ROM writes or mass-repoint during translation-only passes.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-TEXT 398 / 2,319 — 2026-10-07
+
+Latest additional completed manifests:
+- \`translations/system-text/trick-house-mechadolls.vi.json\`: **45**
+- \`translations/system-text/secret-base-trainers.vi.json\`: **30**
+- \`translations/system-text/frontier-brain.vi.json\`: **28**
+
+Authoritative coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **398 / 2,319 complete**
+- remaining system-text: **1,921**
+
+Recent validated system-text work in this phase:
+- Cable Club / Wireless / Union Room: 82
+- Move Tutors: 41
+- Berries: 41
+- Trick House Mechadolls: 45
+- Secret Base Trainers: 30
+- Frontier Brains: 28
+
+Continue with bounded player-facing groups next: Contest Painting (27), Pokédex Rating (25), Mauville Man (18), Contest Link (11), furniture checks (7), record mix (2), then contest_strings / match_call / apprentice / TV / trainers. Preserve source control-token order and terminators. Translation-only passes must not write ROM bytes or pointers.
