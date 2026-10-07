@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Battle Frontier / Battle Factory",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "Catalog-driven complete Battle Factory map-local text batch.",
+  "status": "translation-complete-source-qa",
+  "notes": "Catalog-driven complete Battle Factory map-local text batch. Label / placeholder / paragraph-control / terminator QA passed. No ROM patch or pointer write performed.",
   "translations": {
     "BattleFrontier_BattleFactoryBattleRoom_Text_GetAMoveOn": "Này, này!\\nNhanh lên nào!$",
     "BattleFrontier_BattleFactoryBattleRoom_Text_NolandImFactoryHead": "Này, tôi là NOLAND!\\nNói đơn giản thì tôi phụ trách nơi này,\\lnên tôi là FACTORY HEAD!\\pTôi đã xem dữ liệu Battle Swap của cậu.\\pCó vẻ cậu hiểu ý rồi đấy,\\nnhưng đầu óc vẫn còn cứng nhắc lắm!\\pNghe đây nhé. Kiến thức không chỉ là\\nđọc sách hay ngồi bàn giấy đâu.\\pChỉ làm mấy thứ đó thôi…\\nthì gần như vô dụng!\\pPhải tự mình trải nghiệm bằng\\ncả trái tim lẫn cơ thể, hiểu chưa?\\pTôi sẽ đấu với cậu trong cùng điều kiện.\\pTôi cũng sẽ dùng POKéMON thuê!$",
