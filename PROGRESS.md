@@ -648,3 +648,20 @@ The workflow now emits:
 - `map-story-integration-summary.json`
 
 Binary integration is still blocked in this chat because the clean shipping Arena ROM and the tested v0.4 baseline binary are not available in the current Project/Library workspace. Do not infer or recreate those bytes from documentation alone.
+
+
+## System-text checkpoint — 2026-10-07
+
+Authoritative translation coverage:
+- map/story: **4,361 / 4,361 (100%)**
+- Arena-only: **46 / 46 (100%)**
+- system-text: **131 / 2,319**
+  - core services/news/events: 62
+  - save/PC/items/Birch/Surf/Mystery Gift/Shoal Cave/Southern Island: 69
+
+Shipping-layout checkpoint CI #116 PASS:
+- restored verified shipping offsets: map-story 4,361; system-text 2,319;
+- map/story integration planner: **4,361 / 4,361 ready:verified-shipping-offset**;
+- no ROM modification, pointer scan, pointer write, or mass-repoint.
+
+Latest system-text batch is committed; continue with remaining **2,188** system-text strings, prioritizing player-facing shared systems before trainer chatter.

@@ -421,3 +421,25 @@ Safety behavior:
 - never writes ROM bytes or pointers.
 
 Current blocker for actually producing the next ROM candidate: the clean Arena 0.13.0 ROM and the tested v0.4 baseline binary are not accessible in the current conversation/Library workspace. Continue all source/catalog work normally, but do not fabricate binary offsets or a candidate ROM without those exact files.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-TEXT PHASE — 2026-10-07
+
+Current translation coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **131 / 2,319 complete**
+- remaining system-text: **2,188**
+
+Shipping provenance is now restored from the exact historical checkpoint and validated in CI #116:
+- catalog SHA-256: `20f9f6888b3d50458cfd53b0ac534059925c166fae2e48a6aaff49e14015f845`
+- source build SHA-256: `eb1a7dd2b7eaccc4138b5d5d51f244911fc08c01c1ed7189354b033e18fba5ab`
+- shipping ROM attested SHA-256: `a8d36c0c398f5281694c2d8dc5094a54a2276bd3092f5802cef6ef99369c645b`
+- verified shipping offsets restored: map/story 4,361; system-text 2,319
+- planner result: map/story 4,361 ready at verified shipping offsets
+
+New completed system-text manifests:
+- `translations/system-text/core-services-news-events.vi.json`: 62
+- `translations/system-text/core-save-pc-items-events.vi.json`: 69
+
+Continue translation from the shipping-verified source catalog. Do not return to map/story unless QA finds a concrete defect. Binary write/repoint remains separate from translation completeness.
