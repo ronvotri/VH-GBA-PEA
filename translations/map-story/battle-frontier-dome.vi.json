@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Battle Frontier / Battle Dome",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "Catalog-driven complete Battle Dome map-local text batch.",
+  "status": "translation-complete-source-qa",
+  "notes": "Catalog-driven complete Battle Dome map-local text batch. Label / placeholder / paragraph-control / terminator QA passed. No ROM patch or pointer write performed.",
   "translations": {
     "BattleFrontier_BattleDomeBattleRoom_Text_PlayerHasEnteredDome": "{PLAYER} đã bước vào BATTLE DOME!$",
     "BattleFrontier_BattleDomeBattleRoom_Text_PlayerVersusTrainer": "Trận {STR_VAR_1}!\\p{PLAYER} đối đầu {STR_VAR_2}!\\pTrận đấu bắt đầu!$",
