@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "scope": "system-text",
+  "area": "Mauville Man - Giddy phrases",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Source-catalog QA completed before commit; placeholder/control-token order and terminators preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "GiddyText_SoPretty": " thật xinh đẹp!$",
+    "GiddyText_SoDarling": " thật đáng yêu!$",
+    "GiddyText_SoRelaxed": " thật thư thái!$",
+    "GiddyText_SoSunny": " thật rạng rỡ!$",
+    "GiddyText_SoDesirable": " thật hấp dẫn!$",
+    "GiddyText_SoExciting": " thật phấn khích!$",
+    "GiddyText_SoAmusing": " thật vui nhộn!$",
+    "GiddyText_SoMagical": " thật kỳ diệu!$",
+    "GiddyText_Is": " thì$",
+    "GiddyText_DontYouAgree": "\\nBạn thấy đúng không?$",
+    "GiddyText_ISoWantToGoOnAVacation": "Tôi muốn đi nghỉ mát quá đi.\\nBạn có biết chỗ nào hay không?$",
+    "GiddyText_IBoughtCrayonsWith120Colors": "Tôi mua bộ bút sáp 120 màu đấy!\\nNghe tuyệt không?$",
+    "GiddyText_WouldntItBeNiceIfWeCouldFloat": "Giá mà chúng ta có thể lơ lửng\\ntrên một đám mây bong bóng nhỉ?$",
+    "GiddyText_WhenYouWriteOnASandyBeach": "Viết chữ trên bãi cát rồi sóng\\nxóa mất hết. Buồn ghê.$",
+    "GiddyText_WhatsTheBottomOfTheSeaLike": "Không biết đáy biển trông thế nào nhỉ?\\nChỉ một lần thôi cũng muốn xuống xem!$",
+    "GiddyText_WhenYouSeeTheSettingSunDoesIt": "Khi nhìn mặt trời lặn,\\nbạn có muốn về nhà không?$",
+    "GiddyText_LyingBackInTheGreenGrass": "Nằm ngửa trên thảm cỏ xanh…\\nÔi, dễ chịu quá đi!$",
+    "GiddyText_SecretBasesAreSoWonderful": "SECRET BASE tuyệt vời ghê!\\nBạn không thấy háo hức sao?$"
+  }
+}
