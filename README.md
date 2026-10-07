@@ -56,3 +56,8 @@ Map/story canonical inventory: **4,361 / 4,361 (100%)** tại `translations/map-
 **Phiên mới nên đọc [CONTINUE_WITH_MODEL.md](CONTINUE_WITH_MODEL.md) trước.**
 
 Xem [PROGRESS.md](PROGRESS.md) để biết checkpoint chi tiết.
+
+
+## Map/story translation status
+
+Map/story manifest coverage is now **4,361 / 4,361 (100%)**. This is source/manifest completion, not yet a fully integrated ROM. The next phase uses the safe integration planner and shipping-verified provenance before any new binary writes.

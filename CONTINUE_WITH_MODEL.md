@@ -402,3 +402,22 @@ Luật bất biến:
 - không mass-repoint;
 - không đoán pointer;
 - không coi manifest translation-complete là ROM-complete cho tới khi build + QA.
+
+
+## AUTHORITATIVE HANDOFF — INTEGRATION PLANNER — 2026-10-07
+
+This section is newer than the map/story completion handoff above.
+
+Map/story remains complete: **4,361 / 4,361 (100%)**.
+
+New tooling on `main`:
+- `tools/plan_map_story_integration.py`
+- workflow step that emits `map-story-integration-plan.json` and `map-story-integration-summary.json`
+
+Safety behavior:
+- rejects any map/story coverage other than exactly 4,361 canonical catalog rows;
+- rejects duplicate/missing/extra manifest labels;
+- only marks a row ready when `shipping_rom_offset` is present and `shipping_match_status` is verified;
+- never writes ROM bytes or pointers.
+
+Current blocker for actually producing the next ROM candidate: the clean Arena 0.13.0 ROM and the tested v0.4 baseline binary are not accessible in the current conversation/Library workspace. Continue all source/catalog work normally, but do not fabricate binary offsets or a candidate ROM without those exact files.

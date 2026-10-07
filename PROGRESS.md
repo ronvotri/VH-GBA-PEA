@@ -625,3 +625,26 @@ Tiếp theo:
 5. build candidate ROM rồi QA title/intro/overworld/battle/post-battle/save-load/story/post-game.
 
 Nguyên tắc vẫn giữ: **không screenshot-by-screenshot patch, không mass-repoint, không ghi pointer khi chưa có provenance.**
+
+
+## Integration planning checkpoint — 2026-10-07
+
+Map/story translation remains **4,361 / 4,361 (100%)**.
+
+Added:
+- `tools/plan_map_story_integration.py`
+- workflow step **Plan map story integration**
+
+The planner:
+- requires exactly 4,361 map/story catalog rows;
+- rejects duplicate, missing or extra translation labels;
+- joins each canonical manifest label to source/shipping catalog metadata;
+- marks rows as ready only when a shipping offset is explicitly verified;
+- does **not** modify ROM bytes;
+- performs **0 pointer writes** and no mass-repoint.
+
+The workflow now emits:
+- `map-story-integration-plan.json`
+- `map-story-integration-summary.json`
+
+Binary integration is still blocked in this chat because the clean shipping Arena ROM and the tested v0.4 baseline binary are not available in the current Project/Library workspace. Do not infer or recreate those bytes from documentation alone.
