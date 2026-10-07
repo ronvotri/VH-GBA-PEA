@@ -783,3 +783,19 @@ Confirmed `main` is synchronized before continuing:
 - item descriptions: **309 / 309**
 - decoration descriptions: **120 / 120**
 - canonical Pokémon / MOVE / ITEM / TM / HM names remain English
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 1,124 / 8,279 — 2026-10-08
+
+Current Pokédex descriptive text progress:
+- `src/data/pokemon/pokedex_text.h`: **120 / 387**
+- continue from Pokédex row **121**
+
+Completed system-ui groups remain:
+- trainer classes 66
+- abilities 155
+- move descriptions 354
+- item descriptions 309
+- decoration descriptions 120
+
+Mandatory terminology rule remains unchanged: keep Pokémon / MOVE / ITEM / TM / HM names and IDs in English; translate surrounding prose only.
