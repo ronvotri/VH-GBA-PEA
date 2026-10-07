@@ -771,3 +771,27 @@ Match Call source QA:
 - all four final manifests fetched back from GitHub `main` and parsed successfully.
 
 No ROM bytes or pointers were modified.
+
+
+## System-text checkpoint — 944 / 2,319 — 2026-10-07
+
+Completed in this pass:
+- `data/text/match_call.inc`: **176 / 176**
+  - four manifests × 44 strings
+  - CI #139 PASS
+- `data/text/apprentice.inc`: **80 / 288**
+  - `translations/system-text/apprentice-01.vi.json`: 40
+  - `translations/system-text/apprentice-02.vi.json`: 40
+
+Coverage now:
+- map/story: **4,361 / 4,361 (100%)**
+- Arena-only: **46 / 46 (100%)**
+- system-text: **944 / 2,319**
+- remaining system-text: **1,375**
+
+Source QA for the new translations:
+- Match Call: 176/176 exact labels, 0 missing/extra, 0 placeholder/control-token mismatches, 0 missing terminators.
+- Apprentice rows 1-80: exact source-slice coverage, 0 placeholder/control-token mismatches.
+- All committed manifests were fetched back from GitHub `main` and parsed successfully.
+
+No ROM bytes or pointers were modified.
