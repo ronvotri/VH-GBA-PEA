@@ -915,3 +915,26 @@ Repository QA:
 - all source slices validated for control-token order and terminators before commit
 
 No ROM bytes or pointers were modified.
+
+
+## SYSTEM-TEXT COMPLETE — 2,319 / 2,319 — 2026-10-08
+
+Completed final source block:
+- `data/text/trainers.inc`: **831 / 831**
+  - `trainers-01.vi.json` through `trainers-20.vi.json`: 40 strings each
+  - `trainers-21.vi.json`: 31 strings
+
+Final system-text coverage:
+- map/story: **4,361 / 4,361 (100%)**
+- Arena-only: **46 / 46 (100%)**
+- system-text: **2,319 / 2,319 (100%)**
+- remaining system-text: **0**
+
+Trainer completion QA:
+- source catalog contains exactly **831 unique trainer labels**
+- trainer manifests cover source rows **1-831** in contiguous bounded slices
+- all **21 trainer manifests** are present on GitHub `main`
+- each source slice was checked for placeholder/control-token order and terminators before commit
+- no ROM bytes, pointers, or mass-repoint operations were performed during translation-only work
+
+Next localization phase is **not** more system-text. Continue with the remaining user-facing categories, primarily `system-ui` and `battle`, using the same source-catalog sweep approach.
