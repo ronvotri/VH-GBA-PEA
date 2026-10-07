@@ -609,3 +609,19 @@ Current block:
 - after TV, `trainers.inc`: **831** remains.
 
 GitHub `main` is authoritative. Keep committing each 40-ish source slice immediately.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-TEXT 1,488 / 2,319 — 2026-10-08
+
+`tv.inc` system-text is now **336 / 336 complete** across nine manifests.
+
+Current coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **1,488 / 2,319 complete**
+- remaining system-text: **831**
+
+The only remaining system-text source block is:
+- `data/text/trainers.inc`: **831**
+
+Continue trainers from row 1, committing bounded source slices to GitHub `main` immediately. GitHub `main` is authoritative. Preserve exact label coverage, placeholder/control-token order and terminators. No mass repointing or ROM/pointer writes in translation-only passes.
