@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Battle Frontier / Battle Tower",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "Catalog-driven complete Battle Tower map-local text batch.",
+  "status": "translation-complete-source-qa",
+  "notes": "Catalog-driven complete Battle Tower map-local text batch. Label / placeholder / paragraph-control / terminator QA passed. No ROM patch or pointer write performed.",
   "translations": {
     "BattleFrontier_BattleTowerBattleRoom_Text_RestoreMonsToFullHealth": "Chúng tôi sẽ hồi phục POKéMON của bạn\nvề trạng thái tốt nhất.$",
     "BattleFrontier_BattleTowerBattleRoom_Text_ReadyForOpponent": "Bạn sẽ đối đầu đối thủ số {STR_VAR_1}.\nBạn sẵn sàng chưa?$",
