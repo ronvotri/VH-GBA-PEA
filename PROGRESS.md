@@ -968,3 +968,27 @@ Do **not** translate canonical Pokémon terms used as names/identifiers:
 - TM/HM names and identifiers
 
 Translate surrounding UI/help/description text, but keep those canonical names exactly in English. This rule is authoritative for all remaining `system-ui` and `battle` work.
+
+
+## System-UI checkpoint — 461 / 8,279 — 2026-10-08
+
+Completed/reviewed system-ui groups:
+- Trainer class names: **66 / 66**
+- Ability names + descriptions: **155 / 155**
+  - Ability names intentionally retain canonical English names.
+  - Ability descriptions localized.
+- Move descriptions: **240 / 355 catalog rows processed**
+  - translated named descriptions: **240**
+  - canonical MOVE names remain English and are not localized
+
+Authoritative terminology rule:
+- keep Pokémon species names in English
+- keep MOVE names in English
+- keep ITEM names in English
+- keep TM/HM names and identifiers in English
+- translate descriptive/help/UI prose around those canonical terms
+
+System-ui coverage counted in committed manifests: **461 / 8,279**
+Remaining system-ui: **7,818**
+
+No ROM bytes or pointers were modified.
