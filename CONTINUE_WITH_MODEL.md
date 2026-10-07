@@ -589,3 +589,23 @@ Current translation coverage:
 `tv.inc` system-text subset: **80 / 336 translated**, rows 1-80 committed as `tv-01.vi.json` and `tv-02.vi.json`.
 
 Continue `tv.inc` from system-text row **81**. After the remaining 256 TV strings, only `trainers.inc` (831) remains. GitHub `main` is authoritative; commit each completed source slice immediately.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-TEXT 1,272 / 2,319 — 2026-10-08
+
+Current coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **1,272 / 2,319 complete**
+- remaining: **1,047**
+
+Completed major blocks:
+- `contest_strings.inc`: 200/200
+- `match_call.inc`: 176/176
+- `apprentice.inc`: 288/288
+
+Current block:
+- `tv.inc` system-text subset: **120 / 336**, continue from row **121**.
+- after TV, `trainers.inc`: **831** remains.
+
+GitHub `main` is authoritative. Keep committing each 40-ish source slice immediately.
