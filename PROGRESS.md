@@ -1049,3 +1049,25 @@ System-ui committed coverage: **884 / 8,279**
 Remaining system-ui: **7,395**
 
 No ROM bytes or pointers were modified.
+
+
+## System-UI checkpoint — 1,004 / 8,279 — 2026-10-08
+
+Completed/reviewed:
+- Trainer class names: **66 / 66**
+- Ability names + descriptions: **155 / 155**
+- Move descriptions: **354 / 354 real descriptions**
+- Item descriptions: **309 / 309 real descriptions**
+- Decoration descriptions: **120 / 120 complete**
+
+Decoration QA:
+- 3 manifests fetched back from GitHub `main`
+- total unique decoration description labels: **120**
+- duplicate labels: **0**
+- canonical Pokémon / MOVE / ITEM names remain English
+- source line-break counts preserved
+
+System-ui committed coverage: **1,004 / 8,279**
+Remaining system-ui: **7,275**
+
+No ROM bytes or pointers were modified.
