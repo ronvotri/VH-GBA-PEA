@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Battle Frontier / Exchange Service / Lounges",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "Catalog-driven complete shared Battle Frontier Exchange Service + Lounge map-local text batch.",
+  "status": "translation-complete-source-qa",
+  "notes": "Catalog-driven complete Battle Frontier Exchange Service + Lounge map-local text batch. Label / placeholder / paragraph-control / terminator QA passed. No ROM patch or pointer write performed.",
   "translations": {
     "BattleFrontier_ExchangeServiceCorner_Text_WelcomePleaseChoosePrize": "Xin chào, đây là EXCHANGE SERVICE\nCORNER.\\pChúng tôi đổi Battle Point bạn\nđã tích lũy lấy những phần thưởng xinh xắn.\\pHãy chọn phần thưởng trong danh sách.$",
     "BattleFrontier_ExchangeServiceCorner_Text_PleaseChoosePrize": "Hãy chọn phần thưởng trong danh sách.$",
