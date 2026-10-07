@@ -2,7 +2,7 @@
 """Validate catalog-driven Vietnamese translation manifests."""
 from __future__ import annotations
 import argparse, csv, gzip, json, re
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 
 BRACE_RE = re.compile(r"\{[^{}]+\}")
@@ -20,7 +20,13 @@ def main() -> int:
     args=ap.parse_args()
 
     rows=list(csv.DictReader(args.catalog.open(encoding="utf-8")))
-    by_label={r["source_label"]:r for r in rows}
+    by_identity={
+        f'{r.get("source_label","")}@@{r.get("source_file","")}:{r.get("source_line","")}': r
+        for r in rows
+    }
+    by_label=defaultdict(list)
+    for r in rows:
+        by_label[r.get("source_label","")].append(r)
     errors=[]
     seen={}
     total=0
@@ -44,10 +50,20 @@ def main() -> int:
                 errors.append(f"{path}: duplicate label {label}; already in {seen[label]}")
                 continue
             seen[label]=path
-            src=by_label.get(label)
+            src=by_identity.get(label)
             if src is None:
-                errors.append(f"{path}: unknown catalog label {label}")
-                continue
+                candidates=by_label.get(label, [])
+                if len(candidates) == 1:
+                    src=candidates[0]
+                elif len(candidates) > 1:
+                    errors.append(
+                        f"{path}: ambiguous duplicate catalog label {label}; "
+                        "use source identity key label@@source_file:source_line"
+                    )
+                    continue
+                else:
+                    errors.append(f"{path}: unknown catalog label {label}")
+                    continue
             if declared_scope and src.get("category") != declared_scope:
                 errors.append(f"{path}: {label} category={src.get('category')} but manifest scope={declared_scope}")
             if not isinstance(vi, str) or not vi:
