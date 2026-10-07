@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "scope": "map-story",
+  "area": "Optional legendary/sealed/island map-local text",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Catalog-driven map-local text batch. Label / placeholder / paragraph-control / terminator QA passed. No ROM patch or pointer write performed.",
+  "translations": {
+    "FarawayIsland_Interior_Text_TheFeelingOfBeingWatchedFaded": "Cảm giác như đang bị theo dõi đã tan biến…$"
+  }
+}
