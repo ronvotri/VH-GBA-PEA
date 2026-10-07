@@ -468,3 +468,26 @@ QA:
 - chưa patch ROM / chưa ghi pointer.
 
 **Bước kế tiếp:** audit/dịch các gap optional/post-game còn lại, ưu tiên legendary/sealed/island content rồi Battle Frontier/Battle Tent.
+
+
+## Translation pass — Battle Arena + optional legendary text (2026-10-07)
+
+Đã hoàn tất:
+
+- `translations/map-story/battle-frontier-arena.vi.json`: **66 / 66**
+- `translations/map-story/optional-legendary-islands.vi.json`: **1 / 1**
+  - Faraway Island có 1 map-local `.string`; nhóm Regi / Southern Island / Birth Island / Terra Cave / Marine Cave / Navel Rock đã audit và không có map-local text trong source scope này.
+
+Lượt này thêm: **67 string**.
+
+Tổng map/story manifest hoàn chỉnh hiện tại: **2,864 / 4,361 (~65.7%)**.
+Còn **1,497 map/story string** chưa có manifest hoàn chỉnh.
+
+QA:
+- 0 label thiếu / dư;
+- placeholder `{...}` đúng thứ tự;
+- paragraph control `\p` khớp source;
+- terminator `$` đầy đủ;
+- chưa patch ROM / chưa ghi pointer.
+
+**Bước kế tiếp:** Battle Dome (**113 string đã inventory**) rồi các facility Battle Frontier còn lại.
