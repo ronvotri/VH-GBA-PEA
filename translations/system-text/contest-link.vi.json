@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "scope": "system-text",
+  "area": "Contest link results / judging / TV",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Source-catalog QA completed before commit; placeholder/control-token order and terminators preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "gTest_MissedTurn": "Lỡ lượt$",
+    "gText_LinkStandby4": "Đang chờ kết nối!$",
+    "gText_WinnerIsPlayersMonCongrats": "{STR_VAR_1} đã chiến thắng với {STR_VAR_2}!\\nChúc mừng!$",
+    "gText_WinnerIsPlayersMon": "{STR_VAR_1} đã chiến thắng với {STR_VAR_2}!{PAUSE_UNTIL_PRESS}$",
+    "gText_PrimaryJudgingNumX": "Chấm sơ khảo: Số {STR_VAR_1}{PAUSE_UNTIL_PRESS}$",
+    "gText_SecondaryJudgingNumX": "Chấm vòng hai: Số {STR_VAR_1}{PAUSE_UNTIL_PRESS}$",
+    "gText_SetEventNumX": "Sự kiện đã chọn: Số {STR_VAR_1}{PAUSE_UNTIL_PRESS}$",
+    "gText_MoveUsedMostOften": "Chiêu được dùng nhiều nhất:\\n{STR_VAR_1}{PAUSE_UNTIL_PRESS}$",
+    "gText_MostImpressiveMon": "POKéMON gây ấn tượng nhất:\\n{STR_VAR_1} với {STR_VAR_2}{PAUSE_UNTIL_PRESS}$",
+    "gText_SetEventNumX2": "Sự kiện đã chọn: Số {STR_VAR_1}{PAUSE_UNTIL_PRESS}$",
+    "gText_LinkTVProgramWillNotBeMadeTrainerLost": "Chương trình TV qua kết nối sẽ không được tạo\\nvì TRAINER đã thua.{PAUSE_UNTIL_PRESS}$"
+  }
+}
