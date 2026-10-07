@@ -701,3 +701,22 @@ Current validation state:
 - Berry batch: CI #123 PASS.
 - Trick House / Secret Base / Frontier Brain manifests parse as valid JSON; later CI runs are still processing.
 - No ROM bytes or pointers were modified.
+
+
+## System-text checkpoint — 488 / 2,319 — 2026-10-07
+
+Completed in this batch:
+- `translations/system-text/contest-painting.vi.json`: **27**
+- `translations/system-text/pokedex-rating.vi.json`: **25**
+- `translations/system-text/mauville-man-giddy.vi.json`: **18**
+- `translations/system-text/contest-link.vi.json`: **11**
+- `translations/system-text/check-furniture.vi.json`: **7**
+- `translations/system-text/record-mix.vi.json`: **2**
+
+Coverage now:
+- map/story: **4,361 / 4,361 (100%)**
+- Arena-only: **46 / 46 (100%)**
+- system-text: **488 / 2,319**
+- remaining system-text: **1,831**
+
+All six manifests were source-catalog QA checked for exact label coverage, placeholder/control-token order and terminators before commit, then fetched back from GitHub `main` and parsed successfully. No ROM bytes or pointers were modified.
