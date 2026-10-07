@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "verified_on": "2026-10-06",
+  "source_catalog_sha256": "20f9f6888b3d50458cfd53b0ac534059925c166fae2e48a6aaff49e14015f845",
+  "source_build_rom_sha256": "eb1a7dd2b7eaccc4138b5d5d51f244911fc08c01c1ed7189354b033e18fba5ab",
+  "shipping_rom_sha256": "a8d36c0c398f5281694c2d8dc5094a54a2276bd3092f5802cef6ef99369c645b",
+  "verification_rule": "Encoded English source bytes matched the clean shipping ROM byte-for-byte at build_rom_offset.",
+  "verified_categories": {
+    "map-story": 4361,
+    "system-text": 2319
+  },
+  "implication": "For this exact catalog hash and source-build hash only, shipping_rom_offset equals build_rom_offset for every row in the verified categories.",
+  "safety": {
+    "rom_modified": false,
+    "pointer_scan": false,
+    "pointer_writes": 0,
+    "mass_repoint": false
+  }
+}

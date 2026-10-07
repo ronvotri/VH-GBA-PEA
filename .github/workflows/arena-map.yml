@@ -82,6 +82,16 @@ jobs:
             --out-json artifact/text-catalog.json \
             --summary artifact/text-catalog-summary.json
 
+      - name: Restore verified shipping layout checkpoint
+        run: |
+          python3 tools/apply_shipping_layout_checkpoint.py \
+            --catalog artifact/text-catalog.csv \
+            --build-sha256-file artifact/ROM_SHA256.txt \
+            --checkpoint checkpoints/shipping-layout-verification.json \
+            --out-csv artifact/shipping-verified-text-catalog.csv \
+            --out-json artifact/shipping-verified-text-catalog.json \
+            --summary artifact/shipping-layout-summary.json
+
       - name: Audit remaining map/story catalog
         run: |
           python3 tools/audit_remaining_map_story.py \
@@ -99,7 +109,7 @@ jobs:
       - name: Plan map story integration
         run: |
           python3 tools/plan_map_story_integration.py \
-            --catalog artifact/text-catalog.csv \
+            --catalog artifact/shipping-verified-text-catalog.csv \
             --translations translations/map-story \
             --out artifact/map-story-integration-plan.json \
             --summary artifact/map-story-integration-summary.json
