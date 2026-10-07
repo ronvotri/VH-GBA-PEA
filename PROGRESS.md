@@ -992,3 +992,28 @@ System-ui coverage counted in committed manifests: **461 / 8,279**
 Remaining system-ui: **7,818**
 
 No ROM bytes or pointers were modified.
+
+
+## System-UI checkpoint — 655 / 8,279 — 2026-10-08
+
+Completed/reviewed:
+- Trainer class names: **66 / 66**
+- Ability names + descriptions: **155 / 155**
+- Move descriptions: **354 / 354 real descriptions complete**
+  - 9 manifests
+  - empty/null sentinel intentionally excluded
+- Item descriptions: **80 translated**
+  - `item-descriptions-01.vi.json`: 40
+  - `item-descriptions-02.vi.json`: 40
+
+Canonical terminology rule remains mandatory:
+- Pokémon species names stay English
+- MOVE names stay English
+- ITEM names stay English
+- TM/HM names and identifiers stay English
+- descriptive/help/UI prose is translated
+
+System-ui committed coverage: **655 / 8,279**
+Remaining system-ui: **7,624**
+
+No ROM bytes or pointers were modified.
