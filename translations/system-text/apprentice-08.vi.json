@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "scope": "system-text",
+  "area": "Apprentice final victory speeches 12-15",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Exact final 8 rows from data/text/apprentice.inc. Placeholder/control-token order and terminators preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "gText_ApprenticePickWinSpeech12": "Ồ yeah, {PLAYER}!\\nHôm nay tôi lại tìm thấy bạn rồi!\\pTôi nên làm gì? Lại hỏi nữa à?\\nSao không? Tôi đang hỏi rồi đây!\\pDù sao, {PLAYER}…\\nBạn có bắt được tín hiệu không?\\lCó, bạn bắt được rồi!\\lTôi lại cần thêm lời khuyên!\\pLà chuyện tôi nên hét gì.\\nMột câu thật ngầu để hô lên khi\\ltrận đấu kết thúc đẹp.\\pNào, tôi muốn nghe bạn nói thử!$",
+    "gText_ApprenticeWinSpeechThanks12": "{STR_VAR_1}\\pĐược, được!\\nTôi sẽ dùng câu đó vì nghe chất quá!\\pGiờ tôi hết chuyện để hỏi bạn rồi.\\nChỉ còn vẫy tay chào tạm biệt thôi.\\pNhưng biết đâu một ngày ta sẽ gặp nhau,\\nvà một trong hai phải nếm mùi thất bại.\\pNhưng giờ thật sự tới lúc tạm biệt rồi.\\pThôi, {PLAYER}, tôi phải rong ruổi tiếp,\\nnhưng đừng quên tôi nhé!\\pBảo trọng, {PLAYER}!\\nThương nha!$",
+    "gText_ApprenticePickWinSpeech13": "{PLAYER}{KUN}, tôi tiêu rồi…\\nMũi cứ chảy mãi không ngừng…\\pTôi đang cố nghĩ một câu thật ngầu\\nđể nói khi thắng trận.\\pCảm hứng quá làm tôi khóc,\\nrồi giờ mũi cứ chảy mãi…\\pThành ra thế này,\\ntôi cần bạn quyết định giúp, {PLAYER}{KUN}.\\pKhi thắng trận,\\ntôi nên nói gì?$",
+    "gText_ApprenticeWinSpeechThanks13": "{STR_VAR_1}\\p… … …Hay đấy.\\nKhông, truyền cảm hứng luôn!\\lNước mắt tôi lại trào ra rồi!\\pNhưng dù khóc với sụt sịt,\\ntôi vẫn sẽ dùng câu đó!\\pTôi hết câu hỏi để làm phiền bạn rồi,\\n{PLAYER}{KUN}.\\pTừ giờ chúng ta là đối thủ!\\nCảm ơn vì tất cả!$",
+    "gText_ApprenticePickWinSpeech14": "Ơ… Ừm…\\n{PLAYER}{KUN}…\\pLàm ơn đừng nhìn tôi như vậy.\\nBạn làm tôi hồi hộp quá.\\pT-tôi lại cần lời khuyên.\\nNhưng đây sẽ là lần cuối…\\pHỏi chuyện này ngại thật,\\nnhưng nếu tôi thắng trận thì sao?\\lTôi nên nói gì?$",
+    "gText_ApprenticeWinSpeechThanks14": "{STR_VAR_1}\\pỒ… Được!\\nTôi sẽ thử nói câu đó!\\lCó khi hồi hộp quá rồi chẳng nói nổi…\\pCảm ơn bạn, {PLAYER}{KUN}.\\nGiờ tôi phải chào tạm biệt rồi.\\pTôi sẽ nghe theo mọi điều bạn đã dạy,\\n{PLAYER}{KUN}, và cố hết sức.$",
+    "gText_ApprenticePickWinSpeech15": "Hm? Trông bạn có vẻ là {PLAYER}{KUN}…\\nNhưng có thật không?\\lHay là một {PLAYER} DOLL làm khéo quá?\\pỒ, không, không, đừng lo!\\nNếu bạn thật sự là người thật, xin hãy\\lquên sự thất lễ của tôi.\\pĐừng giận nhé. Tôi chỉ muốn xin\\nthêm một lời khuyên quý báu.\\pLà về một câu nói.\\pChính xác hơn, nếu thắng trận\\nthì tôi nên nói gì?$",
+    "gText_ApprenticeWinSpeechThanks15": "{STR_VAR_1}\\p… … … … … …\\nKhi tôi thắng trận…\\p{STR_VAR_1}\\p…Bạn nghiêm túc thật sao?\\pTôi hiểu. Nếu bạn nghiêm túc thì được.\\nCảm ơn bạn đã dành thời gian.\\pHy vọng ngay cả tôi cũng có thể\\ndùng câu đó cho ra hồn.\\pCó vẻ tôi đã cạn sạch\\nnhững lời khuyên cần hỏi rồi.\\pTôi nghĩ đã đến lúc phải chào tạm biệt\\nvà tự mình lên đường.\\pCảm ơn, sư phụ!\\nXin lỗi vì trước giờ cứ hoài nghi!$"
+  }
+}
