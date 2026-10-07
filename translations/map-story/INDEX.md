@@ -1,6 +1,6 @@
 # Map/Story Translation Manifest Index
 
-Checkpoint: **2,797 / 4,361 map/story strings complete (~64.1%)**
+Checkpoint: **2,864 / 4,361 map/story strings complete (~65.7%)**
 
 This index is the canonical inventory for committed map/story translation manifests. The compressed `sootopolis.vi.json.gz` is a duplicate convenience artifact and is **not** counted separately.
 
@@ -39,7 +39,9 @@ This index is the canonical inventory for committed map/story translation manife
 | `ever-grande-pokemon-league.vi.json` | 36 |
 | `new-mauville-abandoned-ship.vi.json` | 62 |
 | `magma-hideout.vi.json` | 56 |
-| **TOTAL** | **2,797** |
+| `battle-frontier-arena.vi.json` | 66 |
+| `optional-legendary-islands.vi.json` | 1 |
+| **TOTAL** | **2,864** |
 
 ## Integrity audit — 2026-10-07
 
@@ -57,12 +59,11 @@ A repository-wide search after repair found **no remaining occurrence** of the b
 
 ## Next translation block
 
-Main-story coverage through **Pokémon League / Hall of Fame** is represented by committed QA-clean manifests, and New Mauville / Abandoned Ship / Magma Hideout are now covered.
+Main-story coverage through **Pokémon League / Hall of Fame** is represented by committed QA-clean manifests. New Mauville / Abandoned Ship / Magma Hideout are covered, and Battle Arena plus the only discovered Faraway Island local-text line are now covered.
 
-Next, audit and translate the remaining map/story gaps, prioritizing:
-- sealed / legendary locations and optional islands
-- post-game towns / facilities
-- Battle Frontier / Battle Tent / remaining post-game map-local text
-- any cataloged map/story entries not yet represented in this index
+Next, prioritize:
+- Battle Dome (**113 map-local strings already inventoried**)
+- remaining Battle Frontier facilities (Factory / Palace / Pike / Pyramid / Tower / shared lounges & services)
+- any optional/post-game catalog gaps not yet represented in this index
 
 Project rules remain unchanged: **v0.4 baseline, no screenshot-by-screenshot patching, no mass-repoint.**
