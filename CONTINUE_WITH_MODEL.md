@@ -277,3 +277,21 @@ Remaining map/story: **1,497**.
 Battle Arena passed source-level label / placeholder / paragraph / terminator QA. Legendary/sealed/island audit found only one map-local string in Faraway Island among the checked Regi/Southern/Birth/Terra/Marine/Navel group.
 
 Continue next with **Battle Dome (113 map-local strings)**, then remaining Battle Frontier facilities. Use `translations/map-story/INDEX.md` as canonical inventory.
+
+
+## Translation checkpoint — Dome / Factory / Palace
+
+Latest complete QA-clean manifests:
+- Battle Dome: **113 / 113**
+- Battle Factory: **95 / 95**
+- Battle Palace: **67 / 67**
+
+Current committed map/story coverage: **3,139 / 4,361 (~72.0%)**.
+Remaining map/story: **1,222**.
+
+Next facilities already inventoried:
+- Battle Pike: **97**
+- Battle Pyramid: **81**
+- Battle Tower: **112**
+
+Continue directly with Pike → Pyramid → Tower. Use `translations/map-story/INDEX.md` as canonical inventory and do not reopen technical discovery unless an actual patch/build QA failure blocks progress.
