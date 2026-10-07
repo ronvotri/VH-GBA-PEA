@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "scope": "map-story",
+  "area": "Cave of Origin / Wallace story",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Catalog-driven Cave of Origin cleanup batch. All local strings are defined in CaveOfOrigin_B1F; Entrance and 1F contain no additional local .string definitions. Source labels verified against pinned pret/pokeemerald; placeholder order, paragraph controls and terminators QA-clean. No ROM patch or pointer write performed.",
+  "translations": {
+    "CaveOfOrigin_B1F_Text_WallaceStory": "À, vậy cậu là {PLAYER}{KUN} sao?\\nTôi đã nghe khá nhiều về những việc cậu làm.\\pTôi tên WALLACE.\\pTrước đây tôi từng là GYM LEADER\\ncủa SOOTOPOLIS, nhưng rồi có việc xảy ra.\\pVì thế tôi giao lại việc điều hành GYM\\ncho sư phụ JUAN.\\p… … … … … …\\n… … … … … …\\pGROUDON và KYOGRE, hai POKéMON\\nđang gây náo loạn ở đây, được xem là\\nPOKéMON siêu cổ đại.\\pNhưng POKéMON siêu cổ đại\\nkhông chỉ có hai loài đó.\\pVẫn còn một loài nữa ở đâu đó.\\pĐâu đó có một POKéMON siêu cổ đại\\nmang tên RAYQUAZA.\\pNgười ta nói chính RAYQUAZA từng\\nlàm hai kẻ giao chiến kia lắng xuống\\ntrong quá khứ xa xưa.\\pNhưng ngay cả tôi cũng không biết\\nRAYQUAZA đang ở đâu…$",
+    "CaveOfOrigin_B1F_Text_WhereIsRayquaza": "WALLACE: {PLAYER}{KUN}, cậu có biết\\nRAYQUAZA đang ở đâu không?\\pNếu biết, hãy nói cho tôi nhé.$",
+    "CaveOfOrigin_B1F_Text_ButWereInCaveOfOrigin": "WALLACE: CAVE OF ORIGIN?\\pNhưng chúng ta đang ở ngay đây mà!\\nCậu phải nghĩ kỹ hơn chứ!\\pLàm ơn thử nghĩ xem RAYQUAZA\\ncó thể đang ở đâu lúc này.$",
+    "CaveOfOrigin_B1F_Text_OldLadyDidntMentionThat": "WALLACE: MT. PYRE?\\pNhưng khi tôi gặp bà cụ ở đó lúc nãy,\\nbà ấy chẳng nhắc gì về chuyện này.\\pTôi rất khó tin bà ấy lại cố tình\\ngiấu tôi điều gì…\\p{PLAYER}{KUN}, cậu thử nghĩ kỹ hơn\\nmột chút được không?$",
+    "CaveOfOrigin_B1F_Text_CantYouRememberSomehow": "WALLACE: Hả? Cậu không nhớ sao?\\nHmm… Rắc rối rồi…\\pKhông thể cố nhớ ra được à?$",
+    "CaveOfOrigin_B1F_Text_WellHeadToSkyPillar": "WALLACE: SKY PILLAR?\\pĐúng rồi!\\nChắc chắn là SKY PILLAR!\\p{PLAYER}{KUN}, không còn thời gian đâu!\\nChúng ta tới SKY PILLAR ngay thôi!$"
+  }
+}
