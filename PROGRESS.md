@@ -836,3 +836,22 @@ Validation:
 - Apprentice rows 1-240 are already CI PASS through #145; final Apprentice runs #146-147 are processing.
 - TV manifests were fetched back from GitHub `main` and parse successfully with 40 strings each.
 - No ROM bytes or pointers were modified.
+
+
+## System-text checkpoint — 1,272 / 2,319 — 2026-10-08
+
+TV progress:
+- `data/text/tv.inc` system-text subset: **120 / 336**
+  - `tv-01.vi.json`: 40
+  - `tv-02.vi.json`: 40
+  - `tv-03.vi.json`: 40
+
+Coverage now:
+- map/story: **4,361 / 4,361 (100%)**
+- Arena-only: **46 / 46 (100%)**
+- system-text: **1,272 / 2,319**
+- remaining system-text: **1,047**
+  - TV: **216**
+  - trainers: **831**
+
+`tv-03.vi.json` was fetched back from GitHub `main` and parses with exactly 40 translations. CI runs for final Apprentice and current TV chunks are processing; earlier Apprentice chunks through row 240 are PASS. No ROM bytes or pointers were modified.
