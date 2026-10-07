@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "scope": "map-story",
+  "area": "Route 105 call / Desert Underpass / Mirage Tower fossils",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Catalog-driven cleanup batch for the Route 105 Norman Pokenav call (source labels retain the Route104 prefix) plus Desert Underpass and Mirage Tower fossil text. Source labels verified against pinned pret/pokeemerald; placeholder order, paragraph controls and terminators QA-clean. No ROM patch or pointer write performed.",
+  "translations": {
+    "Route104_Text_DadPokenavCall": "… … … … … …\\n… … … … … Bíp!\\pBA: Ồ, {PLAYER}?\\p… … … … … …\\nCon đang ở đâu vậy?\\lNghe bên đó gió lớn ghê.\\pBa vừa nghe MR. STONE bên DEVON\\nnói về POKéNAV của con, nên ba gọi thử.\\pNghe có vẻ con vẫn ổn,\\nvậy ba yên tâm rồi.\\pNhớ giữ gìn nhé.\\p… … … … … …\\n… … … … … Tách!$",
+    "Route104_Text_RegisteredDadInPokenav": "Đã đăng ký BA NORMAN\\nvào POKéNAV.$",
+    "DesertUnderpass_Text_FoundRootFossil": "{PLAYER} tìm thấy ROOT FOSSIL.$",
+    "DesertUnderpass_Text_FoundClawFossil": "{PLAYER} tìm thấy CLAW FOSSIL.$",
+    "MirageTower_4F_Text_TakeRootFossil": "Bạn tìm thấy ROOT FOSSIL.\\pNếu lấy FOSSIL này, nền đất\\nxung quanh có thể sẽ sụp xuống…\\pVẫn lấy ROOT FOSSIL chứ?$",
+    "MirageTower_4F_Text_LeftRootFossilAlone": "{PLAYER} để nguyên ROOT FOSSIL.$",
+    "MirageTower_4F_Text_TakeClawFossil": "Bạn tìm thấy CLAW FOSSIL.\\pNếu lấy FOSSIL này, nền đất\\nxung quanh có thể sẽ sụp xuống…\\pVẫn lấy CLAW FOSSIL chứ?$",
+    "MirageTower_4F_Text_LeaveClawFossilAlone": "{PLAYER} để nguyên CLAW FOSSIL.$"
+  }
+}
