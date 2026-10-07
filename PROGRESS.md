@@ -681,3 +681,23 @@ Coverage now:
 - remaining system-text: **2,024**
 
 The three new manifests contain **164** player-facing system-text strings. Source-side QA preserved placeholder/control-token order and terminators; all three manifests parse as valid JSON. No ROM bytes or pointers were modified.
+
+
+## System-text checkpoint — 398 / 2,319 — 2026-10-07
+
+Additional completed manifests after the 295 checkpoint:
+- \`translations/system-text/trick-house-mechadolls.vi.json\`: **45**
+- \`translations/system-text/secret-base-trainers.vi.json\`: **30**
+- \`translations/system-text/frontier-brain.vi.json\`: **28**
+
+Coverage now:
+- map/story: **4,361 / 4,361 (100%)**
+- Arena-only: **46 / 46 (100%)**
+- system-text: **398 / 2,319**
+- remaining system-text: **1,921**
+
+Current validation state:
+- Cable Club corrected control-code escape commit: CI #121 PASS.
+- Berry batch: CI #123 PASS.
+- Trick House / Secret Base / Frontier Brain manifests parse as valid JSON; later CI runs are still processing.
+- No ROM bytes or pointers were modified.
