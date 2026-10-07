@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "scope": "system-text",
+  "area": "Match Call dialogue 1-10",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Exact source slice from data/text/match_call.inc; control tokens preserved. No ROM writes.",
+  "translations": {
+    "MatchCall_PersonalizedText1": "Là tôi đây, người mê núi\\n{STR_VAR_1}!\\pTừ lần gặp trước, bạn đã thấy\\nyêu núi hơn chưa?\\pTôi hiếm khi thấy bạn trên núi…\\pLần tới, ta sẽ gặp nhau ở đâu đó\\nquanh {STR_VAR_2} nhé.$",
+    "MatchCall_PersonalizedText2": "Đây là {STR_VAR_1}.\\nXin chào.\\pTôi vừa kể về bạn cho một TRAINER\\nmới vào nghề.\\pTôi kể về một TRAINER mạnh mẽ\\nluôn chăm sóc POKéMON rất chu đáo.\\pMong bạn sẽ trở thành TRAINER\\nmà ai cũng ngưỡng mộ.\\pHy vọng ta lại gặp nhau!$",
+    "MatchCall_PersonalizedText3": "Xin chào! Là {STR_VAR_1} đây.\\pTôi mê chỗ mình đang ở lắm.\\nHương thơm dễ chịu vô cùng!\\pChắc ai đó trồng BERRY,\\ngiờ chúng nở hoa rực rỡ rồi.\\pHẹn gặp lại nhé!$",
+    "MatchCall_PersonalizedText4": "Xin chào! Ba mươi năm thám hiểm,\\n{STR_VAR_1} xin phục vụ!\\pCó vẻ bạn vẫn đang hăng hái\\nđi khắp nơi nhỉ.\\pBạn tìm ra di tích mới nào chưa?\\nCó thì nhớ kể tôi nghe nhé!\\pGiờ xin phép nhé,\\ntôi còn di tích phải khám phá.$",
+    "MatchCall_PersonalizedText5": "Là {STR_VAR_1} đây!\\pBiết hôm nay tôi đang làm gì không?\\nNgắm sóng từ bãi biển đó!\\pHaizz… Sóng lấp lánh đẹp ghê.\\nBiển nhìn từ đây là đẹp nhất.\\lTôi đói bụng rồi, tạm biệt nhé!$",
+    "MatchCall_PersonalizedText6": "Nhồm nhoàm…\\nỒ, chào, {STR_VAR_1} đây.\\lTôi thích ăn ngay trên bãi biển.\\pPOKéMON và tôi vẫn khỏe re.\\nNạp đầy năng lượng rồi!\\lTôi đi bơi đây. Tạm biệt!$",
+    "MatchCall_PersonalizedText7": "Xin chào, {STR_VAR_1} đây…\\pDạo này tôi hơi ngán cái danh\\nCOOLTRAINER rồi…\\pAi cũng nghĩ tôi là một TRAINER\\nhoàn hảo, nên tôi cứ phải cố\\lsống đúng với kỳ vọng đó.\\pNhưng chắc làm COOLTRAINER\\nthì phải vậy thôi.\\pĐành cắn răng cố tiếp vậy…\\nvà chịu thôi.\\pBạn là người duy nhất tôi có thể\\ntâm sự mấy chuyện này.\\pNhưng lần tới gặp nhau,\\nyên tâm, tôi không than nữa đâu!$",
+    "MatchCall_PersonalizedText8": "Yahoo, {STR_VAR_1} đây!\\nBạn khỏe chứ?\\pTôi vẫn huấn luyện POKéMON với\\nmục tiêu là vượt qua bạn.\\pLần sau đấu lại,\\ntôi nhất định không thua đâu.\\pCó bạn TRAINER đúng là tuyệt nhỉ?\\nHẹn gặp lại!$",
+    "MatchCall_PersonalizedText9": "Là {STR_VAR_1} đây…\\nNgay lúc này, sau lưng bạn…\\lCó phải có thứ gì đó…?\\pSức mạnh của những POKéMON\\nđang ngủ yên ở MT. PYRE…\\pChúng đang kể cho tôi về bạn…\\pBạn nên bước đi thật nhanh\\nvà tuyệt đối đừng ngoái lại…\\pKhúc khích…\\nTạm biệt…$",
+    "MatchCall_PersonalizedText10": "Đây là {STR_VAR_1}.\\nBạn khỏe chứ?\\pTiện thật nhỉ, ở xa thế này\\nmà ta vẫn nói chuyện được.\\pTrước kia muốn nói với ai,\\ntôi còn phải nhờ bố\\lchở đi cơ…\\pTôi phải đi rồi.\\nRất vui được trò chuyện với bạn.$"
+  }
+}
