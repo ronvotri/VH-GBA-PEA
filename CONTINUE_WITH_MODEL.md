@@ -483,3 +483,22 @@ Recent validated system-text work in this phase:
 - Frontier Brains: 28
 
 Continue with bounded player-facing groups next: Contest Painting (27), Pokédex Rating (25), Mauville Man (18), Contest Link (11), furniture checks (7), record mix (2), then contest_strings / match_call / apprentice / TV / trainers. Preserve source control-token order and terminators. Translation-only passes must not write ROM bytes or pointers.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-TEXT 488 / 2,319 — 2026-10-07
+
+Latest completed system-text groups:
+- Contest Painting: **27**
+- Pokédex Rating: **25**
+- Mauville Man / Giddy: **18**
+- Contest Link: **11**
+- shared furniture inspection: **7**
+- Record Mix: **2**
+
+Authoritative coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **488 / 2,319 complete**
+- remaining system-text: **1,831**
+
+The small bounded player-facing groups are now cleared. Continue with the larger blocks next: `contest_strings.inc` (200), `match_call.inc` (176), `apprentice.inc` (288), `tv.inc` (336), then `trainers.inc` (831). Preserve exact source label coverage plus placeholder/control-token order. Commit every completed manifest to GitHub `main` immediately; no translation file should exist only outside the repository.
