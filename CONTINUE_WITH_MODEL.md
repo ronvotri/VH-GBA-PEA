@@ -263,3 +263,17 @@ Remaining map/story: **1,564**.
 Both manifests passed source-level label / placeholder / paragraph / terminator QA.
 
 Continue next by auditing and translating **legendary / sealed / island / post-game gaps**, then Battle Frontier / Battle Tent. Use `translations/map-story/INDEX.md` as the canonical inventory.
+
+
+## Translation checkpoint — Battle Arena
+
+Latest complete manifests:
+- Battle Frontier / Battle Arena: **66 / 66**
+- Optional legendary/island local text: **1 / 1**
+
+Current committed map/story coverage: **2,864 / 4,361 (~65.7%)**.
+Remaining map/story: **1,497**.
+
+Battle Arena passed source-level label / placeholder / paragraph / terminator QA. Legendary/sealed/island audit found only one map-local string in Faraway Island among the checked Regi/Southern/Birth/Terra/Marine/Navel group.
+
+Continue next with **Battle Dome (113 map-local strings)**, then remaining Battle Frontier facilities. Use `translations/map-story/INDEX.md` as canonical inventory.
