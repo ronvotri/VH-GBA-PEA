@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Battle Frontier / Battle Pike",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "Catalog-driven complete Battle Pike map-local text batch.",
+  "status": "translation-complete-source-qa",
+  "notes": "Catalog-driven complete Battle Pike map-local text batch. Label / placeholder / paragraph-control / terminator QA passed. No ROM patch or pointer write performed.",
   "translations": {
     "BattleFrontier_BattlePikeCorridor_Text_YourChallengeHasBegun": "Thử thách Battle Choice\\ncủa bạn đã bắt đầu…$",
     "BattleFrontier_BattlePikeLobby_Text_WelcomeToBattlePike": "Nơi vận may của TRAINER\\nđược đưa ra thử thách…\\pChào mừng tới BATTLE PIKE…\\pTôi là người hướng dẫn tại BATTLE PIKE…$",
