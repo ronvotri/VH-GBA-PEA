@@ -235,3 +235,17 @@ Remaining map/story: **1,869**.
 All 209 newly added strings passed source-level label / placeholder / paragraph / terminator QA.
 
 Continue next with **Route 124/125 + Shoal Cave → Route 126/127/128 → Seafloor Cavern → Route 129/130/131/Sky Pillar**. Use `translations/map-story/INDEX.md` as canonical inventory.
+
+
+## Translation checkpoint — Pokémon League reached
+
+Latest complete manifests:
+- Route 124-131 + Shoal / Seafloor / Sky Pillar: **63 / 63**
+- Pacifidlog + Route 132-134: **34 / 34**
+- Victory Road: **54 / 54**
+- Ever Grande + Elite Four + Champion + Hall of Fame: **36 / 36**
+
+Current committed map/story coverage: **2,679 / 4,361 (~61.4%)**.
+Remaining map/story: **1,682**.
+
+Main-story route is now covered by QA-clean manifests through the Pokémon League ending. Continue by auditing the remaining optional/post-game map-story gaps, starting with **New Mauville / Abandoned Ship / Magma Hideout**, then legendary/island/Battle Frontier content. Use `translations/map-story/INDEX.md` as the canonical inventory.
