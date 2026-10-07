@@ -1101,3 +1101,22 @@ System-ui committed coverage: **1,124 / 8,279**
 Remaining system-ui: **7,155**
 
 No ROM bytes or pointers were modified.
+
+
+## System-UI checkpoint — 1,204 / 8,279 — 2026-10-08
+
+Pokédex descriptive text:
+- `src/data/pokemon/pokedex_text.h`: **200 / 387**
+- manifests `pokedex-text-01.vi.json` through `pokedex-text-05.vi.json`
+
+QA:
+- **200 unique Pokédex labels**
+- duplicate labels: **0**
+- all entries preserve the source 4-line structure (3 `\n` tokens)
+- TENTACOOL layout defect found during QA was corrected in commit `df95c80`
+- Pokémon species / MOVE / ITEM / TM / HM names remain canonical English
+
+System-ui committed coverage: **1,204 / 8,279**
+Remaining system-ui: **7,075**
+
+No ROM bytes or pointers were modified.
