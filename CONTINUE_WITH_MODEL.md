@@ -735,3 +735,12 @@ Mandatory canonical terminology:
 - translate surrounding descriptions/help/UI prose only
 
 GitHub `main` is authoritative.
+
+
+### Pre-pass GitHub sync — 2026-10-08
+Confirmed `main` is synchronized before continuing localization:
+- system-text: **2,319 / 2,319**
+- system-ui committed: **655 / 8,279**
+- move descriptions: **354 / 354 real descriptions complete**
+- item descriptions: **80 / 309**
+- canonical Pokémon / MOVE / ITEM / TM / HM names remain English
