@@ -720,3 +720,28 @@ Coverage now:
 - remaining system-text: **1,831**
 
 All six manifests were source-catalog QA checked for exact label coverage, placeholder/control-token order and terminators before commit, then fetched back from GitHub `main` and parsed successfully. No ROM bytes or pointers were modified.
+
+
+## System-text checkpoint — 688 / 2,319 — 2026-10-07
+
+Completed after the 488 checkpoint:
+- `contest_strings.inc`: **200 / 200**
+  - `translations/system-text/contest-strings-effects.vi.json`: 50
+  - `translations/system-text/contest-strings-core.vi.json`: 50
+  - `translations/system-text/contest-strings-results-a.vi.json`: 50
+  - `translations/system-text/contest-strings-results-b.vi.json`: 50
+
+Coverage now:
+- map/story: **4,361 / 4,361 (100%)**
+- Arena-only: **46 / 46 (100%)**
+- system-text: **688 / 2,319**
+- remaining system-text: **1,631**
+
+Contest source QA:
+- exact source labels: **200 / 200**
+- missing labels: **0**
+- extra labels: **0**
+- placeholder/control-token order mismatches: **0**
+- all four manifests fetched back from GitHub `main` and parsed successfully.
+
+No ROM bytes or pointers were modified.
