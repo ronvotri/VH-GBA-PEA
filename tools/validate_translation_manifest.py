@@ -26,7 +26,11 @@ def main() -> int:
     total=0
     manifests=0
 
-    # Canonical manifests are plain JSON. Compressed *.json.gz files are\n    # convenience copies (for example sootopolis.vi.json.gz) and must not be\n    # counted/validated a second time as independent manifests.\n    paths=sorted(args.translations.rglob("*.json"))\n    for path in paths:
+    # Canonical manifests are plain JSON. Compressed *.json.gz files are
+    # convenience copies (for example sootopolis.vi.json.gz) and must not be
+    # counted/validated a second time as independent manifests.
+    paths=sorted(args.translations.rglob("*.json"))
+    for path in paths:
         doc=load_json(path)
         trans=doc.get("translations")
         if not isinstance(trans, dict):
