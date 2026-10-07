@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "scope": "system-text",
+  "area": "Shared furniture / shelf / vase inspection text",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Source-catalog QA completed before commit; placeholder/control-token order and terminators preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "Text_PictureBookShelf": "Có cả một bộ sách tranh POKéMON.$",
+    "Text_BookShelf": "Kệ đầy ắp đủ loại sách.$",
+    "Text_PokemonCenterBookShelf": "Tạp chí POKéMON!\\nPOKéMON PAL…\\pPOKéMON HANDBOOK…\\nADORABLE POKéMON…$",
+    "Text_Vase": "Chiếc bình này trông đắt tiền quá…\\nNhìn thử vào trong…\\pNhưng chẳng có gì cả.$",
+    "Text_EmptyTrashCan": "Trống không.$",
+    "Text_ShopShelf": "Các kệ đầy ắp đủ loại\\nhàng hóa POKéMON.$",
+    "Text_Blueprint": "Một bản thiết kế gì đó?\\nPhức tạp quá, chẳng hiểu nổi!$"
+  }
+}
