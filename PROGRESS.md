@@ -560,3 +560,25 @@ Tổng map/story: **3,648 / 4,361 (~83.7%)**.
 Còn **713** map/story string.
 
 **Bước kế tiếp:** audit chính xác 713 string còn lại theo source map, ưu tiên Battle Tent + optional/post-game gaps.
+
+
+## Translation checkpoint — final handoff before new chat (2026-10-07)
+
+Repository `main` was re-audited before handing off.
+
+Latest additional QA-clean manifest:
+- `translations/map-story/battle-frontier-pyramid-dynamic.vi.json`: **128 / 128**
+  - Battle Pyramid dynamic floor hints / item counts / trainer counts.
+  - Six incorrect keys `OneItemsRemaining1..6` were corrected to source labels `OneItemRemaining1..6`.
+  - Source QA now passes: 0 missing labels, 0 placeholder-order errors, 0 paragraph-control errors, 0 terminator errors.
+  - The source-only `BattleFacility_TrainerBattle_PlaceholderText` is intentionally excluded as sample/debug placeholder text.
+
+Current committed map/story coverage: **3,776 / 4,361 (~86.6%)**.
+Remaining map/story backlog: **585 strings**.
+
+Integrity:
+- repo-wide search: 0 occurrences of the earlier bad file-reference error text;
+- use `translations/map-story/INDEX.md` as canonical committed inventory;
+- all previously repaired manifests remain present on `main`.
+
+**Next chat:** audit the exact remaining 585 source-map strings, then translate Battle Tent leftovers and remaining optional/post-game gaps. Do not reopen font/pointer/catalog research unless patch/build QA exposes a real blocker. Still no ROM patch/pointer-write step yet.
