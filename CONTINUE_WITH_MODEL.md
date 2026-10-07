@@ -669,3 +669,18 @@ Do **not** continue searching for untranslated system-text unless a concrete QA 
 3. later QA/exclusion review for debug/internal as appropriate
 
 GitHub `main` is authoritative. Continue source-catalog-first, not screenshot-by-screenshot. Preserve placeholders/control codes and do not mass-repoint or write ROM pointers during translation-only passes.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 66 / 8,279 — 2026-10-08
+
+System-text is complete: **2,319 / 2,319**. Do not reopen it without a concrete QA defect.
+
+System-ui work has begun:
+- `trainer_class_names.h`: **66 / 66 complete**
+- `translations/system-ui/trainer-class-names.vi.json`
+
+System-ui total:
+- **66 / 8,279 translated**
+- **8,213 remaining**
+
+Continue system-ui source-catalog-first. Good next targets include player-facing text blocks such as abilities, item descriptions, move descriptions, item names, region-map entries, and strings.c. Keep manifests bounded and commit each completed slice immediately to GitHub `main`.
