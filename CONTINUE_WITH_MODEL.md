@@ -773,3 +773,13 @@ Completed player-facing system-ui groups now include:
 - decoration descriptions 120
 
 Next system-ui work should continue source-catalog-first. Mandatory rule remains: Pokémon / MOVE / ITEM / TM / HM names and IDs stay English; translate surrounding prose only.
+
+
+### Pre-pass GitHub sync — 2026-10-08
+Confirmed `main` is synchronized before continuing:
+- system-text: **2,319 / 2,319**
+- system-ui committed: **1,004 / 8,279**
+- move descriptions: **354 / 354**
+- item descriptions: **309 / 309**
+- decoration descriptions: **120 / 120**
+- canonical Pokémon / MOVE / ITEM / TM / HM names remain English
