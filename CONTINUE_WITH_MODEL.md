@@ -695,3 +695,21 @@ Do **not** translate canonical Pokémon terms used as names/identifiers:
 - TM/HM names and identifiers
 
 Translate surrounding UI/help/description text, but keep those canonical names exactly in English. This rule is authoritative for all remaining `system-ui` and `battle` work.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 461 / 8,279 — 2026-10-08
+
+System-text remains complete at **2,319 / 2,319**.
+
+System-ui completed/reviewed:
+- trainer classes: 66
+- abilities: 155
+- move descriptions: first 240 named descriptions committed in six 40-string manifests
+
+Canonical terminology rule is mandatory:
+- Pokémon names: do not translate
+- MOVE names: do not translate
+- ITEM names: do not translate
+- TM/HM names/IDs: do not translate
+
+Continue `src/data/text/move_descriptions.h` after RAIN DANCE, then item descriptions. Translate prose only; canonical identifiers remain English.
