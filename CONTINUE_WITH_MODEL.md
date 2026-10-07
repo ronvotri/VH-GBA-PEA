@@ -53,27 +53,20 @@ Text scan:
 
 ## Việc phải làm ngay ở phiên mới
 
-1. Đọc:
-   - `README.md`
-   - `PROGRESS.md`
-   - `docs/TECHNICAL_NOTES.md`
-   - `.github/workflows/arena-map.yml`
-2. Kiểm tra GitHub Actions **Build Arena symbol map**.
-3. Lấy `pokeemerald.map` / `pokeemerald.sym` nếu workflow đã chạy thành công.
-4. Dùng map/source để dựng catalog chính xác:
-   - source label;
-   - source file;
-   - ROM offset;
-   - pointer/reference sites;
-   - English;
-   - Vietnamese;
-   - original allocation;
-   - patch strategy.
-5. Quét **toàn bộ user-facing vanilla Emerald text**, không chỉ ảnh người dùng báo.
-6. Match AowVN khi có; dịch mới khi không có.
-7. Với câu dài: biên tập gọn trước; chỉ repoint reference đã xác minh nếu thực sự cần.
-8. Sau vanilla coverage, xử lý text riêng Emerald Arena: HUD, realtime battle, control/help, status/options.
-9. Xuất candidate mới + audit manifest để người dùng test một lượt lớn.
+**Map/story translation catalog đã hoàn tất 4,361 / 4,361 (100%). Không quay lại dịch 585 câu cũ.**
+
+1. Đọc `translations/map-story/INDEX.md`, `PROGRESS.md`, `docs/TECHNICAL_NOTES.md`.
+2. Giữ **v0.4 – Text Cluster Pass** làm baseline.
+3. Dùng shipping-verified catalog/source provenance để tích hợp toàn bộ manifest map/story vào ROM:
+   - inplace nếu bản dịch vừa allocation;
+   - chỉ relocate/repoint đúng reference đã xác minh khi không thể vừa allocation;
+   - không mass-repoint.
+4. Sau map/story integration, tiếp tục các nhóm user-facing còn lại theo thứ tự:
+   - system-text;
+   - Arena-only;
+   - system/UI và battle text.
+5. Build candidate ROM và QA theo tuyến: title → intro → overworld → battle → post-battle → save/load → story/post-game → UI/Arena.
+6. Nếu CI đỏ, kiểm tra lỗi thật. Validator đã được sửa để **không đếm `sootopolis.vi.json.gz`** như manifest thứ hai.
 
 ## Điều tuyệt đối không làm
 
@@ -358,3 +351,54 @@ Rules unchanged:
 - Preserve placeholders/control codes.
 - Do not reopen font/pointer/catalog research unless a real patch/build QA failure blocks progress.
 - Translation manifests are not yet the final patched/tested ROM; ROM patch/pointer-write step remains later.
+
+
+## AUTHORITATIVE HANDOFF — MAP/STORY 100% — 2026-10-07
+
+Phần này **ghi đè mọi checkpoint map/story cũ ở phía trên**.
+
+Repo: `ronvotri/VH-GBA-PEA`  
+Baseline: **v0.4 – Text Cluster Pass**  
+Canonical inventory: `translations/map-story/INDEX.md`
+
+### Trạng thái đã chốt
+
+- Source catalog map/story: **4,361**
+- Committed canonical translation coverage: **4,361 / 4,361 = 100%**
+- Remaining map/story backlog: **0**
+- Chưa patch/repoint toàn bộ manifest vào ROM ở bước này.
+
+Checkpoint 585 cuối đã được xử lý toàn bộ:
+- Trainer Hill **27**
+- S.S. Tidal **48**
+- Route 105 / Desert Underpass / Mirage Tower **8**
+- Cave of Origin **6**
+- Battle Frontier Exchange/Lounges **150**
+- misc **5**
+- Battle Tower Multi Partner Room **341**
+  - regular partners **250**
+  - apprentice/shared **91**
+
+Audit:
+- `tools/audit_remaining_map_story.py` xuất danh sách authoritative còn thiếu.
+- Artifact ngay trước manifest cuối xác nhận **4,270 / 4,361**, còn đúng **91** label và tất cả nằm ở Multi Partner Room.
+- Manifest `battle-frontier-multi-partners-apprentices.vi.json` chứa đúng **91** label đó, QA sạch về placeholder order, `\p`, và `$`.
+- `battle-frontier-multi-partners-regular.vi.json` chứa **250** partner thường và có assertion source-driven trước commit.
+- Không tính `sootopolis.vi.json.gz` hai lần; đây chỉ là convenience duplicate. Validator đã được sửa để bỏ qua `*.json.gz`.
+
+### Việc tiếp theo
+
+**Không dịch lại map/story.** Chuyển sang integration/patch planning:
+1. map 4,361 label → shipping ROM offset/reference đã xác minh;
+2. ghép tiếng Việt lên **v0.4**;
+3. inplace khi an toàn, relocate/repoint có kiểm soát khi cần;
+4. build ROM candidate;
+5. QA lớn;
+6. sau đó xử lý system-text / Arena-only / UI / battle user-facing còn lại.
+
+Luật bất biến:
+- v0.4 baseline;
+- không screenshot-by-screenshot;
+- không mass-repoint;
+- không đoán pointer;
+- không coi manifest translation-complete là ROM-complete cho tới khi build + QA.
