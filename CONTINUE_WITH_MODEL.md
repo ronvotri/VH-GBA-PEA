@@ -713,3 +713,25 @@ Canonical terminology rule is mandatory:
 - TM/HM names/IDs: do not translate
 
 Continue `src/data/text/move_descriptions.h` after RAIN DANCE, then item descriptions. Translate prose only; canonical identifiers remain English.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 655 / 8,279 — 2026-10-08
+
+System-text remains complete: **2,319 / 2,319**.
+
+System-ui:
+- trainer classes: 66 complete
+- abilities: 155 complete/reviewed
+- move descriptions: **354 / 354 real descriptions complete**
+- item descriptions: **80 / 309 real descriptions translated** (dummy sentinel excluded)
+
+Continue item descriptions after TINY MUSHROOM.
+
+Mandatory canonical terminology:
+- do not translate Pokémon names
+- do not translate MOVE names
+- do not translate ITEM names
+- do not translate TM/HM names/IDs
+- translate surrounding descriptions/help/UI prose only
+
+GitHub `main` is authoritative.
