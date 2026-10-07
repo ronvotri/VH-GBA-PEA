@@ -28,9 +28,9 @@ SHA-256:
 
 ## Vấn đề còn lại
 
-**Độ phủ bản dịch vẫn chưa hoàn chỉnh.** Trong khi chơi vẫn gặp câu tiếng Anh xen giữa các đoạn tiếng Việt. Ví dụ checkpoint mới nhất vẫn thấy:
+**Catalog dịch map/story đã hoàn tất 4,361 / 4,361 (100%) ở mức manifest/source QA.** Câu English từng thấy trong game đã được neo vào catalog và nằm trong phạm vi manifest hoàn chỉnh.
 
-`There could be treasures just waiting to be discovered down there.`
+Điều còn lại không phải là “dịch thêm map/story”, mà là **tích hợp toàn bộ manifest vào ROM v0.4** và tiếp tục các nhóm user-facing khác như system-text, Arena-only, UI và battle text. Vì vậy bản ROM hiện tại vẫn chưa được gọi là Việt hóa hoàn chỉnh.
 
 Không được quay lại cách quét/repoint pointer toàn ROM vì cách đó từng gây:
 
@@ -50,6 +50,8 @@ Không được quay lại cách quét/repoint pointer toàn ROM vì cách đó 
 8. QA liên tục: title → intro → overworld → battle → post-battle → save/load → UI/menu → main story.
 
 Workflow `.github/workflows/arena-map.yml` đã được tạo để build đúng source Arena 0.13.0 và xuất `pokeemerald.map` + symbol list phục vụ mapping ROM.
+
+Map/story canonical inventory: **4,361 / 4,361 (100%)** tại `translations/map-story/INDEX.md`. `tools/audit_remaining_map_story.py` dùng catalog authoritative để kiểm tra phần còn thiếu trước mỗi integration checkpoint.
 
 **Phiên mới nên đọc [CONTINUE_WITH_MODEL.md](CONTINUE_WITH_MODEL.md) trước.**
 
