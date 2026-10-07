@@ -3,8 +3,8 @@
   "scope": "map-story",
   "area": "Battle Frontier / Pokemon Center / Ranking Hall / Reception Gate / Scott's House",
   "baseline": "v0.4",
-  "status": "translation-complete-source-qa-pending",
-  "notes": "Catalog-driven complete Battle Frontier shared services map-local text batch.",
+  "status": "translation-complete-source-qa",
+  "notes": "Catalog-driven complete Battle Frontier shared services map-local text batch. Label / placeholder / paragraph-control / terminator QA passed. No ROM patch or pointer write performed.",
   "translations": {
     "BattleFrontier_PokemonCenter_1F_Text_NeverSeenPokemon": "Có người ở đây dùng một POKéMON\nmà tôi chưa từng thấy.\\pÍt nhất ở TRAINER'S SCHOOL\ntôi chưa từng học về nó.\\pKhông biết phải bắt loại POKéMON\nnhư vậy ở đâu nhỉ.$",
     "BattleFrontier_PokemonCenter_1F_Text_NextStopBattleArena": "Được rồi! Điểm tiếp theo, BATTLE ARENA!\nTôi nên lấy đúng POKéMON từ\\lPC Storage System.$",
