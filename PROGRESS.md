@@ -817,3 +817,22 @@ Coverage now:
 - remaining system-text: **1,167**
 
 The eight Apprentice manifests were fetched back from GitHub `main`; total unique labels = **288**, with no duplicate manifest labels. No ROM bytes or pointers were modified.
+
+
+## System-text checkpoint — 1,232 / 2,319 — 2026-10-08
+
+Completed after the 1,152 checkpoint:
+- `data/text/tv.inc` system-text rows **1-80 / 336**
+  - `translations/system-text/tv-01.vi.json`: 40
+  - `translations/system-text/tv-02.vi.json`: 40
+
+Coverage now:
+- map/story: **4,361 / 4,361 (100%)**
+- Arena-only: **46 / 46 (100%)**
+- system-text: **1,232 / 2,319**
+- remaining system-text: **1,087**
+
+Validation:
+- Apprentice rows 1-240 are already CI PASS through #145; final Apprentice runs #146-147 are processing.
+- TV manifests were fetched back from GitHub `main` and parse successfully with 40 strings each.
+- No ROM bytes or pointers were modified.
