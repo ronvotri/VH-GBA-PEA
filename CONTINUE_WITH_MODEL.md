@@ -249,3 +249,17 @@ Current committed map/story coverage: **2,679 / 4,361 (~61.4%)**.
 Remaining map/story: **1,682**.
 
 Main-story route is now covered by QA-clean manifests through the Pokémon League ending. Continue by auditing the remaining optional/post-game map-story gaps, starting with **New Mauville / Abandoned Ship / Magma Hideout**, then legendary/island/Battle Frontier content. Use `translations/map-story/INDEX.md` as the canonical inventory.
+
+
+## Translation checkpoint — New Mauville / Abandoned Ship / Magma Hideout
+
+Latest complete manifests:
+- New Mauville + Abandoned Ship: **62 / 62**
+- Magma Hideout: **56 / 56**
+
+Current committed map/story coverage: **2,797 / 4,361 (~64.1%)**.
+Remaining map/story: **1,564**.
+
+Both manifests passed source-level label / placeholder / paragraph / terminator QA.
+
+Continue next by auditing and translating **legendary / sealed / island / post-game gaps**, then Battle Frontier / Battle Tent. Use `translations/map-story/INDEX.md` as the canonical inventory.
