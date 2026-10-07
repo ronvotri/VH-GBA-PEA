@@ -443,3 +443,19 @@ New completed system-text manifests:
 - `translations/system-text/core-save-pc-items-events.vi.json`: 69
 
 Continue translation from the shipping-verified source catalog. Do not return to map/story unless QA finds a concrete defect. Binary write/repoint remains separate from translation completeness.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-TEXT 295 / 2,319 — 2026-10-07
+
+Latest completed system-text manifests:
+- \`translations/system-text/cable-club.vi.json\`: **82**
+- \`translations/system-text/move-tutors.vi.json\`: **41**
+- \`translations/system-text/berries.vi.json\`: **41**
+
+Authoritative coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **295 / 2,319 complete**
+- remaining system-text: **2,024**
+
+Continue system-text from the shipping-verified catalog. Recommended next bounded groups: Trick House Mechadolls (45), Secret Base Trainers (30), Frontier Brain (28), Contest Painting (27), Pokédex Rating (25), Mauville Man (18), Contest Link (11), furniture checks (7), record mix (2), then the larger contest/match-call/apprentice/TV/trainer blocks. Preserve placeholders/control tokens and do not perform ROM writes or mass-repoint during translation-only passes.
