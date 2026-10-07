@@ -665,3 +665,19 @@ Shipping-layout checkpoint CI #116 PASS:
 - no ROM modification, pointer scan, pointer write, or mass-repoint.
 
 Latest system-text batch is committed; continue with remaining **2,188** system-text strings, prioritizing player-facing shared systems before trainer chatter.
+
+
+## System-text checkpoint — 295 / 2,319 — 2026-10-07
+
+New completed manifests:
+- \`translations/system-text/cable-club.vi.json\`: **82**
+- \`translations/system-text/move-tutors.vi.json\`: **41**
+- \`translations/system-text/berries.vi.json\`: **41**
+
+Coverage now:
+- map/story: **4,361 / 4,361 (100%)**
+- Arena-only: **46 / 46 (100%)**
+- system-text: **295 / 2,319**
+- remaining system-text: **2,024**
+
+The three new manifests contain **164** player-facing system-text strings. Source-side QA preserved placeholder/control-token order and terminators; all three manifests parse as valid JSON. No ROM bytes or pointers were modified.
