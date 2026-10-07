@@ -1026,3 +1026,26 @@ Confirmed `main` is synchronized before continuing localization:
 - move descriptions: **354 / 354 real descriptions complete**
 - item descriptions: **80 / 309**
 - canonical Pokémon / MOVE / ITEM / TM / HM names remain English
+
+
+## System-UI checkpoint — 884 / 8,279 — 2026-10-08
+
+Completed/reviewed:
+- Trainer class names: **66 / 66**
+- Ability names + descriptions: **155 / 155**
+- Move descriptions: **354 / 354 real descriptions complete**
+- Item descriptions: **309 / 309 real descriptions complete**
+  - 8 manifests: 40 + 40 + 40 + 40 + 40 + 40 + 40 + 29
+  - dummy/null sentinel intentionally excluded
+
+Canonical terminology remains mandatory:
+- Pokémon species names stay English
+- MOVE names stay English
+- ITEM names stay English
+- TM/HM names and identifiers stay English
+- descriptive/help/UI prose is translated
+
+System-ui committed coverage: **884 / 8,279**
+Remaining system-ui: **7,395**
+
+No ROM bytes or pointers were modified.
