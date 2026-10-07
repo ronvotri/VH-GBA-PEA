@@ -1,6 +1,6 @@
 # Map/Story Translation Manifest Index
 
-Checkpoint: **2,492 / 4,361 map/story strings complete (~57.1%)**
+Checkpoint: **2,679 / 4,361 map/story strings complete (~61.4%)**
 
 This index is the canonical inventory for committed map/story translation manifests. The compressed `sootopolis.vi.json.gz` is a duplicate convenience artifact and is **not** counted separately.
 
@@ -33,7 +33,11 @@ This index is the canonical inventory for committed map/story translation manife
 | `mossdeep-core.vi.json` | 52 |
 | `mossdeep-gym.vi.json` | 52 |
 | `mossdeep-space-center-steven.vi.json` | 65 |
-| **TOTAL** | **2,492** |
+| `route124-131-shoal-seafloor-skypillar.vi.json` | 63 |
+| `pacifidlog-route132-134.vi.json` | 34 |
+| `victory-road.vi.json` | 54 |
+| `ever-grande-pokemon-league.vi.json` | 36 |
+| **TOTAL** | **2,679** |
 
 ## Integrity audit — 2026-10-07
 
@@ -51,16 +55,13 @@ A repository-wide search after repair found **no remaining occurrence** of the b
 
 ## Next translation block
 
-Route 122 / Safari Zone have no map-local `.string` entries in this source scope. Route 123 is complete.
+Main-story coverage through **Pokémon League / Hall of Fame** is now represented by committed QA-clean manifests.
 
-Aqua Hideout is **34 / 34** complete.
-Mossdeep is **169 / 169** complete across core + Gym + Space Center / Steven.
-
-Continue with the next story-heavy block after Mossdeep:
-- Route 124 / Route 125 / Shoal Cave
-- Route 126 / Route 127 / Route 128
-- Seafloor Cavern
-- Route 129 / Route 130 / Route 131 / Sky Pillar
-- remaining late-game / post-game map-story gaps
+Next, audit and translate the remaining map/story gaps, prioritizing:
+- New Mauville / Abandoned Ship
+- Magma Hideout and remaining villain/post-story areas
+- sealed/legendary locations and optional islands
+- Battle Frontier / Battle Tent / remaining post-game map-local text
+- any other cataloged map/story entries not yet represented in this index
 
 Project rules remain unchanged: **v0.4 baseline, no screenshot-by-screenshot patching, no mass-repoint.**
