@@ -639,3 +639,16 @@ Current coverage:
 - remaining system-text: **711**
 
 Continue `data/text/trainers.inc` from row **121**. GitHub `main` is authoritative. Keep committing bounded slices immediately and preserve exact source control-token order/terminators.
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-TEXT 1,928 / 2,319 — 2026-10-08
+
+Current coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **1,928 / 2,319 complete**
+- remaining system-text: **391**
+
+`trainers.inc` is **440 / 831** across 11 manifests. Continue from trainer row **441**.
+
+GitHub `main` is authoritative. Keep committing bounded source slices immediately. Preserve exact source labels, placeholder/control-token order and terminators. No ROM/pointer writes in translation-only passes.
