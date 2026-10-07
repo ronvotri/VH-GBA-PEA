@@ -323,3 +323,38 @@ QA-clean shared batches: Exchange/Lounges **87**, Outside/Mart **72**, Services/
 Current map/story coverage: **3,648 / 4,361 (~83.7%)**; remaining **713**.
 
 Next: audit the remaining 713 source-map strings exactly, then translate Battle Tent and optional/post-game gaps. Use `translations/map-story/INDEX.md` as canonical inventory.
+
+
+## FINAL CHAT HANDOFF — 2026-10-07
+
+Use this section as the authoritative resume point for the next chat.
+
+Repo: `ronvotri/VH-GBA-PEA`
+Baseline: **v0.4**
+Canonical manifest inventory: `translations/map-story/INDEX.md`
+
+Current committed map/story coverage: **3,776 / 4,361 (~86.6%)**
+Remaining map/story: **585 strings**
+
+Latest fix/checkpoint:
+- `battle-frontier-pyramid-dynamic.vi.json`: **128 / 128**, now `translation-complete-source-qa`.
+- Corrected six bad labels from `OneItemsRemaining1..6` to `OneItemRemaining1..6`.
+- Re-QA against `data/maps/BattleFrontier_BattlePyramidFloor/scripts.inc`: 0 label/placeholder/`\p`/terminator issues.
+- Repo-wide search confirms 0 remaining occurrences of `The requested file reference is not currently visible`.
+
+Already QA-clean at a high level:
+- Main story through Pokémon League / Hall of Fame.
+- New Mauville, Abandoned Ship, Magma Hideout.
+- Battle Frontier Arena, Dome, Factory, Palace, Pike, Pyramid, Tower.
+- Shared Battle Frontier exchange/lounge/outside/mart/services/Scott content.
+- Optional legendary/island local-text audit represented in manifests.
+
+**Continue next:** identify the exact remaining 585 map/story catalog strings not yet represented by `INDEX.md`, prioritize Battle Tent leftovers + optional/post-game gaps, translate in source-driven batches, QA, push, and update INDEX/PROGRESS/HANDOFF.
+
+Rules unchanged:
+- v0.4 baseline.
+- No screenshot-by-screenshot patching.
+- No mass-repoint.
+- Preserve placeholders/control codes.
+- Do not reopen font/pointer/catalog research unless a real patch/build QA failure blocks progress.
+- Translation manifests are not yet the final patched/tested ROM; ROM patch/pointer-write step remains later.
