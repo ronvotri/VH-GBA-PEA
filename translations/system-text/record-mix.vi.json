@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "scope": "system-text",
+  "area": "Record Mix shared prompts",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Source-catalog QA completed before commit; placeholder/control-token order and terminators preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "Text_WouldYouLikeToMixRecords": "Bạn có muốn trộn record với\\nnhững TRAINER khác không?$",
+    "Text_WeHopeToSeeYouAgain": "Mong sớm gặp lại bạn!$"
+  }
+}
