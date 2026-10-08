@@ -33,6 +33,16 @@ def main() -> int:
         all_rows = list(csv.DictReader(f))
     rows = [r for r in all_rows if r.get("category") in USER_FACING]
 
+    # Never silently collapse duplicate source identities through dict lookup:
+    # source identity must be one-to-one before interpreting manifest coverage.
+    identity_counts = Counter(identity(r) for r in rows)
+    duplicate_source_ids = [key for key, count in identity_counts.items() if count > 1]
+    if duplicate_source_ids:
+        raise SystemExit(
+            "coverage mismatch: duplicate catalog source identities: "
+            + ", ".join(duplicate_source_ids[:5])
+        )
+
     by_identity = {identity(r): r for r in rows}
     by_label: dict[str, list[dict[str, str]]] = defaultdict(list)
     for r in rows:
@@ -105,7 +115,17 @@ def main() -> int:
         off = r.get("shipping_rom_offset", "")
         match = r.get("shipping_match_status", "")
         if off and match.startswith("verified:"):
-            state = "ready:verified-shipping-offset"
+            # A status string alone is not a usable shipping address. Reject
+            # malformed/out-of-range offsets instead of marking them ready.
+            try:
+                offset_int = int(off, 16) if off.lower().startswith("0x") else -1
+            except ValueError:
+                offset_int = -1
+            state = (
+                "ready:verified-shipping-offset"
+                if 0 <= offset_int < 0x2000000
+                else "blocked:invalid-verified-shipping-offset"
+            )
         else:
             state = "blocked:needs-shipping-resolution"
         status[state] += 1
