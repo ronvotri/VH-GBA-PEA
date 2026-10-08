@@ -1310,3 +1310,16 @@ Clean Arena 0.13.0, Vietnamese v0.4, and AowVN donor ROMs were supplied locally 
 - Local user-facing audit ZIP was generated in the chat containing 17,512 CSV rows, JSON summary and README (not committed to repo). Reconstruct with new CLI and actual private ROM inputs if local copy is unavailable.
 
 NEXT: use full pinned charmap for latest exact-byte candidate audit, verify actual shipping and v0.4 references, Vietnamese v0.4 encoding/font/control tokens, allocation/overlap and guarded dry-run. No speculative new v0.5 GBA; v0.4 stays the rollback baseline.
+
+
+## TITLE CREDIT CHECKPOINT — 2026-10-09 — VOTRI VALLEY
+
+User explicitly requested **one new line on the Pokémon Emerald Arena logo/title screen**, exact string: **`Việt hóa bởi Votri Valley`**.
+
+A separate **v0.4 + title credit** local ROM and a verified **6,468-byte BPS patch** were produced from hash-locked original v0.4. This is *not* an integrated v0.5. Full details, exact input/output/BPS hashes, ROM offsets, controlled one-title-pointer exception, LZ77 QA, and pending emulator QA: **`docs/TITLE_CREDIT_VOTRI_VALLEY.md`** (commit `5e29461`).
+
+Important: Previous safety rule against changing startup/title remains active for all other modifications. The title credit has **one intentional, source-verified pointer literal change** at `0x000BF900` to relocate only the BG2 logo graphics; it also modifies only the compressed title tilemap at `0x00EE0644` and new graphic data at trailing ROM offset `0x01FF0700`. Original v0.4 ROM is preserved.
+
+The generated local binary is currently **static QA verified but not emulator-runtime verified**. Obtain the original v0.4 ROM and saved private patch/builder for future sessions if necessary. **Do not commit a copyrighted full ROM to GitHub.** Preserve this explicit title credit requirement when implementing final full-translation integration.
+
+Translation source/manifest coverage remains **17,512 / 17,512**, but live runtime integration is still pending.
