@@ -1445,3 +1445,29 @@ Safety/terminology remain unchanged:
 - map/story shipping layout remains verified for the exact corrected catalog hash and source-build hash checkpoint
 
 Final GitHub Actions runs for the last 107 battle rows were still in progress when this checkpoint text was prepared. Recheck the newest workflow before claiming final CI PASS in a future session. If PASS, do **not** reopen translation coverage; move to integration/build/test planning and runtime QA instead.
+
+
+## FINAL CI CONFIRMATION — USER-FACING TRANSLATION PHASE COMPLETE — 2026-10-09
+
+GitHub Actions run **37824308095** completed **SUCCESS** after the final TV battle manifests.
+
+Authoritative coverage audit:
+- catalog entries: **17,513**
+- represented rows: **17,512**
+- unresolved manifest keys: **0**
+- duplicate catalog rows represented: **0**
+- Arena-only: **46 / 46**
+- battle: **2,223 / 2,223**
+- map/story: **4,361 / 4,361**
+- system-text: **2,319 / 2,319**
+- system-ui: **8,563 / 8,563**
+- debug-internal: **0 / 1**, intentionally excluded test signpost at `data/scripts/test_signpost.inc`
+
+Therefore the source/manifest translation phase is complete for **all 17,512 user-facing catalog rows**. Do not resume broad translation sweeps unless runtime QA proves a concrete defect.
+
+Next phase: safe ROM integration.
+- Existing verified shipping offsets: **6,680 / 17,512** user-facing rows (map/story 4,361 + system-text 2,319).
+- Still needs shipping-layout verification before any binary write: **10,832** rows (Arena-only 46 + system-ui 8,563 + battle 2,223).
+- `tools/plan_user_facing_integration.py` and the corresponding CI step were added to make this readiness split explicit without modifying a ROM.
+- Clean shipping Arena 0.13.0 and v0.4 baseline are not currently available in the active file surface, so no attempt was made to resolve those 10,832 offsets or write the ROM.
+- Safety remains: **0 guessed offsets, 0 pointer writes, 0 mass-repoint**.
