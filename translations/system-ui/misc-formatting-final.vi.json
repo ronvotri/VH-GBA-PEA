@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "scope": "system-ui",
+  "area": "remaining local formatting/sentinel strings — Summary, Pokédex, Dodrio debug names, new game, field avatar, menu (16 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Formatting/control-only and empty sentinel rows are intentionally retained exactly. The three Dodrio Berry Picking strings feed only UNUSED Debug_SetPlayerNamesAndResults and are retained rather than localized. This manifest records coverage without changing player-facing canonical/layout data. No ROM patch or pointer write performed.",
+  "translations": {
+    "sMemoNatureTextColor": "{COLOR LIGHT_RED}{SHADOW GREEN}",
+    "sMemoMiscTextColor": "{COLOR WHITE}{SHADOW DARK_GRAY}",
+    "sStatsLeftColumnLayout": "{DYNAMIC 0}/{DYNAMIC 1}\\n{DYNAMIC 2}\\n{DYNAMIC 3}",
+    "sStatsRightColumnLayout": "{DYNAMIC 0}\\n{DYNAMIC 1}\\n{DYNAMIC 2}",
+    "sMovesPPLayout": "{PP}{DYNAMIC 0}/{DYNAMIC 1}",
+    "sText_No000": "{NO}000",
+    "sText_TenDashes": "----------",
+    "sExpandedPlaceholder_PokedexDescription": "",
+    "sText_TenDashes2": "----------",
+    "sJPText_Vowels": "あいうえおかき",
+    "sText_Letters": "ABCDEFG",
+    "sText_Digits": "0123456",
+    "@anon:src/new_game.c:60:16": "",
+    "@anon:src/new_game.c:61:20": "",
+    "dot": "·",
+    "sEmptyItemName": " "
+  }
+}
