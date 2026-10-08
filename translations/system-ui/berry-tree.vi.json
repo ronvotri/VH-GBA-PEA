@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "scope": "system-ui",
+  "area": "data/scripts/berry_tree.inc — Berry planting, growth and watering text (19 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Complete Berry Tree text localization. Berry/item identifiers and WAILMER PAIL remain canonical; placeholders/control/terminator order preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "BerryTree_Text_ItsSoftLoamySoil": "Đất mềm và tơi xốp.$",
+    "BerryTree_Text_WantToPlant": "Đất mềm và tơi xốp.\\nBạn muốn trồng một BERRY không?$",
+    "BerryTree_Text_PlantedOneBerry": "{PLAYER} đã trồng một {STR_VAR_1} vào\\nđất mềm và tơi xốp.$",
+    "BerryTree_Text_BerryGrowthStage1": "Một {STR_VAR_1} đã được trồng ở đây.$",
+    "BerryTree_Text_BerryGrowthStage2": "{STR_VAR_1} đã nảy mầm.$",
+    "BerryTree_Text_BerryGrowthStage3": "Cây {STR_VAR_1} này đang cao dần.$",
+    "BerryTree_Text_BerryGrowthStage4": "Những bông hoa {STR_VAR_1} đang nở\\n{STR_VAR_2}.$",
+    "BerryTree_Text_CareAdverbGreat": "rất rực rỡ$",
+    "BerryTree_Text_CareAdverbPoor": "xinh xắn$",
+    "BerryTree_Text_CareAdverbGood": "đẹp mắt$",
+    "BerryTree_Text_WantToPick": "Bạn tìm thấy {STR_VAR_2} {STR_VAR_1}!\\pBạn có muốn hái\\n{STR_VAR_1} không?$",
+    "BerryTree_Text_PickedTheBerry": "{PLAYER} đã hái {STR_VAR_2} {STR_VAR_1}.$",
+    "BerryTree_Text_PutAwayBerry": "{PLAYER} đã cất {STR_VAR_1}\\nvào ngăn BERRIES của TÚI.\\pĐất lại trở về trạng thái mềm\\nvà tơi xốp.$",
+    "BerryTree_Text_BerryPocketFull": "Ngăn BERRIES trong TÚI đã đầy.\\pKhông thể lấy {STR_VAR_1}.$",
+    "BerryTree_Text_BerryLeftUnpicked": "{PLAYER} để lại {STR_VAR_1}\\nchưa hái.$",
+    "BerryTree_Text_WantToWater": "Bạn muốn tưới {STR_VAR_1} bằng\\nWAILMER PAIL không?$",
+    "BerryTree_Text_WateredTheBerry": "{PLAYER} đã tưới {STR_VAR_1}.$",
+    "BerryTree_Text_PlantIsDelighted": "Cây có vẻ rất vui.$",
+    "BerryTree_Text_ExclamationPoint": "!$"
+  }
+}
