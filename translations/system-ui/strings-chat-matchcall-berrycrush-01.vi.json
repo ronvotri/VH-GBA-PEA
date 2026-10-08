@@ -13,7 +13,7 @@
     "gText_InputText": "Nhập nội dung.",
     "gText_F700JoinedChat": "{DYNAMIC 0} đã vào phòng chat!",
     "gText_F700LeftChat": "{DYNAMIC 0} đã rời phòng chat.",
-    "gJPText_PlayersXPokemon": "POKéMON thứ {DYNAMIC 1} của {DYNAMIC 0}:",
+    "gJPText_PlayersXPokemon": "{DYNAMIC 0}: POKéMON thứ {DYNAMIC 1}:",
     "gJPText_PlayersXPokmonDoesNotExist": "{DYNAMIC 0} không có POKéMON thứ {DYNAMIC 1}",
     "gText_ExitingChat": "Đang thoát phòng chat…",
     "gText_LeaderLeftEndingChat": "LEADER {DYNAMIC 0} đã\\nrời đi, phòng chat sẽ đóng.",
