@@ -125,6 +125,25 @@ jobs:
             --out artifact/user-facing-integration-plan.json \
             --summary artifact/user-facing-integration-summary.json
 
+      - name: Publish safe integration readiness
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          d = json.loads(Path("artifact/user-facing-integration-summary.json").read_text())
+          print("### Emerald Arena — read-only integration readiness")
+          print(f"Source/manifest coverage: **{d['translation_rows']:,}/{d['catalog_user_facing_rows']:,}**")
+          print("| Check | Rows |")
+          print("| --- | ---: |")
+          for label, count in d["integration_status_counts"].items():
+              print(f"| {label} | {count:,} |")
+          for label, count in d.get("source_text_comparison_counts", {}).items():
+              print(f"| {label} (NOT a v0.4 write decision) | {count:,} |")
+          print(f"| Verified v0.4 bytes for safe no-op | {d.get('rows_safe_to_skip_binary_write', 0):,} |")
+          print()
+          print("No ROM write or pointer write. Source-identical is NOT automatically a v0.4 no-op.")
+          PY
+
       - name: Plan map story integration
         run: |
           python3 tools/plan_map_story_integration.py \
