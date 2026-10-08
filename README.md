@@ -94,3 +94,8 @@ Bản localized cuối sẽ hiện thêm một dòng nhỏ:
 Dòng này được tạo thành sprite graphic riêng ở title screen, nằm giữa **PRESS START** và dòng copyright gốc. Cách này không sửa logo Pokémon và không phụ thuộc vào text window/font runtime. Công cụ nguồn: `tools/apply_title_credit.py`; hướng dẫn: [docs/TITLE_CREDIT.md](docs/TITLE_CREDIT.md).
 
 Lưu ý: credit chỉ được áp dụng cho **localized build cuối**, không áp dụng vào workflow shipping-layout/symbol-map để tránh làm lệch địa chỉ nguồn đang dùng cho tích hợp ROM an toàn.
+
+
+## Source-byte English leftovers audit (2026-10-09)
+
+[Runtime English sweep](docs/RUNTIME_ENGLISH_SWEEP_2026-10-09.md) examined all 17,512 user-facing catalog rows in the actual v0.4 ROM. **7,553 translated-source entries still have English source bytes at an attested or candidate offset; 4,651 are long passages**. The first 4,772 located cases have attested original shipping offsets; the other 2,781 are build-offset candidates requiring verification. This is a read-only backlog, not a released v0.5. Full ROM bytes and patch data remain private.
