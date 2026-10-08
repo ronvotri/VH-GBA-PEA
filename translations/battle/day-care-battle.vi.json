@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "scope": "battle",
+  "area": "data/scripts/day_care.inc — battle-classified Day Care warning (1 string)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "This player-facing Day Care warning is categorized as battle because its source label contains Battle. Control codes and terminator preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "Route117_PokemonDayCare_Text_WhatWillYouBattleWith@@data/scripts/day_care.inc:395": "Nếu gửi POKéMON đó cho tôi,\\nbạn sẽ lấy gì để chiến đấu?\\pLần khác quay lại nhé.$"
+  }
+}
