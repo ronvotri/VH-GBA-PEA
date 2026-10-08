@@ -97,6 +97,45 @@ class IntegrationPlannerTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("coverage mismatch", result.stderr)
 
+    def test_duplicate_source_catalog_identity_fails(self):
+        row = {"source_label": "Label", "source_file": "src/test.c",
+               "source_line": "42", "category": "system-ui", "english": "OPEN",
+               "shipping_rom_offset": "", "shipping_match_status": ""}
+        result, _, _ = self.run_planner(
+            [row, dict(row)],
+            [("system-ui", {"Label@@src/test.c:42": "Mở"})]
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("duplicate catalog source identities", result.stderr)
+
+    def test_malformed_verified_shipping_offset_is_blocked(self):
+        row = {"source_label": "Label", "source_file": "src/test.c",
+               "source_line": "42", "category": "system-ui", "english": "OPEN",
+               "shipping_rom_offset": "0xNOTHEX",
+               "shipping_match_status": "verified:exact-source-bytes-at-build-offset"}
+        result, output, summary = self.run_planner(
+            [row], [("system-ui", {"Label@@src/test.c:42": "Mở"})]
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = json.loads(summary.read_text(encoding="utf-8"))
+        self.assertEqual(report["integration_status_counts"],
+                         {"blocked:invalid-verified-shipping-offset": 1})
+        self.assertFalse(json.loads(output.read_text(encoding="utf-8"))[0]
+                         ["is_safe_to_skip_binary_write"])
+
+    def test_outside_rom_verified_shipping_offset_is_blocked(self):
+        row = {"source_label": "Label", "source_file": "src/test.c",
+               "source_line": "42", "category": "system-ui", "english": "OPEN",
+               "shipping_rom_offset": "0x02000000",
+               "shipping_match_status": "verified:exact-source-bytes-at-build-offset"}
+        result, _, summary = self.run_planner(
+            [row], [("system-ui", {"Label@@src/test.c:42": "Mở"})]
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = json.loads(summary.read_text(encoding="utf-8"))
+        self.assertEqual(report["integration_status_counts"],
+                         {"blocked:invalid-verified-shipping-offset": 1})
+
     def test_duplicate_catalog_identity_fails(self):
         rows = [{"source_label": "Label", "source_file": "src/battle.c",
                  "source_line": "12", "category": "battle", "english": "TEXT",
