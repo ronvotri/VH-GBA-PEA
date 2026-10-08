@@ -149,7 +149,8 @@ def category_for(path: str, label: str, provenance: str) -> str:
         return "battle"
     if path.startswith("data/text/"):
         return "system-text"
-    if any(x in low for x in ("debug", "test")):
+    path_tokens = {x for x in re.split(r"[/_.-]+", low) if x}
+    if "debug" in path_tokens or "test" in path_tokens or "tests" in path_tokens:
         return "debug-internal"
     if path.startswith(("src/", "data/")):
         return "system-ui"
