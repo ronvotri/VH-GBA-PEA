@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "scope": "battle",
-  "area": "src/strings.c — shared UI labels classified as battle by source catalog (82 strings)",
+  "area": "src/strings.c — shared UI labels classified as battle by source catalog (89 strings)",
   "baseline": "v0.4",
   "status": "translation-complete-source-qa",
   "notes": "These labels live in src/strings.c but are categorized as battle by tools/build_source_text_catalog.py because their source labels contain 'battle'. Kept outside system-ui manifests to preserve category integrity. Placeholder/control-token order preserved. No ROM patch or pointer write performed.",
@@ -87,6 +87,13 @@
     "gText_BattleChoiceResults": "{PLAYER} - KQ BATTLE CHOICE",
     "gText_BattleSwapSingleResults": "{PLAYER} - KQ BATTLE SWAP ĐƠN",
     "gText_BattleSwapDoubleResults": "{PLAYER} - KQ BATTLE SWAP ĐÔI",
-    "gText_BattleQuestResults": "{PLAYER} - KQ BATTLE QUEST"
+    "gText_BattleQuestResults": "{PLAYER} - KQ BATTLE QUEST",
+    "gText_BattleScene": "CẢNH CHIẾN ĐẤU",
+    "gText_BattleStyle": "KIỂU CHIẾN ĐẤU",
+    "gText_BattleSceneOn": "{COLOR GREEN}{SHADOW LIGHT_GREEN}BẬT",
+    "gText_BattleSceneOff": "{COLOR GREEN}{SHADOW LIGHT_GREEN}TẮT",
+    "gText_BattleStyleShift": "{COLOR GREEN}{SHADOW LIGHT_GREEN}SHIFT",
+    "gText_BattleStyleSet": "{COLOR GREEN}{SHADOW LIGHT_GREEN}SET",
+    "gText_BattlePyramidFloor": "BATTLE PYRAMID\\n{STR_VAR_1}"
   }
 }
