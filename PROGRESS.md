@@ -1286,3 +1286,37 @@ QA:
 
 Continue after `gText_AndFillOutTheQuestionnaire`.
 
+## System-UI / Battle checkpoint — 2,695 / 8,279 + 89 / 2,223 — 2026-10-08
+
+Continued `src/strings.c` through `gJPText_Sama`.
+
+This pass processed **496 source rows**:
+- **430 system-ui**
+- **66 battle**
+
+New system-ui manifests:
+- `strings-easychat-save-rtc-01.vi.json`: 69
+- `strings-roulette-bp-prizes-01.vi.json`: 72
+- `strings-trainercard-contest-input-01.vi.json`: 59
+- `strings-chat-matchcall-berrycrush-01.vi.json`: 67
+- `strings-frontierpass-minigames-01.vi.json`: 38
+- `strings-mysterygift-frontier-records-01.vi.json`: 60
+- `strings-options-link-event-01.vi.json`: 65
+
+Battle additions were merged into:
+- `translations/battle/strings-shared-ui-01.vi.json`: now **89** strings total
+
+Coverage:
+- system-ui: **2,695 / 8,279**
+- battle: **89 / 2,223**
+- remaining system-ui: **5,584**
+- remaining battle: **2,134**
+
+QA:
+- missing source labels: **0**
+- placeholder/control-token-order mismatches: **0**
+- catalog scope mismatches: **0**
+- no ROM bytes or pointers modified
+
+Continue after `gJPText_Sama`.
+
