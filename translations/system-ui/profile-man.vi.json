@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "scope": "system-ui",
+  "area": "data/scripts/profile_man.inc — Trainer profile and Easy Chat tutorial (12 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Complete Profile Man localization. Easy Chat instructions are phrased naturally while preserving the exact paragraph/line control structure. POKéMON/TRAINER/MYSTERY EVENT CLUB identifiers remain recognizable. No ROM patch or pointer write performed.",
+  "translations": {
+    "ProfileMan_Text_CollectTrainerProfiles": "Xin chào, TRAINER!\\nNụ cười của bạn tuyệt thật đấy.\\pTôi có một sở thích--sưu tầm hồ sơ\\ncủa các POKéMON TRAINER.$",
+    "ProfileMan_Text_MayISeeYourProfile": "Vậy sao nào?\\nCho tôi xem hồ sơ của bạn nhé?$",
+    "ProfileMan_Text_EasyChatExplanation": "Bạn tự tạo hồ sơ bằng cách ghép\\nbốn từ hoặc cụm từ.\\pĐây, tôi sẽ cho bạn xem một\\nví dụ dùng bốn mẩu chữ.\\pBạn có thể đổi bốn mẩu đó bằng\\nnhững mẩu chữ khác\\ltùy ý để tạo hồ sơ riêng.\\pCó rất nhiều mẩu chữ\\nđể bạn sử dụng.\\pChúng được xếp theo nhóm như\\nPOKéMON, lối sống và sở thích để\\ldễ tìm hơn.\\pTrước tiên, hãy chọn nhóm chữ\\nđể mở danh sách lựa chọn.\\pSau đó chọn mẩu bạn muốn.\\pLặp lại với các vị trí còn lại,\\nvà hồ sơ của riêng bạn sẽ hoàn tất.$",
+    "ProfileMan_Text_LetsSeeItThen": "Tuyệt! Cảm ơn bạn!\\nVậy cho tôi xem nào.$",
+    "ProfileMan_Text_ImagineYouWouldHaveWonderfulProfile": "Ôi, thật sao?\\pTôi cứ nghĩ người như bạn sẽ có\\nmột hồ sơ tuyệt vời chứ…$",
+    "ProfileMan_Text_NotIntoItRightNow": "Ồ? Giờ bạn chưa có hứng sao?\\pKhông sao, lúc nào cũng được!$",
+    "ProfileMan_Text_YouHaveWonderfulSmile": "Xin chào, TRAINER!\\nNụ cười của bạn tuyệt thật.$",
+    "ProfileMan_Text_MayISeeYourNewProfile": "Cho tôi xem hồ sơ mới của bạn nhé?$",
+    "ProfileMan_Text_EvenBetterThanLastProfile": "Tuyệt! Cảm ơn bạn!\\pHy vọng nó còn hay hơn hồ sơ\\nbạn cho tôi xem lần trước.$",
+    "ProfileMan_Text_LikeProfileWayItIs": "Ồ, bạn thích hồ sơ hiện tại.\\pTôi hiểu mà--hồ sơ bây giờ\\nđã tuyệt lắm rồi.$",
+    "ProfileMan_Text_FantasticProfile": "T-tuyệt vời!\\pHồ sơ của bạn, quá hay!\\nNó đúng là nói lên con người bạn.\\pAi nghe hồ sơ này cũng sẽ\\nbị bạn cuốn hút!\\pCảm ơn nhé!$",
+    "ProfileMan_Text_YouKnowSecretSaying": "Ồ?\\nBạn biết câu nói bí mật!\\pVậy là giờ bạn cũng là thành viên\\ncủa MYSTERY EVENT CLUB rồi!$"
+  }
+}
