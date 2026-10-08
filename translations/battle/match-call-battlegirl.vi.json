@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "scope": "battle",
+  "area": "src/data/text/match_call_messages.h — BattleGirl Cyndy Match Call profile (4 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "These four player-facing Match Call strings are categorized as battle because their source labels contain 'BattleGirl'. Text remains the same localized profile copy; only manifest scope is corrected. No ROM patch or pointer write performed.",
+  "translations": {
+    "gText_MatchCallBattleGirl_Cyndy_Strategy@@src/data/text/match_call_messages.h:231": "Ra đòn trước là thắng!",
+    "gText_MatchCallBattleGirl_Cyndy_Pokemon@@src/data/text/match_call_messages.h:232": "Hệ GIÁC ĐẤU tốc độ cao.",
+    "gText_MatchCallBattleGirl_Cyndy_Intro1@@src/data/text/match_call_messages.h:233": "Nếu POKéMON của tôi thua,",
+    "gText_MatchCallBattleGirl_Cyndy_Intro2@@src/data/text/match_call_messages.h:234": "tôi sẽ tự chiến tiếp!"
+  }
+}
