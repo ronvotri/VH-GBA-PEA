@@ -988,3 +988,40 @@ Canonical Pokémon / MOVE / ITEM / TM / HM names and identifiers remain English.
 
 Continue `src/strings.c` immediately after `gText_AndFillOutTheQuestionnaire`. Translation-only passes still perform no ROM/pointer writes or mass-repoint.
 
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 2,695 / 8,279 + BATTLE 89 / 2,223 — 2026-10-08
+
+Continued the source-driven `src/strings.c` sweep from immediately after `gText_AndFillOutTheQuestionnaire` through `gJPText_Sama`.
+
+New work in this pass:
+- `strings-easychat-save-rtc-01.vi.json`: **69 system-ui**
+- `strings-roulette-bp-prizes-01.vi.json`: **72 system-ui**
+- `strings-trainercard-contest-input-01.vi.json`: **59 system-ui**
+- `strings-chat-matchcall-berrycrush-01.vi.json`: **67 system-ui**
+- `strings-frontierpass-minigames-01.vi.json`: **38 system-ui**
+- `strings-mysterygift-frontier-records-01.vi.json`: **60 system-ui**
+- `strings-options-link-event-01.vi.json`: **65 system-ui**
+- battle-classified labels added to `translations/battle/strings-shared-ui-01.vi.json`: **66**
+
+This pass processed **496 source rows total**:
+- system-ui: **+430**
+- battle: **+66**
+
+Authoritative coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **2,319 / 2,319 complete**
+- system-ui: **2,695 / 8,279**
+- battle: **89 / 2,223**
+- remaining system-ui: **5,584**
+- remaining battle: **2,134**
+
+QA:
+- all seven new system-ui manifests plus current shared battle manifest rechecked against pinned `pret/pokeemerald@5eff78649e7170a877b961ef0b3da13b81a16038`
+- missing source labels: **0**
+- placeholder/control-token-order mismatches: **0**
+- catalog scope mismatches: **0**
+- two token-order defects found during the pass (`gJPText_PlayersXPokemon`, `gJPText_UnableConnectWithEReader`) were fixed before this checkpoint
+- Frontier facility proper names (BATTLE TOWER/DOME/PALACE/FACTORY/ARENA/PIKE/PYRAMID) are intentionally retained in English for consistency with BATTLE FRONTIER
+
+Continue `src/strings.c` immediately after `gJPText_Sama`. Keep canonical Pokémon / MOVE / ITEM / TM / HM names and identifiers in English. Translation-only passes still perform no ROM/pointer writes or mass-repoint.
+
