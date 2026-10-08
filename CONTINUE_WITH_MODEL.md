@@ -933,3 +933,23 @@ Validator was also hardened: empty translations are accepted only when the catal
 
 Continue `src/strings.c` immediately after `gText_TypesOfContests`. Canonical Pokémon / MOVE / ITEM / TM / HM names and IDs remain English. No ROM/pointer writes or mass-repoint in translation-only passes.
 
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 1,918 / 8,279 + BATTLE 10 / 2,223 — 2026-10-08
+
+Latest source-driven `src/strings.c` slice after `gText_TypesOfContests`:
+- system-ui: **61** strings in `translations/system-ui/strings-contest-bike-prizes-01.vi.json`
+- battle: **3** mode labels added to `translations/battle/strings-shared-ui-01.vi.json`
+
+Authoritative coverage:
+- system-text: **2,319 / 2,319 complete**
+- system-ui: **1,918 / 8,279**
+- battle: **10 / 2,223**
+- remaining system-ui: **6,361**
+- remaining battle: **2,213**
+
+QA:
+- new source labels found: **64 / 64**
+- placeholder/control-token-order mismatches: **0**
+- category mismatches: **0**
+
+Canonical Pokémon / MOVE / ITEM / TM / HM names and IDs remain English; canonical item names in the prize/vendor slice were intentionally retained. Continue `src/strings.c` immediately after `gText_YellowShard`. No ROM/pointer writes or mass-repoint.
+
