@@ -826,3 +826,18 @@ Confirmed `main` before continuing Pokédex work:
 - Pokédex text now committed through row **160 / 387**
 - TENTACOOL layout fix is committed
 - canonical Pokémon / MOVE / ITEM / TM / HM names remain English
+
+
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 1,391 / 8,279 — 2026-10-08
+
+System-text remains complete: **2,319 / 2,319**.
+
+System-ui completed/reviewed:
+- trainer classes 66
+- abilities 155
+- move descriptions 354
+- item descriptions 309
+- decoration descriptions 120
+- Pokédex descriptive text **387 / 387 complete**
+
+Continue with another player-facing system-ui source group. Mandatory rule remains unchanged: Pokémon / MOVE / ITEM / TM / HM names and IDs stay English; translate surrounding prose only.
