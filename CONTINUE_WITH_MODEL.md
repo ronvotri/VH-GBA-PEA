@@ -1241,3 +1241,39 @@ Next phase: safe ROM integration.
 - `tools/plan_user_facing_integration.py` and the corresponding CI step were added to make this readiness split explicit without modifying a ROM.
 - Clean shipping Arena 0.13.0 and v0.4 baseline are not currently available in the active file surface, so no attempt was made to resolve those 10,832 offsets or write the ROM.
 - Safety remains: **0 guessed offsets, 0 pointer writes, 0 mass-repoint**.
+
+## INTEGRATION ENGINEERING HANDOFF — 2026-10-09 — NO ROM WRITES
+
+The user-facing source translation phase is already COMPLETE (17,512/17,512 source catalog entries). Do not resume translations or count raw English source-identical entries as already patched in v0.4.
+
+New safe-integration groundwork committed to GitHub `main`:
+- `tools/plan_user_facing_integration.py`: source text equality classification (`source-identical` / `source-changed`), category/scope mismatch rejection, explicit `v04_baseline_byte_comparison=unresolved`, `is_safe_to_skip_binary_write=false`, no binary action authorization.
+- `tools/tests/test_plan_user_facing_integration.py`: regression tests for no-op assumptions, scope mismatch and duplicates.
+- `tools/verify_local_rom_baselines.py`: read-only SHA-256-locked checks for the clean shipping Arena ROM and Vietnamese v0.4, optional v0.3 protected-title/startup comparison.
+- `tools/tests/test_verify_local_rom_baselines.py`: fail-closed hash and binary-diff helper tests.
+- `tools/audit_v04_verified_offsets.py`: read-only clean-versus-v0.4 byte comparisons only at shipping-verified catalog positions; NEVER authorizes skipping/writing and NEVER verifies runtime pointers.
+- `tools/tests/test_audit_v04_verified_offsets.py`: regression tests. A first test fixture accidentally used a longer fake string and failed CI; fixed with same-length corruption at commit `266ac2c`. Run `37827836450` passed the `Test integration planner safety` step after this fix; overall workflow was still running at this handoff.
+- `.github/workflows/arena-map.yml`: runs these safety unit tests before source build and publishes integration-readiness details to GitHub Actions step summary.
+- `docs/SAFE_ROM_INTEGRATION.md`: exact local preflight/audit commands and runtime QA matrix. `README.md` links this guide.
+
+Authoritative integration planner CI run `37827126689` PASS:
+- source text changed: **13,097**
+- source text identical to English: **4,415** (NOT yet verified no-ops on v0.4)
+- shipping offsets already verified: **6,680**, consisting of **6,557 changed** + **123 source-identical**
+- shipping offsets unresolved: **10,832**, consisting of **6,540 changed** + **4,292 source-identical**
+- v0.4 byte comparisons actually completed in CI: **0**
+- automatically safe to skip ROM writes: **0**
+- source/manifest coverage: **17,512 / 17,512**
+- ROM writes: **0**, pointer writes: **0**, mass-repoint: **false**
+
+Binary inputs are not available in current active file surface; no generated patched GBA exists for this handoff. Do not upload copyrighted ROMs into the public GitHub repo.
+
+NEXT:
+1. Check most recent workflow status; unit test step PASS on `37827836450`.
+2. With the exact private clean shipping Arena 0.13.0 ROM and Vietnamese v0.4 ROM accessible, run `verify_local_rom_baselines.py`.
+3. Use the latest workflow's `arena-0.13.0-symbol-map` artifact and pinned pret charmap with `audit_v04_verified_offsets.py`, strictly read-only.
+4. Resolve remaining shipping layout/reference sites against exact clean binary and verify actual v0.4 pointers/encoder. Only then consider a bounded patch dry-run and actual ROM build.
+5. Regression-test title/intro/overworld/battle/post-battle/save/load, glyphs and UI before distributing any v0.5 build.
+
+Safety: NEVER mass-repoint; NEVER infer shipping offsets from build symbols alone; source-identical is not by itself v0.4 byte-identical. Keep v0.4 as baseline.
+
