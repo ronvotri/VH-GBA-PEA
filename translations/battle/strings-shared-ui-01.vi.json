@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "scope": "battle",
-  "area": "src/strings.c — shared UI labels classified as battle by source catalog (39 strings)",
+  "area": "src/strings.c — shared UI labels classified as battle by source catalog (44 strings)",
   "baseline": "v0.4",
   "status": "translation-complete-source-qa",
   "notes": "These labels live in src/strings.c but are categorized as battle by tools/build_source_text_catalog.py because their source labels contain 'battle'. Kept outside system-ui manifests to preserve category integrity. Placeholder/control-token order preserved. No ROM patch or pointer write performed.",
@@ -44,6 +44,11 @@
     "gText_BattleFactory": "BATTLE FACTORY",
     "gText_BattleArena": "BATTLE ARENA",
     "gText_BattlePike": "BATTLE PIKE",
-    "gText_BattlePyramid": "BATTLE PYRAMID"
+    "gText_BattlePyramid": "BATTLE PYRAMID",
+    "gText_Battle": "CHIẾN ĐẤU",
+    "gText_MatchCallSteven_Intro1_BeforeMeteorFallsBattle": "Dù thác cao đến đâu",
+    "gText_MatchCallSteven_Intro2_BeforeMeteorFallsBattle": "tôi cũng leo để tìm đá hiếm!",
+    "gText_MatchCallSteven_Intro1_AfterMeteorFallsBattle": "Dù sao tôi vẫn là người",
+    "gText_MatchCallSteven_Intro2_AfterMeteorFallsBattle": "mạnh nhất và tràn đầy năng lượng!"
   }
 }
