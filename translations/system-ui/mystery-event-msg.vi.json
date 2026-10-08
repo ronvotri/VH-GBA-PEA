@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "scope": "system-ui",
+  "area": "src/mystery_event_msg.c — Mystery Event result/status messages (10 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Complete player-facing system-ui coverage for src/mystery_event_msg.c, excluding the single Battle Tower adversary string which belongs to battle scope by catalog rule. Canonical Pokémon/item/location identifiers remain English. Placeholder/control-token order preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "gText_MysteryEventBerry": "Đã nhận {STR_VAR_2} BERRY!\\nBa đang giữ nó ở PETALBURG GYM.",
+    "gText_MysteryEventBerryTransform": "{STR_VAR_1} BERRY đã biến thành\\nmột {STR_VAR_2} BERRY.",
+    "gText_MysteryEventBerryObtained": "{STR_VAR_1} BERRY đã được\\nnhận rồi.",
+    "gText_MysteryEventSpecialRibbon": "Một RIBBON đặc biệt đã được trao cho\\nPOKéMON trong đội của bạn.",
+    "gText_MysteryEventNationalDex": "POKéDEX đã được nâng cấp\\nvới NATIONAL MODE.",
+    "gText_MysteryEventRareWord": "Đã thêm một từ hiếm.",
+    "gText_MysteryEventSentOver": "{STR_VAR_1} đã được gửi sang!",
+    "gText_MysteryEventFullParty": "Đội của bạn đã đầy.\\nKhông thể gửi {STR_VAR_1} sang.",
+    "gText_MysteryEventNewTrainer": "Một TRAINER mới đã đến\\nHOENN.",
+    "gText_MysteryEventCantBeUsed": "Dữ liệu này không thể dùng trong\\nphiên bản này."
+  }
+}
