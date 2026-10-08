@@ -4,7 +4,7 @@
   "area": "src/strings.c — Item use, pockets, Berry/Pokéblock and shop UI block (72 strings)",
   "baseline": "v0.4",
   "status": "translation-complete-source-qa",
-  "notes": "Source-driven contiguous 72-string slice starting at gText_ItemFinderNearby in pret/pokeemerald 5eff786. Specific canonical item/MOVE/TM/HM names remain English where present (e.g. ITEMFINDER, REPEL, TM/HM); surrounding UI prose is localized. Placeholder/control-token order is preserved. No ROM patch or pointer write performed.",
+  "notes": "Source-driven contiguous 72-string slice starting at gText_ItemFinderNearby in pret/pokeemerald 5eff786. Specific canonical item/MOVE/TM/HM names remain English where present (e.g. ITEMFINDER, REPEL, TM/HM); surrounding UI prose is localized. Placeholder/control-token order is preserved. No ROM patch or pointer write performed. Battle-classified labels were moved to translations/battle/strings-shared-ui-01.vi.json to match catalog category_for rules.",
   "translations": {
     "gText_ItemFinderNearby": "Hử?\\nITEMFINDER đang phản ứng!\\pCó vật phẩm bị chôn gần đây!{PAUSE_UNTIL_PRESS}",
     "gText_ItemFinderOnTop": "Ồ!\\nITEMFINDER rung dữ dội!{PAUSE_UNTIL_PRESS}",
@@ -20,7 +20,6 @@
     "gText_BoxFull": "HỘP đã đầy.{PAUSE_UNTIL_PRESS}",
     "gText_PowderQty": "SL BỘT: {STR_VAR_1}{PAUSE_UNTIL_PRESS}",
     "gText_TheField": "khu vực",
-    "gText_TheBattle": "trận đấu",
     "gText_ThePokemonList": "DANH SÁCH POKéMON",
     "gText_TheShop": "cửa hàng",
     "gText_ThePC": "PC",
