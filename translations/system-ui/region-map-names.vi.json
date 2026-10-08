@@ -4,7 +4,7 @@
   "area": "generated src/data/region_map/region_map_entries.h — region map names (canonical retained, 196 strings)",
   "baseline": "v0.4",
   "status": "translation-complete-source-qa",
-  "notes": "Generated region-map names reconstructed from pinned region_map_sections.json using the same cleanString naming convention. Proper location names are intentionally retained in canonical English, consistent with landmark policy. BATTLE FRONTIER is split to battle scope by catalog label classification. No ROM patch or pointer write performed.",
+  "notes": "Generated region-map names reconstructed from pinned region_map_sections.json and reconciled against the actual generated catalog identities. Proper location names are intentionally retained in canonical English, consistent with landmark policy. BATTLE FRONTIER is split to battle scope by catalog label classification. No ROM patch or pointer write performed.",
   "translations": {
     "sMapName_LITTLEROOT_TOWN": "LITTLEROOT TOWN",
     "sMapName_OLDALE_TOWN": "OLDALE TOWN",
@@ -131,12 +131,9 @@
     "sMapName_VICTORY_ROAD_Clone": "VICTORY ROAD",
     "sMapName_ROCKET_HIDEOUT": "ROCKET HIDEOUT",
     "sMapName_SILPH_CO_": "SILPH CO.",
-    "sMapName_POK_MON_MANSION": "POKéMON MANSION",
     "sMapName_SAFARI_ZONE_Clone": "SAFARI ZONE",
-    "sMapName_POK_MON_LEAGUE": "POKéMON LEAGUE",
     "sMapName_ROCK_TUNNEL": "ROCK TUNNEL",
     "sMapName_SEAFOAM_ISLANDS": "SEAFOAM ISLANDS",
-    "sMapName_POK_MON_TOWER": "POKéMON TOWER",
     "sMapName_CERULEAN_CAVE": "CERULEAN CAVE",
     "sMapName_POWER_PLANT": "POWER PLANT",
     "sMapName_ONE_ISLAND": "ONE ISLAND",
@@ -201,6 +198,9 @@
     "sMapName_MARINE_CAVE": "MARINE CAVE",
     "sMapName_TERRA_CAVE": "TERRA CAVE",
     "sMapName_DESERT_UNDERPASS": "DESERT UNDERPASS",
-    "sMapName_TRAINER_HILL": "TRAINER HILL"
+    "sMapName_TRAINER_HILL": "TRAINER HILL",
+    "sMapName_POK__MON_MANSION": "POKéMON MANSION",
+    "sMapName_POK__MON_LEAGUE": "POKéMON LEAGUE",
+    "sMapName_POK__MON_TOWER": "POKéMON TOWER"
   }
 }
