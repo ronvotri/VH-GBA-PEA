@@ -1334,3 +1334,10 @@ A new full-catalog read-only English leftovers audit has been completed from the
 High-volume missing prose source files: `data/text/trainers.inc` (573), `src/data/pokemon/pokedex_text.h` (386), `data/text/tv.inc` (293), `data/text/apprentice.inc` (273). Also dozens of early-game story dialogues. Specific user reports are reproduced by source evidence: `SootopolisCity_House4_Text_AncientTreasuresWaitingInSea` English in v0.4 at verified offset `0x0023BF5F`; `gText_BirchGirl` English in v0.4 at source-build candidate offset `0x006DA94F`, manifest wants `NỮ`.
 
 **Important correction:** Earlier v2 prototype changed `GIRL` to `Gái`, not `NỮ`, and rewrote the Sootopolis dialogue **without diacritics**. Do not treat those isolated edits as complete/approved. The title credit style is still not an exact clone of the in-game UI glyphs. The current sweep generated **no ROM/pointer writes** and no new v0.5. The next required step is bounded reference verification and recovery of the actual Vietnamese text encoding/accents and allocated spans; preserve v0.4 rollback safety.
+
+
+## TITLE CREDIT V3 — USER SCREENSHOT RE-CENTER FIX — 2026-10-09
+
+User reported that the v2 title credit was shifted right on actual GBA screen. Root cause: screen BG2 translated ~+29px, but credit bitmap had been centered on BG2 x=121 instead of x=92. A v3 title-only-geometry adjustment now centers the pixel bounding box around **screen x=120.5px** (240px GBA width; screen center 120). Static LZ77/byte-range/BPS CRC round-trip checks PASS; runtime emulator has not been tested. Exact SHA/checks and BPS v2→v3: [docs/TITLE_CREDIT_CENTER_FIX_V3.md](docs/TITLE_CREDIT_CENTER_FIX_V3.md), commit `bed5ecd`.
+
+**Important**: v3 preserves v2's other text edits, including unfinished `Gái` instead of `Nữ` and unaccented temporary Sootopolis line. No broad English-dialogue integration was done here. Actual translated source coverage 17,512/17,512 is still not runtime ROM integration. Continue safe source-provenance, Vietnamese encoder, reference validation and gameplay QA instead of screenshot-by-screenshot patching. Keep unchanged v0.4 baseline for rollback.
