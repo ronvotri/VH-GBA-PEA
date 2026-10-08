@@ -1505,3 +1505,19 @@ Current integration readiness remains source/manifest complete but binary blocke
 - No private clean shipping Arena 0.13.0 ROM or v0.4 ROM currently accessible to this chat's binary runtime, and no user ROM is stored in the public repository.
 
 Next: once the exact private clean and v0.4 ROM inputs are available, run the read-only hash preflight and shipping-offset byte audit from `docs/SAFE_ROM_INTEGRATION.md`, then verify v0.4 reference integrity/encoding/overlap before proposing a bounded dry-run. No speculative writes.
+
+
+## LOCAL ROM INPUTS + READ-ONLY BINARY AUDIT — 2026-10-09
+
+Clean Arena 0.13.0, Vietnamese v0.4, and AowVN donor ROMs were supplied locally and verified by SHA-256. **Do not upload these ROMs to public GitHub.** Exact hashes and source-catalog analysis: [docs/LOCAL_ROM_AUDIT_2026-10-09.md](docs/LOCAL_ROM_AUDIT_2026-10-09.md).
+
+- Source translation manifest coverage remains **17,512/17,512**, not yet applied to a playable new ROM.
+- Previous shipping offset checkpoint: **6,680**. Local clean-v0.4 source span audit found **4,893 byte-identical** and **1,787 byte-different** at the original offset.
+- Of **10,832** previously unresolved, local restricted-English-charmap subset found **7,024 additional byte-exact build-offset CANDIDATES** against exact clean shipping ROM. These are **NOT verified runtime references and DO NOT authorize writes or skips**. **3,808** remain unresolved by this subset, including **3,686** without build offsets.
+- Across the 13,704 located spans, **7,553** source-changed translations still have clean English bytes at the original v0.4 offset; **89** source-identical manifest rows have differing v0.4 bytes at the original offset. Neither figure proves what runtime currently displays because references might differ.
+- Protected startup/title `[0, 0x1F0000)` clean-v0.4 bytes are identical; no new ROM/pointer writes made.
+- AowVN donor byte matches: **1,695** of **1,787** changed checkpoint source spans (terminated strings of >=12 bytes). Byte match alone is not rendering or translation QA.
+- New read-only reproducible CLI: `tools/audit_local_rom_source_byte_candidates.py`, uses full pinned pret charmap, with `tools/tests/test_audit_local_rom_source_byte_candidates.py`. This was committed after the exploratory audit; GitHub Actions `Test integration planner safety` step has passed; recheck the final full-run conclusion before reporting CI fully PASS.
+- Local user-facing audit ZIP was generated in the chat containing 17,512 CSV rows, JSON summary and README (not committed to repo). Reconstruct with new CLI and actual private ROM inputs if local copy is unavailable.
+
+NEXT: use full pinned charmap for latest exact-byte candidate audit, verify actual shipping and v0.4 references, Vietnamese v0.4 encoding/font/control tokens, allocation/overlap and guarded dry-run. No speculative new v0.5 GBA; v0.4 stays the rollback baseline.
