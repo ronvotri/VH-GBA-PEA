@@ -106,6 +106,14 @@ jobs:
             --catalog artifact/text-catalog.csv \
             --translations translations
 
+      - name: Audit exact translation coverage
+        run: |
+          python3 tools/audit_translation_coverage.py \
+            --catalog artifact/text-catalog.csv \
+            --translations translations \
+            --out artifact/translation-coverage.json \
+            --summary artifact/translation-coverage-summary.txt
+
       - name: Plan map story integration
         run: |
           python3 tools/plan_map_story_integration.py \
