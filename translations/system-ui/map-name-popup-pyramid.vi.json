@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "scope": "system-ui",
+  "area": "src/map_name_popup.c — Battle Pyramid floor popup labels (8 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Uses source identity keys because these are static local strings. BATTLE PYRAMID naming remains consistent with the canonical Frontier facility name. No ROM patch or pointer write performed.",
+  "translations": {
+    "sText_PyramidFloor1@@src/map_name_popup.c:183": "PYRAMID TẦNG 1",
+    "sText_PyramidFloor2@@src/map_name_popup.c:184": "PYRAMID TẦNG 2",
+    "sText_PyramidFloor3@@src/map_name_popup.c:185": "PYRAMID TẦNG 3",
+    "sText_PyramidFloor4@@src/map_name_popup.c:186": "PYRAMID TẦNG 4",
+    "sText_PyramidFloor5@@src/map_name_popup.c:187": "PYRAMID TẦNG 5",
+    "sText_PyramidFloor6@@src/map_name_popup.c:188": "PYRAMID TẦNG 6",
+    "sText_PyramidFloor7@@src/map_name_popup.c:189": "PYRAMID TẦNG 7",
+    "sText_Pyramid@@src/map_name_popup.c:190": "PYRAMID"
+  }
+}
