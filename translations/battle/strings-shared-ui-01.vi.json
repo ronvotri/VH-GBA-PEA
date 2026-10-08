@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "scope": "battle",
-  "area": "Shared UI labels classified as battle by source catalog (122 strings)",
+  "area": "Shared UI labels classified as battle by source catalog (124 strings)",
   "baseline": "v0.4",
   "status": "translation-complete-source-qa",
   "notes": "These labels live in src/strings.c but are categorized as battle by tools/build_source_text_catalog.py because their source labels contain 'battle'. Kept outside system-ui manifests to preserve category integrity. Placeholder/control-token order preserved. No ROM patch or pointer write performed.",
@@ -127,6 +127,8 @@
     "sText_DoubleBattle@@src/data/union_room.h:546": "TRẬN ĐÔI",
     "sText_MultiBattle@@src/data/union_room.h:547": "TRẬN NHIỀU NGƯỜI",
     "sText_BattleTowerLv50@@src/data/union_room.h:564": "BATTLE TOWER LV. 50",
-    "sText_BattleTowerOpenLv@@src/data/union_room.h:565": "BATTLE TOWER OPEN LEVEL"
+    "sText_BattleTowerOpenLv@@src/data/union_room.h:565": "BATTLE TOWER OPEN LEVEL",
+    "sText_DashesNoPlayer@@src/battle_records.c:87": "-------",
+    "sText_DashesNoScore@@src/battle_records.c:88": "----"
   }
 }
