@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "verified_on": "2026-10-06",
-  "source_catalog_sha256": "20f9f6888b3d50458cfd53b0ac534059925c166fae2e48a6aaff49e14015f845",
+  "verified_on": "2026-10-08",
+  "source_catalog_sha256": "5692d08047e4b1aa7ccae1d1eaa7c90f85f1e90555b60bd1c46f728210bfa670",
   "source_build_rom_sha256": "eb1a7dd2b7eaccc4138b5d5d51f244911fc08c01c1ed7189354b033e18fba5ab",
   "shipping_rom_sha256": "a8d36c0c398f5281694c2d8dc5094a54a2276bd3092f5802cef6ef99369c645b",
   "verification_rule": "Encoded English source bytes matched the clean shipping ROM byte-for-byte at build_rom_offset.",
@@ -9,11 +9,20 @@
     "map-story": 4361,
     "system-text": 2319
   },
-  "implication": "For this exact catalog hash and source-build hash only, shipping_rom_offset equals build_rom_offset for every row in the verified categories.",
+  "implication": "For this exact catalog hash and source-build hash only, shipping_rom_offset equals build_rom_offset for every row in the verified categories. The 2026-10-08 catalog update changes only 284 non-verified Contest rows from debug-internal to system-ui; all 4,361 map-story and 2,319 system-text catalog rows remain byte-for-byte identical to the previously verified catalog.",
   "safety": {
     "rom_modified": false,
     "pointer_scan": false,
     "pointer_writes": 0,
     "mass_repoint": false
+  },
+  "catalog_revalidation": {
+    "previous_source_catalog_sha256": "20f9f6888b3d50458cfd53b0ac534059925c166fae2e48a6aaff49e14015f845",
+    "change": "284 Contest rows reclassified debug-internal -> system-ui",
+    "verified_category_rows_identical": {
+      "map-story": 4361,
+      "system-text": 2319
+    },
+    "source_build_rom_sha256_unchanged": true
   }
 }
