@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "scope": "battle",
+  "area": "data/scripts/gift_battle_card.inc — Battle Count Card Mystery Gift text (2 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "BATTLE COUNT CARD/CARD/NEWS/MYSTERY GIFT remain recognizable feature identifiers. Controls and terminators preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "sText_MysteryGiftBattleCountCard": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.\\pBATTLE COUNT CARD ghi lại\\nthành tích chiến đấu của bạn với\\lTRAINER có cùng CARD.\\pHãy tìm và đấu với TRAINER\\ncó cùng CARD với bạn.\\pBạn có thể xem bảng xếp hạng tổng\\nthể bằng cách đọc NEWS.\\pHãy thử nhé!$",
+    "sText_MysteryGiftBattleCountCard_WonPrize": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.\\pChúc mừng!\\pBạn đã nhận phần thưởng vì thắng\\nba trận!\\pHy vọng bạn sẽ có thêm động lực\\nchiến đấu nữa.$"
+  }
+}
