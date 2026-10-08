@@ -871,3 +871,20 @@ Source QA against pinned `pret/pokeemerald@5eff78649e7170a877b961ef0b3da13b81a16
 
 Continue `src/strings.c` from **gText_ItemFinderNearby** onward in bounded player-facing slices, then move through other system-ui source groups. Canonical Pokémon / MOVE / ITEM / TM / HM names and IDs remain English. No ROM/pointer writes or mass-repoint during translation-only passes.
 
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 1,599 / 8,279 — 2026-10-08
+
+System-ui continued immediately after the 1,527 checkpoint:
+- `translations/system-ui/strings-items-berries-shop-01.vi.json`: **72**
+- source slice begins at `gText_ItemFinderNearby` and runs through `gText_Var1AndYouWantedVar2`
+
+Coverage:
+- system-ui: **1,599 / 8,279**
+- remaining: **6,680**
+
+QA against pinned `src/strings.c`:
+- labels: **72 / 72 found**
+- missing source labels: **0**
+- placeholder/control-token-order mismatches: **0**
+
+Continue `src/strings.c` from the shop dialogue immediately after `gText_Var1AndYouWantedVar2`. Canonical Pokémon / MOVE / ITEM / TM / HM names and identifiers remain English. Translation-only passes still perform no ROM/pointer writes.
+
