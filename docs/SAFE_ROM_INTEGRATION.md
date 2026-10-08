@@ -23,6 +23,22 @@ python3 tools/verify_local_rom_baselines.py \
 
 With an exact v0.3 stable ROM also available, optionally pass `--v03-rom "/local/path/Emerald-Arena-v0.3.gba"`. This checks that v0.4 retained identical startup/title bytes below `0x1F0000` relative to v0.3. A mismatched SHA-256 or failed optional title guard **must stop the operation**.
 
+### Audit v0.4 bytes at already verified shipping offsets (local, read-only)
+
+After downloading the `arena-0.13.0-symbol-map` workflow artifact and obtaining the exact pinned pret source `charmap.txt`, run:
+
+```bash
+python3 tools/audit_v04_verified_offsets.py \
+  --plan "/local/artifact/user-facing-integration-plan.json" \
+  --clean-rom "/local/path/Emerald-Arena-0.13.0.gba" \
+  --v04-rom "/local/path/Emerald-Arena-v0.4.gba" \
+  --charmap "/local/pinned-pokeemerald/charmap.txt" \
+  --out "/local/private/v04-verified-offset-audit.json" \
+  --summary "/local/private/v04-verified-offset-summary.json"
+```
+
+This compares only attested original source spans against the actual v0.4 ROM, after checking both ROM hashes and re-encoding the English source. Unsupported source-encoding cases are reported as **unresolved**, never guessed. The report **does not** validate v0.4 pointers or authorize any write/skip. Rows with unverified shipping offsets stay blocked.
+
 ## Source/manifest versus binary readiness
 
 The GitHub workflow `.github/workflows/arena-map.yml` regenerates the catalog from pinned source, rechecks the shipping verification checkpoint, validates every manifest, and creates:
