@@ -911,21 +911,25 @@ A first QA pass found three placeholder-order issues in the shop/party batch; th
 
 Continue `src/strings.c` immediately after `gText_Mat`. Keep canonical Pokémon / MOVE / ITEM / TM / HM names and identifiers in English. Translation-only passes still perform no ROM/pointer writes or mass-repoint.
 
-## AUTHORITATIVE HANDOFF — SYSTEM-UI 1,864 / 8,279 — 2026-10-08
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 1,857 / 8,279 + BATTLE 7 / 2,223 — 2026-10-08
 
-Continued `src/strings.c` after the 1,800 checkpoint:
-- `translations/system-ui/strings-decor-pc-contest-01.vi.json`: **64**
+Continued `src/strings.c` after the 1,800 checkpoint, then normalized catalog scope:
+- `translations/system-ui/strings-decor-pc-contest-01.vi.json`: 64 source rows processed
+- 7 labels whose names contain `battle` were moved from system-ui manifests into `translations/battle/strings-shared-ui-01.vi.json` because `build_source_text_catalog.py` categorizes those rows as `battle`
 
-Coverage:
-- system-ui: **1,864 / 8,279**
-- remaining system-ui: **6,415**
+Authoritative coverage:
+- system-text: **2,319 / 2,319 complete**
+- system-ui: **1,857 / 8,279**
+- battle: **7 / 2,223**
+- remaining system-ui: **6,422**
+- remaining battle: **2,216**
 
-QA against pinned `src/strings.c`:
-- labels: **64 / 64**
-- missing source labels: **0**
-- placeholder/control-token-order mismatches: **0**
+QA:
+- source-driven labels preserved
+- placeholder/control-token-order mismatches after fixes: **0**
+- catalog scope is now aligned for the moved battle labels
 
-CI validator was also hardened after this sweep: empty translation strings are now accepted **only when the catalog source string is also empty**, which is required for intentional structural sentinels such as `gText_EmptyString*`. Non-empty source → empty translation remains a validation error.
+Validator was also hardened: empty translations are accepted only when the catalog source string itself is empty, allowing intentional structural sentinels while still rejecting accidental blank translations.
 
 Continue `src/strings.c` immediately after `gText_TypesOfContests`. Canonical Pokémon / MOVE / ITEM / TM / HM names and IDs remain English. No ROM/pointer writes or mass-repoint in translation-only passes.
 
