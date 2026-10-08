@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "scope": "system-ui",
+  "area": "src/berry_fix_program.c — Berry Program Update screens (9 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Complete player-facing coverage for the Berry Program Update utility. Product/game names and button names remain recognizable; color controls and line-break order are preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "sText_BerryProgramUpdate@@src/berry_fix_program.c:37": "Cập nhật Berry Program",
+    "sText_RubySapphire@@src/berry_fix_program.c:38": "Ruby/Sapphire",
+    "sText_Emerald@@src/berry_fix_program.c:39": "Emerald",
+    "sText_BerryProgramWillBeUpdatedPressA@@src/berry_fix_program.c:40": "Berry Program trên băng game POKéMON\\nRuby/Sapphire sẽ được cập nhật.\\n{COLOR RED}{SHADOW LIGHT_RED}Nhấn nút A.",
+    "sText_EnsureGBAConnectionMatches@@src/berry_fix_program.c:43": "Hãy đảm bảo kết nối Game Boy Advance\\ncủa bạn đúng như hình này.\\n{COLOR RED}{SHADOW LIGHT_RED}CÓ: Nhấn nút A.\\nKHÔNG: Tắt nguồn rồi thử lại.",
+    "sText_TurnOffPowerHoldingStartSelect@@src/berry_fix_program.c:47": "Hãy bật POKéMON Ruby/Sapphire\\ntrong khi giữ đồng thời START và\\nSELECT. Sau đó, hãy đảm bảo\\nhình phía trên xuất hiện.",
+    "sText_TransmittingPleaseWait@@src/berry_fix_program.c:51": "Đang truyền. Vui lòng chờ.\\n{COLOR RED}{SHADOW LIGHT_RED}Đừng tắt nguồn hoặc\\nrút cáp Game Boy Advance Game\\nLink Cable.",
+    "sText_PleaseFollowInstructionsOnScreen@@src/berry_fix_program.c:54": "Hãy làm theo hướng dẫn trên màn hình\\nPOKéMON Ruby/Sapphire.",
+    "sText_TransmissionFailureTryAgain@@src/berry_fix_program.c:56": "Truyền dữ liệu thất bại.\\n{COLOR RED}{SHADOW LIGHT_RED}Vui lòng thử lại."
+  }
+}
