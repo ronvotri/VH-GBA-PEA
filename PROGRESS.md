@@ -1120,3 +1120,12 @@ System-ui committed coverage: **1,204 / 8,279**
 Remaining system-ui: **7,075**
 
 No ROM bytes or pointers were modified.
+
+
+### Pre-pass GitHub sync — 2026-10-08
+Confirmed `main` before continuing Pokédex work:
+- system-text: **2,319 / 2,319**
+- system-ui checkpoint previously: **1,124 / 8,279**
+- Pokédex text now committed through row **160 / 387**
+- TENTACOOL layout fix is committed
+- canonical Pokémon / MOVE / ITEM / TM / HM names remain English
