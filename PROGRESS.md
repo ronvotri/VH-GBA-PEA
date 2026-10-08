@@ -1214,3 +1214,23 @@ QA:
 
 Continue from the next `src/strings.c` string after `gText_Mat`.
 
+## System-UI checkpoint — 1,864 / 8,279 — 2026-10-08
+
+Added:
+- decoration placement / PC item storage / mailbox / Contest entry UI: **64**
+- manifest: `translations/system-ui/strings-decor-pc-contest-01.vi.json`
+
+Coverage:
+- system-ui: **1,864 / 8,279**
+- remaining system-ui: **6,415**
+
+QA:
+- source labels found: **64 / 64**
+- placeholder/control-token-order mismatches: **0**
+
+Validator fix:
+- intentional empty-source sentinels may now keep an empty translation
+- an empty translation for any non-empty source is still rejected
+
+No ROM bytes or pointers modified. Continue after `gText_TypesOfContests`.
+
