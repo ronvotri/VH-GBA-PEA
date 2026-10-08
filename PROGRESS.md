@@ -1254,3 +1254,35 @@ QA:
 
 Continue after `gText_YellowShard`. No ROM bytes or pointers modified.
 
+## System-UI / Battle checkpoint — 2,265 / 8,279 + 23 / 2,223 — 2026-10-08
+
+Continued `src/strings.c` through `gText_AndFillOutTheQuestionnaire`.
+
+This pass processed **360 source rows**:
+- **347 system-ui**
+- **13 battle**
+
+New system-ui manifests:
+- `strings-menu-frontier-prizes-01.vi.json`: 70
+- `strings-link-frontier-help-01.vi.json`: 63
+- `strings-elevator-box-01.vi.json`: 72
+- `strings-pc-pokenav-01.vi.json`: 71
+- `strings-pokenav-easychat-01.vi.json`: 71
+
+Battle-classified labels were added to:
+- `translations/battle/strings-shared-ui-01.vi.json`
+
+Coverage:
+- system-ui: **2,265 / 8,279**
+- battle: **23 / 2,223**
+- remaining system-ui: **6,014**
+- remaining battle: **2,200**
+
+QA:
+- exact source labels: **360 / 360**
+- placeholder/control-token-order mismatches: **0**
+- catalog scope mismatches: **0**
+- no ROM bytes or pointers modified
+
+Continue after `gText_AndFillOutTheQuestionnaire`.
+
