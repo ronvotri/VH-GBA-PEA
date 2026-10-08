@@ -1552,3 +1552,20 @@ High-volume missing prose source files: `data/text/trainers.inc` (573), `src/dat
 User reported that the v2 title credit was shifted right on actual GBA screen. Root cause: screen BG2 translated ~+29px, but credit bitmap had been centered on BG2 x=121 instead of x=92. A v3 title-only-geometry adjustment now centers the pixel bounding box around **screen x=120.5px** (240px GBA width; screen center 120). Static LZ77/byte-range/BPS CRC round-trip checks PASS; runtime emulator has not been tested. Exact SHA/checks and BPS v2→v3: [docs/TITLE_CREDIT_CENTER_FIX_V3.md](docs/TITLE_CREDIT_CENTER_FIX_V3.md), commit `bed5ecd`.
 
 **Important**: v3 preserves v2's other text edits, including unfinished `Gái` instead of `Nữ` and unaccented temporary Sootopolis line. No broad English-dialogue integration was done here. Actual translated source coverage 17,512/17,512 is still not runtime ROM integration. Continue safe source-provenance, Vietnamese encoder, reference validation and gameplay QA instead of screenshot-by-screenshot patching. Keep unchanged v0.4 baseline for rollback.
+
+
+## IN-PLACE SOURCE MANIFEST INTEGRATION TEST — 1,823 ROWS — 2026-10-09
+
+User asked to continue broad English-to-Vietnamese integration, not screenshot-by-screenshot fixes. This session produced an actual **experimental 32 MiB patched GBA** (not a final v0.5) plus BPS, from exact v4 menu/title donor. Comprehensive engineering checkpoint: **[docs/LOCAL_BINARY_INTEGRATION_1823_2026-10-09.md](docs/LOCAL_BINARY_INTEGRATION_1823_2026-10-09.md)**.
+
+Exact hashes:
+- input v4 menu/title donor: `ee82c588a960bcb59466ea950fb6a6a1ce1ab94ada62c6b9f8fceaa8dd0d47c3`
+- output test ROM: `ae1e00595ba3d1f193bcdbd8fcff44394b37e582c0a202e7c0c0df97f645d4d0`
+- v4→test BPS patch (142,034 bytes): `14896804c7295189cb26183d9b5fcf7fce86aa67160105bcf25482eff810eee3`
+
+Runtime ROM changes in this session: **1,289 map/story, 456 system-text, 78 system-ui = 1,823 localized manifest rows**, plus a separate `Gái`→`Nữ` gender-label correction. Sootopolis ancient-ruin dialogue was explicitly repaired from the earlier unaccented temporary hack to the UTF-8 source manifest's accented Vietnamese. New in-place span writes use source/ROM byte and allocation checks; **zero new pointers or repoints**. 78 system-ui entries were attested locally through exact source English build-offset bytes and original unchanged direct literal pointer evidence, but are **not counted as part of older 6,680 officially checkpoint-attested rows**.
+
+Critical advance: reverse-engineered a **CANDIDATE single-byte v0.4 Vietnamese codebook** by matching 1,005 existing translated donor spans and voted glyph mappings. Stored as `checkpoints/v04-inferred-vietnamese-codebook.json`. This is not a visually/emulator validated glyph encoding. Unknown/control-heavy/oversized/repoint-needed strings were left untouched. The source translation catalog remains 17,512/17,512 complete but **far from 100% integrated into a playable ROM**.
+
+BPS reconstruction and all three CRCs PASS; title/startup and v4 menu source-literal bytes preserved; emulator QA **NOT RUN**. The chat has the test GBA plus a private patchkit ZIP (contains no full ROM). **Next phase:** emulator visual glyph/line-wrap validation for intro and gameplay; continue the unpatched placeholder/overlong/system-ui/battle rows with source-reference-aware bounded allocations. DO NOT call this a fully localized v0.5. Never put full ROM in public repository.
+
