@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "scope": "battle",
-  "area": "Shared UI labels classified as battle by source catalog (110 strings)",
+  "area": "Shared UI labels classified as battle by source catalog (122 strings)",
   "baseline": "v0.4",
   "status": "translation-complete-source-qa",
   "notes": "These labels live in src/strings.c but are categorized as battle by tools/build_source_text_catalog.py because their source labels contain 'battle'. Kept outside system-ui manifests to preserve category integrity. Placeholder/control-token order preserved. No ROM patch or pointer write performed.",
@@ -115,6 +115,18 @@
     "sText_BattleDeclinedFemale@@src/data/union_room.h:312": "Tôi rất xin lỗi, nhưng POKéMON của tôi\\nđang không khỏe…\\pĐể lần khác đấu nhé.\\p",
     "sText_TrainerBattleBusy@@src/data/union_room.h:335": "Ôi! Xin lỗi, tôi còn phải\\nlàm việc khác.\\lĐể lần khác nhé?\\p",
     "sText_BattleSurpriseMale@@src/data/union_room.h:359": "Hay lắm!\\nMở mang tầm mắt thật!\\p",
-    "sText_BattleSurpriseFemale@@src/data/union_room.h:363": "Tuyệt thật!\\nBạn có thể đấu kiểu đó sao?\\p"
+    "sText_BattleSurpriseFemale@@src/data/union_room.h:363": "Tuyệt thật!\\nBạn có thể đấu kiểu đó sao?\\p",
+    "sText_ChooseTrainerSingleBattle@@src/data/union_room.h:479": "Hãy chọn TRAINER cho\\nTRẬN ĐƠN.",
+    "sText_ChooseTrainerDoubleBattle@@src/data/union_room.h:480": "Hãy chọn TRAINER cho\\nTRẬN ĐÔI.",
+    "sText_ChooseLeaderMultiBattle@@src/data/union_room.h:481": "Hãy chọn LEADER\\ncho TRẬN NHIỀU NGƯỜI.",
+    "sText_ChooseLeaderBattleTowerLv50@@src/data/union_room.h:495": "BATTLE TOWER LEVEL 50!\\nHãy chọn LEADER.",
+    "sText_ChooseLeaderBattleTowerOpenLv@@src/data/union_room.h:496": "BATTLE TOWER OPEN LEVEL!\\nHãy chọn LEADER.",
+    "sText_MustHaveTwoMonsForDoubleBattle@@src/data/union_room.h:525": "Để đấu TRẬN ĐÔI, bạn phải có\\nít nhất hai POKéMON.\\p",
+    "sText_Battle@@src/data/union_room.h:538": "CHIẾN ĐẤU",
+    "sText_SingleBattle@@src/data/union_room.h:545": "TRẬN ĐƠN",
+    "sText_DoubleBattle@@src/data/union_room.h:546": "TRẬN ĐÔI",
+    "sText_MultiBattle@@src/data/union_room.h:547": "TRẬN NHIỀU NGƯỜI",
+    "sText_BattleTowerLv50@@src/data/union_room.h:564": "BATTLE TOWER LV. 50",
+    "sText_BattleTowerOpenLv@@src/data/union_room.h:565": "BATTLE TOWER OPEN LEVEL"
   }
 }
