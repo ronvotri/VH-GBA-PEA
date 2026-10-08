@@ -64,6 +64,15 @@ def main() -> int:
                         "candidate_count": len(candidates),
                     })
                     continue
+            if row.get("category") != manifest_scope:
+                unresolved_keys.append({
+                    "manifest": str(path),
+                    "key": key,
+                    "reason": "scope-mismatch",
+                    "manifest_scope": manifest_scope,
+                    "catalog_category": row.get("category", ""),
+                })
+                continue
             row_id = identity(row)
             if row_id in translated:
                 duplicate_rows.append({
@@ -86,6 +95,9 @@ def main() -> int:
 
     status = Counter()
     category_status: dict[str, Counter] = defaultdict(Counter)
+    source_comparison = Counter()
+    category_source_comparison: dict[str, Counter] = defaultdict(Counter)
+    layout_by_text_status: dict[str, Counter] = defaultdict(Counter)
     plan = []
 
     for r in rows:
@@ -98,6 +110,19 @@ def main() -> int:
             state = "blocked:needs-shipping-resolution"
         status[state] += 1
         category_status[r.get("category", "")][state] += 1
+
+        # A manifest entry identical to the *English source* is NOT an
+        # established no-op on the v0.4 donor. v0.4 could already contain
+        # different bytes at that position. Never waive baseline comparison.
+        comparison = (
+            "source-identical"
+            if translated[row_id] == r.get("english", "")
+            else "source-changed"
+        )
+        source_comparison[comparison] += 1
+        category_source_comparison[r.get("category", "")][comparison] += 1
+        layout_by_text_status[comparison][state] += 1
+
         plan.append({
             "identity": row_id,
             "source_label": r.get("source_label", ""),
@@ -107,6 +132,9 @@ def main() -> int:
             "source_line": r.get("source_line", ""),
             "english": r.get("english", ""),
             "vietnamese": translated[row_id],
+            "source_text_comparison": comparison,
+            "v04_baseline_byte_comparison": "unresolved:requires-exact-v0.4-rom",
+            "is_safe_to_skip_binary_write": False,
             "shipping_rom_offset": off,
             "shipping_match_status": match,
             "original_allocation_upper_bound": r.get("original_allocation_upper_bound", ""),
@@ -115,7 +143,11 @@ def main() -> int:
             "catalog_patch_strategy": r.get("patch_strategy", ""),
             "integration_status": state,
             "encoded_fit_status": "unresolved:needs-v0.4-vietnamese-byte-encoding",
-            "planned_binary_action": "defer-until-verified-layout-and-v0.4-encoder",
+            "planned_binary_action": (
+                "defer:check-v0.4-baseline-before-skipping-or-restoring-source"
+                if comparison == "source-identical"
+                else "defer:verify-v0.4-layout-encoding-and-references"
+            ),
         })
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
@@ -130,6 +162,15 @@ def main() -> int:
         "category_status_counts": {
             k: dict(v) for k, v in sorted(category_status.items())
         },
+        "source_text_comparison_counts": dict(source_comparison),
+        "category_source_text_comparison_counts": {
+            k: dict(v) for k, v in sorted(category_source_comparison.items())
+        },
+        "shipping_layout_by_source_text_comparison": {
+            k: dict(v) for k, v in sorted(layout_by_text_status.items())
+        },
+        "baseline_rom_byte_comparisons_performed": 0,
+        "rows_safe_to_skip_binary_write": 0,
         "excluded_debug_internal_rows": sum(
             1 for r in all_rows if r.get("category") == "debug-internal"
         ),
@@ -139,6 +180,8 @@ def main() -> int:
             "pointer_writes": 0,
             "mass_repoint": False,
             "build_offsets_assumed_shipping_identical": False,
+            "source_identical_assumed_v04_identical": False,
+            "v04_baseline_bytes_verified": False,
         },
     }
     args.summary.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
