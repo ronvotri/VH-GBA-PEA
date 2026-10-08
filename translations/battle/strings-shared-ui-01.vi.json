@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "scope": "battle",
-  "area": "Shared UI labels classified as battle by source catalog (100 strings)",
+  "area": "Shared UI labels classified as battle by source catalog (110 strings)",
   "baseline": "v0.4",
   "status": "translation-complete-source-qa",
   "notes": "These labels live in src/strings.c but are categorized as battle by tools/build_source_text_catalog.py because their source labels contain 'battle'. Kept outside system-ui manifests to preserve category integrity. Placeholder/control-token order preserved. No ROM patch or pointer write performed.",
@@ -105,6 +105,16 @@
     "sJPText_SingleBattle@@src/data/union_room.h:9": "TỔ CHỨC ĐẤU ĐƠN",
     "sJPText_DoubleBattle@@src/data/union_room.h:10": "TỔ CHỨC ĐẤU ĐÔI",
     "sJPText_MultiBattle@@src/data/union_room.h:11": "TỔ CHỨC ĐẤU NHIỀU NGƯỜI",
-    "sText_BattleChallenge@@src/data/union_room.h:224": "TRAINER kia thách bạn\\nđấu.\\pBạn có chấp nhận lời\\nthách đấu không?"
+    "sText_BattleChallenge@@src/data/union_room.h:224": "TRAINER kia thách bạn\\nđấu.\\pBạn có chấp nhận lời\\nthách đấu không?",
+    "sText_WaitForBattleMale@@src/data/union_room.h:257": "Đấu à?\\nĐược thôi, cho tôi chút thời gian.",
+    "sText_WaitForBattleFemale@@src/data/union_room.h:260": "Đấu sao? Được chứ, nhưng tôi cần\\nthời gian chuẩn bị.",
+    "sText_DoneWaitingBattleMale@@src/data/union_room.h:279": "Cảm ơn đã chờ!\\nBắt đầu trận đấu thôi!{PAUSE 60}",
+    "sText_DoneWaitingBattleFemale@@src/data/union_room.h:281": "Xin lỗi vì để bạn chờ!\\nBắt đầu nhé!{PAUSE 60}",
+    "sText_BattleWillBeStarted@@src/data/union_room.h:284": "Trận đấu sẽ bắt đầu.{PAUSE 60}",
+    "sText_BattleDeclinedMale@@src/data/union_room.h:311": "Xin lỗi! POKéMON của tôi có vẻ\\nkhông khỏe lắm lúc này.\\lĐể lần khác tôi đấu với bạn nhé.\\p",
+    "sText_BattleDeclinedFemale@@src/data/union_room.h:312": "Tôi rất xin lỗi, nhưng POKéMON của tôi\\nđang không khỏe…\\pĐể lần khác đấu nhé.\\p",
+    "sText_TrainerBattleBusy@@src/data/union_room.h:335": "Ôi! Xin lỗi, tôi còn phải\\nlàm việc khác.\\lĐể lần khác nhé?\\p",
+    "sText_BattleSurpriseMale@@src/data/union_room.h:359": "Hay lắm!\\nMở mang tầm mắt thật!\\p",
+    "sText_BattleSurpriseFemale@@src/data/union_room.h:363": "Tuyệt thật!\\nBạn có thể đấu kiểu đó sao?\\p"
   }
 }
