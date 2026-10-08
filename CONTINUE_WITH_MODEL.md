@@ -953,3 +953,38 @@ QA:
 
 Canonical Pokémon / MOVE / ITEM / TM / HM names and IDs remain English; canonical item names in the prize/vendor slice were intentionally retained. Continue `src/strings.c` immediately after `gText_YellowShard`. No ROM/pointer writes or mass-repoint.
 
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 2,265 / 8,279 + BATTLE 23 / 2,223 — 2026-10-08
+
+Continued the source-driven `src/strings.c` sweep from immediately after `gText_YellowShard`.
+
+New work in this pass:
+- `strings-menu-frontier-prizes-01.vi.json`: **70 system-ui**
+- `strings-link-frontier-help-01.vi.json`: **63 system-ui**
+- `strings-elevator-box-01.vi.json`: **72 system-ui**
+- `strings-pc-pokenav-01.vi.json`: **71 system-ui**
+- `strings-pokenav-easychat-01.vi.json`: **71 system-ui**
+- battle-classified labels added to `translations/battle/strings-shared-ui-01.vi.json`: **13**
+
+This pass processed **360 source rows total**:
+- system-ui: **+347**
+- battle: **+13**
+
+Authoritative coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **2,319 / 2,319 complete**
+- system-ui: **2,265 / 8,279**
+- battle: **23 / 2,223**
+- remaining system-ui: **6,014**
+- remaining battle: **2,200**
+
+QA for all new slices:
+- source labels found: **360 / 360**
+- placeholder/control-token-order mismatches: **0**
+- catalog scope mismatches: **0**
+- intentional empty-source sentinels remain empty and validate correctly
+
+Canonical Pokémon / MOVE / ITEM / TM / HM names and identifiers remain English. Canonical item names, TM IDs and proper location names encountered in these slices were intentionally retained.
+
+Continue `src/strings.c` immediately after `gText_AndFillOutTheQuestionnaire`. Translation-only passes still perform no ROM/pointer writes or mass-repoint.
+
