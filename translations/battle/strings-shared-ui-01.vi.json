@@ -37,13 +37,13 @@
     "gText_LinkCableBattles": "ĐẤU LINK CABLE",
     "gText_UnionTradesAndBattles": "TRAO ĐỔI & ĐẤU UNION",
     "gText_BattlePtsWon": "ĐIỂM CHIẾN ĐẤU ĐÃ NHẬN",
-    "gText_BattleTower": "THÁP CHIẾN",
-    "gText_BattleTower2": "THÁP CHIẾN",
-    "gText_BattleDome": "MÁI VÒM CHIẾN",
-    "gText_BattlePalace": "CUNG ĐIỆN CHIẾN",
-    "gText_BattleFactory": "NHÀ MÁY CHIẾN",
-    "gText_BattleArena": "ĐẤU TRƯỜNG CHIẾN",
-    "gText_BattlePike": "THÁP ỐNG CHIẾN",
-    "gText_BattlePyramid": "KIM TỰ THÁP CHIẾN"
+    "gText_BattleTower": "BATTLE TOWER",
+    "gText_BattleTower2": "BATTLE TOWER",
+    "gText_BattleDome": "BATTLE DOME",
+    "gText_BattlePalace": "BATTLE PALACE",
+    "gText_BattleFactory": "BATTLE FACTORY",
+    "gText_BattleArena": "BATTLE ARENA",
+    "gText_BattlePike": "BATTLE PIKE",
+    "gText_BattlePyramid": "BATTLE PYRAMID"
   }
 }
