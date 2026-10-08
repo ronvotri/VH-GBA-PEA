@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "scope": "system-ui",
+  "area": "data/scripts/field_move_scripts.inc — field MOVE prompts and results (18 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Field MOVE prose localized while canonical MOVE names CUT, ROCK SMASH, STRENGTH, WATERFALL, DIVE and SWEET SCENT remain English. Placeholders/control/terminator order preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "Text_WantToCut": "Cây này có vẻ có thể\\nCUT xuống!\\pBạn muốn dùng CUT không?$",
+    "Text_MonUsedFieldMove": "{STR_VAR_1} đã dùng {STR_VAR_2}!$",
+    "Text_CantCut": "Cây này có vẻ có thể\\nCUT xuống!$",
+    "Text_WantToSmash": "Tảng đá này có vẻ đập vỡ được.\\nBạn muốn dùng ROCK SMASH không?$",
+    "Text_CantSmash": "Đây là một tảng đá cứng, nhưng POKéMON\\ncó lẽ có thể đập vỡ nó.$",
+    "Text_WantToStrength": "Đây là một tảng đá lớn, nhưng POKéMON\\ncó lẽ đẩy nó sang bên được.\\pBạn muốn dùng STRENGTH không?$",
+    "Text_MonUsedStrength": "{STR_VAR_1} đã dùng STRENGTH!\\pSTRENGTH của {STR_VAR_1} giúp\\ncó thể đẩy các tảng đá!$",
+    "Text_CantStrength": "Đây là một tảng đá lớn, nhưng POKéMON\\ncó lẽ đẩy nó sang bên được.$",
+    "Text_StrengthActivated": "STRENGTH giúp có thể đẩy\\ncác tảng đá.$",
+    "Text_CantWaterfall": "Một bức tường nước đang đổ xuống với\\ntiếng gầm dữ dội.$",
+    "Text_WantToWaterfall": "Đây là một thác nước lớn.\\nBạn muốn dùng WATERFALL không?$",
+    "Text_MonUsedWaterfall": "{STR_VAR_1} đã dùng WATERFALL.$",
+    "Text_CantDive": "Biển ở đây rất sâu. POKéMON\\ncó lẽ có thể lặn xuống.$",
+    "Text_WantToDive": "Biển ở đây rất sâu.\\nBạn muốn dùng DIVE không?$",
+    "Text_MonUsedDive": "{STR_VAR_1} đã dùng DIVE.$",
+    "Text_CantSurface": "Ánh sáng đang chiếu xuống từ phía trên.\\nPOKéMON có lẽ có thể nổi lên.$",
+    "Text_WantToSurface": "Ánh sáng đang chiếu xuống từ phía trên.\\nBạn muốn dùng DIVE không?$",
+    "Text_FailSweetScent": "Có vẻ chẳng có gì ở đây…$"
+  }
+}
