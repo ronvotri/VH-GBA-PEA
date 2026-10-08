@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "scope": "battle",
-  "area": "src/strings.c — shared UI labels classified as battle by source catalog (7 strings)",
+  "area": "src/strings.c — shared UI labels classified as battle by source catalog (10 strings)",
   "baseline": "v0.4",
   "status": "translation-complete-source-qa",
-  "notes": "These labels live in src/strings.c but are categorized as battle by tools/build_source_text_catalog.py because their source labels contain 'battle'. Moved out of system-ui manifests to preserve category integrity. Placeholder/control-token order preserved. No ROM patch or pointer write performed.",
+  "notes": "These labels live in src/strings.c but are categorized as battle by tools/build_source_text_catalog.py because their source labels contain 'battle'. Kept outside system-ui manifests to preserve category integrity. Placeholder/control-token order preserved. No ROM patch or pointer write performed.",
   "translations": {
     "gText_TheBattle": "trận đấu",
     "gText_PkmnAlreadyInBattle": "{STR_VAR_1} đã đang\\nchiến đấu!{PAUSE_UNTIL_PRESS}",
@@ -12,6 +12,9 @@
     "gText_NoPokemonForBattle": "Không có POKéMON để chiến đấu!",
     "gText_CancelBattle": "Hủy trận đấu?",
     "gText_OnlyPkmnForBattle": "Đó là POKéMON duy nhất\\ncủa bạn có thể chiến đấu.",
-    "gText_BattleMoves": "CHIÊU CHIẾN ĐẤU"
+    "gText_BattleMoves": "CHIÊU CHIẾN ĐẤU",
+    "gText_SingleBattle": "TRẬN ĐƠN",
+    "gText_DoubleBattle": "TRẬN ĐÔI",
+    "gText_MultiBattle": "TRẬN NHIỀU NGƯỜI"
   }
 }
