@@ -888,3 +888,26 @@ QA against pinned `src/strings.c`:
 
 Continue `src/strings.c` from the shop dialogue immediately after `gText_Var1AndYouWantedVar2`. Canonical Pokémon / MOVE / ITEM / TM / HM names and identifiers remain English. Translation-only passes still perform no ROM/pointer writes.
 
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 1,800 / 8,279 — 2026-10-08
+
+Continued `src/strings.c` source-driven localization after the 1,599 checkpoint.
+
+New QA-clean manifests in this pass:
+- `strings-shop-party-moves-01.vi.json`: **73**
+- `strings-party-field-trade-01.vi.json`: **64**
+- `strings-summary-egg-decor-01.vi.json`: **64**
+
+Authoritative coverage:
+- system-text: **2,319 / 2,319 complete**
+- system-ui: **1,800 / 8,279**
+- remaining system-ui: **6,479**
+
+Source QA against pinned `pret/pokeemerald@5eff78649e7170a877b961ef0b3da13b81a16038`:
+- new strings checked this pass: **201**
+- missing source labels: **0**
+- placeholder/control-token-order mismatches after fixes: **0**
+
+A first QA pass found three placeholder-order issues in the shop/party batch; these were corrected in commit `53f85fc` before this checkpoint.
+
+Continue `src/strings.c` immediately after `gText_Mat`. Keep canonical Pokémon / MOVE / ITEM / TM / HM names and identifiers in English. Translation-only passes still perform no ROM/pointer writes or mass-repoint.
+
