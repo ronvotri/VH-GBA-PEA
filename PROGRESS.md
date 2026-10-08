@@ -1176,3 +1176,20 @@ Source QA for the 136 new entries:
 
 Canonical Pokémon / MOVE / ITEM / TM / HM names and identifiers remain English. Translation-only work has not modified ROM bytes or pointers. Continue `src/strings.c` from `gText_ItemFinderNearby` onward.
 
+## System-UI checkpoint — 1,599 / 8,279 — 2026-10-08
+
+Added:
+- `translations/system-ui/strings-items-berries-shop-01.vi.json`: **72** entries
+- scope: ITEMFINDER/TM-HM use text, Bag pocket labels, Berry/Pokéblock UI, and the first shop dialogue slice
+
+Coverage:
+- system-ui: **1,599 / 8,279**
+- remaining system-ui: **6,680**
+
+QA:
+- exact labels found in pinned `src/strings.c`: **72 / 72**
+- placeholder/control-token-order mismatches: **0**
+- no ROM bytes or pointers modified
+
+Continue from the next shop-dialogue string after `gText_Var1AndYouWantedVar2`.
+
