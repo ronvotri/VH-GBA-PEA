@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "scope": "system-ui",
-  "area": "src/berry_blender.c — Berry Blender player-facing and legacy local text (39 strings)",
+  "area": "src/berry_blender.c — Berry Blender player-facing, flavor labels and legacy local text (44 strings)",
   "baseline": "v0.4",
   "status": "translation-complete-source-qa",
-  "notes": "Complete source-driven text-definition coverage for src/berry_blender.c. Canonical BERRY/BERRY BLENDER/POKEBLOCK identifiers remain recognizable. Static/local labels use source identity keys; control-token and paragraph order are preserved. No ROM patch or pointer write performed.",
+  "notes": "Complete source-driven coverage for src/berry_blender.c. Canonical BERRY/BERRY BLENDER/POKEBLOCK identifiers remain recognizable; five Japanese flavor labels are localized as CAY/KHÔ/NGỌT/ĐẮNG/CHUA. Static/local and anonymous source identities are preserved. No ROM patch or pointer write performed.",
   "translations": {
     "sUnusedText_YesNo@@src/berry_blender.c:259": "CÓ\\nKHÔNG",
     "sUnusedText_2@@src/berry_blender.c:260": "▶",
@@ -44,6 +44,11 @@
     "sText_TheFeelIs@@src/berry_blender.c:306": ", độ mịn là ",
     "sText_Dot2@@src/berry_blender.c:307": ".",
     "sJPText_GoodTvReady@@src/berry_blender.c:919": "\\nĐã có một TV hay ",
-    "sJPText_BadTvReady@@src/berry_blender.c:920": "\\nĐã có một TV dở "
+    "sJPText_BadTvReady@@src/berry_blender.c:920": "\\nĐã có một TV dở ",
+    "@anon:src/berry_blender.c:921:41": "CAY",
+    "@anon:src/berry_blender.c:921:51": "KHÔ",
+    "@anon:src/berry_blender.c:921:61": "NGỌT",
+    "@anon:src/berry_blender.c:921:71": "ĐẮNG",
+    "@anon:src/berry_blender.c:921:81": "CHUA"
   }
 }
