@@ -1076,3 +1076,47 @@ QA:
 
 Next: continue source-catalog-first through another bounded player-facing system-ui source group. Prefer real visible prose/status/menu strings over credits/proper-name-only or formatting-only rows. Canonical Pokémon / MOVE / ITEM / TM / HM names and IDs remain English. No ROM/pointer writes or mass-repoint.
 
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 3,272 / 8,279 + BATTLE 122 / 2,223 — 2026-10-08
+
+After the 3,071 checkpoint, completed the entire player-facing text inventory in `src/data/union_room.h`.
+
+Union Room coverage:
+- `union-room-01.vi.json`: **76 system-ui**
+- `union-room-02.vi.json`: **70 system-ui**
+- `union-room-03.vi.json`: **55 system-ui**
+- battle-classified Union Room labels: **26**
+- total source rows represented: **227 / 227**
+
+Authoritative coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **2,319 / 2,319 complete**
+- system-ui: **3,272 / 8,279**
+- battle: **122 / 2,223**
+- remaining system-ui: **5,007**
+- remaining battle: **2,101**
+
+Current-turn progress from the previous 2,695 checkpoint:
+- system-ui: **+577**
+- battle: **+33**
+- total source rows processed: **610**
+
+QA:
+- all 227 Union Room source identities found
+- placeholder/control-token-order mismatches after fixes: **0**
+- catalog scope mismatches: **0**
+- two Trainer Card token-order issues in the final Union Room slice were corrected before this checkpoint
+- static/local labels use source identity keys `label@@source_file:line`
+
+Completed/reviewed source groups now also include:
+- `src/strings.c` through EOF
+- `src/mystery_event_msg.c`
+- `src/text_input_strings.c`
+- `src/berry_fix_program.c`
+- `src/mystery_gift_scripts.c` local player-facing text
+- `src/data/trade.h` text definitions
+- `src/map_name_popup.c` Battle Pyramid popup labels
+- `src/data/union_room.h` **227 / 227**
+
+Next: continue source-catalog-first with another player-facing system-ui group, prioritizing visible prose/status/menu text. Good next candidates include Berry Blender UI and other local `sText_*` sources. Keep Pokémon / MOVE / ITEM / TM / HM names and IDs in English. No ROM/pointer writes or mass-repoint.
+
