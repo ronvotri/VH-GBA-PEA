@@ -37,11 +37,11 @@
     "gText_SpDef3": "SP. DEF",
     "gText_WontHaveEffect": "Sẽ không có tác dụng.{PAUSE_UNTIL_PRESS}",
     "gText_CantBeUsedOnPkmn": "Không thể dùng lên\\nPOKéMON đó.{PAUSE_UNTIL_PRESS}",
-    "gText_PkmnCantSwitchOut": "Không thể đổi\\n{STR_VAR_1} ra!{PAUSE_UNTIL_PRESS}",
+    "gText_PkmnCantSwitchOut": "{STR_VAR_1} không thể\\nđổi ra!{PAUSE_UNTIL_PRESS}",
     "gText_PkmnAlreadyInBattle": "{STR_VAR_1} đã đang\\nchiến đấu!{PAUSE_UNTIL_PRESS}",
     "gText_PkmnAlreadySelected": "{STR_VAR_1} đã được\\nchọn rồi.{PAUSE_UNTIL_PRESS}",
     "gText_PkmnHasNoEnergy": "{STR_VAR_1} không còn sức\\nđể chiến đấu!{PAUSE_UNTIL_PRESS}",
-    "gText_CantSwitchWithAlly": "Không thể đổi POKéMON của\\n{STR_VAR_1} với POKéMON của bạn!{PAUSE_UNTIL_PRESS}",
+    "gText_CantSwitchWithAlly": "POKéMON của {STR_VAR_1}\\nkhông thể đổi với của bạn!{PAUSE_UNTIL_PRESS}",
     "gText_EggCantBattle": "TRỨNG không thể chiến đấu!{PAUSE_UNTIL_PRESS}",
     "gText_CantUseUntilNewBadge": "Không thể dùng cho tới khi\\nnhận BADGE mới.{PAUSE_UNTIL_PRESS}",
     "gText_NoMoreThanVar1Pkmn": "Không quá {STR_VAR_1} POKéMON\\nđược phép tham gia.{PAUSE_UNTIL_PRESS}",
@@ -78,6 +78,6 @@
     "gText_PkmnBecameHealthy": "{STR_VAR_1} đã khỏe lại.{PAUSE_UNTIL_PRESS}",
     "gText_MovesPPIncreased": "PP của {STR_VAR_1} đã tăng.{PAUSE_UNTIL_PRESS}",
     "gText_PkmnElevatedToLvVar2": "{STR_VAR_1} đã lên\\nLv. {STR_VAR_2}.",
-    "gText_PkmnBaseVar2StatIncreased": "Chỉ số gốc {STR_VAR_2} của\\n{STR_VAR_1} đã tăng.{PAUSE_UNTIL_PRESS}"
+    "gText_PkmnBaseVar2StatIncreased": "{STR_VAR_1}: chỉ số gốc {STR_VAR_2}\\nđã tăng.{PAUSE_UNTIL_PRESS}"
   }
 }
