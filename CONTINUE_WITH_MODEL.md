@@ -841,3 +841,33 @@ System-ui completed/reviewed:
 - Pokédex descriptive text **387 / 387 complete**
 
 Continue with another player-facing system-ui source group. Mandatory rule remains unchanged: Pokémon / MOVE / ITEM / TM / HM names and IDs stay English; translate surrounding prose only.
+
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 1,527 / 8,279 — 2026-10-08
+
+System-text remains complete: **2,319 / 2,319**.
+
+System-ui completed/reviewed now includes:
+- trainer classes: 66
+- abilities: 155
+- move descriptions: 354
+- item descriptions: 309
+- decoration descriptions: 120
+- Pokédex descriptive text: 387
+- `src/strings.c` Pokédex search/sort UI block: **64**
+- `src/strings.c` Hall of Fame + core Bag/menu block: **72**
+
+Authoritative system-ui coverage:
+- **1,527 / 8,279**
+- remaining: **6,752**
+
+New manifests:
+- `translations/system-ui/strings-pokedex-ui.vi.json`
+- `translations/system-ui/strings-hof-bag-core.vi.json`
+
+Source QA against pinned `pret/pokeemerald@5eff78649e7170a877b961ef0b3da13b81a16038`:
+- new strings checked: **136**
+- missing source labels: **0**
+- placeholder/control-token-order mismatches: **0**
+
+Continue `src/strings.c` from **gText_ItemFinderNearby** onward in bounded player-facing slices, then move through other system-ui source groups. Canonical Pokémon / MOVE / ITEM / TM / HM names and IDs remain English. No ROM/pointer writes or mass-repoint during translation-only passes.
+
