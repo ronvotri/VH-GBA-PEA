@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "scope": "battle",
-  "area": "src/strings.c — shared UI labels classified as battle by source catalog (70 strings)",
+  "area": "src/strings.c — shared UI labels classified as battle by source catalog (82 strings)",
   "baseline": "v0.4",
   "status": "translation-complete-source-qa",
   "notes": "These labels live in src/strings.c but are categorized as battle by tools/build_source_text_catalog.py because their source labels contain 'battle'. Kept outside system-ui manifests to preserve category integrity. Placeholder/control-token order preserved. No ROM patch or pointer write performed.",
@@ -75,6 +75,18 @@
     "gText_BattleArenaDesc": "Thắng bằng đội hình POKéMON phối hợp!\\nGan dạ của bạn sẽ được thử thách.",
     "gText_BattleFactoryDesc": "Nhắm tới chiến thắng bằng POKéMON thuê!\\nKiến thức của bạn sẽ được thử thách.",
     "gText_BattlePikeDesc": "Chọn một trong ba đường để chiến đấu!\\nMay mắn của bạn sẽ được thử thách.",
-    "gText_BattlePyramidDesc": "Nhắm tới đỉnh bằng cách khám phá!\\nDũng cảm của bạn sẽ được thử thách."
+    "gText_BattlePyramidDesc": "Nhắm tới đỉnh bằng cách khám phá!\\nDũng cảm của bạn sẽ được thử thách.",
+    "gText_SingleBattleRoomResults": "{PLAYER} - KQ PHÒNG ĐẤU ĐƠN",
+    "gText_DoubleBattleRoomResults": "{PLAYER} - KQ PHÒNG ĐẤU ĐÔI",
+    "gText_MultiBattleRoomResults": "{PLAYER} - KQ PHÒNG ĐẤU NHIỀU NGƯỜI",
+    "gText_LinkMultiBattleRoomResults": "{PLAYER} - KQ PHÒNG ĐẤU LINK MULTI",
+    "gText_SingleBattleTourneyResults": "{PLAYER} - KQ GIẢI ĐẤU ĐƠN",
+    "gText_DoubleBattleTourneyResults": "{PLAYER} - KQ GIẢI ĐẤU ĐÔI",
+    "gText_SingleBattleHallResults": "{PLAYER} - KQ SẢNH ĐẤU ĐƠN",
+    "gText_DoubleBattleHallResults": "{PLAYER} - KQ SẢNH ĐẤU ĐÔI",
+    "gText_BattleChoiceResults": "{PLAYER} - KQ BATTLE CHOICE",
+    "gText_BattleSwapSingleResults": "{PLAYER} - KQ BATTLE SWAP ĐƠN",
+    "gText_BattleSwapDoubleResults": "{PLAYER} - KQ BATTLE SWAP ĐÔI",
+    "gText_BattleQuestResults": "{PLAYER} - KQ BATTLE QUEST"
   }
 }
