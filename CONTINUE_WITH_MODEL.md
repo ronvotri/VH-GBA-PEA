@@ -911,3 +911,21 @@ A first QA pass found three placeholder-order issues in the shop/party batch; th
 
 Continue `src/strings.c` immediately after `gText_Mat`. Keep canonical Pokémon / MOVE / ITEM / TM / HM names and identifiers in English. Translation-only passes still perform no ROM/pointer writes or mass-repoint.
 
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 1,864 / 8,279 — 2026-10-08
+
+Continued `src/strings.c` after the 1,800 checkpoint:
+- `translations/system-ui/strings-decor-pc-contest-01.vi.json`: **64**
+
+Coverage:
+- system-ui: **1,864 / 8,279**
+- remaining system-ui: **6,415**
+
+QA against pinned `src/strings.c`:
+- labels: **64 / 64**
+- missing source labels: **0**
+- placeholder/control-token-order mismatches: **0**
+
+CI validator was also hardened after this sweep: empty translation strings are now accepted **only when the catalog source string is also empty**, which is required for intentional structural sentinels such as `gText_EmptyString*`. Non-empty source → empty translation remains a validation error.
+
+Continue `src/strings.c` immediately after `gText_TypesOfContests`. Canonical Pokémon / MOVE / ITEM / TM / HM names and IDs remain English. No ROM/pointer writes or mass-repoint in translation-only passes.
+
