@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "scope": "battle",
-  "area": "src/strings.c — shared UI labels classified as battle by source catalog (12 strings)",
+  "area": "src/strings.c — shared UI labels classified as battle by source catalog (21 strings)",
   "baseline": "v0.4",
   "status": "translation-complete-source-qa",
   "notes": "These labels live in src/strings.c but are categorized as battle by tools/build_source_text_catalog.py because their source labels contain 'battle'. Kept outside system-ui manifests to preserve category integrity. Placeholder/control-token order preserved. No ROM patch or pointer write performed.",
@@ -17,6 +17,15 @@
     "gText_DoubleBattle": "TRẬN ĐÔI",
     "gText_MultiBattle": "TRẬN NHIỀU NGƯỜI",
     "gText_BattleFrontier": "BATTLE FRONTIER",
-    "gText_BattleBag": "TÚI CHIẾN ĐẤU"
+    "gText_BattleBag": "TÚI CHIẾN ĐẤU",
+    "gText_IllBattleNow": "Tôi đấu ngay đây!",
+    "gText_BattlePts": "ĐIỂM ĐẤU",
+    "gText_BattleMon": "{PKMN} CHIẾN ĐẤU",
+    "gText_BattleSalon": "PHÒNG CHIẾN",
+    "gText_BattleRules": "LUẬT CHIẾN ĐẤU",
+    "gText_BattleBasics": "CƠ BẢN CHIẾN ĐẤU",
+    "gText_BattleBag2": "TÚI CHIẾN ĐẤU",
+    "gText_BattlePokemon": "POKéMON CHIẾN ĐẤU",
+    "gText_BattleTrainers": "TRAINER CHIẾN ĐẤU"
   }
 }
