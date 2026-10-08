@@ -1120,3 +1120,61 @@ Completed/reviewed source groups now also include:
 
 Next: continue source-catalog-first with another player-facing system-ui group, prioritizing visible prose/status/menu text. Good next candidates include Berry Blender UI and other local `sText_*` sources. Keep Pokémon / MOVE / ITEM / TM / HM names and IDs in English. No ROM/pointer writes or mass-repoint.
 
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 6,020 / 8,279 + BATTLE 191 / 2,223 — 2026-10-08
+
+Continued from the authoritative 3,272 / 122 checkpoint with a broad source-catalog-first player-facing sweep.
+
+This pass added **2,817 represented source rows**:
+- system-ui: **+2,748**
+- battle: **+69**
+
+Authoritative coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **2,319 / 2,319 complete**
+- system-ui: **6,020 / 8,279**
+- battle: **191 / 2,223**
+- remaining system-ui: **2,259**
+- remaining battle: **2,032**
+
+Important reconciliation:
+- a temporary running total of 4,870 shown during the pass was **19 too high** because the 19 standard Ribbon strings were counted twice in arithmetic.
+- the corrected total is based on the authoritative 3,272 checkpoint plus exact committed manifest counts.
+
+Completed/reviewed source groups in this pass:
+- `src/berry_blender.c`: **39 / 39**
+- misc local player-facing/format strings: **18**
+- Easy Chat vocabulary:
+  - system-ui groups: **942**
+  - battle-classified vocabulary: **66**
+  - all direct `_()` Easy Chat vocabulary groups represented; MOVE/POKéMON groups contain no direct `_()` rows in their group files and continue to use canonical source lists
+- standard Ribbon descriptions: **19**
+- gift Ribbon descriptions: **46 system-ui + 1 battle**
+- Hoenn landmark names: **42**, intentionally retained canonical English
+- Berry descriptions: **86 / 86**
+- Pokédex category names in `src/data/pokemon/pokedex_entries.h`: **387 / 387**
+- Pokémon species names: **412 / 412**, reviewed and intentionally retained canonical English
+- MOVE names: **355 / 355**, reviewed and intentionally retained canonical English
+- ITEM names: **377 / 377**, reviewed and intentionally retained canonical English
+- Nature names: **25 / 25**, localized with concise Vietnamese labels
+
+QA:
+- Pokédex categories: **387 unique / 387 source rows**, 0 missing, 0 duplicate, 0 token mismatch
+- species names: **412 / 412**, 0 missing, 0 canonical changes
+- MOVE names: **355 / 355**, 0 missing, 0 canonical changes
+- ITEM names: **377 / 377**, 0 missing, 0 canonical changes
+- Nature names: **25 / 25**, 0 missing
+- Easy Chat batches checked source-by-source with 0 missing identities / 0 placeholder-control-token mismatches
+- Berry/Ribbon/local batches source-QA clean
+- latest confirmed CI through Pokédex category commit `a128f17`: PASS; newer canonical-name/Nature runs were still in progress at checkpoint creation
+
+Terminology decisions remain mandatory:
+- Pokémon species / MOVE / ITEM / TM / HM names and IDs remain English
+- Ability names remain canonical English, matching `ability-names.vi.json`
+- proper Hoenn landmark/facility names remain canonical English unless a concrete existing project convention says otherwise
+- descriptive/help/UI prose is translated
+
+No ROM bytes or pointers were modified. No mass-repoint or guessed shipping offset was used.
+
+Next: continue catalog-first through the remaining **2,259 system-ui** rows, prioritizing visible player-facing prose/status/UI over credits or debug-like content. Then continue the remaining battle catalog independently.
+
