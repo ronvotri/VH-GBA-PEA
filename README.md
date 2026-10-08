@@ -48,6 +48,14 @@ Không được quay lại cách quét/repoint pointer toàn ROM vì cách đó 
 - crash intro;
 - freeze sau battle.
 
+## Cổng tích hợp ROM an toàn (đang triển khai)
+
+- Toàn bộ **17.512/17.512 bản dịch nguồn đã có manifest**, nhưng **chưa phải bản ROM hoàn chỉnh**.
+- Mới có **6.680 vị trí trong ROM phát hành được attest**, còn **10.832 vị trí cần xác minh** (trước khi tính số byte cần ghi).
+- Công cụ `tools/plan_user_facing_integration.py` phân biệt chuỗi giống source English với chuỗi đã đổi. **Giống source không tự động có nghĩa là v0.4 không cần vá**: bản v0.4 phải được so byte độc lập trước.
+- `tools/verify_local_rom_baselines.py` từ chối ROM sai hash, chỉ đọc, không ghi ROM hoặc pointer; các test fail-closed được chạy trước build.
+- Xem **[Hướng tích hợp ROM an toàn và bảng kiểm runtime](docs/SAFE_ROM_INTEGRATION.md)**. Không commit hoặc upload ROM đầy đủ vào repo công khai.
+
 ## Hướng hoàn thiện hiện tại
 
 1. Dùng v0.4 làm baseline làm việc.
