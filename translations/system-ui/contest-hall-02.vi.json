@@ -36,7 +36,7 @@
     "LilycoveCity_ContestLobby_Text_ExplainGMode": "G-MODE (GLOBAL MODE) dành riêng\\ncho bốn người kết nối bằng\\lcáp GBA Game Link.\\pMỗi người phải có một POKéMON\\nEmerald, Ruby hoặc Sapphire Game Pak.\\pCONTEST bắt đầu sau khi tất cả\\nchọn G-MODE (POKéMON Emerald) hoặc\\lvào qua quầy 4 người chơi\\l(POKéMON Ruby hoặc Sapphire).$",
     "LilycoveCity_ContestLobby_Text_NoWirelessAdapterInGMode": "Thành thật xin lỗi.\\pG-MODE không hoạt động\\nvới Wireless Adapter.\\pHãy chọn E-MODE hoặc thử lại\\nbằng cáp GBA Game Link.$",
     "LilycoveCity_ContestLobby_Text_WhichContestMode": "Bạn muốn tham gia\\nCONTEST MODE nào?$",
-    "ContestHall_Text_GettingStartedWireless": "MC: Xin chào! Chúng ta vừa bắt đầu\\nPOKéMON {STR_VAR_2} liên kết\\l4 người chơi!$",
+    "ContestHall_Text_GettingStartedWireless": "MC: Xin chào! Chúng ta vừa bắt đầu\\nCONTEST liên kết 4 người\\lPOKéMON {STR_VAR_2}!$",
     "ContestHall_Text_ParticipantsAsFollows": "Các TRAINER tham dự cùng\\nPOKéMON của họ gồm:$",
     "ContestHall_Text_WeveSeenContestants": "MC: Chúng ta vừa gặp bốn POKéMON\\ntham dự.\\pGiờ đến vòng sơ khảo!$",
     "ContestHall_Text_AudienceWillVote": "Khán giả sẽ bình chọn cho\\nPOKéMON họ yêu thích nhất.$",
