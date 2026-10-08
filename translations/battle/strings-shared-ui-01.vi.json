@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "scope": "battle",
-  "area": "src/strings.c — shared UI labels classified as battle by source catalog (10 strings)",
+  "area": "src/strings.c — shared UI labels classified as battle by source catalog (12 strings)",
   "baseline": "v0.4",
   "status": "translation-complete-source-qa",
   "notes": "These labels live in src/strings.c but are categorized as battle by tools/build_source_text_catalog.py because their source labels contain 'battle'. Kept outside system-ui manifests to preserve category integrity. Placeholder/control-token order preserved. No ROM patch or pointer write performed.",
@@ -15,6 +15,8 @@
     "gText_BattleMoves": "CHIÊU CHIẾN ĐẤU",
     "gText_SingleBattle": "TRẬN ĐƠN",
     "gText_DoubleBattle": "TRẬN ĐÔI",
-    "gText_MultiBattle": "TRẬN NHIỀU NGƯỜI"
+    "gText_MultiBattle": "TRẬN NHIỀU NGƯỜI",
+    "gText_BattleFrontier": "BATTLE FRONTIER",
+    "gText_BattleBag": "TÚI CHIẾN ĐẤU"
   }
 }
