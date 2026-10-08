@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "scope": "system-ui",
-  "area": "src/data/text/match_call_messages.h — Match Call profiles rows 161-240 (80 strings)",
+  "area": "src/data/text/match_call_messages.h — Match Call profiles rows 161-240 excluding BattleGirl Cyndy battle-classified labels (76 strings)",
   "baseline": "v0.4",
   "status": "translation-complete-source-qa",
-  "notes": "Third Match Call profile slice. Paired profile lines are localized together for natural Vietnamese flow. Canonical Pokémon identifiers and placeholders are preserved. No ROM patch or pointer write performed.",
+  "notes": "Third Match Call profile slice. BattleGirl Cyndy labels are split to battle scope by source classifier. Paired profile lines are localized together for natural Vietnamese flow. Canonical Pokémon identifiers and placeholders are preserved. No ROM patch or pointer write performed.",
   "translations": {
     "gText_MatchCallTriathlete_Katelyn_Strategy@@src/data/text/match_call_messages.h:201": "Tấn công hết mình!",
     "gText_MatchCallTriathlete_Katelyn_Pokemon@@src/data/text/match_call_messages.h:202": "Hệ NƯỚC là số một!",
@@ -30,10 +30,6 @@
     "gText_MatchCallNinjaBoy_Lao_Pokemon@@src/data/text/match_call_messages.h:227": "POKéMON có độc.",
     "gText_MatchCallNinjaBoy_Lao_Intro1@@src/data/text/match_call_messages.h:228": "Tôi ngày ngày luyện tập",
     "gText_MatchCallNinjaBoy_Lao_Intro2@@src/data/text/match_call_messages.h:229": "để trở thành ninja.",
-    "gText_MatchCallBattleGirl_Cyndy_Strategy@@src/data/text/match_call_messages.h:231": "Ra đòn trước là thắng!",
-    "gText_MatchCallBattleGirl_Cyndy_Pokemon@@src/data/text/match_call_messages.h:232": "Hệ GIÁC ĐẤU tốc độ cao.",
-    "gText_MatchCallBattleGirl_Cyndy_Intro1@@src/data/text/match_call_messages.h:233": "Nếu POKéMON của tôi thua,",
-    "gText_MatchCallBattleGirl_Cyndy_Intro2@@src/data/text/match_call_messages.h:234": "tôi sẽ tự chiến tiếp!",
     "gText_MatchCallParasolLady_Madeline_Strategy@@src/data/text/match_call_messages.h:236": "Tiến lên nào, POKéMON của tôi!",
     "gText_MatchCallParasolLady_Madeline_Pokemon@@src/data/text/match_call_messages.h:237": "Con nào tôi cũng nuôi được.",
     "gText_MatchCallParasolLady_Madeline_Intro1@@src/data/text/match_call_messages.h:238": "Tia UV là kẻ thù của da.",
