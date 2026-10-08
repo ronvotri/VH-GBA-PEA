@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "scope": "system-ui",
+  "area": "data/scripts/roulette.inc — Roulette table UI (13 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Complete Roulette table localization. COINS/COIN CASE/ROULETTE remain recognizable feature identifiers. Placeholders/control/terminator order preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "Roulette_Text_PlayMinimumWagerIsX": "Mức cược tối thiểu ở bàn này\\nlà {STR_VAR_1}. Bạn muốn chơi không?$",
+    "Roulette_Text_NotEnoughCoins": "Bạn không đủ COINS.$",
+    "Roulette_Text_SpecialRateTable": "Bàn này đang có tỷ lệ đặc biệt!$",
+    "Roulette_Text_ControlsInstruction": "Đặt cược bằng + Control\\nPad, rồi nhấn nút A.$",
+    "Roulette_Text_ItsAHit": "Trúng rồi!$",
+    "Roulette_Text_Jackpot": "Jackpot!$",
+    "Roulette_Text_NothingDoing": "Không trúng gì cả!$",
+    "Roulette_Text_YouveWonXCoins": "Bạn đã thắng {STR_VAR_1} COINS!$",
+    "Roulette_Text_NoCoinsLeft": "Hết COINS rồi…$",
+    "Roulette_Text_KeepPlaying": "Chơi tiếp không?$",
+    "Roulette_Text_BoardWillBeCleared": "Bàn ROULETTE sẽ được xóa cược.$",
+    "Roulette_Text_YouDontHaveACoinCase": "Bạn chưa có COIN CASE.$",
+    "Roulette_Text_CoinCaseIsFull": "COIN CASE của bạn đầy rồi!\\nCó thể đổi Coins lấy phần thưởng.$"
+  }
+}
