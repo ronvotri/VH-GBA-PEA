@@ -25,7 +25,7 @@ class V04VerifiedOffsetAuditTests(unittest.TestCase):
 
     def test_wrong_clean_source_bytes_fail_closed(self):
         self.assertEqual(
-            compare_verified_span(b"ORIGINAL", b"ORIGINAL", 0, b"DIFFERENT"),
+            compare_verified_span(b"ORIGINAL", b"ORIGINAL", 0, b"ORIGINAZ"),
             "refused:source-bytes-not-equal-clean-rom",
         )
 
