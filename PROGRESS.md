@@ -1351,3 +1351,29 @@ QA:
 
 Continue with the next bounded player-facing system-ui source group; do not reopen completed source files without a concrete QA defect.
 
+## System-UI / Battle checkpoint — 3,272 / 8,279 + 122 / 2,223 — 2026-10-08
+
+Completed `src/data/union_room.h`: **227 / 227 source rows**.
+- system-ui: **201**
+- battle: **26**
+
+Coverage now:
+- system-ui: **3,272 / 8,279**
+- battle: **122 / 2,223**
+- remaining system-ui: **5,007**
+- remaining battle: **2,101**
+
+Since the previous 2,695 checkpoint this session added:
+- **577 system-ui**
+- **33 battle**
+- **610 total source rows**
+
+Union Room QA:
+- source identities: **227 / 227**
+- placeholder/control-token-order mismatches after corrections: **0**
+- catalog scope mismatches: **0**
+
+Other source groups completed this session include the remainder of `src/strings.c`, Mystery Event messages, text-input keyboards, Berry Program Update, trade-screen local text and Battle Pyramid popup labels.
+
+No ROM bytes or pointers modified. Continue with the next bounded player-facing system-ui source group; prioritize visible prose/status/menu text and avoid reopening completed groups without a concrete QA defect.
+
