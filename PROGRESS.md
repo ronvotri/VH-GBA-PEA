@@ -1214,23 +1214,24 @@ QA:
 
 Continue from the next `src/strings.c` string after `gText_Mat`.
 
-## System-UI checkpoint — 1,864 / 8,279 — 2026-10-08
+## System-UI checkpoint — 1,857 / 8,279 + Battle 7 / 2,223 — 2026-10-08
 
-Added:
-- decoration placement / PC item storage / mailbox / Contest entry UI: **64**
-- manifest: `translations/system-ui/strings-decor-pc-contest-01.vi.json`
+Processed the next `src/strings.c` slice through `gText_TypesOfContests`, then corrected category ownership for labels containing `battle`.
 
 Coverage:
-- system-ui: **1,864 / 8,279**
-- remaining system-ui: **6,415**
+- system-text: **2,319 / 2,319 (100%)**
+- system-ui: **1,857 / 8,279**
+- battle: **7 / 2,223**
+- remaining system-ui: **6,422**
+- remaining battle: **2,216**
 
-QA:
-- source labels found: **64 / 64**
-- placeholder/control-token-order mismatches: **0**
+Catalog-scope correction:
+- 7 labels were moved into `translations/battle/strings-shared-ui-01.vi.json`
+- these rows are classified as battle by `tools/build_source_text_catalog.py` even though they physically live in `src/strings.c`
 
 Validator fix:
-- intentional empty-source sentinels may now keep an empty translation
-- an empty translation for any non-empty source is still rejected
+- empty source sentinel → empty translation is allowed
+- non-empty source → empty translation remains an error
 
-No ROM bytes or pointers modified. Continue after `gText_TypesOfContests`.
+QA remains clean for source labels and placeholder/control-token order. No ROM bytes or pointers modified. Continue after `gText_TypesOfContests`.
 
