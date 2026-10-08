@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "scope": "battle",
+  "area": "data/text/cable_club.inc — battle-classified Cable Club UI (9 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Battle-mode/link prose localized; SINGLE/DOUBLE/MULTI BATTLE and GBA Game Link remain recognizable feature names. Controls/placeholders/terminators preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "CableClub_Text_BattleUsingLinkCable": "Bạn có thể đấu với TRAINER khác\\nbằng cáp GBA Game Link.$",
+    "CableClub_Text_NeedTwoMonsForDoubleBattle": "Để DOUBLE BATTLE, bạn phải\\ncó ít nhất hai POKéMON.$",
+    "CableClub_Text_CantSingleBattleWithXPlayers": "SINGLE BATTLE Mode không thể\\nchơi với {STR_VAR_1} người.$",
+    "CableClub_Text_CantDoubleBattleWithXPlayers": "DOUBLE BATTLE Mode không thể\\nchơi với {STR_VAR_1} người.$",
+    "BattleColosseum_2P_Text_TakePlaceStartBattle": "Hãy vào vị trí rồi bắt đầu\\ntrận đấu.$",
+    "CableClub_Text_YouMayBattleHere": "Bạn có thể đấu với bạn bè\\nở đây.$",
+    "CableClub_Text_WhichBattleMode": "Bạn muốn chọn Battle Mode nào?$",
+    "CableClub_Text_PlayWhichBattleMode": "Bạn muốn chơi Battle Mode\\nnào?$",
+    "CableClub_Text_ExplainBattleModes": "Có ba Battle Mode.\\pSINGLE BATTLE dành cho hai TRAINER\\nmỗi người có ít nhất một POKéMON.\\pMỗi TRAINER có thể đưa một POKéMON\\nra chiến đấu cùng lúc.\\pDOUBLE BATTLE dành cho hai TRAINER\\nmỗi người có ít nhất hai POKéMON.\\pMỗi TRAINER sẽ đưa hai\\nPOKéMON ra cùng lúc.\\pMULTI BATTLE dành cho bốn TRAINER\\nmỗi người có ít nhất một POKéMON.\\pMỗi TRAINER có thể đưa một POKéMON\\nra chiến đấu cùng lúc.$"
+  }
+}
