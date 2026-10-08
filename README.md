@@ -79,3 +79,7 @@ Xem [PROGRESS.md](PROGRESS.md) để biết checkpoint chi tiết.
 ## Map/story translation status
 
 Map/story manifest coverage is now **4,361 / 4,361 (100%)**. This is source/manifest completion, not yet a fully integrated ROM. The next phase uses the safe integration planner and shipping-verified provenance before any new binary writes.
+
+## Read-only local ROM audit — 2026-10-09
+
+The exact clean Arena 0.13.0 and v0.4 donor binaries have been independently checked in a private session; **no ROM files are stored in GitHub**. A restricted English source-byte audit identified **7,024 additional candidates** at source-build offsets beyond the **6,680 previously attested** addresses; none are automatically safe to patch or skip. See [the local ROM audit checkpoint](docs/LOCAL_ROM_AUDIT_2026-10-09.md) and `tools/audit_local_rom_source_byte_candidates.py` for a reproducible full pinned-charmap check. The playable v0.5 has **not** been built.
