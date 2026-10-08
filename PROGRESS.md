@@ -1193,3 +1193,24 @@ QA:
 
 Continue from the next shop-dialogue string after `gText_Var1AndYouWantedVar2`.
 
+## System-UI checkpoint — 1,800 / 8,279 — 2026-10-08
+
+Continued the player-facing `src/strings.c` sweep with three manifests:
+- shop / party / move-learning UI: **73**
+- party / field-move / participation / trade checks: **64**
+- summary stats / Egg-Nature info / registry / decoration UI: **64**
+
+This pass adds **201** system-ui strings.
+
+Coverage now:
+- system-text: **2,319 / 2,319 (100%)**
+- system-ui: **1,800 / 8,279**
+- remaining system-ui: **6,479**
+
+QA:
+- source labels found: **201 / 201**
+- placeholder/control-token-order mismatches after correction: **0**
+- no ROM bytes or pointers modified
+
+Continue from the next `src/strings.c` string after `gText_Mat`.
+
