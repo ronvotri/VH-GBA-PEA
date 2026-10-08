@@ -26,7 +26,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential binutils-arm-none-eabi libpng-dev git python3 python3-pip nodejs npm
+          sudo apt-get install -y build-essential binutils-arm-none-eabi libpng-dev git python3 python3-pip nodejs npm fonts-dejavu-core
 
       - name: Install current Pillow
         run: python3 -m pip install --user --upgrade Pillow
@@ -153,6 +153,17 @@ jobs:
             --translations translations/map-story \
             --out artifact/map-story-integration-plan.json \
             --summary artifact/map-story-integration-summary.json
+
+      - name: Smoke-build Votri Valley title credit
+        run: |
+          cp -a workspace credit-workspace
+          python3 tools/apply_title_credit.py credit-workspace
+          make -C credit-workspace -j2
+          test -s credit-workspace/pokeemerald.gba
+          cp credit-workspace/graphics/title_screen/translation_credit.png artifact/title-translation-credit.png
+          sha256sum credit-workspace/pokeemerald.gba > artifact/TITLE_CREDIT_BUILD_SHA256.txt
+          echo "Title credit source patch compiled successfully." >> "$GITHUB_STEP_SUMMARY"
+          echo "Visible credit: **Việt hóa bởi Votri Valley**" >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v4
         if: always()
