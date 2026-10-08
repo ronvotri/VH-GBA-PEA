@@ -1408,3 +1408,40 @@ QA is source-driven and clean for these groups. A temporary 4,870 running total 
 
 No ROM bytes/pointers modified. Continue with the remaining 2,259 player-facing system-ui catalog rows, then battle.
 
+
+
+## AUTHORITATIVE HANDOFF — ALL USER-FACING CATALOG COVERAGE COMPLETE — 2026-10-09
+
+Corrected source catalog totals (17,513 rows total):
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **2,319 / 2,319 complete**
+- system-ui: **8,563 / 8,563 complete**
+- battle: **2,223 / 2,223 covered by manifests**
+- debug-internal: **0 / 1 intentionally excluded** — `data/scripts/test_signpost.inc` test signpost only
+
+Therefore all user-facing categories represent **17,512 / 17,512 catalog rows**. The sole catalog row outside coverage is the explicit debug/internal test signpost and is not shipping localization work.
+
+Final reconciliation sequence:
+- authoritative CI run `37821907688` passed with battle **2,116 / 2,223**, leaving exactly **107** battle rows:
+  - `data/text/match_call.inc`: **42**
+  - `data/text/tv.inc`: **65**
+- `translations/battle/match-call-frontier-final.vi.json`: **42 / 42**, source-QA clean
+- `translations/battle/tv-battle-final-01.vi.json`: **32 / 32**, source-QA clean after one placeholder-order correction
+- `translations/battle/tv-battle-final-02.vi.json`: **33 / 33**, source-QA clean
+- exact final missing-set arithmetic: **2,116 + 107 = 2,223 / 2,223 battle**
+
+Large battle groups also completed and source-QA clean:
+- `src/battle_message.c`: **541 / 541** catalog rows, 0 duplicate, 0 missing, 0 token mismatch
+- `data/text/trainers.inc`: **311 / 311 battle rows**, 0 duplicate, 0 token mismatch
+- remaining Frontier / Trainer Hill / Apprentice / Battle Tent / Battle Dome / Cable Club / Battle Count / Ability rows were completed in the intervening PASS commits before run `37821907688`.
+
+System-ui final authoritative CI confirmation already PASSed at **8,563 / 8,563** with 0 unresolved manifest keys and 0 duplicate catalog rows.
+
+Safety/terminology remain unchanged:
+- canonical Pokémon species / MOVE / ITEM / TM / HM names and IDs remain English
+- facility/proper names are retained where established by project convention
+- translation-only work performed **no ROM writes, no pointer writes, no guessed shipping offsets, no mass-repoint**
+- map/story shipping layout remains verified for the exact corrected catalog hash and source-build hash checkpoint
+
+Final GitHub Actions runs for the last 107 battle rows were still in progress when this checkpoint text was prepared. Recheck the newest workflow before claiming final CI PASS in a future session. If PASS, do **not** reopen translation coverage; move to integration/build/test planning and runtime QA instead.
