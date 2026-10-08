@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "scope": "system-ui",
+  "area": "src/mystery_gift_scripts.c — card-reader status text (1 string)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Uses a source identity key for the static local string. No ROM patch or pointer write performed.",
+  "translations": {
+    "sText_CanceledReadingCard@@src/mystery_gift_scripts.c:6": "Đã hủy đọc\\nCARD."
+  }
+}
