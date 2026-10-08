@@ -1235,3 +1235,22 @@ Validator fix:
 
 QA remains clean for source labels and placeholder/control-token order. No ROM bytes or pointers modified. Continue after `gText_TypesOfContests`.
 
+## System-UI / Battle checkpoint — 1,918 / 8,279 + 10 / 2,223 — 2026-10-08
+
+Processed the next 64 `src/strings.c` rows after `gText_TypesOfContests`:
+- **61 system-ui**
+- **3 battle** mode labels
+
+Coverage:
+- system-ui: **1,918 / 8,279**
+- battle: **10 / 2,223**
+- remaining system-ui: **6,361**
+- remaining battle: **2,213**
+
+QA:
+- source labels: **64 / 64**
+- placeholder/control-token-order mismatches: **0**
+- catalog scope mismatches: **0**
+
+Continue after `gText_YellowShard`. No ROM bytes or pointers modified.
+
