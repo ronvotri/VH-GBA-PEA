@@ -1471,3 +1471,20 @@ Next phase: safe ROM integration.
 - `tools/plan_user_facing_integration.py` and the corresponding CI step were added to make this readiness split explicit without modifying a ROM.
 - Clean shipping Arena 0.13.0 and v0.4 baseline are not currently available in the active file surface, so no attempt was made to resolve those 10,832 offsets or write the ROM.
 - Safety remains: **0 guessed offsets, 0 pointer writes, 0 mass-repoint**.
+
+## Safe binary integration engineering — 2026-10-09
+
+Translation source/manifest phase **17,512 / 17,512 COMPLETE** (validated by GitHub Actions). Work shifted to **ROM integration readiness**, without modifying any ROM bytes.
+
+From planner CI PASS `37827126689`:
+- Source-changed player-facing rows: **13,097**
+- Source-identical player-facing rows: **4,415**; none assumed a safe v0.4 no-op
+- Verified shipping offset: **6,680** (6,557 source-changed, 123 source-identical)
+- Still unresolved shipping offset: **10,832** (6,540 source-changed, 4,292 source-identical)
+- v0.4 baseline byte comparisons: **0** (ROM unavailable)
+- Safe binary writes/skips authorized: **0**
+
+Added `tools/verify_local_rom_baselines.py`, `tools/audit_v04_verified_offsets.py`, safety regression tests and a GitHub Actions pre-build unit-test step. Test step passed after fixture correction in run `37827836450`; full workflow was still in progress at the time of update. See `docs/SAFE_ROM_INTEGRATION.md` for read-only commands, pinned hashes, exact blocking requirements, and runtime QA matrix.
+
+No new patched ROM has been generated; clean ROM and v0.4 baseline bytes are required for the next binary integration gate. Do not upload ROMs to the public GitHub repository.
+
