@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "scope": "battle",
+  "area": "src/data/text/abilities.h — battle-classified Battle Armor description (1 string)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Only Battle Armor is categorized as battle by the source-label classifier; other ability descriptions are already covered under system-ui/system-text as applicable. No ROM patch or pointer write performed.",
+  "translations": {
+    "sBattleArmorDescription": "Chặn đòn chí mạng."
+  }
+}
