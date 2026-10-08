@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "scope": "battle",
+  "area": "data/scripts/mauville_man.inc — battle-classified legend records (6 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Six Mauville Man labels containing Battle/BATTLE TOWER are categorized as battle by the source catalog. BATTLE TOWER remains canonical; placeholder/control/terminator order is preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "MauvilleCity_PokemonCenter_1F_Text_TrainerBattlesTitle@@data/scripts/mauville_man.inc:357": "TRAINER Mê Chiến Đấu$",
+    "MauvilleCity_PokemonCenter_1F_Text_TrainerBattlesAction@@data/scripts/mauville_man.inc:360": "Đã chiến đấu$",
+    "MauvilleCity_PokemonCenter_1F_Text_TrainerBattlesStory@@data/scripts/mauville_man.inc:363": "Đây là câu chuyện về một TRAINER\\ntên {STR_VAR_3}.\\pTRAINER này đã chiến đấu {STR_VAR_1} lần!\\p{STR_VAR_3} hẳn là TRAINER chẳng bao giờ\\ntừ chối một cơ hội chiến đấu!$",
+    "MauvilleCity_PokemonCenter_1F_Text_BattleTowerChallengesTitle@@data/scripts/mauville_man.inc:566": "Kẻ Thách Đấu BATTLE TOWER$",
+    "MauvilleCity_PokemonCenter_1F_Text_BattleTowerChallengesAction@@data/scripts/mauville_man.inc:569": "Đã thách đấu BATTLE TOWER$",
+    "MauvilleCity_PokemonCenter_1F_Text_BattleTowerChallengesStory@@data/scripts/mauville_man.inc:572": "Đây là câu chuyện về một TRAINER\\ntên {STR_VAR_3}.\\pTRAINER này đã thách đấu BATTLE TOWER\\n{STR_VAR_1} lần!\\p{STR_VAR_3} là TRAINER luôn hướng tới\\nđỉnh cao ở BATTLE TOWER!$"
+  }
+}
