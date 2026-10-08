@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "scope": "battle",
+  "area": "src/data/credits.h — battle-classified credits labels (3 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Credits labels containing 'Battle' are categorized as battle by the project source classifier. Role labels are localized while BATTLE FRONTIER remains canonical. No ROM patch or pointer write performed.",
+  "translations": {
+    "sCreditsText_BattleDirector@@src/data/credits.h:71": "Giám đốc Chiến đấu",
+    "sCreditsText_BattleSystemPgrms@@src/data/credits.h:73": "Lập trình Hệ thống Chiến đấu",
+    "sCreditsText_BattleFrontierData@@src/data/credits.h:99": "Dữ liệu BATTLE FRONTIER"
+  }
+}
