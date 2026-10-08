@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "scope": "system-ui",
+  "area": "Mystery Gift ticket, Egg, visiting Trainer, Altering Cave and Stamp Card scripts (18 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Small Mystery Gift script set localized. Canonical ITEM/POKéMON/location identifiers such as OLD SEA MAP, WONDER CARD and ALTERING CAVE remain English. Control codes/placeholders/terminators preserved. No ROM patch or pointer write performed.",
+  "translations": {
+    "sText_AuroraTicketForYou": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.\\pBạn hẳn là {PLAYER}.\\nCó một tấm vé dành cho bạn.$",
+    "sText_AuroraTicketUseAtPort": "Có vẻ nó dùng tại cảng\\nLILYCOVE CITY.\\pSao không thử dùng xem\\nnó dẫn tới đâu?$",
+    "sText_AuroraTicketThankYou": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.$",
+    "sText_AuroraTicketBagFull": "Ồ, xin lỗi nhé, {PLAYER}.\\nNgăn KEY ITEMS trong TÚI đã đầy.\\pHãy cất bớt thứ gì đó vào PC,\\nrồi quay lại nhận nhé.$",
+    "sText_MysticTicketForYou": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.\\pBạn hẳn là {PLAYER}.\\nCó một tấm vé dành cho bạn.$",
+    "sText_MysticTicketUseAtPort": "Có vẻ nó dùng tại cảng\\nLILYCOVE CITY.\\pSao không thử dùng xem\\nnó dẫn tới đâu?$",
+    "sText_MysticTicketThankYou": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.$",
+    "sText_MysticTicketBagFull": "Ồ, xin lỗi nhé, {PLAYER}.\\nNgăn KEY ITEMS trong TÚI đã đầy.\\pHãy cất bớt thứ gì đó vào PC,\\nrồi quay lại nhận nhé.$",
+    "sText_MysteryGiftOldSeaMapForYou": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.\\pĐể tôi xác nhận--bạn là {PLAYER}?\\pChúng tôi nhận được OLD SEA MAP này\\ngửi cho bạn.$",
+    "sText_MysteryGiftOldSeaMapUseAtPort": "Có vẻ nó dùng tại cảng\\nLILYCOVE CITY.\\pSao không thử dùng xem\\nnó dẫn tới đâu?$",
+    "sText_MysteryGiftOldSeaMapThankYou": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.$",
+    "sText_MysteryGiftOldSeaMapBagFull": "Ồ, xin lỗi nhé, {PLAYER}.\\nNgăn KEY ITEMS trong TÚI đã đầy.\\pHãy cất bớt thứ gì đó vào PC,\\nrồi quay lại nhận nhé.$",
+    "sText_MysteryGiftEgg": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.\\pPOKéMON CENTER có một món quà\\ndành cho bạn--một POKéMON EGG!\\pHãy nuôi nó bằng thật nhiều\\nyêu thương nhé.$",
+    "sText_FullParty": "Ồ, có vẻ đội của bạn đầy rồi.\\pHãy cất một POKéMON vào PC\\nrồi quay lại gặp tôi.$",
+    "sText_MysteryGiftVisitingTrainerInstructions": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.\\pKhi giữ WONDER CARD này, bạn\\ncó thể tham gia khảo sát tại\\lPOKéMON MART.\\pDùng các khảo sát đó để mời\\nTRAINERS tới SOOTOPOLIS CITY.\\p…Để tôi cho bạn một mật khẩu\\nbí mật dành cho khảo sát:\\p“GIVE ME\\nAWESOME TRAINER”\\pHãy ghi nó vào khảo sát rồi gửi\\ntới WIRELESS\\lCOMMUNICATION SYSTEM.$",
+    "sText_MysteryGiftVisitingTrainerArrived": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.\\pMột TRAINER đã tới\\nSOOTOPOLIS CITY tìm bạn.\\pHy vọng bạn sẽ thích\\nchiến đấu với vị TRAINER này.\\pBạn có thể mời TRAINER khác bằng\\ncách nhập các mật khẩu khác.\\pHãy thử tìm những mật khẩu khác\\ncó thể hoạt động.$",
+    "sText_MysteryGiftAlteringCave": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.\\pCó vẻ đang lan truyền tin đồn về\\nPOKéMON hiếm xuất hiện.\\pTheo lời đồn, chúng được nhìn thấy tại\\nALTERING CAVE trên ROUTE 103.\\pCó lẽ bạn nên đi\\nđiều tra tin đồn này.$",
+    "sText_MysteryGiftStampCard": "Cảm ơn bạn đã dùng hệ thống STAMP CARD\\n.\\pBạn còn phải thu thập {STR_VAR_1} nữa để\\nlấp đầy STAMP CARD.$"
+  }
+}
