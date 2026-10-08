@@ -13,7 +13,7 @@
     "Route117_Text_YouHaveNoRoomForIt": "Bạn không còn chỗ rồi…\\nCó chỗ trống thì quay lại nhé.$",
     "Route117_Text_ReceivedEgg": "{PLAYER} nhận EGG từ\\nDAY-CARE MAN.$",
     "Route117_Text_TakeGoodCareOfIt": "Hãy chăm sóc nó thật tốt nhé.$",
-    "Route117_Text_FriendlyWithOtherTrainersMon": "Nhân tiện, về {STR_VAR_1} của bạn,\\nnó có vẻ khá thân với\\l{STR_VAR_3} của {STR_VAR_2}.\\pTôi còn thấy nó nhận\\nmột mẩu MAIL nữa.$",
+    "Route117_Text_FriendlyWithOtherTrainersMon": "Nhân tiện, về {STR_VAR_1} của bạn,\\nnó có vẻ khá thân với\\l{STR_VAR_2} và {STR_VAR_3}.\\pTôi còn thấy nó nhận\\nmột mẩu MAIL nữa.$",
     "Route117_Text_SeeWifeIfYouWantToPickUpMon": "Nếu muốn đón POKéMON về,\\nhãy nói chuyện với vợ tôi.$",
     "Route117_Text_YourMonsAreDoingFine": "À, là bạn! {STR_VAR_1} và\\n{STR_VAR_2} của bạn đều khỏe.$",
     "Route117_Text_IWillKeepDoYouWantIt": "Tôi thật sự sẽ giữ nó đấy.\\nBạn muốn lấy chứ?$",
