@@ -1358,3 +1358,14 @@ Critical advance: reverse-engineered a **CANDIDATE single-byte v0.4 Vietnamese c
 
 BPS reconstruction and all three CRCs PASS; title/startup and v4 menu source-literal bytes preserved; emulator QA **NOT RUN**. The chat has the test GBA plus a private patchkit ZIP (contains no full ROM). **Next phase:** emulator visual glyph/line-wrap validation for intro and gameplay; continue the unpatched placeholder/overlong/system-ui/battle rows with source-reference-aware bounded allocations. DO NOT call this a fully localized v0.5. Never put full ROM in public repository.
 
+
+## 2026-10-09 — FIXED REAL TRUCK/INTRO BUGS + 261 DYNAMIC STRINGS
+
+**Read first:** [docs/DYNAMIC_EARLY_GAME_POINTER_RECOVERY_2026-10-09.md](docs/DYNAMIC_EARLY_GAME_POINTER_RECOVERY_2026-10-09.md) (commit `d5ac2d2`). User saw `MOM: O, ắ’re here, honey!` and truck box showing `ột chuyện hay`. ROOT CAUSES identified: English `w` reuses a Vietnamese glyph in v0.4 font while untranslated `{PLAYER}` text remained; **wrong source script pointer** at `0x00251192` points `0x0823BF75` into the middle of the word `một` in a Sootopolis text, instead of proper truck description `0x08251199`. Avoid incorrect text-side bandaid `1 chuyện hay`: restoring exact verified pointer fixes the wrong dialogue.
+
+New test ROM from SHA-locked **1823-string v5** `ae1e00595ba3d1f193bcdbd8fcff44394b37e582c0a202e7c0c0df97f645d4d0`: **261** additional long/variable strings (259 strict manifest + 2 reviewed MOM/Littleroot) -> **2,084** cumulative manifest strings, plus **8 exactly-reviewed cross-map reference restorations**. Output ROM SHA-256 `575515ff66f640e22b77a38d06395ce3e53a9c459c1e34ab6ebd125f12d34859`. BPS source=1823-v5, output=test-2084, SHA-256 `952072c62cfceed81ccb854ae41224444459b864261aa41fdebfd072acba7518` (30,302 bytes): CRC+full reconstructed image PASS. Nothing is committed as copyrighted ROM; chat contains GBA, BPS, ZIP patchkit.
+
+**Unsafe cases deferred**: **58** text spans had ROM pointer references into their interiors; **56** additional changed pointers from the exhaustive 64-pointer clean-v5 survey remain unresolved (some may be legitimate translated relocations). DO NOT revert all. New test still uses inferential v0.4 Vietnamese glyph codebook, and gameplay/font/spacing emulator QA has not run. v0.4 stays safe rollback; v5-2084 is an **experimental test only**, not a completed 17,512-string Vietnamese release.
+
+Next priority: emulator gameplay QA first (truck, Mom, menu, battle and post-battle), then verify the remaining source-pointer anomalies and safe allocation of placeholder strings. Preserve existing title credit `Việt hóa bởi Votri Valley` as centered in v3/v4.
+
