@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "scope": "system-ui",
+  "area": "misc local UI strings — storage, Easy Chat, Union Room Chat, naming, Match Call, evolution and PokéNav (16 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Small source-local strings grouped into one bounded manifest. Formatting/glyph-only values are intentionally preserved; Japanese Shedinja name is normalized to the canonical English species name. Source identity keys prevent static-label collisions. No ROM patch or pointer write performed.",
+  "translations": {
+    "sText_OutOf30@@src/pokemon_storage_system.c:947": "/30",
+    "sText_Clear17@@src/easy_chat.c:869": "{CLEAR 17}",
+    "sText_Ellipsis@@src/union_room_chat.c:744": "…",
+    "sText_AlphabetUpperLower@@src/naming_screen.c:198": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!",
+    "sText_PokenavCallEllipsis@@src/match_call.c:1202": "………………\\p",
+    "sText_ShedinjaJapaneseName@@src/evolution_scene.c:80": "SHEDINJA",
+    "sText_CallingDots@@src/pokenav_match_call_gfx.c:208": "·{PAUSE 4}·{PAUSE 4}·{PAUSE 4}·{PAUSE 4}·\\p",
+    "sText_MaleSymbol@@src/pokenav_ribbons_list.c:123": "{COLOR_HIGHLIGHT_SHADOW LIGHT_RED WHITE GREEN}♂{COLOR_HIGHLIGHT_SHADOW DARK_GRAY WHITE LIGHT_GRAY}",
+    "sText_FemaleSymbol@@src/pokenav_ribbons_list.c:124": "{COLOR_HIGHLIGHT_SHADOW LIGHT_GREEN WHITE BLUE}♀{COLOR_HIGHLIGHT_SHADOW DARK_GRAY WHITE LIGHT_GRAY}",
+    "sText_NoGenderSymbol@@src/pokenav_ribbons_list.c:125": "{UNK_SPACER}",
+    "sText_MaleSymbol@@src/pokenav_conditions_search_results.c:128": "{COLOR_HIGHLIGHT_SHADOW LIGHT_RED WHITE GREEN}♂{COLOR_HIGHLIGHT_SHADOW DARK_GRAY WHITE LIGHT_GRAY}",
+    "sText_FemaleSymbol@@src/pokenav_conditions_search_results.c:129": "{COLOR_HIGHLIGHT_SHADOW LIGHT_GREEN WHITE BLUE}♀{COLOR_HIGHLIGHT_SHADOW DARK_GRAY WHITE LIGHT_GRAY}",
+    "sText_NoGenderSymbol@@src/pokenav_conditions_search_results.c:130": "{UNK_SPACER}",
+    "sText_MaleSymbol@@src/pokenav_ribbons_summary.c:868": "{COLOR_HIGHLIGHT_SHADOW LIGHT_RED WHITE GREEN}♂{COLOR_HIGHLIGHT_SHADOW DARK_GRAY WHITE LIGHT_GRAY}",
+    "sText_FemaleSymbol@@src/pokenav_ribbons_summary.c:869": "{COLOR_HIGHLIGHT_SHADOW LIGHT_GREEN WHITE BLUE}♀{COLOR_HIGHLIGHT_SHADOW DARK_GRAY WHITE LIGHT_GRAY}",
+    "sGenderlessIconString@@src/pokenav_ribbons_summary.c:870": "{UNK_SPACER}"
+  }
+}
