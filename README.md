@@ -83,3 +83,14 @@ Map/story manifest coverage is now **4,361 / 4,361 (100%)**. This is source/mani
 ## Read-only local ROM audit — 2026-10-09
 
 The exact clean Arena 0.13.0 and v0.4 donor binaries have been independently checked in a private session; **no ROM files are stored in GitHub**. A restricted English source-byte audit identified **7,024 additional candidates** at source-build offsets beyond the **6,680 previously attested** addresses; none are automatically safe to patch or skip. See [the local ROM audit checkpoint](docs/LOCAL_ROM_AUDIT_2026-10-09.md) and `tools/audit_local_rom_source_byte_candidates.py` for a reproducible full pinned-charmap check. The playable v0.5 has **not** been built.
+
+
+## Ghi công Việt hóa trên title screen
+
+Bản localized cuối sẽ hiện thêm một dòng nhỏ:
+
+**Việt hóa bởi Votri Valley**
+
+Dòng này được tạo thành sprite graphic riêng ở title screen, nằm giữa **PRESS START** và dòng copyright gốc. Cách này không sửa logo Pokémon và không phụ thuộc vào text window/font runtime. Công cụ nguồn: `tools/apply_title_credit.py`; hướng dẫn: [docs/TITLE_CREDIT.md](docs/TITLE_CREDIT.md).
+
+Lưu ý: credit chỉ được áp dụng cho **localized build cuối**, không áp dụng vào workflow shipping-layout/symbol-map để tránh làm lệch địa chỉ nguồn đang dùng cho tích hợp ROM an toàn.
