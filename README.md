@@ -28,9 +28,19 @@ SHA-256:
 
 ## Vấn đề còn lại
 
-**Catalog dịch map/story đã hoàn tất 4,361 / 4,361 (100%) ở mức manifest/source QA.** Câu English từng thấy trong game đã được neo vào catalog và nằm trong phạm vi manifest hoàn chỉnh.
+**Toàn bộ catalog user-facing đã hoàn tất ở mức manifest/source QA: 17,512 / 17,512 (100%).**
 
-Điều còn lại không phải là “dịch thêm map/story”, mà là **tích hợp toàn bộ manifest vào ROM v0.4** và tiếp tục các nhóm user-facing khác như system-text, Arena-only, UI và battle text. Vì vậy bản ROM hiện tại vẫn chưa được gọi là Việt hóa hoàn chỉnh.
+Coverage được GitHub Actions xác nhận:
+- map/story: **4,361 / 4,361**
+- Arena-only: **46 / 46**
+- system-text: **2,319 / 2,319**
+- system-ui: **8,563 / 8,563**
+- battle: **2,223 / 2,223**
+- debug-internal: **0 / 1** — chỉ còn test signpost nội bộ, cố tình không thuộc bản dịch phát hành
+
+Run xác nhận: **37824308095 — PASS**, với **0 unresolved manifest key** và **0 duplicate catalog row**.
+
+Điều còn lại **không còn là dịch text**. Bước tiếp theo là **tích hợp 17,512 row user-facing vào ROM v0.4**, xác minh shipping layout cho các scope chưa được attest, kiểm tra encoding/fit tiếng Việt, rồi mới cho phép in-place write hoặc repoint từng reference đã được source xác minh. Vì vậy ROM v0.4 hiện tại vẫn chưa phải bản Việt hóa hoàn chỉnh.
 
 Không được quay lại cách quét/repoint pointer toàn ROM vì cách đó từng gây:
 
