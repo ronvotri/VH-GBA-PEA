@@ -66,11 +66,14 @@ def main() -> int:
                     continue
             if declared_scope and src.get("category") != declared_scope:
                 errors.append(f"{path}: {label} category={src.get('category')} but manifest scope={declared_scope}")
-            if not isinstance(vi, str) or not vi:
-                errors.append(f"{path}: {label} has empty/non-string translation")
+            if not isinstance(vi, str):
+                errors.append(f"{path}: {label} has non-string translation")
                 continue
 
             en=src.get("english","")
+            if not vi and en:
+                errors.append(f"{path}: {label} has empty translation for non-empty source")
+                continue
             en_controls=Counter(BRACE_RE.findall(en))
             vi_controls=Counter(BRACE_RE.findall(vi))
             if en_controls != vi_controls:
