@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "scope": "system-ui",
+  "area": "src/data/text/ribbon_descriptions.h — standard Ribbon descriptions (19 strings)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "Player-facing Ribbon text localized while canonical Pokémon and established facility/place names remain recognizable. Empty structural sentinel remains empty. Source identity keys preserve provenance. No ROM patch or pointer write performed.",
+  "translations": {
+    "gRibbonDescriptionPart1_Champion@@src/data/text/ribbon_descriptions.h:1": "ĐÁNH BẠI CHAMPION,",
+    "gRibbonDescriptionPart2_Champion@@src/data/text/ribbon_descriptions.h:2": "RIBBON HALL OF FAME",
+    "gRibbonDescriptionPart1_CoolContest@@src/data/text/ribbon_descriptions.h:3": "CONTEST NGẦU",
+    "gRibbonDescriptionPart1_BeautyContest@@src/data/text/ribbon_descriptions.h:4": "CONTEST ĐẸP",
+    "gRibbonDescriptionPart1_CuteContest@@src/data/text/ribbon_descriptions.h:5": "CONTEST DỄ THƯƠNG",
+    "gRibbonDescriptionPart1_SmartContest@@src/data/text/ribbon_descriptions.h:6": "CONTEST THÔNG MINH",
+    "gRibbonDescriptionPart1_ToughContest@@src/data/text/ribbon_descriptions.h:7": "CONTEST MẠNH MẼ",
+    "gRibbonDescriptionPart2_NormalRank@@src/data/text/ribbon_descriptions.h:8": "Thắng Hạng Thường!",
+    "gRibbonDescriptionPart2_SuperRank@@src/data/text/ribbon_descriptions.h:9": "Thắng Hạng Siêu!",
+    "gRibbonDescriptionPart2_HyperRank@@src/data/text/ribbon_descriptions.h:10": "Thắng Hạng Cao Cấp!",
+    "gRibbonDescriptionPart2_MasterRank@@src/data/text/ribbon_descriptions.h:11": "Thắng Hạng Bậc Thầy!",
+    "gRibbonDescriptionPart1_Winning@@src/data/text/ribbon_descriptions.h:12": "Hoàn thành LV50",
+    "gRibbonDescriptionPart2_Winning@@src/data/text/ribbon_descriptions.h:13": "tại BATTLE TOWER.",
+    "gRibbonDescriptionPart1_Victory@@src/data/text/ribbon_descriptions.h:14": "Hoàn thành Open Level",
+    "gRibbonDescriptionPart2_Victory@@src/data/text/ribbon_descriptions.h:15": "tại BATTLE TOWER.",
+    "gRibbonDescriptionPart1_Artist@@src/data/text/ribbon_descriptions.h:16": "RIBBON vì được chọn",
+    "gRibbonDescriptionPart2_Artist@@src/data/text/ribbon_descriptions.h:17": "làm mẫu vẽ xuất sắc.",
+    "gRibbonDescriptionPart1_Effort@@src/data/text/ribbon_descriptions.h:18": "RIBBON trao cho",
+    "gRibbonDescriptionPart2_Effort@@src/data/text/ribbon_descriptions.h:19": "một POKéMON chăm chỉ."
+  }
+}
