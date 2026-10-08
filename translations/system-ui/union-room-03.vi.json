@@ -56,10 +56,10 @@
     "sText_ItsCopperCard@@src/data/union_room.h:568": "Đây là COPPER CARD!",
     "sText_ItsSilverCard@@src/data/union_room.h:569": "Đây là SILVER CARD!",
     "sText_ItsGoldCard@@src/data/union_room.h:570": "Đây là GOLD CARD!",
-    "sText_TrainerCardInfoPage1@@src/data/union_room.h:580": "Đây là THẺ TRAINER của {DYNAMIC 0} {DYNAMIC 1}…\\l{DYNAMIC 2}\\pPOKéDEX: {DYNAMIC 3}\\nTHỜI GIAN: {DYNAMIC 4}:{DYNAMIC 5}\\p",
+    "sText_TrainerCardInfoPage1@@src/data/union_room.h:580": "Đây là THẺ TRAINER của {DYNAMIC 0} {DYNAMIC 1}\\n…\\l{DYNAMIC 2}\\pPOKéDEX: {DYNAMIC 3}\\nTHỜI GIAN: {DYNAMIC 4}:{DYNAMIC 5}\\p",
     "sText_TrainerCardInfoPage2@@src/data/union_room.h:581": "TRẬN: THẮNG: {DYNAMIC 0}  THUA: {DYNAMIC 2}\\nTRAO ĐỔI: {DYNAMIC 3}\\p“{DYNAMIC 4} {DYNAMIC 5}\\n{DYNAMIC 6} {DYNAMIC 7}”\\p",
     "sText_GladToMeetYouMale@@src/data/union_room.h:582": "{DYNAMIC 1}: Rất vui vì đã gặp bạn!{PAUSE 60}",
     "sText_GladToMeetYouFemale@@src/data/union_room.h:583": "{DYNAMIC 1}: Rất vui được gặp bạn!{PAUSE 60}",
-    "sText_FinishedCheckingPlayersTrainerCard@@src/data/union_room.h:590": "Đã xem xong THẺ TRAINER của\\n{DYNAMIC 1}.{PAUSE 60}"
+    "sText_FinishedCheckingPlayersTrainerCard@@src/data/union_room.h:590": "{DYNAMIC 1}: đã xem xong\\nTHẺ TRAINER.{PAUSE 60}"
   }
 }
