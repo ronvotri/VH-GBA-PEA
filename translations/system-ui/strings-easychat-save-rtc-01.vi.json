@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "scope": "system-ui",
-  "area": "src/strings.c — Easy Chat editing, Pokéblock condition, save/RTC and travel labels (70 strings)",
+  "area": "src/strings.c — Easy Chat editing, Pokéblock condition, save/RTC and travel labels (69 strings)",
   "baseline": "v0.4",
   "status": "translation-complete-source-qa",
-  "notes": "Source-driven contiguous slice after gText_AndFillOutTheQuestionnaire with two battle-classified labels excluded into battle scope. Placeholder/control tokens and source line-break ordering preserved. Canonical Pokémon identifiers remain English. No ROM patch or pointer write performed.",
+  "notes": "Source-driven contiguous slice after gText_AndFillOutTheQuestionnaire with three battle-classified labels excluded into battle scope. Placeholder/control tokens and source line-break ordering preserved. Canonical Pokémon identifiers remain English. No ROM patch or pointer write performed.",
   "translations": {
     "gText_LetsReplyToTheInterview": "Hãy trả lời phỏng vấn nào!",
     "gText_AllTextBeingEditedWill": "Toàn bộ nội dung đang chỉnh sửa sẽ",
