@@ -1320,3 +1320,34 @@ QA:
 
 Continue after `gJPText_Sama`.
 
+## System-UI / Battle checkpoint — 3,071 / 8,279 + 96 / 2,223 — 2026-10-08
+
+This pass processed **383 source rows**:
+- **376 system-ui**
+- **7 battle**
+
+Major milestone: the current `src/strings.c` sweep has reached **EOF**.
+
+Additional complete/reviewed source groups in this pass:
+- `src/mystery_event_msg.c`
+- `src/text_input_strings.c`
+- Battle Pyramid popup strings in `src/map_name_popup.c`
+- `src/berry_fix_program.c`
+- player-facing local string in `src/mystery_gift_scripts.c`
+- text definitions in `src/data/trade.h`
+
+Coverage:
+- system-ui: **3,071 / 8,279**
+- battle: **96 / 2,223**
+- remaining system-ui: **5,208**
+- remaining battle: **2,127**
+
+QA:
+- missing source labels/identities: **0**
+- placeholder/control-token-order mismatches: **0**
+- catalog scope mismatches: **0**
+- static/local strings use source identity keys where labels may be ambiguous
+- no ROM bytes or pointers modified
+
+Continue with the next bounded player-facing system-ui source group; do not reopen completed source files without a concrete QA defect.
+
