@@ -1153,3 +1153,26 @@ System-ui committed coverage: **1,391 / 8,279**
 Remaining system-ui: **6,888**
 
 No ROM bytes or pointers were modified.
+
+## System-UI checkpoint — 1,527 / 8,279 — 2026-10-08
+
+Added two QA-clean player-facing `src/strings.c` batches:
+- Pokédex search/sort UI: **64**
+- Hall of Fame + core Bag/menu UI: **72**
+
+New manifests:
+- `translations/system-ui/strings-pokedex-ui.vi.json`
+- `translations/system-ui/strings-hof-bag-core.vi.json`
+
+Coverage now:
+- system-text: **2,319 / 2,319 (100%)**
+- system-ui: **1,527 / 8,279**
+- remaining system-ui: **6,752**
+
+Source QA for the 136 new entries:
+- exact manifest labels found in pinned `src/strings.c`: **136 / 136**
+- missing source labels: **0**
+- placeholder/control-token-order mismatches: **0**
+
+Canonical Pokémon / MOVE / ITEM / TM / HM names and identifiers remain English. Translation-only work has not modified ROM bytes or pointers. Continue `src/strings.c` from `gText_ItemFinderNearby` onward.
+
