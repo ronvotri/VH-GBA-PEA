@@ -99,3 +99,7 @@ Lưu ý: credit chỉ được áp dụng cho **localized build cuối**, không
 ## Source-byte English leftovers audit (2026-10-09)
 
 [Runtime English sweep](docs/RUNTIME_ENGLISH_SWEEP_2026-10-09.md) examined all 17,512 user-facing catalog rows in the actual v0.4 ROM. **7,553 translated-source entries still have English source bytes at an attested or candidate offset; 4,651 are long passages**. The first 4,772 located cases have attested original shipping offsets; the other 2,781 are build-offset candidates requiring verification. This is a read-only backlog, not a released v0.5. Full ROM bytes and patch data remain private.
+
+## Experimental ROM integration — 1,823 strings (2026-10-09)
+
+A private **test ROM** has been produced from the existing v4 title-credit/menu baseline by applying **1,289 map/story, 456 system-text and 78 system-ui** UTF-8 manifest translations as bounded in-place encoded strings, plus a separate Birch `Nữ` label repair. This is an **experimental binary, not the complete v0.5** and has not passed in-emulator QA. No new pointer edits were made. A 142 KB BPS patch was CRC/round-trip tested. Source provenance, exact hashes, safety limitations and the statistically inferred (not yet visually approved) v0.4 Vietnamese glyph codebook are in [the integration checkpoint](docs/LOCAL_BINARY_INTEGRATION_1823_2026-10-09.md). The completed 17,512-entry source manifest still requires further binary integration and runtime QA.
