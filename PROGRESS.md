@@ -1534,3 +1534,14 @@ Important: Previous safety rule against changing startup/title remains active fo
 The generated local binary is currently **static QA verified but not emulator-runtime verified**. Obtain the original v0.4 ROM and saved private patch/builder for future sessions if necessary. **Do not commit a copyrighted full ROM to GitHub.** Preserve this explicit title credit requirement when implementing final full-translation integration.
 
 Translation source/manifest coverage remains **17,512 / 17,512**, but live runtime integration is still pending.
+
+
+## SOURCE-DRIVEN ENGLISH RUNTIME BACKLOG — 2026-10-09
+
+A new full-catalog read-only English leftovers audit has been completed from the exact clean Arena 0.13.0 ROM, Vietnamese v0.4 donor, local v2 title-credit prototype, and pinned GitHub Actions artifact `arena-0.13.0-symbol-map` (workflow `37829747129`). See **[docs/RUNTIME_ENGLISH_SWEEP_2026-10-09.md](docs/RUNTIME_ENGLISH_SWEEP_2026-10-09.md)** for all counts, example source strings and exact safety qualifiers.
+
+**All 17,512 user-facing rows were classified** by source-manifest translation difference and v0.4 byte state. Among source-changed rows, **7,553** retain clean English source bytes at original/candidate offset: **4,772** with shipping-checkpoint-attested original offset and **2,781** at source-build byte-exact offset candidate only. Of the 7,553, **4,651 are longer text** (3,555 attested + 1,096 candidates). The full private sweep ZIP in this chat includes two filterable UTF-8 CSVs, a JSON summary, 4,651 priority prose JSON rows, README and reproducible read-only audit script. **Do not interpret original-offset byte state as definitive runtime pointer or translation status.**
+
+High-volume missing prose source files: `data/text/trainers.inc` (573), `src/data/pokemon/pokedex_text.h` (386), `data/text/tv.inc` (293), `data/text/apprentice.inc` (273). Also dozens of early-game story dialogues. Specific user reports are reproduced by source evidence: `SootopolisCity_House4_Text_AncientTreasuresWaitingInSea` English in v0.4 at verified offset `0x0023BF5F`; `gText_BirchGirl` English in v0.4 at source-build candidate offset `0x006DA94F`, manifest wants `NỮ`.
+
+**Important correction:** Earlier v2 prototype changed `GIRL` to `Gái`, not `NỮ`, and rewrote the Sootopolis dialogue **without diacritics**. Do not treat those isolated edits as complete/approved. The title credit style is still not an exact clone of the in-game UI glyphs. The current sweep generated **no ROM/pointer writes** and no new v0.5. The next required step is bounded reference verification and recovery of the actual Vietnamese text encoding/accents and allocated spans; preserve v0.4 rollback safety.
