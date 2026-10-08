@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "scope": "battle",
+  "area": "generated src/data/region_map/region_map_entries.h — battle-classified region map name (1 string)",
+  "baseline": "v0.4",
+  "status": "translation-complete-source-qa",
+  "notes": "BATTLE FRONTIER is a proper location name retained in canonical English and categorized as battle because its generated label contains 'battle'. No ROM patch or pointer write performed.",
+  "translations": {
+    "sMapName_BATTLE_FRONTIER": "BATTLE FRONTIER"
+  }
+}
