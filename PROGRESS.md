@@ -1377,3 +1377,34 @@ Other source groups completed this session include the remainder of `src/strings
 
 No ROM bytes or pointers modified. Continue with the next bounded player-facing system-ui source group; prioritize visible prose/status/menu text and avoid reopening completed groups without a concrete QA defect.
 
+## System-UI / Battle checkpoint — 6,020 / 8,279 + 191 / 2,223 — 2026-10-08
+
+Broad source-driven pass completed **2,817 source rows** since the 3,272 / 122 checkpoint:
+- **+2,748 system-ui**
+- **+69 battle**
+
+Coverage:
+- system-ui: **6,020 / 8,279**
+- battle: **191 / 2,223**
+- remaining system-ui: **2,259**
+- remaining battle: **2,032**
+
+Major completed/reviewed groups:
+- Berry Blender: 39
+- misc local strings: 18
+- Easy Chat system-ui vocabulary: 942
+- Easy Chat battle vocabulary: 66
+- Ribbon descriptions: 19
+- Gift Ribbon: 46 system-ui + 1 battle
+- Hoenn landmarks: 42 reviewed/canonical retained
+- Berry descriptions: 86
+- Pokédex category names: 387 / 387
+- species names: 412 / 412 canonical retained
+- MOVE names: 355 / 355 canonical retained
+- ITEM names: 377 / 377 canonical retained
+- Nature names: 25 / 25 localized
+
+QA is source-driven and clean for these groups. A temporary 4,870 running total was corrected during reconciliation; it had double-counted the 19 standard Ribbon rows. The authoritative system-ui total is **6,020**.
+
+No ROM bytes/pointers modified. Continue with the remaining 2,259 player-facing system-ui catalog rows, then battle.
+
