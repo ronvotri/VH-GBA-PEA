@@ -1488,3 +1488,20 @@ Added `tools/verify_local_rom_baselines.py`, `tools/audit_v04_verified_offsets.p
 
 No new patched ROM has been generated; clean ROM and v0.4 baseline bytes are required for the next binary integration gate. Do not upload ROMs to the public GitHub repository.
 
+
+## RESUME CHECKPOINT — 2026-10-09 — INTEGRATION PLANNER FAIL-CLOSED HARDENING
+
+Translation source/manifest coverage remains **17,512 / 17,512 user-facing**; **no new ROM was generated**. Preserve v0.4 and the exact baseline SHA-256 gate. Do not return to translation sweeps or re-run mass-repoint.
+
+Two new main-branch commits:
+- `b3cb8a3`: `tools/plan_user_facing_integration.py` now refuses duplicate source-catalog identities before building the identity lookup (previously dict creation could silently collapse an accidental duplicate). It also labels a `verified:` shipping offset as blocked if the address is malformed or outside the 32 MiB ROM range, instead of counting it as ready.
+- `fb23ce2`: Adds regression tests for duplicate source-catalog identities, malformed verified offsets, and out-of-range verified offsets.
+
+GitHub Actions run `37829747129`: **Test integration planner safety = SUCCESS**; the full Arena source build was still in progress when checked. Recheck the full run before reporting full CI success.
+
+Current integration readiness remains source/manifest complete but binary blocked:
+- 6,680 shipping offsets had been attested by prior checkpoint, pending actual v0.4 byte/reference verification.
+- 10,832 shipping offsets remain unresolved for Arena-only/system-ui/battle.
+- No private clean shipping Arena 0.13.0 ROM or v0.4 ROM currently accessible to this chat's binary runtime, and no user ROM is stored in the public repository.
+
+Next: once the exact private clean and v0.4 ROM inputs are available, run the read-only hash preflight and shipping-offset byte audit from `docs/SAFE_ROM_INTEGRATION.md`, then verify v0.4 reference integrity/encoding/overlap before proposing a bounded dry-run. No speculative writes.
