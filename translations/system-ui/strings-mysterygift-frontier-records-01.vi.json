@@ -29,7 +29,7 @@
     "gJPText_SelectConnectAndPressA": "Chọn “KẾT NỐI” trên CARD e-READER{PLUS}\\nrồi nhấn nút A.",
     "gJPText_LinkIsIncorrect": "Kết nối không đúng.",
     "gJPText_CardReadingHasBeenHalted": "Đã dừng\\nđọc thẻ.",
-    "gJPText_UnableConnectWithEReader": "Không thể kết nối với\\nCARD e-READER{PLUS}.",
+    "gJPText_UnableConnectWithEReader": "Không thể kết nối CARD e-READER{PLUS}\\nở lúc này.",
     "gJPText_Connecting": "Đang kết nối.",
     "gJPText_ConnectionErrorCheckLink": "Lỗi kết nối.\\nHãy kiểm tra dây nối.",
     "gJPText_ConnectionErrorTryAgain": "Lỗi kết nối.\\nHãy thử lại từ đầu.",
