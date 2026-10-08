@@ -1129,3 +1129,27 @@ Confirmed `main` before continuing Pokédex work:
 - Pokédex text now committed through row **160 / 387**
 - TENTACOOL layout fix is committed
 - canonical Pokémon / MOVE / ITEM / TM / HM names remain English
+
+
+## System-UI checkpoint — 1,391 / 8,279 — 2026-10-08
+
+Completed/reviewed player-facing system-ui groups:
+- Trainer class names: **66 / 66**
+- Ability names + descriptions: **155 / 155**
+- Move descriptions: **354 / 354 real descriptions**
+- Item descriptions: **309 / 309 real descriptions**
+- Decoration descriptions: **120 / 120**
+- Pokédex descriptive text: **387 / 387 complete**
+
+Pokédex QA:
+- 10 manifests fetched back from GitHub `main`
+- total labels: **387**
+- duplicate labels: **0**
+- malformed four-line entries: **0**
+- TENTACOOL line-layout defect was fixed before completion
+- canonical Pokémon / MOVE / ITEM / TM / HM names remain English
+
+System-ui committed coverage: **1,391 / 8,279**
+Remaining system-ui: **6,888**
+
+No ROM bytes or pointers were modified.
