@@ -8,7 +8,7 @@
   "translations": {
     "gText_DexHoenn": "HOENN",
     "gText_DexNational": "QUỐC GIA",
-    "gText_PokedexDiploma": "NGƯỜI CHƠI: {CLEAR 16}{COLOR RED}{SHADOW LIGHT_RED}{PLAYER}{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}\\n\\nChứng nhận bạn đã\\nhoàn thành xuất sắc\\n{STR_VAR_1} POKéDEX\\ncủa mình.\\n\\n{CLEAR_TO 66}{COLOR RED}{SHADOW LIGHT_RED}GAME FREAK",
+    "gText_PokedexDiploma": "NGƯỜI CHƠI: {CLEAR 16}{COLOR RED}{SHADOW LIGHT_RED}{PLAYER}{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}\\n\\nChứng nhận bạn đã\\nhoàn thành xuất sắc\\nbộ sưu tập trong\\n{STR_VAR_1} POKéDEX.\\n\\n{CLEAR_TO 66}{COLOR RED}{SHADOW LIGHT_RED}GAME FREAK",
     "gJPText_GameFreak": "{COLOR RED}{SHADOW LIGHT_RED}GAME FREAK",
     "gText_DiplomaEmpty": "{COLOR RED}{SHADOW LIGHT_RED}",
     "gText_Hoenn": "HOENN",
