@@ -1025,3 +1025,54 @@ QA:
 
 Continue `src/strings.c` immediately after `gJPText_Sama`. Keep canonical Pokémon / MOVE / ITEM / TM / HM names and identifiers in English. Translation-only passes still perform no ROM/pointer writes or mass-repoint.
 
+## AUTHORITATIVE HANDOFF — SYSTEM-UI 3,071 / 8,279 + BATTLE 96 / 2,223 — 2026-10-08
+
+Continued source-driven localization from immediately after `gJPText_Sama`.
+
+This pass first finished **the remainder of `src/strings.c` through EOF**, then moved to additional player-facing system-ui source files.
+
+New source coverage this pass:
+- `strings-diploma-easychat-ladies-01.vi.json`: **71 system-ui**
+- `strings-rental-wireless-wonder-01.vi.json`: **72 system-ui**
+- `strings-mysterygift-daycare-relearner-01.vi.json`: **70 system-ui**
+- `strings-matchcall-weather-final.vi.json`: **55 system-ui**
+- `mystery-event-msg.vi.json`: **10 system-ui**
+- `text-input-strings.vi.json`: **54 system-ui**
+- `map-name-popup-pyramid.vi.json`: **8 system-ui**
+- `berry-fix-program.vi.json`: **9 system-ui**
+- `mystery-gift-scripts.vi.json`: **1 system-ui**
+- `trade-screen-local.vi.json`: **26 system-ui**
+- battle-classified additions: **7**
+
+This pass processed **383 source rows total**:
+- system-ui: **+376**
+- battle: **+7**
+
+Authoritative coverage:
+- map/story: **4,361 / 4,361 complete**
+- Arena-only: **46 / 46 complete**
+- system-text: **2,319 / 2,319 complete**
+- system-ui: **3,071 / 8,279**
+- battle: **96 / 2,223**
+- remaining system-ui: **5,208**
+- remaining battle: **2,127**
+
+Important state:
+- `src/strings.c` is now complete through EOF for this source-driven sweep.
+- `src/mystery_event_msg.c` is complete.
+- `src/text_input_strings.c` is complete.
+- `src/map_name_popup.c` player-facing Pyramid popup strings are complete.
+- `src/berry_fix_program.c` is complete.
+- `src/mystery_gift_scripts.c` player-facing local string is complete.
+- `src/data/trade.h` text definitions are complete for this pass.
+- Static/local labels that can collide across files use source identity keys of the form `label@@source_file:line`.
+
+QA:
+- missing source labels/identities: **0**
+- placeholder/control-token-order mismatches after fixes: **0**
+- catalog scope mismatches: **0**
+- fixed one Pokédex diploma line-layout mismatch before checkpoint
+- all source-identity manifests rechecked against pinned `pret/pokeemerald@5eff78649e7170a877b961ef0b3da13b81a16038`
+
+Next: continue source-catalog-first through another bounded player-facing system-ui source group. Prefer real visible prose/status/menu strings over credits/proper-name-only or formatting-only rows. Canonical Pokémon / MOVE / ITEM / TM / HM names and IDs remain English. No ROM/pointer writes or mass-repoint.
+
