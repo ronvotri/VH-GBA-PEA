@@ -114,6 +114,14 @@ jobs:
             --out artifact/translation-coverage.json \
             --summary artifact/translation-coverage-summary.txt
 
+      - name: Plan all user-facing integration
+        run: |
+          python3 tools/plan_user_facing_integration.py \
+            --catalog artifact/shipping-verified-text-catalog.csv \
+            --translations translations \
+            --out artifact/user-facing-integration-plan.json \
+            --summary artifact/user-facing-integration-summary.json
+
       - name: Plan map story integration
         run: |
           python3 tools/plan_map_story_integration.py \
