@@ -1369,3 +1369,13 @@ New test ROM from SHA-locked **1823-string v5** `ae1e00595ba3d1f193bcdbd8fcff443
 
 Next priority: emulator gameplay QA first (truck, Mom, menu, battle and post-battle), then verify the remaining source-pointer anomalies and safe allocation of placeholder strings. Preserve existing title credit `Việt hóa bởi Votri Valley` as centered in v3/v4.
 
+
+## FAIL-CLOSED v5-2084 STATIC AUDIT — 2026-10-09 (USER DOES NOT WANT TO TEST YET)
+
+Independent, read-only SHA-locked audit completed. **READ FIRST:** [docs/STATIC_QA_V5_2084_2026-10-09.md](docs/STATIC_QA_V5_2084_2026-10-09.md), commit `c11d908`.
+
+Audit against clean 0.13.0 + v0.4 + v5-2084 and full 17,512 user-facing manifest: **5,469 translated-source rows** still match *English source bytes at their original or candidate address* (**2,767 attested, 2,702 candidate**), not guaranteed visible English. Further **3,808** have no trusted original location. Category English-byte counts: **1,696 map/story, 1,071 system-text, 1,976 UI, 705 battle, 21 Arena**. Opening-area source paths: 35 Littleroot, 2 Oldale, 5 Route102, 79 Petalburg, 102 Rustboro (some later story content).
+
+**New critical blocker:** exactly 64 formerly changed source-pointer values checked: 8 previously repaired; among 56 unresolved are **15 pointers into all-FF filler and 1 pointer at an FF terminator**; all 16 already existed in **v0.4**. DO NOT mass-revert. **270** previously in-place-patched text spans have possible pointer-like values into their interiors (262 observable in the original clean ROM), revealing batch01 lacked the interior-pointer guard used by dynamic batch. These are risk candidates not proof of all live references. **596** patched rows have a line over 36 encoded bytes (not pixel proof), including up to 108 bytes. Codebook has 7 duplicate byte mappings; English glyphs like w/f/z can be misrendered. Good news: 2,083 tracked new spans compare perfectly to v5 ROM, all have terminal FF, zero explicit overlap; one manual Sootopolis row accounts for 2,084 total. **No ROM modified and no emulator run during this audit.**
+
+Next: fix/triage pointer provenance and 270 shared-suffix candidates BEFORE further batch writing; integrate source-line wraps and verify glyph codes; continue remaining source-byte English + unresolved with explicit checks. The user's chat has downloadable ZIP `Emerald-Arena-2084-Static-QA-2026-10-09.zip` with full CSV/JSON reports and read-only repro script; SHA `ae0dde4b4aac9890f0bfd8a0427270f09de74c40700f1dd74eb7af5b3a5b3a1f`. **Do not ask user to test yet, do not claim v5 stable or complete, preserve v0.4 fallback.**
