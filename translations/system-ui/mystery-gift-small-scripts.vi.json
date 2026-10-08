@@ -23,6 +23,6 @@
     "sText_MysteryGiftVisitingTrainerInstructions": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.\\pKhi giữ WONDER CARD này, bạn\\ncó thể tham gia khảo sát tại\\lPOKéMON MART.\\pDùng các khảo sát đó để mời\\nTRAINERS tới SOOTOPOLIS CITY.\\p…Để tôi cho bạn một mật khẩu\\nbí mật dành cho khảo sát:\\p“GIVE ME\\nAWESOME TRAINER”\\pHãy ghi nó vào khảo sát rồi gửi\\ntới WIRELESS\\lCOMMUNICATION SYSTEM.$",
     "sText_MysteryGiftVisitingTrainerArrived": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.\\pMột TRAINER đã tới\\nSOOTOPOLIS CITY tìm bạn.\\pHy vọng bạn sẽ thích\\nchiến đấu với vị TRAINER này.\\pBạn có thể mời TRAINER khác bằng\\ncách nhập các mật khẩu khác.\\pHãy thử tìm những mật khẩu khác\\ncó thể hoạt động.$",
     "sText_MysteryGiftAlteringCave": "Cảm ơn bạn đã dùng hệ thống MYSTERY\\nGIFT.\\pCó vẻ đang lan truyền tin đồn về\\nPOKéMON hiếm xuất hiện.\\pTheo lời đồn, chúng được nhìn thấy tại\\nALTERING CAVE trên ROUTE 103.\\pCó lẽ bạn nên đi\\nđiều tra tin đồn này.$",
-    "sText_MysteryGiftStampCard": "Cảm ơn bạn đã dùng hệ thống STAMP CARD\\n.\\pBạn còn phải thu thập {STR_VAR_1} nữa để\\nlấp đầy STAMP CARD.$"
+    "sText_MysteryGiftStampCard": "Cảm ơn bạn đã dùng hệ thống\\nSTAMP CARD.\\pBạn còn phải thu thập {STR_VAR_1} nữa để\\nlấp đầy STAMP CARD.$"
   }
 }
