@@ -1573,3 +1573,18 @@ Earlier source/font safety changes were confirmed by full-success [Actions #3796
 - The old playable **v0.4 rollback remains intact**. No donor bitmap, unlicensed full ROM or gameplay verification was uploaded/claimed; end-user GBA release is **NOT DONE**.
 
 **NEXT:** select additional source-first stages for fully translated `system-text` (2,319 catalog rows), battle/other UI, with exact source-owner/control/placeholder QA. Keep complete existing 2,560 trial as its own SHA-locked checkpoint. Independently engineer the v0.6 remapped Vietnamese font onto a byte-identical combined source build using its **new matching symbol map**, verify Pokéblock/PKMN/= and diacritics, then run mGBA title/introduction/overworld/battle/post-battle/save/load/Pokéblock/story tests before sharing a playable patch. Do not ask the user to test a stock-font source trial.
+
+
+## 2026-10-10 — AUTHORITATIVE 3,060 SOURCE-COMPILED LABELS (full CI SUCCESS)
+
+**Verified full GitHub Actions SUCCESS:** [#37972752960](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37972752960), code commit `b819c999`. Artifact `arena-0.13.0-symbol-map` contains `SOURCE_SYSTEM_TEXT_ATTESTATION.json`, `SOURCE_SYSTEM_TEXT_STAGE.json`, `SOURCE_SYSTEM_TEXT_SHA256.txt`, `SOURCE_SYSTEM_TEXT_FONT.sym`, and `SOURCE_SYSTEM_TEXT_FONT_AUDIT.json`.
+
+- Previous fully checked source build 2,560 labels unchanged as its own GBA. New **500 system-text `data/text/*.inc` labels** source-staged on top of the 2,560-label tree; 12 distinct source files; **190 word-boundary auto-wraps**; independent per-label FF byte verification. 0 cross-category label duplicates. **New combined 3,060 source-integrated labels** built by compiler/linker, not unsafe guessed ROM pointers.
+- Compiled source-ROM SHA-256 **`583dfab1a17f75f5643e3db962eac891c78197d67517abd990cfe2c059d49f7a`**; target symbol glyph offsets: SmallNarrow `0x71A904`, Small `0x722B04`, Narrow `0x72AD04`, Short `0x732F04`, Normal `0x73B104`. The artifact SHA and 5 stock-English-font SHA attestations are authoritative.
+- New source support: `tools/stage_source_map_translations.py --category system-text --source-prefix data/text/`; strict category selection, no battle text cross-staging. `tools/verify_compiled_source_strings.py` accepts optional `--system-text` and confirms source-ownership and actual FF-terminated arrays. Unit tests guard mixed text categories and path spoofing.
+- **Not a release-ready Vietnamese GBA**. The 3,060-label compiled ROM still uses **stock English font bitmaps**, has not been grafted to the v0.6 Vietnamese glyph art, and has **NO emulator gameplay certification**. Preserve v0.4 playable rollback. Existing 2,093-only font-graft script must refuse this different source SHA/font layout; never disable checksum safety.
+- Catalog completeness is still 17,512/17,512 authored/represented source rows; **3,060 is real source-integrated subset, not 17,512 installed**. Remaining source-text candidates often contain unsupported accents (`Ồ`, `Ở`, etc.), dynamic escapes/variables, or three-line reflow constraints. Do not blindly rewrite.
+- Next: continue safe source C system-ui labels (`src/strings.c`, including short static UI strings) using a distinct additive source branch, retain exact C owner and stable original 3,060 as checkpoint; compile and attest. Then source Battle/UI and private font graft plus mGBA gameplay QA.
+
+**User has requested continued comprehensive Vietnamese integration without repetitive screenshot-by-screenshot fixes or premature download/test requests.**
+
