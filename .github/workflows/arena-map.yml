@@ -239,6 +239,13 @@ jobs:
           assert all(x["source_file"].startswith("data/text/") for x in d["translated"])
           print("Source battle text labels:",d["labels_staged"],"reflowed:",d["auto_wrapped_labels"])
           PY
+          python3 tools/verify_compiled_source_strings.py \
+            --workspace source-localization-smoke \
+            --map artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json \
+            --ui artifact/SOURCE_LEVEL_UI_PILOT.json \
+            --dynamic artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json \
+            --battle artifact/SOURCE_LEVEL_BATTLE_PILOT.json \
+            --out artifact/SOURCE_TEXT_INDEPENDENT_QA.json
           python3 tools/apply_title_credit.py source-localization-smoke
           test -s source-localization-smoke/graphics/title_screen/translation_credit.png
           make -C source-localization-smoke -j2
