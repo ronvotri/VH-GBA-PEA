@@ -151,6 +151,19 @@ class SourceStagingTests(unittest.TestCase):
                            ["data/maps/LittlerootTown/"])
         self.assertEqual([r["source_label"] for r,_ in chosen],["INTRO"])
 
+    def test_system_text_is_selected_by_exact_category_not_filename(self):
+        rows=[
+            {"category":"system-text","source_file":"data/text/cable_club.inc",
+             "source_label":"SystemGreeting","english":"a$","vietnamese":"b$"},
+            {"category":"battle","source_file":"data/text/cable_club.inc",
+             "source_label":"BattleGreeting","english":"a$","vietnamese":"b$"},
+        ]
+        chosen,rejected=plan_rows(rows,self.codes,"data/text/",26,20,
+                                  category="system-text")
+        self.assertFalse(rejected)
+        self.assertEqual([r["source_label"] for r,_ in chosen],["SystemGreeting"])
+        self.assertEqual(chosen[0][1],bytes([0xD6,0xFF]))
+
     def test_battle_source_is_explicitly_selected(self):
         rows=[
             {"category":"battle","source_file":"data/text/battle_dome.inc",
