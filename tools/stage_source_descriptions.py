@@ -76,9 +76,38 @@ def replace_description(source:str,label:str,english:str,payload:bytes,kind:str)
     return source[:start]+prefix+"{"+values+"};\n"+source[end:]
 
 
+def rebalance_two_line_description(text:str,width:int=26)->str:
+    """Move a word-boundary newline in a fixed 2-line box; no words are lost."""
+    had_end=text.endswith("$")
+    plain=text[:-1] if had_end else text
+    if (plain.count(r"\n")!=1 or any(ch in plain for ch in "{}\r\t")
+            or r"\p" in plain or r"\l" in plain
+            or plain.startswith(" ") or plain.endswith(" ")
+            or "  " in plain):
+        raise ValueError("description rebalance requires two unambiguous lines")
+    left,right=plain.split(r"\n")
+    if not left or not right or left.endswith(" ") or right.startswith(" "):
+        raise ValueError("ambiguous words around line break")
+    words=(left+" "+right).split(" ")
+    candidates=[]
+    for index in range(1,len(words)):
+        first=" ".join(words[:index])
+        second=" ".join(words[index:])
+        if len(first)<=width and len(second)<=width:
+            candidates.append((max(len(first),len(second)),
+                               abs(len(first)-len(second)),first,second))
+    if not candidates:
+        raise ValueError("two-line description cannot fit without rewording")
+    _,_,first,second=min(candidates)
+    changed=first+r"\n"+second+("$" if had_end else "")
+    if changed.replace(r"\n"," ").split()!=text.replace(r"\n"," ").rstrip("$").split():
+        raise ValueError("word order changed during rebalancing")
+    return changed
+
+
 def stage_descriptions(
     rows:list[dict], source:str, codes:dict[str,int], kind:str,
-    limit:int=350, max_cells:int=26
+    limit:int=350, max_cells:int=26, rebalance:bool=False
 ):
     if kind not in SOURCES or not 10<=max_cells<=30:
         raise ValueError("unsupported description kind or width")
@@ -118,7 +147,15 @@ def stage_descriptions(
             continue
         try:
             with_end=vietnamese if vietnamese.endswith("$") else vietnamese+"$"
-            payload=encode_text(with_end,codes,max_cells)
+            compiled=with_end
+            try:
+                payload=encode_text(compiled,codes,max_cells)
+            except ValueError as exc:
+                if not (rebalance and kind=="move" and
+                        str(exc).startswith("line exceeds ")):
+                    raise
+                compiled=rebalance_two_line_description(with_end,max_cells)
+                payload=encode_text(compiled,codes,max_cells)
             new_source=replace_description(source,label,english,payload,kind)
         except ValueError as exc:
             skipped[str(exc)]+=1
@@ -127,7 +164,9 @@ def stage_descriptions(
         accepted.append({"label":label,"source_file":expected_file,
                          "english":english,"vietnamese":vietnamese,
                          "encoded_bytes":len(payload),
-                         "visible_lines":original_breaks+1})
+                         "visible_lines":original_breaks+1,
+                         "compiled_vietnamese":compiled,
+                         "auto_rebalanced":compiled!=with_end})
     return source,accepted,dict(skipped)
 
 
@@ -139,6 +178,8 @@ def main():
     ap.add_argument("--kind",choices=sorted(SOURCES),required=True)
     ap.add_argument("--limit",type=int,default=350)
     ap.add_argument("--max-cells",type=int,default=26)
+    ap.add_argument("--rebalance",action="store_true",
+                    help="Move word-boundary breaks only inside fixed 2-line move descriptions")
     ap.add_argument("--apply",action="store_true")
     ap.add_argument("--report",type=Path,required=True)
     a=ap.parse_args()
@@ -153,12 +194,13 @@ def main():
         raise SystemExit("REFUSED: expected source description file missing")
     original=source_file.read_text(encoding="utf-8")
     result,accepted,skipped=stage_descriptions(
-        rows,original,codes,a.kind,a.limit,a.max_cells)
+        rows,original,codes,a.kind,a.limit,a.max_cells,a.rebalance)
     if a.apply:
         source_file.write_text(result,encoding="utf-8")
     report={"kind":a.kind,"source_file":SOURCES[a.kind],
             "mode":"apply" if a.apply else "dry-run",
             "labels_staged":len(accepted),
+            "auto_rebalanced_labels":sum(1 for row in accepted if row["auto_rebalanced"]),
             "translated":accepted,
             "skipped_reasons":skipped,
             "line_box_limits_preserved":True,
