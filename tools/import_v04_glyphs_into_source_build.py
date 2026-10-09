@@ -21,6 +21,13 @@ FONT_NAMES=(
 )
 GLYPH_BLOCK_SIZE=0x8000
 ROM_BYTES=0x2000000
+ATTESTED_CLEAN_OFFSETS={
+    "gFontSmallNarrowLatinGlyphs":0x0071DEA0,
+    "gFontSmallLatinGlyphs":0x007260A0,
+    "gFontNarrowLatinGlyphs":0x0072E2A0,
+    "gFontShortLatinGlyphs":0x007364A0,
+    "gFontNormalLatinGlyphs":0x0073E6A0,
+}
 
 
 def read_symbol_offsets(source: str) -> dict[str,int]:
@@ -96,6 +103,8 @@ def main()->int:
     if len(rebuilt)!=ROM_BYTES:
         raise SystemExit("REFUSED: unexpected source build ROM size")
     reference=read_symbol_offsets(a.reference_sym.read_text(encoding="utf-8"))
+    if reference!=ATTESTED_CLEAN_OFFSETS:
+        raise SystemExit("REFUSED: source symbol font offsets are not the checked clean layout")
     target=read_symbol_offsets(a.target_sym.read_text(encoding="utf-8"))
     result,counts=overlay_fonts(clean,donor,rebuilt,reference,target)
     diff=sum(x!=y for x,y in zip(rebuilt,result))
