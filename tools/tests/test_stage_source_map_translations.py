@@ -4,7 +4,7 @@ import sys
 import unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from stage_source_map_translations import encode_text, patch_labeled_block, plan_rows, prioritized_rows
+from stage_source_map_translations import encode_text, patch_labeled_block, plan_rows, prioritized_rows, normalize_authored_linefeeds
 
 
 class SourceStagingTests(unittest.TestCase):
@@ -39,6 +39,37 @@ class SourceStagingTests(unittest.TestCase):
     def test_dynamic_tokens_not_supported(self):
         with self.assertRaisesRegex(ValueError,"unsupported dynamic"):
             encode_text("Mẹ: {PLAYER}$",self.codes,26)
+
+    def test_opt_in_literal_lf_matches_exact_source_controls(self):
+        english=r"a\nb$"
+        original="a\nb$"
+        self.assertEqual(normalize_authored_linefeeds(english,original),english)
+        row={"source_label":"A","source_file":"data/maps/Route101/scripts.inc",
+             "category":"map-story","english":english,"vietnamese":original}
+        unpatched,skipped=plan_rows([row],self.codes,"data/maps/",26,10)
+        self.assertFalse(unpatched)
+        self.assertTrue(any("missing Vietnamese glyph" in reason for reason in skipped))
+        patched,errors=plan_rows([row],self.codes,"data/maps/",26,10,
+                                 normalize_literal_newlines=True)
+        self.assertFalse(errors)
+        self.assertEqual(len(patched),1)
+        self.assertEqual(patched[0][1],bytes([0xD5,0xFE,0xD6,0xFF]))
+        self.assertEqual(patched[0][0]["authored_vietnamese"],original)
+        self.assertTrue(patched[0][0]["literal_newlines_normalized"])
+
+    def test_literal_lf_must_not_replace_page_or_change_order(self):
+        for english,vietnamese in (
+            (r"a\pb$","a\nb$"),
+            (r"a\nb\p$","a\\p\nb$"),
+            ("ab$","a\nb$"),
+        ):
+            with self.subTest(english=english,vietnamese=vietnamese):
+                with self.assertRaisesRegex(ValueError,"control sequence differs"):
+                    normalize_authored_linefeeds(english,vietnamese)
+
+    def test_opt_in_never_changes_existing_escaped_controls(self):
+        text=r"a\nb\p$"
+        self.assertEqual(normalize_authored_linefeeds(text,text),text)
 
     def test_unknown_glyph_rejected(self):
         with self.assertRaisesRegex(ValueError,"missing Vietnamese glyph"):
