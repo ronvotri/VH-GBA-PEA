@@ -331,6 +331,22 @@ jobs:
               print(kind,"description translations:",d["labels_staged"],
                     "source file:",d["source_file"])
           PY
+          python3 tools/stage_pokeblock_item_descriptions.py \
+            --workspace source-localization-smoke \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook artifact/POKEBLOCK_SAFE_SOURCE_CODEBOOK.json \
+            --charmap source-localization-smoke/charmap.txt \
+            --apply \
+            --report artifact/SOURCE_LEVEL_POKEBLOCK_ITEM_PILOT.json
+          python3 - <<'PY'
+          import json
+          report=json.load(open("artifact/SOURCE_LEVEL_POKEBLOCK_ITEM_PILOT.json"))
+          assert report["mode"]=="apply" and report["labels_staged"]==16,report
+          assert report["native_byte_sequence_pinned"] and not report["font_artwork_grafted"]
+          assert all(x["native_token_bytes"]=="5556575859" and x["visible_lines"]==3
+                     for x in report["translated"]),report
+          print("Native POKEBLOCK item descriptions: 16 source labels, exact 5-byte glyph token")
+          PY
           python3 tools/verify_compiled_source_strings.py \
             --workspace source-localization-smoke \
             --map artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json \
@@ -340,6 +356,7 @@ jobs:
             --battle-c artifact/SOURCE_LEVEL_BATTLE_C_PILOT.json \
             --move-desc artifact/SOURCE_LEVEL_MOVE_DESC_PILOT.json \
             --item-desc artifact/SOURCE_LEVEL_ITEM_DESC_PILOT.json \
+            --pokeblock artifact/SOURCE_LEVEL_POKEBLOCK_ITEM_PILOT.json \
             --out artifact/SOURCE_TEXT_INDEPENDENT_QA.json
           python3 tools/apply_title_credit.py source-localization-smoke
           test -s source-localization-smoke/graphics/title_screen/translation_credit.png
