@@ -154,27 +154,27 @@ jobs:
             --out artifact/map-story-integration-plan.json \
             --summary artifact/map-story-integration-summary.json
 
-      - name: Smoke-build one source-level Vietnamese map text
+      - name: Smoke-build up to 100 source-level Vietnamese map texts
         run: |
           cp -a workspace source-localization-smoke
           python3 tools/stage_source_map_translations.py \
             --workspace source-localization-smoke \
             --plan artifact/user-facing-integration-plan.json \
             --codebook checkpoints/v04-inferred-vietnamese-codebook.json \
-            --source-prefix data/maps/LittlerootTown/ \
-            --limit 1 \
+            --source-prefix data/maps/ \
+            --limit 100 \
             --apply \
             --report artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json
           python3 - <<'PY'
           import json
           d=json.load(open("artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json"))
-          assert d["labels_staged"]==1 and d["mode"]=="apply", d
-          print("Source-level Vietnamese pilot row:", d["translated"][0]["label"])
+          assert d["labels_staged"] >= 1 and d["mode"]=="apply", d
+          print("Source-level Vietnamese map pilot rows:",d["labels_staged"])
           PY
           make -C source-localization-smoke -j2
           test -s source-localization-smoke/pokeemerald.gba
           sha256sum source-localization-smoke/pokeemerald.gba > artifact/SOURCE_LEVEL_VIETNAMESE_PILOT_SHA256.txt
-          echo "One-source-label Vietnamese staging and assembler/linker pilot: PASS (not runtime/visual certified)." >> "$GITHUB_STEP_SUMMARY"
+          echo "Source-level Vietnamese map staging and assembler/linker pilot: PASS (not runtime/visual certified)." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Smoke-build Votri Valley title credit
         run: |
