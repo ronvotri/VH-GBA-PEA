@@ -11,7 +11,7 @@ PKMN        = 53 54
 POKEBLOCK   = 55 56 57 58 59
 ```
 
-These are **fixed native Latin glyph sequences**, not arbitrary-length battle variables. `{POKEBLOCK}` is used in 16 authored item descriptions, including berries and the Pokéblock Case; the 17th unsafe header/string family is tracked separately. The experimental `checkpoints/v05-collision-free-codebook.json` currently has `đ = 0x56` and `ì = 0x59`, both within native `POKEBLOCK` glyph indices.
+These are **fixed native Latin glyph sequences**, not arbitrary-length battle variables. `{POKEBLOCK}` is used in 16 authored item descriptions, including berries and the Pokéblock Case. The experimental `checkpoints/v05-collision-free-codebook.json` currently has `đ = 0x56` and `ì = 0x59`, both within native `POKEBLOCK` glyph indices.
 
 **So a source build with v0.5 text bytes and an unmodified imported v0.4 Vietnamese font would risk displaying broken Pokéblock symbols**, even if all ASCII f/w/z glyphs were restored. The existing `tools/graft_collision_safe_v04_fonts.py` only protects those earlier 3 ASCII slots and is **not sufficient as a release candidate**.
 
