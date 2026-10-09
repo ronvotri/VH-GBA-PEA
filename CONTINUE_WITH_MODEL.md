@@ -1542,3 +1542,16 @@ Whole source manifest coverage remains 17,512/17,512, not runtime installation c
 - Regressions added in `tools/tests/test_graft_v06_pokeblock_safe_fonts.py` for stale `.sym`, single-symbol drift, and wrong reference geometry. Check latest GitHub Actions run result; a *unit PASS is not emulator QA*.
 
 **Next real action:** reproduce or obtain the exact private 32MiB source-compiled GBA and symbol file, graft fonts via the updated fail-closed tool, verify byte-range report, then independently inspect glyphs and gameplay in emulator (title credit, truck/Mom, battle, Pokéblock, saves). Do **not** upload full ROMs/font artwork to public GitHub; do not adjust the compiled source integration count before a new independently attested build.
+
+
+## 2026-10-10 — OPTIONAL LITERAL LF SOURCE-CONTROL RECOVERY (NO DEFAULT BUILD CHANGE)
+
+Reviewed the **actual non-ROM metadata artifact** from verified Actions #37960836736. Within the authoritative 17,512-row user-facing source plan, **609 map/story Vietnamese entries** contain literal line-feed characters rather than the two-character script control `\\n`. Of those, **566 entries** become an *exact ordered* English `\\n`/`\\p`/`\\l` control-sequence match when literal LF is encoded as `\\n`; **43 do not match** and must remain blocked for individual editorial verification. This is a candidate count, NOT 566 additional installed labels. Basic static codebook/26-cell screening identified roughly **104 immediately promising rows** before actual source-stage/compiler checks.
+
+New opt-in support in `tools/stage_source_map_translations.py`:
+- `--normalize-literal-newlines` converts actual LF into literal `\\n` **only** if the entire ordered control signature exactly matches the pinned original English source.
+- The default remains **OFF**, so the confirmed v0.6 2,093-source-label ROM SHA and matching target font symbol addresses are not deliberately changed. The pipeline's original `--limit 1000` pilot remains unchanged.
+- It fails closed for missing/extra/reordered page and scroll controls, still rejects dynamic placeholders/unsupported glyphs/overlong lines, preserves original authored wording in per-label reports, and counts only successfully source-staged normalized entries.
+- Regression tests are in `tools/tests/test_stage_source_map_translations.py`. Verify the newest Actions outcome before enabling this opt-in in any source build. A future expanded build will require a **new** exact source-ROM SHA and `.sym` font checkpoint; never bypass the v0.6 pinned font guards.
+
+Earlier source/font safety changes were confirmed by full-success [Actions #37968226276](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37968226276). Do not confuse a passing source-unit/compiler CI with verified emulator gameplay or a release ROM. Votri Valley title credit and the playable v0.4 rollback remain intact.
