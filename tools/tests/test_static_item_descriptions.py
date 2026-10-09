@@ -58,6 +58,13 @@ class ItemDescriptionGlyphTests(unittest.TestCase):
                 missing=set(text.replace(r"\n",""))-set(self.book)
                 self.assertFalse(missing,(label,missing))
 
+    def test_pinned_source_line_counts_for_last_two_items(self):
+        # Original source: Up-Grade has two visible lines; TM09 has three.
+        self.assertEqual(self.rows["sUpGradeDesc"].count(r"\\n"),1)
+        self.assertEqual(self.rows["sTM09Desc"].count(r"\\n"),2)
+        self.assertIn("SILPH CO.",self.rows["sUpGradeDesc"])
+        self.assertIn("2 đến 5",self.rows["sTM09Desc"])
+
     def test_pokeblock_ligatures_still_deliberately_excluded(self):
         has_token={key for key,value in self.rows.items() if "{POKEBLOCK}" in value}
         self.assertEqual(len(has_token),16)
