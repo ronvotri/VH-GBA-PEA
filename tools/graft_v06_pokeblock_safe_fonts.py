@@ -24,10 +24,34 @@ SPECIAL_CODES=(0x53,0x54,0x55,0x56,0x57,0x58,0x59)
 ASCII_PUNCT=(0x34,0x35,0x36)
 SMALL_FONTS=old_graft.UNVERIFIED_SMALL_FONTS
 
+# Compiled source text and font addresses were independently attested by the
+# exact 2,093-label v0.6 Actions artifact. A new compiler layout requires a
+# NEW audit/checkpoint; never silently accept the older baseline .sym.
+PINNED_SOURCE_SHA256="5cae1a20698fcd7036ccdc0f2bdbc0c0c80d942380ab48611fb3ec816ebcab7f"
+ATTESTED_SOURCE_FONT_OFFSETS={
+    "gFontSmallNarrowLatinGlyphs":0x71B59C,
+    "gFontSmallLatinGlyphs":0x72379C,
+    "gFontNarrowLatinGlyphs":0x72B99C,
+    "gFontShortLatinGlyphs":0x733B9C,
+    "gFontNormalLatinGlyphs":0x73BD9C,
+}
+
+
+def require_pinned_target_symbols(target_offsets:dict[str,int])->None:
+    if target_offsets!=ATTESTED_SOURCE_FONT_OFFSETS:
+        raise ValueError("wrong v0.6 target .sym: expected SOURCE_LEVEL_FONT.sym for exact 2,093-label build")
+    spans=sorted((a,a+GLYPH_BLOCK_SIZE+0x100)
+                 for a in target_offsets.values())
+    if any(a<0 or b>0x2000000 for a,b in spans):
+        raise ValueError("v0.6 font graphics/width table outside ROM")
+    if any(spans[i][1]>spans[i+1][0] for i in range(len(spans)-1)):
+        raise ValueError("overlapping v0.6 font graphics/width tables")
+
 
 def graft_v06_font(clean:bytes,donor:bytes,built:bytes,
                    source_offsets:dict[str,int],target_offsets:dict[str,int],
                    glyphs:dict[str,str])->tuple[bytes,dict]:
+    require_pinned_target_symbols(target_offsets)
     for character,rule in NEW_RELOCATION.items():
         if glyphs.get(character)!=f'0x{rule["target"]:02X}':
             raise ValueError(f"v0.6 codebook lacks new byte {character}")
@@ -135,6 +159,8 @@ def main():
     p.add_argument("--expected-source-sha256",required=True)
     p.add_argument("--output",type=Path)
     a=p.parse_args()
+    if a.expected_source_sha256.lower()!=PINNED_SOURCE_SHA256:
+        p.error("expected source SHA256 does not match the attested 2,093-label v0.6 build")
     if a.output and a.output.resolve() in {a.clean.resolve(),a.v04.resolve(),a.source_built.resolve()}:
         p.error("output must not overwrite source or donor ROM")
     clean=checked_rom(a.clean,CLEAN_SHA256,"clean Arena shipping")
