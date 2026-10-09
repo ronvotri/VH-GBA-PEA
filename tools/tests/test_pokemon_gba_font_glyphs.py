@@ -44,7 +44,7 @@ class GlyphCodecTests(unittest.TestCase):
     def test_reject_invalid_palette(self):
         pixels=[[0]*16 for _ in range(16)]
         pixels[0][0]=3
-        with self.assertRaisesRegex(ValueError,"palette"):
+        with self.assertRaisesRegex(ValueError,"background/foreground/shadow"):
             encode_glyph(pixels)
 
     def test_reject_bad_compressed_size(self):
