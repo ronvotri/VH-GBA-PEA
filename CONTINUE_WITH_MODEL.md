@@ -1616,3 +1616,20 @@ Current translation manifests represent **17,512/17,512 user-facing source rows*
 
 **Next safe integration:** potentially additional remaining C UI (exclude both 41 original + new 300), system-text dynamic/3-line controls via a deliberately reviewed source tool, and remaining battle UI. Any new source GBA requires fresh verified SHA/symbol checkpoint before font graft. Do not ask the user to test unpatched font source trials.
 
+
+
+## 2026-10-10 — FIRST FONT+TEXT EXPERIMENT SUCCESS (NO PRIVATE DONOR ROM REQUIRED)
+
+**GitHub Actions [#37975255406](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37975255406) FULL SUCCESS**, workflow commit `5bbdffd1`. This trial moves beyond all earlier stock-English-font source builds. The pipeline first recompiles and independently attests the **same 3,360 source-installed Vietnamese labels** and then generates actual **Vietnamese glyph bitmaps in that exact ROM** from its own clean Latin font cells. Experimental output GBA only existed in the temporary CI workspace and was deliberately deleted before artifact upload; no full ROM or donor glyph art was published.
+
+Verified non-ROM artifact `arena-0.13.0-symbol-map` includes `SOURCE_3360_SYNTH_FONT_QA.json`:
+- Exact stock-font, source-built 3,360-text input ROM SHA256 `9e804a005210d59d4dc1806d387d3b50ee412ab9e7f5df0f56d5f27e43407f7a`.
+- **Combined Vietnamese-text + experimental generated-font result SHA256 `0c1944e241d7e00765e2ef6cc5ba7912600694df8fa6a151985a051a09a23591`.**
+- Synthesized **63 distinct Vietnamese letter shapes × 5 stock Latin font styles = 315 glyphs**, with 8,380 byte changes strictly in font pictures and width tables; **ZERO non-font changes**.
+- 100% byte identity preserved for all codebook ASCII glyph pictures and widths, plus original PKMN 53–54, POKEBLOCK 55–59, and LV/= /; at 34–36. Original source-build SHA + source-specific font symbol offsets are fail-closed guarded.
+- New code `tools/synthesize_vietnamese_source_fonts.py`, `tools/tests/test_synthesize_vietnamese_source_fonts.py`. Source-only offline 2bpp raster synthesis: compose the glyph from the stock English base letter + breve/circumflex/horn/acute/grave/hook/tilde/dot/stroke; preserve exact compiled source labels/pointers. Unicode combining-mark order normalized (e.g., `ặ`).
+- Exact detailed safety flags: `synthetic_unreviewed_visuals=true`, `emulator_tested=false`, `release_ready=false`. **Do NOT promote this experimental raster to an end-user release** without screenshot inspection and mGBA gameplay/save/Pokéblock QA. The synthetic glyph aesthetic may need editorial changes; absent codebook glyphs are not solved by this step.
+- The pre-existing source-first 3,360-label trial and the playable v0.4 rollback remain untouched.
+
+**Highest priority next:** Make a separate CI-only mGBA boot/screenshots smoke test of this 3,360-text+synth-font ROM; verify intro, title credit, text/diacritics, battle, Pokéblock, and save/load. If font legibility is good, produce an independently verified redistribution-safe delta patch against exact user-owned clean Arena 0.13.0, never upload a full commercial ROM. Do not spend another cycle simply increasing 17,512 manifest coverage counts until the playable beta route has been assessed.
+
