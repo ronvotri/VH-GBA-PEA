@@ -282,7 +282,7 @@ jobs:
             --plan artifact/user-facing-integration-plan.json \
             --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
             --kind move \
-            --limit 350 \
+            --limit 355 \
             --rebalance \
             --apply \
             --report artifact/SOURCE_LEVEL_MOVE_DESC_PILOT.json
@@ -303,7 +303,8 @@ jobs:
               assert all(r["visible_lines"] in ((2,) if kind=="MOVE" else (2,3))
                          for r in d["translated"]),d
               if kind=="MOVE":
-                  assert d["labels_staged"]>=250, d
+                  assert d["labels_staged"]==354, d
+                  assert d["auto_rebalanced_labels"]==39, d
                   print("Two-line move rebalances:",d["auto_rebalanced_labels"])
               print(kind,"description translations:",d["labels_staged"],
                     "source file:",d["source_file"])
