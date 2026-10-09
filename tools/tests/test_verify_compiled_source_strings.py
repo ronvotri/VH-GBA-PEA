@@ -19,6 +19,27 @@ class SourceAttestationTests(unittest.TestCase):
         self.assertEqual(extract_asm_payload(src,"BattleDome_Text_Potential1"),
                          b"\xC7\x0A\xFF")
 
+    def test_native_pokeblock_item_source_byte_attestation(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            dest=root/"src/data/text"
+            dest.mkdir(parents=True)
+            path=dest/"item_descriptions.h"
+            path.write_text(
+                "static const u8 sRazzBerryDesc[] = {0xD5, 0x55, 0x56, 0x57, 0x58, 0x59, 0xFE, 0xD6, 0xFE, 0xD7, 0xFF};\n",
+                encoding="utf-8")
+            report={"pokeblock":{"mode":"apply",
+                    "source_file":"src/data/text/item_descriptions.h",
+                    "labels_staged":1,
+                    "translated":[{"label":"sRazzBerryDesc","visible_lines":3}]}}
+            verified=validate_stages(root,report)
+            self.assertEqual(verified["source_groups"],{"pokeblock":1})
+            path.write_text(
+                "static const u8 sRazzBerryDesc[] = {0xD5, 0x55, 0x56, 0x58, 0x59, 0xFE, 0xD6, 0xFE, 0xD7, 0xFF};\n",
+                encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"native Pokéblock byte sequence"):
+                validate_stages(root,report)
+
     def test_move_and_item_description_source_attestation(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp)
