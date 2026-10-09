@@ -84,8 +84,8 @@ def main():
     ap.add_argument("--apply",action="store_true")
     ap.add_argument("--report",type=Path,required=True)
     a=ap.parse_args()
-    if not 1<=a.limit<=100 or not 10<=a.max_segment<=30:
-        ap.error("limit 1..100 and max-segment 10..30")
+    if not 1<=a.limit<=300 or not 10<=a.max_segment<=30:
+        ap.error("limit 1..300 and max-segment 10..30")
     plan=json.loads(a.plan.read_text(encoding="utf-8"))
     raw=json.loads(a.codebook.read_text(encoding="utf-8"))
     codes={ch:int(value,16) for ch,value in raw["glyph_bytes"].items()}
