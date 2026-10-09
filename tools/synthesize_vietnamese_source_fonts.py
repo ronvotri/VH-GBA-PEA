@@ -150,7 +150,7 @@ def synthesize_fonts(rom:bytes, offsets:dict[str,int],
             target_start=offset+dst*GLYPH_BYTES
             out[target_start:target_start+GLYPH_BYTES]=encode_glyph(generated)
             out[offset+GLYPH_BLOCK_SIZE+dst]=width
-            ledger.append({"font":font,"glyph":ch,"code":dst,"base":chr(ord(ch) if ch.isascii() else ord("a")) if False else "", "width":width})
+            ledger.append({"font":font,"glyph":ch,"code":dst,"base_code":base,"width":width})
         for code in protected:
             where=offset+code*GLYPH_BYTES
             assert out[where:where+GLYPH_BYTES]==rom[where:where+GLYPH_BYTES]
