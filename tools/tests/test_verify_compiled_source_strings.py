@@ -52,10 +52,11 @@ class SourceAttestationTests(unittest.TestCase):
                 return {"mode":"apply","labels_staged":len(labels),"translated":labels}
             reports={
                 "map":report([{"label":"Hello_MapText","source_file":"data/maps/X/scripts.inc"}]),
-                "ui":report([{"label":"gText_Notice","source_file":"src/strings.c"}]),
+                "ui":report([{"label":"gText_Notice"}]),
                 "dynamic":{"mode":"apply","labels_staged":0,"accepted":[]},
                 "battle":report([{"label":"BattleDome_Text_A","source_file":"data/text/battle_dome.inc"}]),
             }
+            reports["ui"]["source_file"]="src/strings.c"
             validated=validate_stages(root,reports)
             self.assertEqual(validated["checked_unique_source_labels"],3)
             self.assertTrue(validated["all_labels_have_exact_terminal_ff"])
