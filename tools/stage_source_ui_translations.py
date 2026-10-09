@@ -34,8 +34,11 @@ def replace_c_string(src: str, label: str, english: str, payload: bytes) -> str:
 
 
 def stage(rows:list, source:str, codes:dict[str,int],
-          limit:int=30, max_segment:int=26, auto_wrap:bool=False):
+          limit:int=30, max_segment:int=26, auto_wrap:bool=False,
+          include_short_static:bool=False,
+          excluded_labels:set[str]|None=None):
     accepted=[]; skipped=Counter()
+    excluded_labels=excluded_labels or set()
     for row in rows:
         if len(accepted)>=limit:
             break
@@ -44,9 +47,10 @@ def stage(rows:list, source:str, codes:dict[str,int],
         label=row.get("source_label","")
         if (row.get("category")!="system-ui" or
             row.get("source_file")!="src/strings.c" or
-            not label.startswith("gText_") or not translation or
-            english==translation or len(english)<32 or
-            not (r"\n" in english or r"\p" in english)):
+            not label.startswith("gText_") or label in excluded_labels or
+            not translation or english==translation or
+            (not include_short_static and
+             (len(english)<32 or not (r"\n" in english or r"\p" in english)))):
             continue
         try:
             # C's _("...") source automatically adds the FF terminator.
@@ -81,12 +85,30 @@ def main():
     ap.add_argument("--limit",type=int,default=30)
     ap.add_argument("--max-segment",type=int,default=26)
     ap.add_argument("--auto-wrap",action="store_true")
+    ap.add_argument("--include-short-static",action="store_true",
+                    help="Opt-in: stage C-owned gText_ UI labels even without long multiline text")
+    ap.add_argument("--exclude-report",type=Path,action="append",default=[],
+                    help="Skip previously staged gText_ labels, requiring an exact applied source report")
     ap.add_argument("--apply",action="store_true")
     ap.add_argument("--report",type=Path,required=True)
     a=ap.parse_args()
     if not 1<=a.limit<=300 or not 10<=a.max_segment<=30:
         ap.error("limit 1..300 and max-segment 10..30")
     plan=json.loads(a.plan.read_text(encoding="utf-8"))
+    excluded=set()
+    for ref in a.exclude_report:
+        old=json.loads(ref.read_text(encoding="utf-8"))
+        rows=old.get("translated")
+        if (old.get("mode")!="apply" or old.get("source_file")!="src/strings.c"
+                or not isinstance(rows,list) or len(rows)!=old.get("labels_staged")):
+            ap.error("invalid or non-C previously applied UI source report")
+        for entry in rows:
+            label=entry.get("label")
+            if not isinstance(label,str) or not re.fullmatch(r"gText_[A-Za-z0-9_]+",label):
+                ap.error("missing/invalid previous C UI source label")
+            if label in excluded:
+                ap.error("duplicate C UI exclusion label")
+            excluded.add(label)
     raw=json.loads(a.codebook.read_text(encoding="utf-8"))
     codes={ch:int(value,16) for ch,value in raw["glyph_bytes"].items()}
     root=a.workspace.resolve()
@@ -95,12 +117,15 @@ def main():
         raise SystemExit("REFUSED: missing or unsafe source C file")
     source=source_file.read_text(encoding="utf-8")
     new_source,accepted,skipped=stage(
-        plan,source,codes,a.limit,a.max_segment,a.auto_wrap)
+        plan,source,codes,a.limit,a.max_segment,a.auto_wrap,
+        a.include_short_static,excluded)
     if a.apply:
         source_file.write_text(new_source,encoding="utf-8")
     report={"mode":"apply" if a.apply else "dry-run",
             "source_file":"src/strings.c","labels_staged":len(accepted),
             "auto_wrapped_labels":sum(v["auto_wrapped"] for v in accepted),
+            "include_short_static":a.include_short_static,
+            "previously_staged_label_exclusions":len(excluded),
             "skipped_reasons":skipped,"translated":accepted,
             "font_emulator_validated":False,
             "rom_modified_by_tool":False}
