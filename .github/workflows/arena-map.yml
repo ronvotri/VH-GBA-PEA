@@ -161,10 +161,27 @@ jobs:
       - name: Smoke-build map, UI, name variables, battle and Votri credit together
         run: |
           cp -a workspace source-localization-smoke
+          python3 tools/plan_collision_free_vietnamese_font.py \
+            --codebook checkpoints/v04-inferred-vietnamese-codebook.json \
+            --charmap source-localization-smoke/charmap.txt \
+            --out-codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
+            --report artifact/COLLISION_SAFE_SOURCE_CODEBOOK_QA.json
+          python3 - <<'PY'
+          import json
+          book=json.load(open("artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json"))
+          assert book["glyph_bytes"]["f"]=="0xDA"
+          assert book["glyph_bytes"]["w"]=="0xEB"
+          assert book["glyph_bytes"]["z"]=="0xEE"
+          assert book["glyph_bytes"]["ấ"]=="0x30"
+          assert book["glyph_bytes"]["ằ"]=="0x31"
+          assert book["glyph_bytes"]["ắ"]=="0x32"
+          assert "Ừ" not in book["glyph_bytes"]
+          print("PASS: collision-free source codebook; FONT ASSETS NOT PATCHED")
+          PY
           python3 tools/stage_source_map_translations.py \
             --workspace source-localization-smoke \
             --plan artifact/user-facing-integration-plan.json \
-            --codebook checkpoints/v04-inferred-vietnamese-codebook.json \
+            --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
             --source-prefix data/maps/ \
             --priority-source-prefix data/maps/InsideOfTruck/ \
             --priority-source-prefix data/maps/LittlerootTown/ \
@@ -188,7 +205,7 @@ jobs:
           python3 tools/stage_source_ui_translations.py \
             --workspace source-localization-smoke \
             --plan artifact/user-facing-integration-plan.json \
-            --codebook checkpoints/v04-inferred-vietnamese-codebook.json \
+            --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
             --limit 80 \
             --auto-wrap \
             --apply \
@@ -202,7 +219,7 @@ jobs:
           python3 tools/stage_dynamic_map_translations.py \
             --workspace source-localization-smoke \
             --plan artifact/user-facing-integration-plan.json \
-            --codebook checkpoints/v04-inferred-vietnamese-codebook.json \
+            --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
             --charmap source-localization-smoke/charmap.txt \
             --source-prefix data/maps/ \
             --priority-source-prefix data/maps/InsideOfTruck/ \
@@ -229,7 +246,7 @@ jobs:
           python3 tools/stage_source_map_translations.py \
             --workspace source-localization-smoke \
             --plan artifact/user-facing-integration-plan.json \
-            --codebook checkpoints/v04-inferred-vietnamese-codebook.json \
+            --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
             --source-prefix data/text/ \
             --category battle \
             --limit 100 \
