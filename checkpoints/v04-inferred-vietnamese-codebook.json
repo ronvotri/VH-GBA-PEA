@@ -139,7 +139,14 @@
     "ỗ": "0x07",
     "ẳ": "0xF1",
     "ĩ": "0x84",
-    "ằ": "0xEB"
+    "ằ": "0xEB",
+    "ẹ": "0x5A",
+    "ẻ": "0x08"
   },
-  "not_an_encoder_ready_for_unsafe_pointer_writes": true
+  "not_an_encoder_ready_for_unsafe_pointer_writes": true,
+  "additional_evidence_2026_10_09": {
+    "ẹ": "0x5A inferred in 6 independent source-label contexts in exact v0.4 donor byte analysis",
+    "ẻ": "0x08 inferred in 3 independent source-label contexts; unique byte assignments in current candidate map",
+    "status": "inferred donor glyph codes; still requires emulator visual confirmation"
+  }
 }
