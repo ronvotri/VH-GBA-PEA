@@ -8,6 +8,10 @@ on:
       - 'translations/**'
   workflow_dispatch:
 
+concurrency:
+  group: arena-symbol-map-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
