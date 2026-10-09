@@ -78,3 +78,20 @@ The `pokeblock` stage/attestation reports exactly **16/16** and pins each to nat
 The source codebook used for this successful build is the tracked `checkpoints/v06-pokeblock-safe-codebook.json` (**137 non-overlapping glyph slots**); `đ = 33`, `ì = 37`, `= = 35` native protected. Source-built text still uses the game's stock English glyph art. The private test with **6,053 font-only byte differences and 25 nonblank glyphs** was performed on a copy of the original clean Arena ROM, **not** this source-built localization GBA. Do not release this build as fully playable Vietnamese text until the donor raster is transplanted into the SHA-verified source GBA and visually tested in emulator.
 
 This checkpoint supersedes the earlier pending-status warning above. The working stable v0.4 is unchanged.
+
+## Exact post-CI compiled binary identity / font-symbol lookup
+
+Downloaded and inspected the real non-ROM metadata artifact `arena-0.13.0-symbol-map` (Actions #37960836736), not just a GitHub status badge:
+
+- **Compiled 32MiB experimental v0.6 source GBA SHA256:** `5cae1a20698fcd7036ccdc0f2bdbc0c0c80d942380ab48611fb3ec816ebcab7f`. This is the **exact expected input** that `tools/graft_v06_pokeblock_safe_fonts.py --expected-source-sha256` must require.
+- **IMPORTANT: read `SOURCE_LEVEL_FONT.sym`** for the localized source-build output, **not** the baseline `pokeemerald.sym` also found in the archive. The latter belongs to the original pre-localization build and has wrong font target positions!
+- Target v0.6 source-build font offsets (derived from `SOURCE_LEVEL_FONT.sym` and cross-checked by `SOURCE_LEVEL_FONT_AUDIT.json`):
+  - SmallNarrow `0x71B59C`
+  - Small `0x72379C`
+  - Narrow `0x72B99C`
+  - Short `0x733B9C`
+  - Normal `0x73BD9C`
+- `SOURCE_LEVEL_FONT_AUDIT.json` proves **5/5 stock Latin glyph blocks match original clean SHA hashes** at those relocated target symbol positions, with `donor_font_patched=false` and `emulator_glyph_rendering_verified=false`.
+- `SOURCE_TEXT_INDEPENDENT_QA.json` confirms the 8 category counts and total 2,093; `SOURCE_LEVEL_POKEBLOCK_ITEM_PILOT.json` contains exact 16 native-token item entries, with 5-byte sequence `5556575859`.
+
+**Do not use baseline `pokeemerald.sym` `0x71DEA0` etc. as v0.6 target offsets.** They are valid shipping/source reference offsets, not the current compiled localized target offsets. No compiled full ROM or donor font artwork was placed in public GitHub.
