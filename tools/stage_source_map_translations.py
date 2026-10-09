@@ -99,8 +99,8 @@ def main():
     p.add_argument("--apply",action="store_true")
     p.add_argument("--auto-wrap",action="store_true",help="Only word-boundary newline/scroll conversion for overlong non-dynamic text")
     a=p.parse_args()
-    if a.limit<1 or a.limit>100 or not 10<=a.max_segment<=30:
-        p.error("limit 1..100 and max-segment 10..30")
+    if a.limit<1 or a.limit>250 or not 10<=a.max_segment<=30:
+        p.error("limit 1..250 and max-segment 10..30")
     plan=json.loads(a.plan.read_text(encoding="utf-8"))
     raw=json.loads(a.codebook.read_text(encoding="utf-8"))
     codes={c:int(v,16) for c,v in raw["glyph_bytes"].items()}
