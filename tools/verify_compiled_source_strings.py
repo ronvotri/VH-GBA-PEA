@@ -98,8 +98,8 @@ def validate_stages(workspace:Path, reports:dict[str,dict]) -> dict:
                     raise ValueError(f"{group}: unexpected C text source file")
                 payload=extract_c_payload(source_path.read_text(encoding="utf-8"),label)
             else:
-                if group=="battle" and not relative.startswith("data/text/"):
-                    raise ValueError("battle source path wrong")
+                if group in ("battle","system-text") and not relative.startswith("data/text/"):
+                    raise ValueError(f"{group} source path wrong")
                 if group in ("map","dynamic") and not relative.startswith("data/maps/"):
                     raise ValueError("map source path wrong")
                 payload=extract_asm_payload(source_path.read_text(encoding="utf-8"),label)
@@ -126,10 +126,13 @@ def main():
     p.add_argument("--workspace",type=Path,required=True)
     for group in ("map","ui","dynamic","battle","battle-c","move-desc","item-desc","pokeblock"):
         p.add_argument("--"+group,type=Path,required=True)
+    p.add_argument("--system-text",type=Path,help="Optional source-verified data/text assembly stage")
     p.add_argument("--out",type=Path,required=True)
     a=p.parse_args()
     reports={name:json.loads(getattr(a,name.replace("-","_")).read_text(encoding="utf-8"))
              for name in ("map","ui","dynamic","battle","battle-c","move-desc","item-desc","pokeblock")}
+    if a.system_text:
+        reports["system-text"]=json.loads(a.system_text.read_text(encoding="utf-8"))
     output=validate_stages(a.workspace,reports)
     a.out.parent.mkdir(parents=True,exist_ok=True)
     a.out.write_text(json.dumps(output,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
