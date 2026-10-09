@@ -48,3 +48,16 @@ The actual source-built translated ROM SHA for the *earlier old-codebook* 741-la
 - Do not upload commercial ROM/font graphic bytes to GitHub; do not ask the user to test small incremental builds. Keep safe v0.4 rollback and exact title credit `Việt hóa bởi Votri Valley`.
 
 **Status: real font-collision root cause isolated and an experimentally verified non-destructive relocation prototype exists; user-facing source ROM with donor font has NOT yet been produced.**
+
+
+## CI result confirmed after initial write — v0.5 source codebook PASS
+
+**GitHub Actions [37900453143](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37900453143) completed SUCCESS** on commit `8bed73ac58eb98623c928e99daf631c275d13238`, independently verified against artifact `arena-0.13.0-symbol-map`:
+
+- Durable `checkpoints/v05-collision-free-codebook.json` matches freshly generated v2 codebook exactly. **137 codepoints with unique bytes**, f/w/z at DA/EB/EE, ấ/ằ/ắ at 30/31/32; unsupported uppercase Ừ omitted.
+- All **741 source-owned Vietnamese text labels PASS** compile: 500 map, 41 C UI, 100 named-variable, 100 battle. The independent file scanner reports exactly 741 unique owners, **0 duplicates, 0 early/missing FF**.
+- New v0.5-codebook compiled source ROM SHA-256: **`419c7578193dc08cd4af04965690fa65a30c89a0e5c11ef6af320409e67b43e1`**. **This is a stock-font compiled experiment**, not a user release.
+- Font symbols in the new target are `SmallNarrow 0x71CC64`, `Small 0x724E64`, `Narrow 0x72D064`, `Short 0x735264`, `Normal 0x73D464`. The symbol-aware graft should use these actual addresses, not original shipping offsets. The five source font glyph blocks continue to pass stock clean SHA audits. **The actual new target GBA bytes are not available in this session**; CI uploaded only SHA, symbols, catalog and reports. No full copyrighted ROM is present in public GitHub artifacts.
+- The private real-donor font-only test verified all 15 relocated glyph rasters, with Small/SmallNarrow **synthetically produced and not visually certified**. The future target graft must be applied only to a ROM with the exact source SHA above; opening/boot/font/gameplay/emulator QA remains pending.
+
+Do not label this pipeline as a finished playable v0.5 ROM. The user should not need to download technical CI reports or manually test until a coherent build is ready.
