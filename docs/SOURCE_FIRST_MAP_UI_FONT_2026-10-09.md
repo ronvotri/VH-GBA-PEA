@@ -47,3 +47,14 @@ The corresponding `gFontNormalLatinGlyphWidths` bytes observed at `0x007466A0..0
 5. Preserve title credit `Việt hóa bởi Votri Valley` and verified center alignment. No source-first ROM release before font rendering and gameplay QA.
 
 Original v0.4 always stays rollback. No user download or screenshot requests needed yet.
+
+
+## Follow-up build and font CI gates
+
+The `checkpoints/v04-inferred-vietnamese-codebook.json` added two inferred, independently supported glyph values: `ẹ=0x5A` (six distinct source-label observations) and `ẻ=0x08` (three distinct labels). They remain **candidate** assignments until emulator visual verification.
+
+An initial combined map + C UI CI run `37884118717` **FAILED** because C source messages implicitly end with FF while the map-text encoder expected literal `$`. This was fixed in `tools/stage_source_ui_translations.py` by appending only the internal terminator for compilation. A later unit test had a doubled `\\n` in the test fixture; corrected. **Do not report the combined source build as passed until a later run actually succeeds.**
+
+New `tools/audit_source_font_layout.py` with its regression tests protects the five source-compiled Latin glyph block SHA-256 values against the verified clean Arena font content. The workflow now exports `SOURCE_LEVEL_FONT.sym` and `SOURCE_LEVEL_FONT_AUDIT.json` **without publishing a ROM**. The compiled source ROM must pass this gate before any private v0.4 font import is allowed. This workflow change is commit `b6400f3`; follow its CI run for real status. Matching stock font hashes alone still does not mean the Vietnamese donor font has been imported into the compiled ROM or visually verified.
+
+**No full user-playable GBA released in this follow-up.**
