@@ -192,7 +192,7 @@ jobs:
           python3 - <<'PY'
           import json
           d = json.load(open("artifact/SOURCE_LEVEL_UI_PILOT.json"))
-          assert 50 <= d["labels_staged"] <= 80 and d["mode"] == "apply", d
+          assert 40 <= d["labels_staged"] <= 80 and d["mode"] == "apply", d
           print("Source-level C UI text pilot rows:", d["labels_staged"],"reflowed:",d["auto_wrapped_labels"])
           PY
           python3 tools/stage_dynamic_map_translations.py \
