@@ -8,7 +8,8 @@ This never mutates pointers/scripts and refuses writing without an exact
 source-built ROM SHA256 and a v2 collision-safe codebook plan.
 
 CRITICAL: donor v0.4 does not include these accent shapes in Small/SmallNarrow
-fonts; this internal glyph graft does NOT make small-font rendering complete.
+fonts; we synthesize their raster from donor Narrow glyphs, but results need
+visual font/gameplay QA before calling them complete.
 Do not distribute output or claim visual/gameplay QA.
 """
 from __future__ import annotations
@@ -25,6 +26,7 @@ from import_v04_glyphs_into_source_build import (
 from plan_collision_free_vietnamese_font import (
     RELOCATION, GLYPH_BYTES_PER_CODEPOINT,
 )
+from pokemon_gba_font_glyphs import synthesize_small_from_narrow
 
 FONT_WIDTH_BYTES=0x100
 UNVERIFIED_SMALL_FONTS={
@@ -44,7 +46,7 @@ def graft_collision_safe_font(
     result,baseline_diff=overlay_fonts(clean,donor,built,source_offsets,target_offsets)
     out=bytearray(result)
     target_font_ranges=[]
-    missing={}
+    synthetic_small={}
     restored=[]
     for name in FONT_NAMES:
         old=source_offsets[name]
@@ -63,10 +65,22 @@ def graft_collision_safe_font(
             donor_glyph=donor[old_ascii:old_ascii+GLYPH_BYTES_PER_CODEPOINT]
             stock_glyph=clean[old_ascii:old_ascii+GLYPH_BYTES_PER_CODEPOINT]
             if donor_glyph==stock_glyph:
-                # In v0.4 Small/SmallNarrow glyphs never learned Vietnamese.
                 if name not in UNVERIFIED_SMALL_FONTS:
                     raise ValueError(f"{name}: expected modified donor accent {accent}")
-                missing.setdefault(name,[]).append(accent)
+                # Old v0.4 font has no accent in Small/SmallNarrow. Use
+                # real donor Narrow accent as an explicitly *synthetic* small
+                # glyph, with encoded 13px height; flag it for visual review.
+                narrow_offset=source_offsets["gFontNarrowLatinGlyphs"]
+                narrow_glyph_start=narrow_offset+source_code*GLYPH_BYTES_PER_CODEPOINT
+                donor_narrow=donor[narrow_glyph_start:narrow_glyph_start+GLYPH_BYTES_PER_CODEPOINT]
+                if donor_narrow==clean[narrow_glyph_start:narrow_glyph_start+GLYPH_BYTES_PER_CODEPOINT]:
+                    raise ValueError(f"no donor narrow accent to synthesize {accent}")
+                narrow_width=clean[narrow_offset+GLYPH_BLOCK_SIZE+source_code]
+                compact=synthesize_small_from_narrow(donor_narrow,narrow_width)
+                out[new_acc:new_acc+GLYPH_BYTES_PER_CODEPOINT]=compact
+                out[tgt_width+slot]=narrow_width
+                synthetic_small.setdefault(name,[]).append(accent)
+                changed.append(accent)
             else:
                 # Move actual accented graphic and preserve original English.
                 out[new_acc:new_acc+GLYPH_BYTES_PER_CODEPOINT]=donor_glyph
@@ -86,15 +100,15 @@ def graft_collision_safe_font(
     summary={
         "result_sha256":hashlib.sha256(out).hexdigest(),
         "font_styles":restored,
-        "small_font_missing_accents":missing,
+        "small_font_synthetically_drawn_accents":synthetic_small,
         "english_f_w_z_shapes_restored":True,
         "font_data_only_changes":True,
         "text_or_pointer_writes":0,
         "pixel_accuracy_and_emulator_tested":False,
         "release_ready":False,
     }
-    if set(missing) != UNVERIFIED_SMALL_FONTS:
-        raise ValueError("unexpected unsupported font style set")
+    if set(synthetic_small) != UNVERIFIED_SMALL_FONTS:
+        raise ValueError("small font render synthesis did not cover both styles")
     return bytes(out),summary
 
 
@@ -125,7 +139,7 @@ def main():
     modified,info=graft_collision_safe_font(
         clean,donor,built,original,compiled,book["glyph_bytes"])
     info["input_source_sha256"]=hashlib.sha256(built).hexdigest()
-    info["state"]="PRIVATE FONT-SHAPE EXPERIMENT; SMALL FONT ACCENTS MISSING"
+    info["state"]="PRIVATE FONT-SHAPE EXPERIMENT; TWO SMALL FONT STYLES SYNTHETIC/UNVERIFIED"
     args.report.parent.mkdir(parents=True,exist_ok=True)
     args.report.write_text(json.dumps(info,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     if args.output:
