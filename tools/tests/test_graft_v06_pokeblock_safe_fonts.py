@@ -43,9 +43,11 @@ class GraftV06Tests(unittest.TestCase):
                           (name=="gFontSmallLatinGlyphs" and char=="đ"))
                 if available:
                     self.donor[base+r["source"]*64]=0x51
-            # Non-translation-related user font edits in native token slots.
-            for code in v06.SPECIAL_CODES:
-                self.donor[base+code*64]=0x51
+            # The real donor also damages several native token slots, but
+            # does not contain every accent in every Small style.
+            for code in (0x55,0x57,0x58):
+                if name!="gFontSmallNarrowLatinGlyphs":
+                    self.donor[base+code*64]=0x51
 
     def apply(self,book=None):
         with patch.object(v06,"ATTESTED_CLEAN_OFFSETS",self.offsets),\
