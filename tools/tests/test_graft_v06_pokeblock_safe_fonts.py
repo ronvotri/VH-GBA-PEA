@@ -94,6 +94,26 @@ class GraftV06Tests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"wrong v0.6 target"):
             v06.require_pinned_target_symbols(v06.ATTESTED_CLEAN_OFFSETS)
 
+    def test_pinned_3360_source_font_profile_is_exactly_paired(self):
+        self.assertEqual(
+            v06.PINNED_3360_SOURCE_SHA256,
+            "9e804a005210d59d4dc1806d387d3b50ee412ab9e7f5df0f56d5f27e43407f7a")
+        self.assertEqual(
+            v06.ATTESTED_3360_FONT_OFFSETS["gFontNormalLatinGlyphs"],0x73AF98)
+        v06.require_pinned_target_symbols(
+            v06.ATTESTED_3360_FONT_OFFSETS,v06.PINNED_3360_SOURCE_SHA256)
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(
+                v06.ATTESTED_SOURCE_FONT_OFFSETS,v06.PINNED_3360_SOURCE_SHA256)
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(
+                v06.ATTESTED_3360_FONT_OFFSETS,v06.PINNED_SOURCE_SHA256)
+
+    def test_unattested_source_sha_rejected(self):
+        with self.assertRaisesRegex(ValueError,"no attested font profile"):
+            v06.require_pinned_target_symbols(
+                v06.ATTESTED_3360_FONT_OFFSETS,"f"*64)
+
     def test_pinned_2093_source_build_identity(self):
         self.assertEqual(
             v06.PINNED_SOURCE_SHA256,
