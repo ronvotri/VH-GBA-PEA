@@ -29,7 +29,8 @@ FIRST=re.compile(
     r'(?m)^(?P<pre>[ \t]*static const u8 (?P<label>s[A-Za-z0-9_]+)'
     r'\[\] = )_\([ \t]*\r?\n'
 )
-FRAGMENT=re.compile(r'^[ \t]*"((?:\\.|[^"\\])*)"[ \t]*
+FRAGMENT=re.compile(r'^[ \t]*"((?:\\.|[^"\\])*)"[ \t]*$')
+FINAL_FRAGMENT=re.compile(r'^[ \t]*"((?:\\.|[^"\\])*)"\);[ \t]*(?://[^\r\n]*)?$')
 CLOSE=re.compile(r'^[ \t]*\);[ \t]*(?://[^\r\n]*)?$')
 
 
