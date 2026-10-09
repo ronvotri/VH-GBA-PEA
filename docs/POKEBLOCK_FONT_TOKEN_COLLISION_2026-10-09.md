@@ -1,5 +1,7 @@
 # Font release blocker: POKéBLOCK native glyph collision (2026-10-09)
 
+> **Correction, verified against the pinned charmap:** the original proposed `0x35` for `ì` was **UNSAFE**. `0x35` is already the ASCII `=` glyph. The safe *planned* relocations are `đ → 0x33` and `ì → 0x37` in the separate v0.6 source codebook. No source ROM with verified transplanted font has been released.
+
 This is a **source+original ROM verified** compatibility issue beyond the earlier English f/w/z collision. It is **not** merely a missing translation. Keep the 16 source texts with this token blocked until the actual glyph art is relocated and the GBA renderer is tested.
 
 ## Pinned charmap and user-facing impact
@@ -36,7 +38,7 @@ The table gives the number of changed **bytes per 64-byte glyph** in each Latin 
 
 ## Proposed guarded solution (NOT YET APPLIED)
 
-1. Independently reserve unused Latin codepoints **0x33 for `đ`** and **0x35 for `ì`**; these two slots are absent from the pinned English charmap and v0.5 codebook. Do not use 0x34, which is used by the pinned Latin charmap. Treat this as a new v0.6 font/codebook format — never rewrite the v0.5 checkpoint without changing both source byte encoding and source font images.
+1. Independently reserve unused Latin codepoints **0x33 for `đ`** and **0x37 for `ì`**. Both are free in the pinned Latin charmap and v0.5 codebook. **Do not use 0x35: it is the built-in `=` glyph**; also protect 0x34 (`LV`) and 0x36 (`;`). The initial 0x35 proposal was incorrect because the old charmap scanner split the literal `'='` definition at the wrong equals sign. Treat this as a new v0.6 font/codebook format — never rewrite the v0.5 checkpoint without changing both source byte encoding and source font images.
 2. In the SHA-locked *private* font graft, copy actual accented glyph pictures for `đ` and `ì` out of donor v0.4 codepoints 0x56 and 0x59 into the new slots. Synthesize missing font styles from the verified Narrow art, with explicit display QA flags, as done for ấ/ằ/ắ.
 3. Restore the *original clean font's* **all five glyph images 0x55..0x59**, including special fixed-character Pokéblock symbols. Preserve original 0x53/0x54 PKMN glyph images as well.
 4. Reject any source build unless the v0.6 codebook, original charmap, glyph-offset symbols and exact source-built ROM SHA-256 all match. Test all five font styles by decoding their glyph bitmaps and running emulator title, item/berry, Pokéblock Case and battle scenes before distributing.
