@@ -83,6 +83,28 @@ class SourceStagingTests(unittest.TestCase):
                            ["data/maps/LittlerootTown/"])
         self.assertEqual([r["source_label"] for r,_ in chosen],["INTRO"])
 
+    def test_battle_source_is_explicitly_selected(self):
+        rows=[
+            {"category":"battle","source_file":"data/text/battle_dome.inc",
+             "source_label":"BattleDome_Text_Potential1",
+             "english":"a$","vietnamese":"b$"},
+            {"category":"map-story","source_file":"data/maps/LittlerootTown/scripts.inc",
+             "source_label":"Other","english":"a$","vietnamese":"b$"}
+        ]
+        chosen,_=plan_rows(rows,self.codes,"data/text/",26,10,False,[],"battle")
+        self.assertEqual([row["source_label"] for row,_ in chosen],
+                         ["BattleDome_Text_Potential1"])
+
+    def test_double_colon_battle_source_matches(self):
+        source=('BattleDome_Text_Potential1::\n'
+                '\t.string "a$"\n\n'
+                'BattleDome_Text_Potential2::\n'
+                '\t.string "b$"\n')
+        updated=patch_labeled_block(
+            source,"BattleDome_Text_Potential1","a$",bytes([0xD6,0xFF]))
+        self.assertIn("BattleDome_Text_Potential1::\n\t.byte 0xD6, 0xFF",updated)
+        self.assertIn('BattleDome_Text_Potential2::\n\t.string "b$"',updated)
+
     def test_limited_map_selection(self):
         rows=[{"category":"map-story",
                "source_file":"data/maps/LittlerootTown/scripts.inc",
