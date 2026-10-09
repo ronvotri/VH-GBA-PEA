@@ -81,18 +81,19 @@ def validate_stages(workspace:Path, reports:dict[str,dict]) -> dict:
             if label in seen:raise ValueError(f"{label}: duplicate source integration")
             seen.add(label)
             relative=row.get("source_file") or row.get("file")
-            if group in ("ui","battle-c","move-desc","item-desc") and not relative:
+            if group in ("ui","battle-c","move-desc","item-desc","pokeblock") and not relative:
                 relative=report.get("source_file")
             if not relative or not isinstance(relative,str):
                 raise ValueError(f"{label}: missing file")
             source_path=(workspace/relative).resolve()
             if not source_path.is_relative_to(workspace.resolve()) or not source_path.is_file():
                 raise ValueError(f"{label}: missing or unsafe source file")
-            if group in ("ui","battle-c","move-desc","item-desc"):
+            if group in ("ui","battle-c","move-desc","item-desc","pokeblock"):
                 allowed={"ui":"src/strings.c",
                          "battle-c":"src/battle_message.c",
                          "move-desc":"src/data/text/move_descriptions.h",
-                         "item-desc":"src/data/text/item_descriptions.h"}
+                         "item-desc":"src/data/text/item_descriptions.h",
+                         "pokeblock":"src/data/text/item_descriptions.h"}
                 if relative!=allowed[group]:
                     raise ValueError(f"{group}: unexpected C text source file")
                 payload=extract_c_payload(source_path.read_text(encoding="utf-8"),label)
@@ -103,6 +104,11 @@ def validate_stages(workspace:Path, reports:dict[str,dict]) -> dict:
                     raise ValueError("map source path wrong")
                 payload=extract_asm_payload(source_path.read_text(encoding="utf-8"),label)
             validate_byte_string(payload,label)
+            if group=="pokeblock":
+                if payload.count(b"\x55\x56\x57\x58\x59")!=1:
+                    raise ValueError(f"{label}: native Pokéblock byte sequence missing")
+                if payload.count(b"\xFE")!=2:
+                    raise ValueError(f"{label}: wrong three-line fixed box")
             sizes.append(len(payload))
             kinds[group]+=1
     if not sizes:raise ValueError("no source translations installed")
@@ -118,12 +124,12 @@ def validate_stages(workspace:Path, reports:dict[str,dict]) -> dict:
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--workspace",type=Path,required=True)
-    for group in ("map","ui","dynamic","battle","battle-c","move-desc","item-desc"):
+    for group in ("map","ui","dynamic","battle","battle-c","move-desc","item-desc","pokeblock"):
         p.add_argument("--"+group,type=Path,required=True)
     p.add_argument("--out",type=Path,required=True)
     a=p.parse_args()
     reports={name:json.loads(getattr(a,name.replace("-","_")).read_text(encoding="utf-8"))
-             for name in ("map","ui","dynamic","battle","battle-c","move-desc","item-desc")}
+             for name in ("map","ui","dynamic","battle","battle-c","move-desc","item-desc","pokeblock")}
     output=validate_stages(a.workspace,reports)
     a.out.parent.mkdir(parents=True,exist_ok=True)
     a.out.write_text(json.dumps(output,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
