@@ -154,7 +154,7 @@ jobs:
             --out artifact/map-story-integration-plan.json \
             --summary artifact/map-story-integration-summary.json
 
-      - name: Smoke-build map + C UI Vietnamese texts
+      - name: Smoke-build map, C UI and safe dynamic Vietnamese texts
         run: |
           cp -a workspace source-localization-smoke
           python3 tools/stage_source_map_translations.py \
@@ -185,6 +185,22 @@ jobs:
           d = json.load(open("artifact/SOURCE_LEVEL_UI_PILOT.json"))
           assert 1 <= d["labels_staged"] <= 30 and d["mode"] == "apply", d
           print("Source-level C UI text pilot rows:", d["labels_staged"])
+          PY
+          python3 tools/stage_dynamic_map_translations.py \
+            --workspace source-localization-smoke \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v04-inferred-vietnamese-codebook.json \
+            --charmap source-localization-smoke/charmap.txt \
+            --source-prefix data/maps/ \
+            --limit 30 \
+            --apply \
+            --report artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open("artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json"))
+          assert 1 <= d["labels_staged"] <= 30 and d["mode"]=="apply", d
+          assert d["placeholder_order_preserved"] and d["source_control_bytes_pinned"], d
+          print("Source dynamic PLAYER/RIVAL labels:",d["labels_staged"])
           PY
           make -C source-localization-smoke -j2
           test -s source-localization-smoke/pokeemerald.gba
