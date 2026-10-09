@@ -192,14 +192,14 @@ jobs:
             --priority-source-prefix data/maps/Route102/ \
             --priority-source-prefix data/maps/PetalburgCity/ \
             --priority-source-prefix data/maps/RustboroCity/ \
-            --limit 500 \
+            --limit 1000 \
             --auto-wrap \
             --apply \
             --report artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json
           python3 - <<'PY'
           import json
           d=json.load(open("artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json"))
-          assert d["labels_staged"] >= 450 and d["mode"]=="apply", d
+          assert 700 <= d["labels_staged"] <= 1000 and d["mode"]=="apply", d
           names = {entry["label"] for entry in d["translated"]}
           assert "InsideOfTruck_Text_BoxPrintedWithMonLogo" in names, "Moving-truck box description not compiled in source"
           print("Source-level Vietnamese map pilot rows:",d["labels_staged"],"reflowed:",d["auto_wrapped_labels"])
@@ -231,14 +231,14 @@ jobs:
             --priority-source-prefix data/maps/Route102/ \
             --priority-source-prefix data/maps/PetalburgCity/ \
             --priority-source-prefix data/maps/RustboroCity/ \
-            --limit 100 \
+            --limit 200 \
             --auto-wrap \
             --apply \
             --report artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json
           python3 - <<'PY'
           import json
           d=json.load(open("artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json"))
-          assert 50 <= d["labels_staged"] <= 100 and d["mode"]=="apply", d
+          assert 100 <= d["labels_staged"] <= 200 and d["mode"]=="apply", d
           assert d["placeholder_order_preserved"] and d["source_control_bytes_pinned"], d
           names = {entry["label"] for entry in d["accepted"]}
           assert "LittlerootTown_Text_OurNewHomeLetsGoInside" in names, "Missing Mom intro source translation"
@@ -251,14 +251,14 @@ jobs:
             --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
             --source-prefix data/text/ \
             --category battle \
-            --limit 100 \
+            --limit 200 \
             --auto-wrap \
             --apply \
             --report artifact/SOURCE_LEVEL_BATTLE_PILOT.json
           python3 - <<'PY'
           import json
           d=json.load(open("artifact/SOURCE_LEVEL_BATTLE_PILOT.json"))
-          assert 35 <= d["labels_staged"] <= 100 and d["category"]=="battle" and d["mode"]=="apply",d
+          assert 100 <= d["labels_staged"] <= 200 and d["category"]=="battle" and d["mode"]=="apply",d
           assert all(x["source_file"].startswith("data/text/") for x in d["translated"])
           print("Source battle text labels:",d["labels_staged"],"reflowed:",d["auto_wrapped_labels"])
           PY
