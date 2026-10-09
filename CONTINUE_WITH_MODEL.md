@@ -1588,3 +1588,31 @@ Earlier source/font safety changes were confirmed by full-success [Actions #3796
 
 **User has requested continued comprehensive Vietnamese integration without repetitive screenshot-by-screenshot fixes or premature download/test requests.**
 
+
+
+## 2026-10-10 — AUTHORITATIVE 3,360 COMPILER-INTEGRATED TEXT LABELS (CI SUCCESS)
+
+**Verified end-to-end Actions [#37973599855](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37973599855) SUCCESS**, source-workflow commit `c45a5ef5`. This supersedes the 3,060 installed-subset milestone above, but DOES NOT invalidate its saved 32MiB source-build identity.
+
+Compiled source text independently attested and combined in one experiment:
+- Prior **3,060** source-owned labels (2,093 original + 292 additional maps + 175 safe linefeed maps + 500 system-text), independently revalidated;
+- **+300 static `src/strings.c` UI labels**, 41 word-boundary line wraps, `--include-short-static` explicitly enabled, `--exclude-report` pinned to the 41 original C UI labels; actual source arrays independently checked and no duplicate label names across 3,360 sources;
+- **Total: 3,360 unique source-compiled labels**, stock English bitmap glyphs, **NO playable runtime QA**.
+
+Exact combined experimental 32MiB source GBA SHA256: **`9e804a005210d59d4dc1806d387d3b50ee412ab9e7f5df0f56d5f27e43407f7a`**. Match to **`SOURCE_SHORT_C_UI_FONT.sym`**, NOT the original 2,093 source symbol map or old shipping map:
+- SmallNarrow `0x71A798`
+- Small `0x722998`
+- Narrow `0x72AB98`
+- Short `0x732D98`
+- Normal `0x73AF98`
+
+The exact font-block digest audit still proves all five are the clean **stock English** glyph bitmaps (not Vietnamese artwork). The full build passed `SOURCE_SHORT_C_UI_ATTESTATION.json`, `SOURCE_SHORT_C_UI_STAGE.json`, compiled GBA hash, font sym and font audit; download the **non-ROM metadata artifact** `arena-0.13.0-symbol-map` for those files.
+
+Changed tooling: `tools/stage_source_ui_translations.py` gained opt-in `--include-short-static` and fail-closed `--exclude-report` for previously installed gText_ source labels, keeping original long-static pilot defaults; tests added. The previous 3,060 source-build, 2,560 source-build and user's tested 0.4 remain unchanged checkpoints.
+
+**NOT RELEASE-READY:** all trials still have unmodified English glyph pixels. Need source-matched v0.6 safe bitmap graft with correct new SHA/font symbols and private clean/donor ROMs, then mGBA screenshot and full gameplay/save QA. The original SHA-pinned graft tool is correctly designed to reject a newer 3,360 GBA until a new, independently attested profile is added. Do not force past these checks or upload commercial ROM to public repo. Translate/compile more source rows only with per-category placeholder/controls/glyph audits.
+
+Current translation manifests represent **17,512/17,512 user-facing source rows**, while **3,360 are actually compiler-installed** in an experimental source GBA. Canonical Pokémon move/item/species names remain unchanged by translation policy.
+
+**Next safe integration:** potentially additional remaining C UI (exclude both 41 original + new 300), system-text dynamic/3-line controls via a deliberately reviewed source tool, and remaining battle UI. Any new source GBA requires fresh verified SHA/symbol checkpoint before font graft. Do not ask the user to test unpatched font source trials.
+
