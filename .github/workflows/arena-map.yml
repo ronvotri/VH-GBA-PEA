@@ -162,6 +162,13 @@ jobs:
             --plan artifact/user-facing-integration-plan.json \
             --codebook checkpoints/v04-inferred-vietnamese-codebook.json \
             --source-prefix data/maps/ \
+            --priority-source-prefix data/maps/InsideOfTruck/ \
+            --priority-source-prefix data/maps/LittlerootTown/ \
+            --priority-source-prefix data/maps/Route101/ \
+            --priority-source-prefix data/maps/OldaleTown/ \
+            --priority-source-prefix data/maps/Route102/ \
+            --priority-source-prefix data/maps/PetalburgCity/ \
+            --priority-source-prefix data/maps/RustboroCity/ \
             --limit 200 \
             --auto-wrap \
             --apply \
@@ -192,6 +199,13 @@ jobs:
             --codebook checkpoints/v04-inferred-vietnamese-codebook.json \
             --charmap source-localization-smoke/charmap.txt \
             --source-prefix data/maps/ \
+            --priority-source-prefix data/maps/InsideOfTruck/ \
+            --priority-source-prefix data/maps/LittlerootTown/ \
+            --priority-source-prefix data/maps/Route101/ \
+            --priority-source-prefix data/maps/OldaleTown/ \
+            --priority-source-prefix data/maps/Route102/ \
+            --priority-source-prefix data/maps/PetalburgCity/ \
+            --priority-source-prefix data/maps/RustboroCity/ \
             --limit 50 \
             --auto-wrap \
             --apply \
@@ -201,6 +215,9 @@ jobs:
           d=json.load(open("artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json"))
           assert 1 <= d["labels_staged"] <= 50 and d["mode"]=="apply", d
           assert d["placeholder_order_preserved"] and d["source_control_bytes_pinned"], d
+          names = {entry["label"] for entry in d["accepted"]}
+          assert "LittlerootTown_Text_OurNewHomeLetsGoInside" in names, "Missing Mom intro source translation"
+          assert "LittlerootTown_Text_WaitPlayer" in names, "Missing Mom WaitPlayer source translation"
           print("Source dynamic PLAYER/RIVAL labels:",d["labels_staged"])
           PY
           python3 tools/apply_title_credit.py source-localization-smoke
