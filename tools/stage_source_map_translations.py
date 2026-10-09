@@ -77,8 +77,8 @@ def normalize_authored_linefeeds(english:str,vietnamese:str)->str:
     """
     if "\n" not in vietnamese:
         return vietnamese
-    normalized=vietnamese.replace("\n",r"\\n")
-    signature=lambda s:re.findall(r"\\\\[npl]",s)
+    normalized=vietnamese.replace("\n",r"\n")
+    signature=lambda s:re.findall(r"\\[npl]",s)
     if signature(english)!=signature(normalized):
         raise ValueError("literal LF: source control sequence differs")
     return normalized
