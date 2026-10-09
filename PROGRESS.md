@@ -1769,3 +1769,9 @@ GitHub Actions [#37973599855](https://github.com/ronvotri/VH-GBA-PEA/actions/run
 
 Exact 32MiB source-built trial SHA256 `9e804a005210d59d4dc1806d387d3b50ee412ab9e7f5df0f56d5f27e43407f7a`; FONT.sym offsets SmallNarrow/Small/Narrow/Short/Normal are respectively `0x71A798`, `0x722998`, `0x72AB98`, `0x732D98`, `0x73AF98`. Five GBA font graphics blocks verified **STOCK ENGLISH**. Not font-grafted, emulator tested or release-ready. Tested v0.4 user rollback intact. Detailed integration profile and artifacts in latest `CONTINUE_WITH_MODEL.md`.
 
+
+
+## 2026-10-10 — FIRST COMBINED TEXT + GENERATED VIETNAMESE FONT: CI PASS, NOT VISUALLY VERIFIED
+
+[Actions #37975255406](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37975255406) **full SUCCESS**. Rebuilt and confirmed 3,360 individually attested source-installed Vietnamese labels (catalog remains 17,512 authored), then synthesized 63 distinct Vietnamese accent glyphs across 5 existing game Latin font styles (315 new letter/font cells). Protected ASCII, native PKMN/Pokéblock and special symbols remain byte-identical. **8,380 ROM byte changes confined strictly to 5 font graphics and width regions**, no non-font writes. Exact combined text + font experimental ROM SHA256 `0c1944e241d7e00765e2ef6cc5ba7912600694df8fa6a151985a051a09a23591`; pinned 3,360-text stock-font source SHA256 `9e804a005210d59d4dc1806d387d3b50ee412ab9e7f5df0f56d5f27e43407f7a`. Non-ROM artifact: `SOURCE_3360_SYNTH_FONT_QA.json`. The temporary CI-only ROM was **deleted before artifact upload**. Needs visual emulator QA and gameplay testing; not a public release. Original safe v0.4 unchanged.
+
