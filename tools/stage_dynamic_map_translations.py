@@ -16,6 +16,7 @@ from pathlib import Path
 
 from resolve_shipping_catalog import parse_charmap
 from stage_source_map_translations import patch_labeled_block
+from wrap_dynamic_map_text import wrap_dynamic_text
 
 ALLOWED = {"PLAYER": 7, "RIVAL": 7}
 EXPECTED_CONTROL_BYTES = {"PLAYER": b"\xFD\x01", "RIVAL": b"\xFD\x06"}
@@ -81,7 +82,7 @@ def encode_dynamic(text: str, glyphs: dict[str, int],
 
 def stage(rows: list[dict], sources: dict[str, str], glyphs: dict[str, int],
           tokens: dict[str, bytes], prefix: str, limit: int = 30,
-          max_segment: int = 26):
+          max_segment: int = 26, auto_wrap: bool = False):
     results=[]
     skipped=Counter()
     for row in rows:
@@ -105,7 +106,14 @@ def stage(rows: list[dict], sources: dict[str, str], glyphs: dict[str, int],
                 raise ValueError("source uses unapproved variable type")
             if original.count(r"\p")!=vietnamese.count(r"\p"):
                 raise ValueError("page-control count changed")
-            encoded=encode_dynamic(vietnamese,glyphs,tokens,max_segment)
+            try:
+                encoded=encode_dynamic(vietnamese,glyphs,tokens,max_segment)
+                compiled=vietnamese
+            except ValueError as exc:
+                if not auto_wrap or not str(exc).startswith("dynamic line exceeds "):
+                    raise
+                compiled=wrap_dynamic_text(vietnamese,max_segment)
+                encoded=encode_dynamic(compiled,glyphs,tokens,max_segment)
             changed=patch_labeled_block(
                 sources[file],row["source_label"],original,encoded)
         except ValueError as exc:
@@ -114,7 +122,9 @@ def stage(rows: list[dict], sources: dict[str, str], glyphs: dict[str, int],
         sources[file]=changed
         results.append({"label":row["source_label"],"file":file,
                         "dynamic":list(vi_sig),"bytes":len(encoded),
-                        "english":original,"vietnamese":vietnamese})
+                        "english":original,"vietnamese":vietnamese,
+                        "compiled_vietnamese":compiled,
+                        "auto_wrapped":compiled!=vietnamese})
     return sources,results,dict(skipped)
 
 
@@ -127,6 +137,7 @@ def main():
     ap.add_argument("--source-prefix",default="data/maps/")
     ap.add_argument("--limit",type=int,default=30)
     ap.add_argument("--max-segment",type=int,default=26)
+    ap.add_argument("--auto-wrap",action="store_true",help="Safe name-aware word reflow for overlong strings")
     ap.add_argument("--apply",action="store_true")
     ap.add_argument("--report",type=Path,required=True)
     args=ap.parse_args()
@@ -152,7 +163,7 @@ def main():
         sources[rel]=path.read_text(encoding="utf-8")
     originals=dict(sources)
     sources,accepted,rejected=stage(
-        plan,sources,glyphs,tokens,args.source_prefix,args.limit,args.max_segment)
+        plan,sources,glyphs,tokens,args.source_prefix,args.limit,args.max_segment,args.auto_wrap)
     if args.apply:
         for rel,modified in sources.items():
             if modified!=originals[rel]:
@@ -161,6 +172,7 @@ def main():
         "mode":"apply" if args.apply else "dry-run",
         "labels_staged":len(accepted),
         "files_changed":sum(sources[k]!=originals[k] for k in sources),
+        "auto_wrapped_labels":sum(r["auto_wrapped"] for r in accepted),
         "source_symbol_labels_unchanged":True,
         "placeholder_order_preserved":True,
         "source_control_bytes_pinned":True,
