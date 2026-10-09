@@ -18,6 +18,7 @@ from resolve_shipping_catalog import parse_charmap
 from stage_source_map_translations import patch_labeled_block
 
 ALLOWED = {"PLAYER": 7, "RIVAL": 7}
+EXPECTED_CONTROL_BYTES = {"PLAYER": b"\xFD\x01", "RIVAL": b"\xFD\x06"}
 CONTROLS = {r"\n": 0xFE, r"\p": 0xFB, r"\l": 0xFA}
 PLACEHOLDER = re.compile(r"\{([^{}]+)\}")
 
@@ -57,7 +58,7 @@ def encode_dynamic(text: str, glyphs: dict[str, int],
             if name not in ALLOWED:
                 raise ValueError(f"unsupported dynamic token {name}")
             blob=tokens.get(name)
-            if blob is None or len(blob)!=2 or blob[:1]!=b"\xFD":
+            if blob != EXPECTED_CONTROL_BYTES[name]:
                 raise ValueError(f"unverified charmap token {name}")
             out.extend(blob)
             cell_count+=ALLOWED[name]
