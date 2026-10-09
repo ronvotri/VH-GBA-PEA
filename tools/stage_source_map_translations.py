@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse, json, re, unicodedata
 from collections import Counter
 from pathlib import Path
+from wrap_vietnamese_map_text import auto_wrap_script_text
 
 LINE = re.compile(r'^(?P<indent>\s*)\.string\s+"(?P<value>.*)"\s*$')
 CONTROLS = {"\\n":0xFE,"\\p":0xFB,"\\l":0xFA}
@@ -58,7 +59,7 @@ def patch_labeled_block(source: str,label: str,expected_en: str,encoded: bytes)-
     return "".join(lines)
 
 
-def plan_rows(rows:list,codes:dict[str,int],src_prefix:str,max_segment:int,limit:int):
+def plan_rows(rows:list,codes:dict[str,int],src_prefix:str,max_segment:int,limit:int,auto_wrap:bool=False):
     chosen=[]; rejected=Counter()
     for row in rows:
         if len(chosen)>=limit:break
@@ -68,7 +69,20 @@ def plan_rows(rows:list,codes:dict[str,int],src_prefix:str,max_segment:int,limit
         if not vietnamese or english==vietnamese or not row.get("source_label"):continue
         try:payload=encode_text(vietnamese,codes,max_segment)
         except ValueError as exc:
-            rejected[str(exc)]+=1;continue
+            if auto_wrap and str(exc).startswith("line exceeds "):
+                try:
+                    wrapped=auto_wrap_script_text(vietnamese,max_segment)
+                    payload=encode_text(wrapped,codes,max_segment)
+                except ValueError as wrap_exc:
+                    rejected["auto-wrap: "+str(wrap_exc)]+=1
+                    continue
+                row=dict(row)
+                row["authored_vietnamese"]=vietnamese
+                row["vietnamese"]=wrapped
+                row["auto_wrapped"]=True
+            else:
+                rejected[str(exc)]+=1
+                continue
         chosen.append((row,payload))
     return chosen,dict(rejected)
 
@@ -83,13 +97,14 @@ def main():
     p.add_argument("--max-segment",type=int,default=26)
     p.add_argument("--report",type=Path,required=True)
     p.add_argument("--apply",action="store_true")
+    p.add_argument("--auto-wrap",action="store_true",help="Only word-boundary newline/scroll conversion for overlong non-dynamic text")
     a=p.parse_args()
     if a.limit<1 or a.limit>100 or not 10<=a.max_segment<=30:
         p.error("limit 1..100 and max-segment 10..30")
     plan=json.loads(a.plan.read_text(encoding="utf-8"))
     raw=json.loads(a.codebook.read_text(encoding="utf-8"))
     codes={c:int(v,16) for c,v in raw["glyph_bytes"].items()}
-    selected, skipped=plan_rows(plan,codes,a.source_prefix,a.max_segment,a.limit)
+    selected, skipped=plan_rows(plan,codes,a.source_prefix,a.max_segment,a.limit,a.auto_wrap)
     skipped=Counter(skipped); changes={}; accepted=[]
     for row, encoded in selected:
         relative=row["source_file"]
@@ -104,13 +119,17 @@ def main():
         changes[filepath]=changed
         accepted.append({"label":row["source_label"],"source_file":relative,
                          "encoded_bytes":len(encoded),
-                         "english":row["english"],"vietnamese":row["vietnamese"]})
+                         "english":row["english"],"vietnamese":row["vietnamese"],
+                         "authored_vietnamese":row.get("authored_vietnamese",row["vietnamese"]),
+                         "auto_wrapped":bool(row.get("auto_wrapped"))})
     if a.apply:
         for filepath,updated in changes.items():
             filepath.write_text(updated,encoding="utf-8")
     report={"mode":"apply" if a.apply else "dry-run",
             "source_prefix":a.source_prefix,"labels_staged":len(accepted),
-            "files_staged":len(changes),"skipped_reasons":dict(skipped),
+            "files_staged":len(changes),
+            "auto_wrapped_labels":sum(1 for row in accepted if row["auto_wrapped"]),
+            "skipped_reasons":dict(skipped),
             "translated":accepted,"font_rendering_emulator_certified":False,
             "shipping_ROM_changed":False,
             "source_build_is_not_verified_shipping_layout":True}
