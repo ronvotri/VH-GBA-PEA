@@ -49,13 +49,16 @@ def stage(rows:list, source:str, codes:dict[str,int],
             not (r"\n" in english or r"\p" in english)):
             continue
         try:
+            # C's _("...") source automatically adds the FF terminator.
+            # Map .string manifests normally include $, C UI manifests do not.
+            authored_with_end = translation if translation.endswith("$") else translation+"$"
             try:
-                encoded=encode_text(translation,codes,max_segment)
-                proposed=translation
+                encoded=encode_text(authored_with_end,codes,max_segment)
+                proposed=authored_with_end
             except ValueError as exc:
                 if not auto_wrap or not str(exc).startswith("line exceeds "):
                     raise
-                proposed=auto_wrap_script_text(translation,max_segment)
+                proposed=auto_wrap_script_text(authored_with_end,max_segment)
                 encoded=encode_text(proposed,codes,max_segment)
             new_source=replace_c_string(source,label,english,encoded)
         except ValueError as exc:
@@ -65,7 +68,7 @@ def stage(rows:list, source:str, codes:dict[str,int],
         accepted.append({"label":label,"english":english,
                          "authored_vietnamese":translation,
                          "compiled_vietnamese":proposed,
-                         "auto_wrapped":proposed!=translation,
+                         "auto_wrapped":proposed!=authored_with_end,
                          "encoded_bytes":len(encoded)})
     return source,accepted,dict(skipped)
 
