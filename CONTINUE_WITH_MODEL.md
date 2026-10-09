@@ -1555,3 +1555,21 @@ New opt-in support in `tools/stage_source_map_translations.py`:
 - Regression tests are in `tools/tests/test_stage_source_map_translations.py`. Verify the newest Actions outcome before enabling this opt-in in any source build. A future expanded build will require a **new** exact source-ROM SHA and `.sym` font checkpoint; never bypass the v0.6 pinned font guards.
 
 Earlier source/font safety changes were confirmed by full-success [Actions #37968226276](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37968226276). Do not confuse a passing source-unit/compiler CI with verified emulator gameplay or a release ROM. Votri Valley title credit and the playable v0.4 rollback remain intact.
+
+
+## 2026-10-10 — VERIFIED ADDITIVE SOURCE-INTEGRATION MILESTONE: 2,560 LABELS
+
+**Authoritative, full SUCCESS:** [GitHub Actions #37971516257](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37971516257) for integration-workflow commit `ce4f4c85`. Open the non-ROM `arena-0.13.0-symbol-map` artifact from that run for independent reports, symbol maps and exact hashes.
+
+- Original v0.6 2,093-label source build remains unchanged, SHA-256 `5cae1a20698fcd7036ccdc0f2bdbc0c0c80d942380ab48611fb3ec816ebcab7f`. Original source attestation still confirms 2,093 unique labels, all FF-terminated.
+- **+292 newly source-staged map/story labels** across 75 source files, 156 word-boundary auto-wraps, exact exclusions for the previously staged 1,000 map labels. No prior compiled payload was changed.
+- **+175 previously blocked literal-LF map/story labels** across 23 source files, 71 additional auto-wraps. The stage excluded all 1,292 previously installed static map labels and verified exact original English control-sequence order; 43 mismatching literal-LF controls remain blocked. The independently compiled LF-only pilot also passed.
+- **2,560 = 2,093 + 292 + 175 distinct source-owned, independently source-verified labels in ONE combined GBA build**; no cross-batch duplicate source labels. All 5 compiled Latin font blocks still match **STOCK ENGLISH glyph artwork**. The title-credit build still passes.
+- **Exact combined source-ROM SHA-256:** `ea47eddda541d66f6aedf9e61f0816e7135349a0b5ac23529776f8ac6a6b5530` (32MiB experimental source build; neither release-ready nor user-playtested).
+- **Combined build's own `SOURCE_EXPANDED_MAP_FONT.sym` target glyph offsets:** SmallNarrow `0x71AB04`, Small `0x722D04`, Narrow `0x72AF04`, Short `0x733104`, Normal `0x73B304`. These are NOT the original v0.6 2,093-text symbol offsets.
+- Artifacts: `SOURCE_EXPANDED_MAP_STAGE.json`, `SOURCE_EXPANDED_MAP_LF_STAGE.json`, `SOURCE_EXPANDED_MAP_ATTESTATION.json`, `SOURCE_EXPANDED_MAP_SHA256.txt`, `SOURCE_EXPANDED_MAP_FONT.sym`, `SOURCE_EXPANDED_MAP_FONT_AUDIT.json`.
+- **Do NOT feed the new expanded ROM to the existing 2,093-only graft script**, whose pinned SHA and font offsets intentionally reject this newer layout. Extend the SHA+symbol whitelist with explicit tests, not by disabling safety checks, once exact private 32MiB built ROM and donor/reference binaries are available.
+- Canonical translation manifests remain **17,512 / 17,512 represented source rows**, not installed rows. The expanded pilot installs 2,560 selected translated source labels; untouched/canonical-English source rows and complex dynamic/UI/battle labels still need category-aware integration/QA.
+- The old playable **v0.4 rollback remains intact**. No donor bitmap, unlicensed full ROM or gameplay verification was uploaded/claimed; end-user GBA release is **NOT DONE**.
+
+**NEXT:** select additional source-first stages for fully translated `system-text` (2,319 catalog rows), battle/other UI, with exact source-owner/control/placeholder QA. Keep complete existing 2,560 trial as its own SHA-locked checkpoint. Independently engineer the v0.6 remapped Vietnamese font onto a byte-identical combined source build using its **new matching symbol map**, verify Pokéblock/PKMN/= and diacritics, then run mGBA title/introduction/overworld/battle/post-battle/save/load/Pokéblock/story tests before sharing a playable patch. Do not ask the user to test a stock-font source trial.
