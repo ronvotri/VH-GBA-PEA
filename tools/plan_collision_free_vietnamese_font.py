@@ -33,8 +33,11 @@ def parse_english_single_byte_occupancy(charmap: str) -> set[int]:
         line=line.split("@",1)[0].strip()
         if not line or "=" not in line:
             continue
-        value=line.split("=",1)[1].strip()
-        # e.g "'f' = DA", or "PKMN = 53 54"; reserve first byte
+        # Some legitimate keys CONTAIN '=', notably the literal '='
+        # character ('=' = 35). Split on the final assignment operator,
+        # never the equals sign within a quoted character literal.
+        value=line.rsplit("=",1)[1].strip()
+        # e.g "'f' = DA", "'=' = 35", or "PKMN = 53 54".
         match=re.match(r"([0-9A-Fa-f]{2})(?:\s|$)",value)
         if match:
             used.add(int(match.group(1),16))
