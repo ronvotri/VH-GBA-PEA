@@ -370,6 +370,53 @@ jobs:
             --out artifact/SOURCE_LEVEL_FONT_AUDIT.json
           echo "Source-level Vietnamese map staging and assembler/linker pilot: PASS (not runtime/visual certified)." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Independently compile safe literal-LF map texts (experimental; no donor font)
+        run: |
+          # Do not mutate source-localization-smoke: its independently pinned
+          # 2,093-label SHA and SOURCE_LEVEL_FONT.sym are release blockers.
+          cp -a workspace literal-lf-source-trial
+          python3 tools/stage_source_map_translations.py \
+            --workspace literal-lf-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --source-prefix data/maps/ \
+            --only-literal-newlines \
+            --normalize-literal-newlines \
+            --auto-wrap \
+            --limit 1000 \
+            --apply \
+            --report artifact/SOURCE_LITERAL_LF_TRIAL.json
+          python3 - <<'PY'
+          import json,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import validate_stages
+          d=json.loads(Path("artifact/SOURCE_LITERAL_LF_TRIAL.json").read_text())
+          n=d["labels_staged"]
+          assert d["mode"]=="apply" and 40<=n<=566, (n,d["skipped_reasons"])
+          assert d["literal_newlines_normalized"]==n, d
+          assert all(r["literal_newlines_normalized"] and
+                     "\n" in r["authored_vietnamese"] and
+                     r"\n" in r["vietnamese"]
+                     for r in d["translated"]),"unproven literal-LF ownership"
+          audited=validate_stages(Path("literal-lf-source-trial"),{"map":d})
+          assert audited["checked_unique_source_labels"]==n, audited
+          Path("artifact/SOURCE_LITERAL_LF_ATTESTATION.json").write_text(
+              json.dumps(audited,indent=2)+"\n")
+          print("PASS: independently validated",n,
+                "source-owned additional literal-LF map text labels")
+          PY
+          python3 tools/apply_title_credit.py literal-lf-source-trial
+          make -C literal-lf-source-trial -j2
+          test -s literal-lf-source-trial/pokeemerald.gba
+          sha256sum literal-lf-source-trial/pokeemerald.gba > artifact/SOURCE_LITERAL_LF_TRIAL_SHA256.txt
+          arm-none-eabi-nm -n literal-lf-source-trial/pokeemerald.elf > artifact/SOURCE_LITERAL_LF_FONT.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom literal-lf-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_LITERAL_LF_FONT.sym \
+            --out artifact/SOURCE_LITERAL_LF_FONT_AUDIT.json
+          echo "Separate opt-in literal-LF trial built and source-attested; stock font raster, NO emulator QA, NOT release-ready." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Smoke-build Votri Valley title credit
         run: |
           cp -a workspace credit-workspace
