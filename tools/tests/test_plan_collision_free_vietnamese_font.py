@@ -30,6 +30,12 @@ class CollisionFreePlanTests(unittest.TestCase):
         self.assertNotIn("Ừ",out)
         self.assertEqual(out["ừ"],"0x50")
 
+    def test_literal_equals_sign_assignment_is_always_reserved(self):
+        marked=self.charmap.replace("LV = 34","LV = 34\n'=' = 35")
+        used=parse_english_single_byte_occupancy(marked)
+        self.assertIn(0x35,used)
+        self.assertNotIn(0x33,used)
+
     def test_japanese_reuse_does_not_block_latin_slot(self):
         used=parse_english_single_byte_occupancy(self.charmap)
         self.assertEqual({0x30,0x31,0x32}&used,set())
