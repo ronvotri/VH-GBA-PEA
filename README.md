@@ -112,3 +112,8 @@ The user's intro screenshots exposed two causes: the variable-containing `MOM: {
 ## Guarded UI/shared-text integration (2026-10-09)
 
 The latest **internal, non-release** test candidate adds **43 short UI translations** with exact shipping-byte and reference checks, plus **13** relocated shared-suffix translations with **31 individually verified owner-reference edits**. An independent pre-release QA pass rejected 2 unsafe pointer conflicts, so all prior **64 historical pointer restorations** remain intact. All changed bytes are allowlisted, BPS CRCs and binary replay PASS. **45** shared-suffix cases remain unresolved and emulator glyph/scroll/line-width QA is outstanding; do not confuse this with fully integrated 17,512-source-text Vietnamese. Details in [the UI43/shared13 checkpoint](docs/UI43_SHARED13_GUARDED_CHECKPOINT_2026-10-09.md). Original safe v0.4 retained as rollback.
+
+
+## Shared string pointer provenance follow-up (2026-10-09)
+
+[The read-only shared owner investigation](docs/SHARED_OWNER_PROVENANCE_RETRIAGE_2026-10-09.md) reproduces all 270 prior shared-suffix warnings using exact ROM hashes and source symbols. Of 45 still deferred after the prior 212+13 internal guarded integration, 39 have candidate named script/table owners, 2 pointer-like matches are in graphics, 2 extra matches are in executable code, and 2 conflict with prior reference restorations. A [reproducible source-controlled verifier](tools/triage_shared_owner_provenance.py) with 7 unit tests prevents accidental data/code repoint. **No newer game ROM has been built in this resumed turn**: the previous guarded private output must be reproduced without discarding its existing fixes. All source-manifest translations are NOT yet installed in runtime ROM.
