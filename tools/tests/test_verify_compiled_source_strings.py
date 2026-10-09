@@ -19,6 +19,28 @@ class SourceAttestationTests(unittest.TestCase):
         self.assertEqual(extract_asm_payload(src,"BattleDome_Text_Potential1"),
                          b"\xC7\x0A\xFF")
 
+    def test_static_battle_c_literal_exact_text(self):
+        src='static const u8 sText_CriticalHit[] = {0xC7, 0xFE, 0x10, 0xFF};\n'
+        self.assertEqual(extract_c_payload(src,"sText_CriticalHit"),
+                         b"\xC7\xFE\x10\xFF")
+
+    def test_battle_c_source_attestation_rejects_ghost_labels(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            (root/"src").mkdir()
+            (root/"src/battle_message.c").write_text(
+                'static const u8 sText_CriticalHit[] = {0xC7, 0xFF};\n',
+                encoding="utf-8")
+            reports={"battle-c":{"mode":"apply",
+                      "source_file":"src/battle_message.c",
+                      "labels_staged":1,
+                      "translated":[{"label":"sText_CriticalHit"}]}}
+            actual=validate_stages(root,reports)
+            self.assertEqual(actual["source_groups"],{"battle-c":1})
+            reports["battle-c"]["translated"][0]["label"]="sText_FakeMissing"
+            with self.assertRaisesRegex(ValueError,"expected one C literal"):
+                validate_stages(root,reports)
+
     def test_c_literal_exact_text(self):
         src='const u8 gText_SaveNotice[] = {0xC7, 0xFE, 0x10, 0xFF};\n'
         self.assertEqual(extract_c_payload(src,"gText_SaveNotice"),
