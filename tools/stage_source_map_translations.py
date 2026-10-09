@@ -68,9 +68,25 @@ def prioritized_rows(rows: list[dict], prefixes: list[str]) -> list[dict]:
     return sorted(rows, key=rank)
 
 
+def normalize_authored_linefeeds(english:str,vietnamese:str)->str:
+    """Repair literal LF as GBA \\n ONLY if the ordered source controls agree.
+
+    JSON authoring can accidentally store an actual newline in place of the
+    two-character \\n script directive. No other control substitution is safe.
+    This deliberately does not attempt to unwrap or rewrite dynamic tokens.
+    """
+    if "\n" not in vietnamese:
+        return vietnamese
+    normalized=vietnamese.replace("\n",r"\\n")
+    signature=lambda s:re.findall(r"\\\\[npl]",s)
+    if signature(english)!=signature(normalized):
+        raise ValueError("literal LF: source control sequence differs")
+    return normalized
+
+
 def plan_rows(rows:list,codes:dict[str,int],src_prefix:str,max_segment:int,limit:int,
               auto_wrap:bool=False, priority_prefixes:list[str]|None=None,
-              category:str="map-story"):
+              category:str="map-story",normalize_literal_newlines:bool=False):
     chosen=[]; rejected=Counter()
     for row in prioritized_rows(rows, priority_prefixes or []):
         if len(chosen)>=limit:break
@@ -78,6 +94,16 @@ def plan_rows(rows:list,codes:dict[str,int],src_prefix:str,max_segment:int,limit
             continue
         english,vietnamese=row.get("english",""),row.get("vietnamese","")
         if not vietnamese or english==vietnamese or not row.get("source_label"):continue
+        if normalize_literal_newlines and "\n" in vietnamese:
+            try:
+                normalized=normalize_authored_linefeeds(english,vietnamese)
+            except ValueError as exc:
+                rejected[str(exc)]+=1
+                continue
+            row=dict(row)
+            row["authored_vietnamese"]=vietnamese
+            row["vietnamese"]=vietnamese=normalized
+            row["literal_newlines_normalized"]=True
         try:payload=encode_text(vietnamese,codes,max_segment)
         except ValueError as exc:
             if auto_wrap and str(exc).startswith("line exceeds "):
@@ -110,6 +136,8 @@ def main():
     p.add_argument("--report",type=Path,required=True)
     p.add_argument("--apply",action="store_true")
     p.add_argument("--auto-wrap",action="store_true",help="Only word-boundary newline/scroll conversion for overlong non-dynamic text")
+    p.add_argument("--normalize-literal-newlines",action="store_true",
+                   help="Opt-in: change literal JSON LF to \\n only when ordered source controls match")
     p.add_argument("--priority-source-prefix",action="append",default=[],help="Stable source-map priority for early-game QA; repeatable")
     a=p.parse_args()
     if a.limit<1 or a.limit>1000 or not 10<=a.max_segment<=30:
@@ -120,7 +148,7 @@ def main():
     plan=json.loads(a.plan.read_text(encoding="utf-8"))
     raw=json.loads(a.codebook.read_text(encoding="utf-8"))
     codes={c:int(v,16) for c,v in raw["glyph_bytes"].items()}
-    selected, skipped=plan_rows(plan,codes,a.source_prefix,a.max_segment,a.limit,a.auto_wrap,a.priority_source_prefix,a.category)
+    selected, skipped=plan_rows(plan,codes,a.source_prefix,a.max_segment,a.limit,a.auto_wrap,a.priority_source_prefix,a.category,a.normalize_literal_newlines)
     skipped=Counter(skipped); changes={}; accepted=[]
     for row, encoded in selected:
         relative=row["source_file"]
@@ -146,6 +174,7 @@ def main():
             "source_prefix":a.source_prefix,"labels_staged":len(accepted),
             "files_staged":len(changes),
             "auto_wrapped_labels":sum(1 for row in accepted if row["auto_wrapped"]),
+            "literal_newlines_normalized":sum(1 for row in selected if row[0].get("literal_newlines_normalized")),
             "skipped_reasons":dict(skipped),
             "translated":accepted,"font_rendering_emulator_certified":False,
             "shipping_ROM_changed":False,
