@@ -154,7 +154,7 @@ jobs:
             --out artifact/map-story-integration-plan.json \
             --summary artifact/map-story-integration-summary.json
 
-      - name: Smoke-build up to 100 source-level Vietnamese map texts
+      - name: Smoke-build up to 200 source-level Vietnamese map texts
         run: |
           cp -a workspace source-localization-smoke
           python3 tools/stage_source_map_translations.py \
@@ -162,13 +162,14 @@ jobs:
             --plan artifact/user-facing-integration-plan.json \
             --codebook checkpoints/v04-inferred-vietnamese-codebook.json \
             --source-prefix data/maps/ \
-            --limit 100 \
+            --limit 200 \
+            --auto-wrap \
             --apply \
             --report artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json
           python3 - <<'PY'
           import json
           d=json.load(open("artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json"))
-          assert d["labels_staged"] >= 1 and d["mode"]=="apply", d
+          assert d["labels_staged"] == 200 and d["mode"]=="apply", d
           print("Source-level Vietnamese map pilot rows:",d["labels_staged"])
           PY
           make -C source-localization-smoke -j2
