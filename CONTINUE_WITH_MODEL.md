@@ -1633,3 +1633,16 @@ Verified non-ROM artifact `arena-0.13.0-symbol-map` includes `SOURCE_3360_SYNTH_
 
 **Highest priority next:** Make a separate CI-only mGBA boot/screenshots smoke test of this 3,360-text+synth-font ROM; verify intro, title credit, text/diacritics, battle, Pokéblock, and save/load. If font legibility is good, produce an independently verified redistribution-safe delta patch against exact user-owned clean Arena 0.13.0, never upload a full commercial ROM. Do not spend another cycle simply increasing 17,512 manifest coverage counts until the playable beta route has been assessed.
 
+
+
+## 2026-10-10 — VERIFIED ACTUAL mGBA BOOT ON SYNTHESIZED-FONT 3,360-TEXT ROM
+
+Full SUCCESS **[GitHub Actions #37976103270](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37976103270)**, boot-screenshot workflow commit `58d42242` (all source build stages and synth-font stage PASS again).
+
+- The experimental ROM with actual **3,360 translated source labels and 63 new Vietnamese glyphs × 5 fonts**, SHA256 `0c1944e241d7e00765e2ef6cc5ba7912600694df8fa6a151985a051a09a23591`, **actually started under mGBA SDL** on Ubuntu 22.04 in Xvfb. It stayed running throughout the 12-second smoke check, and a real **800×600 screen screenshot** was captured. 458 distinct sampled colors prove nonblank rendered output.
+- Reviewed screenshot: the game displayed the **green jungle intro animation** at frame sampled, with 240×160 game viewport centered against a black virtual desktop. This is **boot/graphics evidence only**, not displayed Vietnamese text: NO dialogue box or accented text was on screen at the captured frame. **Do not claim Vietnamese font visually verified or gameplay completed**.
+- Artifact `arena-0.13.0-symbol-map` contains `SOURCE_3360_MGBA_BOOT.png`, `SOURCE_3360_MGBA_BOOT_QA.json` and `SOURCE_3360_MGBA_CONSOLE.log`; the commercial ROM was deleted in CI and NOT uploaded. The separate source-font report remains `SOURCE_3360_SYNTH_FONT_QA.json`. This boot screenshot is from the temporary combined text+generated-font ROM, not the stock-font 3,360 input.
+- Native bytes/Pokéblock protected, no writes outside five font/width blocks, compiler-source 3,360 labels preserved. **Release gate remains NOT READY**: need real readable accent dialogue frame, intro truck/Mom, title credit, battle, Pokéblock, save/load, and visual QA of synthetic accent shape/placement. A quick mGBA boot does not certify these.
+- Immediate next action: enhance the headless emulator harness to capture a later title-screen frame and send controlled keys into the opening truck/Mom conversation, inspect screenshots of Vietnamese text and the Votri Valley title credit; then iterate font raster and produce a delta patch only after QA. Avoid unverified claims of completion.
+- Stable playable user v0.4 and exact source-only 3,360 build remain untouched. Catalog authored 17,512 is not installed count.
+
