@@ -47,6 +47,16 @@ class CSourceStageTests(unittest.TestCase):
         self.assertEqual(accepted,[])
         self.assertTrue(skipped)
 
+    def test_c_ui_source_without_explicit_dollar_is_staged(self):
+        rows=[{"category":"system-ui","source_file":"src/strings.c",
+               "source_label":LABEL,"english":ENGLISH,
+               "vietnamese":r"abc abc abc\\nabc abc."}]
+        codes={"a":0xD5,"b":0xD6,"c":0xD7," ":0x00,".":0xAD}
+        source,accepted,skipped=stage(rows,SAMPLE,codes)
+        self.assertEqual(len(accepted),1,skipped)
+        self.assertTrue(source.count("0xFF")>=1)
+        self.assertFalse(accepted[0]["auto_wrapped"])
+
     def test_short_ui_label_is_not_selected(self):
         rows=[{"category":"system-ui","source_file":"src/strings.c",
                "source_label":"gText_MainMenuOption","english":"OPTION",
