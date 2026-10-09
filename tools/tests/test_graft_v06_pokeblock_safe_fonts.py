@@ -107,7 +107,8 @@ class GraftV06Tests(unittest.TestCase):
             v06.require_pinned_target_symbols(shifted)
 
     def test_requires_exact_clean_source_font_geometry(self):
-        with patch.object(v06,"ATTESTED_CLEAN_OFFSETS",self.offsets):
+        with patch.object(v06,"ATTESTED_CLEAN_OFFSETS",self.offsets),\
+             patch.object(v06,"ATTESTED_SOURCE_FONT_OFFSETS",self.offsets):
             with self.assertRaisesRegex(ValueError,"mismatched"):
                 v06.graft_v06_font(
                     bytes(self.clean),bytes(self.donor),bytes(self.clean),
