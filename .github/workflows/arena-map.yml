@@ -154,7 +154,7 @@ jobs:
             --out artifact/map-story-integration-plan.json \
             --summary artifact/map-story-integration-summary.json
 
-      - name: Smoke-build map, C UI, dynamic text and Votri title credit together
+      - name: Smoke-build map, UI, name variables, battle and Votri credit together
         run: |
           cp -a workspace source-localization-smoke
           python3 tools/stage_source_map_translations.py \
@@ -221,6 +221,23 @@ jobs:
           assert "LittlerootTown_Text_OurNewHomeLetsGoInside" in names, "Missing Mom intro source translation"
           assert "LittlerootTown_Text_WaitPlayer" in names, "Missing Mom WaitPlayer source translation"
           print("Source dynamic PLAYER/RIVAL labels:",d["labels_staged"],"reflowed:",d["auto_wrapped_labels"])
+          PY
+          python3 tools/stage_source_map_translations.py \
+            --workspace source-localization-smoke \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v04-inferred-vietnamese-codebook.json \
+            --source-prefix data/text/ \
+            --category battle \
+            --limit 100 \
+            --auto-wrap \
+            --apply \
+            --report artifact/SOURCE_LEVEL_BATTLE_PILOT.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open("artifact/SOURCE_LEVEL_BATTLE_PILOT.json"))
+          assert 35 <= d["labels_staged"] <= 100 and d["category"]=="battle" and d["mode"]=="apply",d
+          assert all(x["source_file"].startswith("data/text/") for x in d["translated"])
+          print("Source battle text labels:",d["labels_staged"],"reflowed:",d["auto_wrapped_labels"])
           PY
           python3 tools/apply_title_credit.py source-localization-smoke
           test -s source-localization-smoke/graphics/title_screen/translation_credit.png
