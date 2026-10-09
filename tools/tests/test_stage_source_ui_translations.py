@@ -64,6 +64,22 @@ class CSourceStageTests(unittest.TestCase):
         _,accepted,_=stage(rows,SAMPLE,{})
         self.assertFalse(accepted)
 
+    def test_short_static_ui_is_opt_in_and_skips_prior_label(self):
+        rows=[{"category":"system-ui","source_file":"src/strings.c",
+               "source_label":"gText_MainMenuOption",
+               "english":"OPTION","vietnamese":"Menu"}]
+        source=SAMPLE
+        codes={"M":0xC7,"e":0xD9,"n":0xE2,"u":0xE9}
+        _,blocked,_=stage(rows,source,codes)
+        self.assertFalse(blocked)
+        edited,allowed,skipped=stage(rows,source,codes,include_short_static=True)
+        self.assertEqual(len(allowed),1,skipped)
+        self.assertIn("gText_MainMenuOption[] = {0xC7, 0xD9, 0xE2, 0xE9, 0xFF};",
+                      edited)
+        _,excluded,_=stage(rows,source,codes,include_short_static=True,
+                           excluded_labels={"gText_MainMenuOption"})
+        self.assertFalse(excluded)
+
     def test_only_system_ui_selected(self):
         rows=[{"category":"battle","source_file":"src/strings.c",
                "source_label":LABEL,"english":ENGLISH,
