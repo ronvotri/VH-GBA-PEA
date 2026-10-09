@@ -189,6 +189,11 @@ jobs:
           make -C source-localization-smoke -j2
           test -s source-localization-smoke/pokeemerald.gba
           sha256sum source-localization-smoke/pokeemerald.gba > artifact/SOURCE_LEVEL_VIETNAMESE_PILOT_SHA256.txt
+          arm-none-eabi-nm -n source-localization-smoke/pokeemerald.elf > artifact/SOURCE_LEVEL_FONT.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom source-localization-smoke/pokeemerald.gba \
+            --sym artifact/SOURCE_LEVEL_FONT.sym \
+            --out artifact/SOURCE_LEVEL_FONT_AUDIT.json
           echo "Source-level Vietnamese map staging and assembler/linker pilot: PASS (not runtime/visual certified)." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Smoke-build Votri Valley title credit
