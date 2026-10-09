@@ -4,7 +4,7 @@ import sys
 import unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from stage_source_map_translations import encode_text, patch_labeled_block, plan_rows
+from stage_source_map_translations import encode_text, patch_labeled_block, plan_rows, prioritized_rows
 
 
 class SourceStagingTests(unittest.TestCase):
@@ -59,6 +59,29 @@ class SourceStagingTests(unittest.TestCase):
     def test_non_nfc_rejected(self):
         with self.assertRaisesRegex(ValueError,"non-NFC"):
             encode_text("a\u0301$",self.codes,26)
+
+    def test_stable_priority_is_early_game_first(self):
+        labels=[
+            {"source_file":"data/maps/AbandonedShip/scripts.inc","source_label":"A"},
+            {"source_file":"data/maps/LittlerootTown/scripts.inc","source_label":"FIRST"},
+            {"source_file":"data/maps/OldaleTown/scripts.inc","source_label":"NEXT"},
+            {"source_file":"data/maps/LittlerootTown/scripts.inc","source_label":"SECOND"},
+        ]
+        ordered=prioritized_rows(labels,[
+            "data/maps/LittlerootTown/","data/maps/OldaleTown/"])
+        self.assertEqual([x["source_label"] for x in ordered],
+                         ["FIRST","SECOND","NEXT","A"])
+
+    def test_prioritized_staging_honors_limit(self):
+        rows=[
+            {"category":"map-story","source_file":"data/maps/AbandonedShip/scripts.inc",
+             "source_label":"OLD","english":"a$","vietnamese":"b$"},
+            {"category":"map-story","source_file":"data/maps/LittlerootTown/scripts.inc",
+             "source_label":"INTRO","english":"a$","vietnamese":"b$"},
+        ]
+        chosen,_=plan_rows(rows,self.codes,"data/maps/",26,1,False,
+                           ["data/maps/LittlerootTown/"])
+        self.assertEqual([r["source_label"] for r,_ in chosen],["INTRO"])
 
     def test_limited_map_selection(self):
         rows=[{"category":"map-story",
