@@ -11,9 +11,9 @@ import audit_v04_font_code_collisions as report
 
 class FontCollisionTests(unittest.TestCase):
     def setUp(self):
-        self.clean=bytearray(0x800)
+        self.clean=bytearray(0x20000)
         self.donor=bytearray(self.clean)
-        self.offsets={name:i*0x100 for i,name in enumerate(report.FONT_NAMES)}
+        self.offsets={name:i*0x3000 for i,name in enumerate(report.FONT_NAMES)}
         self.charmap="'f' = DA\n'w' = EB\n'z' = EE\n@ Hiragana\n'f' = 00\n"
         self.book={"f":0xDA,"ấ":0xDA,"w":0xEB,"ằ":0xEB,"z":0xEE,
                    "ắ":0xEE,"Ừ":0x50,"ừ":0x50}
