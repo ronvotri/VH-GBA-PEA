@@ -57,6 +57,20 @@ class SourceStagingTests(unittest.TestCase):
         self.assertEqual(patched[0][0]["authored_vietnamese"],original)
         self.assertTrue(patched[0][0]["literal_newlines_normalized"])
 
+    def test_only_literal_lf_batch_does_not_restage_normal_rows(self):
+        rows=[
+            {"source_label":"Regular","source_file":"data/maps/Route101/scripts.inc",
+             "category":"map-story","english":"a$","vietnamese":"b$"},
+            {"source_label":"LiteralLF","source_file":"data/maps/Route101/scripts.inc",
+             "category":"map-story","english":r"a\\nb$","vietnamese":"a\nb$"},
+        ]
+        selected,skipped=plan_rows(rows,self.codes,"data/maps/",26,100,
+                                   normalize_literal_newlines=True,
+                                   only_literal_newlines=True)
+        self.assertFalse(skipped)
+        self.assertEqual([row["source_label"] for row,_ in selected],["LiteralLF"])
+        self.assertEqual(selected[0][1],bytes([0xD5,0xFE,0xD6,0xFF]))
+
     def test_literal_lf_must_not_replace_page_or_change_order(self):
         for english,vietnamese in (
             (r"a\pb$","a\nb$"),
