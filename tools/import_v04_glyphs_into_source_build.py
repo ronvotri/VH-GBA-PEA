@@ -90,6 +90,7 @@ def main()->int:
     p.add_argument("--clean",type=Path,required=True)
     p.add_argument("--v04",type=Path,required=True)
     p.add_argument("--source-built",type=Path,required=True)
+    p.add_argument("--expected-source-sha256",help="Required when writing; exact source-built ROM hash")
     p.add_argument("--reference-sym",type=Path,required=True)
     p.add_argument("--target-sym",type=Path,required=True)
     p.add_argument("--out",type=Path)
@@ -102,6 +103,11 @@ def main()->int:
     rebuilt=a.source_built.read_bytes()
     if len(rebuilt)!=ROM_BYTES:
         raise SystemExit("REFUSED: unexpected source build ROM size")
+    source_digest=hashlib.sha256(rebuilt).hexdigest()
+    if a.out and not a.expected_source_sha256:
+        raise SystemExit("REFUSED: output requires --expected-source-sha256")
+    if a.expected_source_sha256 and source_digest!=a.expected_source_sha256.lower():
+        raise SystemExit("REFUSED: source-built ROM SHA-256 differs from pinned expected hash")
     reference=read_symbol_offsets(a.reference_sym.read_text(encoding="utf-8"))
     if reference!=ATTESTED_CLEAN_OFFSETS:
         raise SystemExit("REFUSED: source symbol font offsets are not the checked clean layout")
@@ -112,7 +118,7 @@ def main()->int:
         raise SystemExit("REFUSED: modified bytes outside font-owned ranges")
     report={
         "mode":"apply" if a.out else "read-only",
-        "source_rom_sha256":hashlib.sha256(rebuilt).hexdigest(),
+        "source_rom_sha256":source_digest,
         "output_sha256":hashlib.sha256(result).hexdigest(),
         "font_byte_changes":counts,
         "total_changed_bytes":diff,
