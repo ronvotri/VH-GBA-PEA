@@ -14,7 +14,7 @@ from collections import Counter
 from pathlib import Path
 
 LABEL_RE=re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
-ASM_LABEL_RE=r"(?m)^\s*{label}:{1,2}\s*(?:@[^\r\n]*)?$"
+ASM_LABEL_RE=r"(?m)^\s*{label}:{{1,2}}\s*(?:@[^\r\n]*)?$"
 ASM_LINE_RE=re.compile(r"^\s*\.byte\s+(.+?)\s*$")
 ASM_HEX_RE=re.compile(r"0x([0-9A-Fa-f]{2})")
 C_HEX_RE=re.compile(r"(?m)^\s*const\s+u8\s+{label}\[\]\s*=\s*\{{([^}}]+)\}};",re.S)
