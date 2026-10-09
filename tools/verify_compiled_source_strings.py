@@ -81,6 +81,8 @@ def validate_stages(workspace:Path, reports:dict[str,dict]) -> dict:
             if label in seen:raise ValueError(f"{label}: duplicate source integration")
             seen.add(label)
             relative=row.get("source_file") or row.get("file")
+            if group=="ui" and not relative:
+                relative=report.get("source_file")
             if not relative or not isinstance(relative,str):
                 raise ValueError(f"{label}: missing file")
             source_path=(workspace/relative).resolve()
