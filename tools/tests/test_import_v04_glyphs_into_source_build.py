@@ -32,6 +32,18 @@ class FontImportTests(unittest.TestCase):
             self.assertEqual(out[off:off+0x100],self.donor[off:off+0x100])
         self.assertEqual(out[:0x100],self.clean[:0x100])
 
+    def test_shifted_rebuilt_font_import_preserves_original_positions(self):
+        shifted={name:off+0x900 for name,off in self.blocks.items()}
+        out,counts=self.overlay(target=shifted)
+        self.assertEqual(sum(counts.values()),5)
+        self.assertEqual(sum(x!=y for x,y in zip(out,self.clean)),5)
+        for name,off in shifted.items():
+            i=list(fonts.FONT_NAMES).index(name)
+            self.assertEqual(out[off+i],0x30+i)
+        # Nothing was written at the original source font locations.
+        for name,off in self.blocks.items():
+            self.assertEqual(out[off],self.clean[off])
+
     def test_mismatch_rebuilt_font_fails(self):
         altered=bytearray(self.clean)
         altered[self.blocks[fonts.FONT_NAMES[0]]]=0x00
