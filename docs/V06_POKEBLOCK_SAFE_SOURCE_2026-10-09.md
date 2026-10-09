@@ -54,3 +54,27 @@ The last **confirmed** full source-build checkpoint before v0.6 is **2,077** tra
 Even with full source-build CI PASS, the new GBA will still use **stock font raster**, not the private v0.6 remapped Vietnamese font. The user-facing release still requires reproducing the exact source-build ROM locally, applying the SHA+symbol-locked private graft, visual QA of the 9 synthetic fonts, and emulator tests of Pokéblock Case, berries, text, battle, title credit **“Việt hóa bởi Votri Valley”**, and save/load. The original playable v0.4 rollback remains untouched.
 
 Do not upload any commercial ROM or donor font graphics to the public repository.
+
+## Verified full CI after checkpoint — 2,093 source texts
+
+**[Actions #37960836736](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37960836736) concluded SUCCESS**: source unit/safety tests PASS, full GBA source text build PASS, independent text-owner/FF/token QA PASS, and Votri Valley title-credit build PASS.
+
+Exact independently reported installed groups:
+
+| Group | Source-owned labels |
+| --- | ---: |
+| Map/story dialogue | 1,000 |
+| General C interface | 41 |
+| Dynamic PLAYER/RIVAL map dialogue | 134 |
+| Scripted battle text | 196 |
+| Static C battle messages | 59 |
+| Move descriptions | **354/354 translated** |
+| Static item descriptions | **293** |
+| Native `{POKEBLOCK}` item descriptions | **16** |
+| **Total independently verified** | **2,093** |
+
+The `pokeblock` stage/attestation reports exactly **16/16** and pins each to native bytes `55 56 57 58 59`, exactly **two `FE` newlines** and final `FF` string terminator. The independent scanner reports **2,093 unique source labels, zero duplicated labels**. No mass ROM pointer edits.
+
+The source codebook used for this successful build is the tracked `checkpoints/v06-pokeblock-safe-codebook.json` (**137 non-overlapping glyph slots**); `đ = 33`, `ì = 37`, `= = 35` native protected. Source-built text still uses the game's stock English glyph art. The private test with **6,053 font-only byte differences and 25 nonblank glyphs** was performed on a copy of the original clean Arena ROM, **not** this source-built localization GBA. Do not release this build as fully playable Vietnamese text until the donor raster is transplanted into the SHA-verified source GBA and visually tested in emulator.
+
+This checkpoint supersedes the earlier pending-status warning above. The working stable v0.4 is unchanged.
