@@ -154,7 +154,7 @@ jobs:
             --out artifact/map-story-integration-plan.json \
             --summary artifact/map-story-integration-summary.json
 
-      - name: Smoke-build map, C UI and safe dynamic Vietnamese texts
+      - name: Smoke-build map, C UI, dynamic text and Votri title credit together
         run: |
           cp -a workspace source-localization-smoke
           python3 tools/stage_source_map_translations.py \
@@ -202,6 +202,8 @@ jobs:
           assert d["placeholder_order_preserved"] and d["source_control_bytes_pinned"], d
           print("Source dynamic PLAYER/RIVAL labels:",d["labels_staged"])
           PY
+          python3 tools/apply_title_credit.py source-localization-smoke
+          test -s source-localization-smoke/graphics/title_screen/translation_credit.png
           make -C source-localization-smoke -j2
           test -s source-localization-smoke/pokeemerald.gba
           sha256sum source-localization-smoke/pokeemerald.gba > artifact/SOURCE_LEVEL_VIETNAMESE_PILOT_SHA256.txt
