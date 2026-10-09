@@ -81,18 +81,20 @@ def validate_stages(workspace:Path, reports:dict[str,dict]) -> dict:
             if label in seen:raise ValueError(f"{label}: duplicate source integration")
             seen.add(label)
             relative=row.get("source_file") or row.get("file")
-            if group in ("ui","battle-c") and not relative:
+            if group in ("ui","battle-c","move-desc","item-desc") and not relative:
                 relative=report.get("source_file")
             if not relative or not isinstance(relative,str):
                 raise ValueError(f"{label}: missing file")
             source_path=(workspace/relative).resolve()
             if not source_path.is_relative_to(workspace.resolve()) or not source_path.is_file():
                 raise ValueError(f"{label}: missing or unsafe source file")
-            if group in ("ui","battle-c"):
-                if group=="ui" and relative!="src/strings.c":
-                    raise ValueError("unexpected UI source file")
-                if group=="battle-c" and relative!="src/battle_message.c":
-                    raise ValueError("unexpected battle C source file")
+            if group in ("ui","battle-c","move-desc","item-desc"):
+                allowed={"ui":"src/strings.c",
+                         "battle-c":"src/battle_message.c",
+                         "move-desc":"src/data/text/move_descriptions.h",
+                         "item-desc":"src/data/text/item_descriptions.h"}
+                if relative!=allowed[group]:
+                    raise ValueError(f"{group}: unexpected C text source file")
                 payload=extract_c_payload(source_path.read_text(encoding="utf-8"),label)
             else:
                 if group=="battle" and not relative.startswith("data/text/"):
@@ -116,12 +118,12 @@ def validate_stages(workspace:Path, reports:dict[str,dict]) -> dict:
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--workspace",type=Path,required=True)
-    for group in ("map","ui","dynamic","battle","battle-c"):
+    for group in ("map","ui","dynamic","battle","battle-c","move-desc","item-desc"):
         p.add_argument("--"+group,type=Path,required=True)
     p.add_argument("--out",type=Path,required=True)
     a=p.parse_args()
     reports={name:json.loads(getattr(a,name.replace("-","_")).read_text(encoding="utf-8"))
-             for name in ("map","ui","dynamic","battle","battle-c")}
+             for name in ("map","ui","dynamic","battle","battle-c","move-desc","item-desc")}
     output=validate_stages(a.workspace,reports)
     a.out.parent.mkdir(parents=True,exist_ok=True)
     a.out.write_text(json.dumps(output,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
