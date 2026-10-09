@@ -44,3 +44,17 @@ A newer tool pass adds an opt-in `--rebalance` for **move only**. It moves the n
 Even though source compilation and pointer ownership QA PASS, **the source GBA still uses stock English font raster**. The `v0.5` collision-free Latin codebook reserves `0x30/31/32` for `ấ/ằ/ắ` and restores ordinary English `f/w/z`, but the glyph artwork must be imported into the *exact matching source-built ROM* using SHA-locked font import tools, then five-font visual/emulator tests and gameplay save/load tests must PASS. Original playable v0.4 remains a rollback; no new playable ROM was delivered.
 
 Next source groups include long battle templates and remaining story/catalog descriptions; keep explicit `Việt hóa bởi Votri Valley` title credit.
+
+
+## Follow-up confirmed — EXACT 2,000 source-label milestone
+
+**[GitHub Actions run #37944716925](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37944716925) completed SUCCESS**, after the new optional `--rebalance` moved word-boundary newlines in 2-line move descriptions. Inspected the independent workflow artifact:
+
+- **285 move descriptions**, including **39 newly recovered via word-boundary-only newline movement** (e.g. Rolling Kick, Wrap, Bite, Low Kick). All remain exactly two visible lines, width-bound at 26 encoded cells, and have original Vietnamese words in their original order.
+- **285 item descriptions**, unchanged from the initial source pass.
+- Source-group totals: **1,000 map, 41 UI, 134 dynamic PLAYER/RIVAL, 196 scripted battle, 59 static C battle, 285 move and 285 item = 2,000**.
+- Independent `SOURCE_TEXT_INDEPENDENT_QA.json`: **2,000 unique source labels, 0 duplicates, valid 0xFF string endings**. GitHub Actions compiler and source-font-layout check PASS.
+- Exact new **STOCK-font** compiled experimental source GBA SHA256: **`9b963b526870ffc5747df39f1eb07d1ba754724f42e3921c58ac13d7cd452efa`**.
+- The remaining **59 move descriptions** do not fit within two 26-cell lines by changing line break alone, and need human-reviewed Vietnamese condensation; another **5** lack the currently inferred glyph `ỳ`, **2** lack `è`, and some other glyphs remain unknown. **16** item descriptions have dynamic/control variables and **2** have mismatched line counts, so they were intentionally skipped. These numbers correspond to categorized rejection reasons, not new blank translation entries.
+
+The source-built trial ROM remains **not user-release ready**: it has the original English font and has **not** received the private SHA-locked v0.5 Vietnamese glyph transplant; GBA emulator/visual/save/load/battle QA has not been performed. No commercial ROM or donor graphics were committed to GitHub. Preserve original safe v0.4 rollback.
