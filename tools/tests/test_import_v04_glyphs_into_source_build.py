@@ -35,7 +35,7 @@ class FontImportTests(unittest.TestCase):
     def test_mismatch_rebuilt_font_fails(self):
         altered=bytearray(self.clean)
         altered[self.blocks[fonts.FONT_NAMES[0]]]=0x00
-        with self.assertRaisesRegex(ValueError,"differs from clean"):
+        with self.assertRaisesRegex(ValueError,"glyphs differ from clean"):
             self.overlay(bytes(altered))
 
     def test_overlap_blocks_fails(self):
