@@ -59,9 +59,19 @@ def patch_labeled_block(source: str,label: str,expected_en: str,encoded: bytes)-
     return "".join(lines)
 
 
-def plan_rows(rows:list,codes:dict[str,int],src_prefix:str,max_segment:int,limit:int,auto_wrap:bool=False):
+def prioritized_rows(rows: list[dict], prefixes: list[str]) -> list[dict]:
+    """Stable ordering: earliest gameplay areas first, original order otherwise."""
+    def rank(row):
+        file = row.get("source_file", "")
+        return next((i for i, prefix in enumerate(prefixes)
+                     if file.startswith(prefix)), len(prefixes))
+    return sorted(rows, key=rank)
+
+
+def plan_rows(rows:list,codes:dict[str,int],src_prefix:str,max_segment:int,limit:int,
+              auto_wrap:bool=False, priority_prefixes:list[str]|None=None):
     chosen=[]; rejected=Counter()
-    for row in rows:
+    for row in prioritized_rows(rows, priority_prefixes or []):
         if len(chosen)>=limit:break
         if row.get("category")!="map-story" or not row.get("source_file","").startswith(src_prefix):
             continue
@@ -98,13 +108,14 @@ def main():
     p.add_argument("--report",type=Path,required=True)
     p.add_argument("--apply",action="store_true")
     p.add_argument("--auto-wrap",action="store_true",help="Only word-boundary newline/scroll conversion for overlong non-dynamic text")
+    p.add_argument("--priority-source-prefix",action="append",default=[],help="Stable source-map priority for early-game QA; repeatable")
     a=p.parse_args()
     if a.limit<1 or a.limit>250 or not 10<=a.max_segment<=30:
         p.error("limit 1..250 and max-segment 10..30")
     plan=json.loads(a.plan.read_text(encoding="utf-8"))
     raw=json.loads(a.codebook.read_text(encoding="utf-8"))
     codes={c:int(v,16) for c,v in raw["glyph_bytes"].items()}
-    selected, skipped=plan_rows(plan,codes,a.source_prefix,a.max_segment,a.limit,a.auto_wrap)
+    selected, skipped=plan_rows(plan,codes,a.source_prefix,a.max_segment,a.limit,a.auto_wrap,a.priority_source_prefix)
     skipped=Counter(skipped); changes={}; accepted=[]
     for row, encoded in selected:
         relative=row["source_file"]
