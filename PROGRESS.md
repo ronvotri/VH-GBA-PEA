@@ -1753,3 +1753,11 @@ Verified [Actions #37971516257](https://github.com/ronvotri/VH-GBA-PEA/actions/r
 Combined source-ROM SHA256: `ea47eddda541d66f6aedf9e61f0816e7135349a0b5ac23529776f8ac6a6b5530`. Source font target offsets (`SOURCE_EXPANDED_MAP_FONT.sym`): SmallNarrow `71AB04`, Small `722D04`, Narrow `72AF04`, Short `733104`, Normal `73B304` (hex). All five fonts remain exact stock English glyphs. The original `5cae1a...` / 2,093 source build is preserved separately; compiled source text QA confirms original labels unchanged, additions disjoint, all final FF bytes correct, and no change to title-credit source.
 
 **Not a localized playable GBA.** This stage does not graft donor font artwork or confirm gameplay. The new SHA/offsets must be added to a strictly validated font-layout profile before any private graft; do not disable the original 2,093 SHA guard. Original v0.4 rollback remains intact; no commercial ROM or glyph asset committed. Full details and next action in `CONTINUE_WITH_MODEL.md` latest checkpoint.
+
+
+## 2026-10-10 — NEW 3,060 COMPILER-INTEGRATED SOURCE TEXTS; CI SUCCESS
+
+Full [GitHub Actions #37972752960](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37972752960) SUCCESS: old 2,560 original/extended source labels retained, **500 new system-text labels** source-staged across 12 `data/text/*.inc` files (190 line wraps), **3,060 unique compiled source labels total**, no duplicates or FF terminator errors. Verified trial GBA SHA256 `583dfab1a17f75f5643e3db962eac891c78197d67517abd990cfe2c059d49f7a`. Matching Latin-font offsets (SmallNarrow/Small/Narrow/Short/Normal): `0x71A904`, `0x722B04`, `0x72AD04`, `0x732F04`, `0x73B104`.
+
+**Important:** Fonts remain the clean English bitmaps and this trial ROM is NOT released or mGBA-verified. Public repository contains only tooling, translation manifests and checkpoint hashes/symbol facts, no commercial ROM. v0.4 stable rollback remains untouched. Exact next steps and artifact filenames recorded in `CONTINUE_WITH_MODEL.md`.
+
