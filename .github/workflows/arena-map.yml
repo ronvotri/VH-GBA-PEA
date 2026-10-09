@@ -158,7 +158,7 @@ jobs:
             --out artifact/map-story-integration-plan.json \
             --summary artifact/map-story-integration-summary.json
 
-      - name: Smoke-build maps, UI, battle scripts, C battle messages and Votri credit
+      - name: Smoke-build story, UI, battle, move/item descriptions and Votri credit
         run: |
           cp -a workspace source-localization-smoke
           python3 tools/plan_collision_free_vietnamese_font.py \
@@ -277,6 +277,33 @@ jobs:
           assert not d["battle_variables_touched"],d
           print("Static source battle C texts:",d["labels_staged"],"reflowed:",d["auto_wrapped_labels"])
           PY
+          python3 tools/stage_source_descriptions.py \
+            --workspace source-localization-smoke \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
+            --kind move \
+            --limit 350 \
+            --apply \
+            --report artifact/SOURCE_LEVEL_MOVE_DESC_PILOT.json
+          python3 tools/stage_source_descriptions.py \
+            --workspace source-localization-smoke \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
+            --kind item \
+            --limit 310 \
+            --apply \
+            --report artifact/SOURCE_LEVEL_ITEM_DESC_PILOT.json
+          python3 - <<'PY'
+          import json
+          for kind, minimum in (("MOVE",50),("ITEM",50)):
+              d=json.load(open(f"artifact/SOURCE_LEVEL_{kind}_DESC_PILOT.json"))
+              assert d["mode"]=="apply" and d["line_box_limits_preserved"],d
+              assert d["labels_staged"]>=minimum,d
+              assert all(r["visible_lines"] in ((2,) if kind=="MOVE" else (2,3))
+                         for r in d["translated"]),d
+              print(kind,"description translations:",d["labels_staged"],
+                    "source file:",d["source_file"])
+          PY
           python3 tools/verify_compiled_source_strings.py \
             --workspace source-localization-smoke \
             --map artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json \
@@ -284,6 +311,8 @@ jobs:
             --dynamic artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json \
             --battle artifact/SOURCE_LEVEL_BATTLE_PILOT.json \
             --battle-c artifact/SOURCE_LEVEL_BATTLE_C_PILOT.json \
+            --move-desc artifact/SOURCE_LEVEL_MOVE_DESC_PILOT.json \
+            --item-desc artifact/SOURCE_LEVEL_ITEM_DESC_PILOT.json \
             --out artifact/SOURCE_TEXT_INDEPENDENT_QA.json
           python3 tools/apply_title_credit.py source-localization-smoke
           test -s source-localization-smoke/graphics/title_screen/translation_credit.png
