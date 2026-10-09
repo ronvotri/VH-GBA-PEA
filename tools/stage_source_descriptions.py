@@ -100,7 +100,7 @@ def rebalance_two_line_description(text:str,width:int=26)->str:
         raise ValueError("two-line description cannot fit without rewording")
     _,_,first,second=min(candidates)
     changed=first+r"\n"+second+("$" if had_end else "")
-    if changed.replace(r"\n"," ").split()!=text.replace(r"\n"," ").rstrip("$").split():
+    if changed.rstrip("$").replace(r"\n"," ").split()!=text.rstrip("$").replace(r"\n"," ").split():
         raise ValueError("word order changed during rebalancing")
     return changed
 
