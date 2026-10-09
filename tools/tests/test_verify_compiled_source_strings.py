@@ -11,6 +11,22 @@ from verify_compiled_source_strings import (
 
 
 class SourceAttestationTests(unittest.TestCase):
+    def test_system_text_source_owner_path_and_compiled_bytes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            path=root/"data/text/cable_club.inc"
+            path.parent.mkdir(parents=True)
+            path.write_text("SystemGreeting::\n\t.byte 0xD5, 0xFE, 0xD6, 0xFF\n",
+                            encoding="utf-8")
+            report={"system-text":{
+                "mode":"apply","labels_staged":1,
+                "translated":[{"label":"SystemGreeting","source_file":"data/text/cable_club.inc"}]}}
+            self.assertEqual(validate_stages(root,report)["source_groups"],
+                             {"system-text":1})
+            report["system-text"]["translated"][0]["source_file"]="data/maps/X/scripts.inc"
+            with self.assertRaisesRegex(ValueError,"system-text source path wrong"):
+                validate_stages(root,report)
+
     def test_asm_double_colon_and_multiple_byte_lines(self):
         src=('BattleDome_Text_Potential1::\n'
              '\t.byte 0xC7, 0x0A\n'
