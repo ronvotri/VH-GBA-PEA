@@ -157,7 +157,7 @@ def main():
     p.add_argument("--plan",type=Path,required=True)
     p.add_argument("--codebook",type=Path,required=True)
     p.add_argument("--source-prefix",default="data/maps/LittlerootTown/")
-    p.add_argument("--category",choices=["map-story","battle"],default="map-story",help="Source text category, never infer from filenames")
+    p.add_argument("--category",choices=["map-story","battle","system-text"],default="map-story",help="Source text category, never infer from filenames")
     p.add_argument("--limit",type=int,default=20)
     p.add_argument("--max-segment",type=int,default=26)
     p.add_argument("--report",type=Path,required=True)
@@ -173,8 +173,8 @@ def main():
     a=p.parse_args()
     if a.limit<1 or a.limit>1000 or not 10<=a.max_segment<=30:
         p.error("limit 1..1000 and max-segment 10..30")
-    if a.category=="battle" and not a.source_prefix.startswith("data/text/"):
-        p.error("battle source staging restricted to data/text/ assembly files")
+    if a.category in ("battle","system-text") and not a.source_prefix.startswith("data/text/"):
+        p.error("battle/system-text source staging restricted to data/text/ assembly files")
     if a.only_literal_newlines and not a.normalize_literal_newlines:
         p.error("--only-literal-newlines requires --normalize-literal-newlines")
 
