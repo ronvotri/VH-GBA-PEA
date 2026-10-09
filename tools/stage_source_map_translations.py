@@ -114,7 +114,7 @@ def plan_rows(rows:list,codes:dict[str,int],src_prefix:str,max_segment:int,limit
                     rejected["auto-wrap: "+str(wrap_exc)]+=1
                     continue
                 row=dict(row)
-                row["authored_vietnamese"]=vietnamese
+                row["authored_vietnamese"]=row.get("authored_vietnamese",vietnamese)
                 row["vietnamese"]=wrapped
                 row["auto_wrapped"]=True
             else:
@@ -165,7 +165,8 @@ def main():
                          "encoded_bytes":len(encoded),
                          "english":row["english"],"vietnamese":row["vietnamese"],
                          "authored_vietnamese":row.get("authored_vietnamese",row["vietnamese"]),
-                         "auto_wrapped":bool(row.get("auto_wrapped"))})
+                         "auto_wrapped":bool(row.get("auto_wrapped")),
+                         "literal_newlines_normalized":bool(row.get("literal_newlines_normalized"))})
     if a.apply:
         for filepath,updated in changes.items():
             filepath.write_text(updated,encoding="utf-8")
@@ -174,7 +175,7 @@ def main():
             "source_prefix":a.source_prefix,"labels_staged":len(accepted),
             "files_staged":len(changes),
             "auto_wrapped_labels":sum(1 for row in accepted if row["auto_wrapped"]),
-            "literal_newlines_normalized":sum(1 for row in selected if row[0].get("literal_newlines_normalized")),
+            "literal_newlines_normalized":sum(1 for row in accepted if row["literal_newlines_normalized"]),
             "skipped_reasons":dict(skipped),
             "translated":accepted,"font_rendering_emulator_certified":False,
             "shipping_ROM_changed":False,
