@@ -42,6 +42,10 @@ def accent_recipe(letter: str) -> tuple[str,list[str]]:
             marks.append(TONE[c])
         else:
             raise ValueError("unsupported combining mark: "+repr(c))
+    # NFD orders combining marks by canonical combining class; Vietnamese
+    # below-dot may appear before the vowel's breve/circumflex. Draw the
+    # structural mark first and tonal accent second for stable rasterization.
+    marks.sort(key=lambda mark:0 if mark in ("circumflex","breve","horn") else 1)
     return chars[0],marks
 
 
