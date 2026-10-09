@@ -158,7 +158,7 @@ jobs:
             --out artifact/map-story-integration-plan.json \
             --summary artifact/map-story-integration-summary.json
 
-      - name: Smoke-build map, UI, name variables, battle and Votri credit together
+      - name: Smoke-build maps, UI, battle scripts, C battle messages and Votri credit
         run: |
           cp -a workspace source-localization-smoke
           python3 tools/plan_collision_free_vietnamese_font.py \
@@ -262,12 +262,28 @@ jobs:
           assert all(x["source_file"].startswith("data/text/") for x in d["translated"])
           print("Source battle text labels:",d["labels_staged"],"reflowed:",d["auto_wrapped_labels"])
           PY
+          python3 tools/stage_source_battle_c_messages.py \
+            --workspace source-localization-smoke \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
+            --limit 80 \
+            --auto-wrap \
+            --apply \
+            --report artifact/SOURCE_LEVEL_BATTLE_C_PILOT.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open("artifact/SOURCE_LEVEL_BATTLE_C_PILOT.json"))
+          assert 15 <= d["labels_staged"] <= 80 and d["mode"]=="apply",d
+          assert not d["battle_variables_touched"],d
+          print("Static source battle C texts:",d["labels_staged"],"reflowed:",d["auto_wrapped_labels"])
+          PY
           python3 tools/verify_compiled_source_strings.py \
             --workspace source-localization-smoke \
             --map artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json \
             --ui artifact/SOURCE_LEVEL_UI_PILOT.json \
             --dynamic artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json \
             --battle artifact/SOURCE_LEVEL_BATTLE_PILOT.json \
+            --battle-c artifact/SOURCE_LEVEL_BATTLE_C_PILOT.json \
             --out artifact/SOURCE_TEXT_INDEPENDENT_QA.json
           python3 tools/apply_title_credit.py source-localization-smoke
           test -s source-localization-smoke/graphics/title_screen/translation_credit.png
