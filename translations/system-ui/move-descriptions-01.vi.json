@@ -21,7 +21,7 @@
     "sRazorWindDescription": "Chiêu 2 lượt, tấn công\\nđối thủ ở lượt thứ hai.",
     "sSwordsDanceDescription": "Điệu múa chiến đấu giúp\\ntăng mạnh ATTACK.",
     "sCutDescription": "Chém đối thủ bằng lưỡi\\nhái, móng vuốt sắc, v.v.",
-    "sGustDescription": "Tấn công đối thủ bằng luồng\\ngió do đôi cánh tạo ra.",
+    "sGustDescription": "Gió từ đôi cánh thổi\\nmạnh vào đối thủ.",
     "sWingAttackDescription": "Tấn công đối thủ bằng\\nđôi cánh dang rộng.",
     "sWhirlwindDescription": "Thổi bay đối thủ bằng gió\\nvà kết thúc trận đấu.",
     "sFlyDescription": "Bay lên ở lượt đầu,\\nrồi tấn công lượt kế.",
@@ -31,7 +31,7 @@
     "sStompDescription": "Giẫm đối thủ bằng bàn chân\\nlớn. Có thể làm chùn bước.",
     "sDoubleKickDescription": "Đòn đá kép\\ntấn công đối thủ hai lần.",
     "sMegaKickDescription": "Cú đá cực mạnh với\\nlực tung khủng khiếp.",
-    "sJumpKickDescription": "Cú đá bật nhảy mạnh. Có thể\\ntrượt và làm người dùng bị đau.",
+    "sJumpKickDescription": "Đá bật nhảy thật mạnh.\\nTrượt sẽ tự chịu đau.",
     "sRollingKickDescription": "Cú đá nhanh tung ra\\ntừ một vòng xoay tốc độ cao.",
     "sSandAttackDescription": "Ném cát vào mặt đối thủ\\nđể giảm độ chính xác.",
     "sHeadbuttDescription": "Húc đối thủ và có thể\\nlàm đối thủ chùn bước.",
@@ -41,10 +41,10 @@
     "sTackleDescription": "Lao cả cơ thể vào\\nđối thủ.",
     "sBodySlamDescription": "Dùng cả cơ thể đè mạnh,\\ncó thể gây tê liệt.",
     "sWrapDescription": "Quấn và siết đối thủ\\n2 đến 5 lần bằng dây leo, v.v.",
-    "sTakeDownDescription": "Lao vào bất chấp,\\nđồng thời làm người dùng bị thương.",
-    "sThrashDescription": "Quậy điên cuồng 2 đến 3 lượt,\\nrồi khiến người dùng bối rối.",
+    "sTakeDownDescription": "Lao mạnh vào đối thủ,\\nngười dùng cũng bị thương.",
+    "sThrashDescription": "Đánh loạn 2-3 lượt,\\nsau đó bị bối rối.",
     "sDoubleEdgeDescription": "Cú húc liều mạng cũng\\nlàm người dùng bị thương.",
     "sTailWhipDescription": "Vẫy đuôi để giảm\\nDEFENSE của đối thủ.",
-    "sPoisonStingDescription": "Tấn công bằng gai độc, v.v.,\\ncó thể khiến đối thủ trúng độc."
+    "sPoisonStingDescription": "Gai độc đâm vào đối thủ.\\nCó thể gây trúng độc."
   }
 }
