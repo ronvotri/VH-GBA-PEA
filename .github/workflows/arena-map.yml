@@ -385,6 +385,19 @@ jobs:
             --auto-wrap \
             --apply \
             --report artifact/SOURCE_EXPANDED_MAP_STAGE.json
+          python3 tools/stage_source_map_translations.py \
+            --workspace expanded-map-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --source-prefix data/maps/ \
+            --exclude-report artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json \
+            --exclude-report artifact/SOURCE_EXPANDED_MAP_STAGE.json \
+            --only-literal-newlines \
+            --normalize-literal-newlines \
+            --auto-wrap \
+            --limit 1000 \
+            --apply \
+            --report artifact/SOURCE_EXPANDED_MAP_LF_STAGE.json
           python3 - <<'PY'
           import json,sys
           from pathlib import Path
@@ -403,28 +416,43 @@ jobs:
           }
           old={k:json.loads((folder/v).read_text()) for k,v in names.items()}
           additional=json.loads((folder/"SOURCE_EXPANDED_MAP_STAGE.json").read_text())
+          lf=json.loads((folder/"SOURCE_EXPANDED_MAP_LF_STAGE.json").read_text())
           n=additional["labels_staged"]
+          recovered=lf["labels_staged"]
           assert additional["mode"]=="apply" and 50<=n<=1000, additional
           assert additional["previously_staged_label_exclusions"]==1000,additional
+          assert lf["mode"]=="apply" and 100<=recovered<=566, lf
+          assert lf["previously_staged_label_exclusions"]==1000+n,lf
+          assert lf["literal_newlines_normalized"]==recovered,lf
           original_labels={r["label"] for group,report in old.items()
                            for r in report["accepted" if group=="dynamic" else "translated"]}
           extra_labels={r["label"] for r in additional["translated"]}
+          lf_labels={r["label"] for r in lf["translated"]}
           assert len(extra_labels)==n and not extra_labels & original_labels,"duplicate source-owner labels"
+          assert len(lf_labels)==recovered and not lf_labels & (extra_labels | original_labels), "LF stage overlaps installed labels"
+          assert all(r["literal_newlines_normalized"] and
+                     "\n" in r["authored_vietnamese"] and
+                     r"\n" in r["vietnamese"]
+                     for r in lf["translated"]),"unproven LF normalization"
           root=Path("expanded-map-source-trial")
           original_qa=validate_stages(root,old)
           extra_qa=validate_stages(root,{"map":additional})
+          lf_qa=validate_stages(root,{"map":lf})
           assert original_qa["checked_unique_source_labels"]==2093,original_qa
           assert extra_qa["checked_unique_source_labels"]==n,extra_qa
+          assert lf_qa["checked_unique_source_labels"]==recovered,lf_qa
           result={"previous_compiled_source_labels":2093,"additional_map_source_labels":n,
-                  "combined_distinct_compiled_labels":2093+n,
+                  "literal_lf_recovered_source_labels":recovered,
+                  "combined_distinct_compiled_labels":2093+n+recovered,
                   "original_payloads_still_valid":True,
                   "additional_source_payloads_valid":True,
+                  "literal_lf_payloads_valid":True,
                   "no_cross_batch_duplicate_labels":True,
                   "font_grafted":False,"emulator_tested":False,"release_ready":False}
           (folder/"SOURCE_EXPANDED_MAP_ATTESTATION.json").write_text(
               json.dumps(result,ensure_ascii=False,indent=2)+"\n")
-          print("PASS: distinct source-owned trial labels",2093+n,
-                "(original 2093 unchanged + new map",n,")")
+          print("PASS: distinct source-owned trial labels",2093+n+recovered,
+                "(original 2093 unchanged + new map",n,"+ LF",recovered,")")
           PY
           make -C expanded-map-source-trial -j2
           test -s expanded-map-source-trial/pokeemerald.gba
