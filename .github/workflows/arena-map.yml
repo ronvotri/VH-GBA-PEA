@@ -192,13 +192,14 @@ jobs:
             --codebook checkpoints/v04-inferred-vietnamese-codebook.json \
             --charmap source-localization-smoke/charmap.txt \
             --source-prefix data/maps/ \
-            --limit 30 \
+            --limit 50 \
+            --auto-wrap \
             --apply \
             --report artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json
           python3 - <<'PY'
           import json
           d=json.load(open("artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json"))
-          assert 1 <= d["labels_staged"] <= 30 and d["mode"]=="apply", d
+          assert 1 <= d["labels_staged"] <= 50 and d["mode"]=="apply", d
           assert d["placeholder_order_preserved"] and d["source_control_bytes_pinned"], d
           print("Source dynamic PLAYER/RIVAL labels:",d["labels_staged"])
           PY
