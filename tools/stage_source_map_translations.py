@@ -68,6 +68,30 @@ def prioritized_rows(rows: list[dict], prefixes: list[str]) -> list[dict]:
     return sorted(rows, key=rank)
 
 
+def exclude_previously_staged(rows:list[dict],reports:list[dict])->tuple[list[dict],int]:
+    """Skip only verified *apply* reports with a complete label/source identity.
+
+    Used for incremental source-only experiments, NEVER as a proof that text
+    reached a release ROM. A mismatched or incomplete report fails closed.
+    """
+    used=set()
+    for report in reports:
+        translated=report.get("translated")
+        if (report.get("mode")!="apply" or not isinstance(translated,list)
+                or report.get("labels_staged")!=len(translated)):
+            raise ValueError("invalid previously staged source report")
+        for row in translated:
+            label=row.get("label")
+            path=row.get("source_file")
+            if not label or not path:
+                raise ValueError("source report is missing source label identity")
+            identity=(path,label)
+            if identity in used:
+                raise ValueError("duplicate label across exclusion reports")
+            used.add(identity)
+    return [r for r in rows if (r.get("source_file"),r.get("source_label")) not in used],len(used)
+
+
 def normalize_authored_linefeeds(english:str,vietnamese:str)->str:
     """Repair literal LF as GBA \\n ONLY if the ordered source controls agree.
 
@@ -143,6 +167,8 @@ def main():
                    help="Opt-in: change literal JSON LF to \\n only when ordered source controls match")
     p.add_argument("--only-literal-newlines",action="store_true",
                    help="Restrict selection to authored literal LF; requires --normalize-literal-newlines")
+    p.add_argument("--exclude-report",type=Path,action="append",default=[],
+                   help="Exclude exact label/source identities from a previously applied stage report")
     p.add_argument("--priority-source-prefix",action="append",default=[],help="Stable source-map priority for early-game QA; repeatable")
     a=p.parse_args()
     if a.limit<1 or a.limit>1000 or not 10<=a.max_segment<=30:
@@ -153,6 +179,14 @@ def main():
         p.error("--only-literal-newlines requires --normalize-literal-newlines")
 
     plan=json.loads(a.plan.read_text(encoding="utf-8"))
+    excluded_count=0
+    if a.exclude_report:
+        try:
+            plan,excluded_count=exclude_previously_staged(
+                plan,[json.loads(path.read_text(encoding="utf-8"))
+                      for path in a.exclude_report])
+        except ValueError as exc:
+            p.error(str(exc))
     raw=json.loads(a.codebook.read_text(encoding="utf-8"))
     codes={c:int(v,16) for c,v in raw["glyph_bytes"].items()}
     selected, skipped=plan_rows(plan,codes,a.source_prefix,a.max_segment,a.limit,a.auto_wrap,a.priority_source_prefix,a.category,a.normalize_literal_newlines,a.only_literal_newlines)
@@ -180,6 +214,7 @@ def main():
     report={"category":a.category,
             "mode":"apply" if a.apply else "dry-run",
             "source_prefix":a.source_prefix,"labels_staged":len(accepted),
+            "previously_staged_label_exclusions":excluded_count,
             "files_staged":len(changes),
             "auto_wrapped_labels":sum(1 for row in accepted if row["auto_wrapped"]),
             "literal_newlines_normalized":sum(1 for row in accepted if row["literal_newlines_normalized"]),
