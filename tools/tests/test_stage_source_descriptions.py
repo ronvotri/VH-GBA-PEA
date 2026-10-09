@@ -5,7 +5,8 @@ import unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from stage_source_descriptions import (
-    find_description_block,replace_description,stage_descriptions
+    find_description_block,replace_description,stage_descriptions,
+    rebalance_two_line_description
 )
 
 MOVE_SRC = (
@@ -93,6 +94,29 @@ class DescriptionSourceTests(unittest.TestCase):
         self.assertEqual(len(installed),1,skipped)
         self.assertEqual(installed[0]["visible_lines"],3)
         self.assertEqual(src.count("0xFE"),2)
+
+    def test_long_move_rebalances_into_two_valid_lines(self):
+        original=r"abc abc abc abc abc abc abc\nabc abc$"
+        corrected=rebalance_two_line_description(original,26)
+        self.assertEqual(corrected.count(r"\n"),1)
+        self.assertTrue(all(len(line)<=26 for line in
+                            corrected.rstrip("$").split(r"\n")))
+        self.assertEqual(corrected.replace(r"\n"," ").split(),
+                         original.replace(r"\n"," ").split())
+
+    def test_overlong_move_source_is_rebalanced_and_verified(self):
+        rows=[row("src/data/text/move_descriptions.h","sPoundDescription",
+                  r"Pounds the foe with\nforelegs or tail.",
+                  r"abc abc abc abc abc abc abc\nabc abc")]
+        src,accepted,rejected=stage_descriptions(
+            rows,MOVE_SRC,GLYPHS,"move",350,26,True)
+        self.assertEqual(len(accepted),1,rejected)
+        self.assertTrue(accepted[0]["auto_rebalanced"])
+        self.assertIn("sPoundDescription[] = {",src)
+
+    def test_rebalance_refuses_unfittable_prose(self):
+        with self.assertRaisesRegex(ValueError,"cannot fit"):
+            rebalance_two_line_description("a"*28+r"\n"+"b"*28+"$",26)
 
     def test_page_overflow_rejected(self):
         rows=[row("src/data/text/move_descriptions.h","sPoundDescription",
