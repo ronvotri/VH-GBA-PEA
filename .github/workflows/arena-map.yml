@@ -551,6 +551,85 @@ jobs:
             --out artifact/SOURCE_SYSTEM_TEXT_FONT_AUDIT.json
           echo "System-text incremental source build: compiled/attested but STOCK font; not end-user release." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Compile additive short/static C UI (separate 3060+ trial, stock font)
+        run: |
+          cp -a expanded-system-text-source-trial expanded-c-ui-source-trial
+          python3 tools/stage_source_ui_translations.py \
+            --workspace expanded-c-ui-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --exclude-report artifact/SOURCE_LEVEL_UI_PILOT.json \
+            --include-short-static \
+            --limit 300 \
+            --auto-wrap \
+            --apply \
+            --report artifact/SOURCE_SHORT_C_UI_STAGE.json
+          python3 - <<'PY'
+          import json,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import validate_stages
+          d=Path("artifact")
+          new=json.loads((d/"SOURCE_SHORT_C_UI_STAGE.json").read_text())
+          prior=json.loads((d/"SOURCE_SYSTEM_TEXT_ATTESTATION.json").read_text())
+          n=new["labels_staged"]
+          assert new["mode"]=="apply" and new["source_file"]=="src/strings.c"
+          assert new["include_short_static"] and new["previously_staged_label_exclusions"]==41,new
+          assert 100<=n<=300,new
+          assert prior["combined_distinct_compiled_labels"]==3060,prior
+          old_names={
+              "map":"SOURCE_LEVEL_VIETNAMESE_PILOT.json",
+              "ui":"SOURCE_LEVEL_UI_PILOT.json",
+              "dynamic":"SOURCE_LEVEL_DYNAMIC_PILOT.json",
+              "battle":"SOURCE_LEVEL_BATTLE_PILOT.json",
+              "battle-c":"SOURCE_LEVEL_BATTLE_C_PILOT.json",
+              "move-desc":"SOURCE_LEVEL_MOVE_DESC_PILOT.json",
+              "item-desc":"SOURCE_LEVEL_ITEM_DESC_PILOT.json",
+              "pokeblock":"SOURCE_LEVEL_POKEBLOCK_ITEM_PILOT.json"}
+          old={k:json.loads((d/v).read_text()) for k,v in old_names.items()}
+          map_batches=[json.loads((d/f).read_text()) for f in
+              ("SOURCE_EXPANDED_MAP_STAGE.json","SOURCE_EXPANDED_MAP_LF_STAGE.json")]
+          system=json.loads((d/"SOURCE_SYSTEM_TEXT_STAGE.json").read_text())
+          previous=set()
+          for group,rep in old.items():
+              entries=rep["accepted" if group=="dynamic" else "translated"]
+              labels={r["label"] for r in entries}
+              assert len(labels)==len(entries) and not labels & previous
+              previous |= labels
+          for rep in [*map_batches,system]:
+              labels={r["label"] for r in rep["translated"]}
+              assert len(labels)==rep["labels_staged"] and not labels & previous
+              previous |= labels
+          new_names={r["label"] for r in new["translated"]}
+          assert len(previous)==3060,len(previous)
+          assert len(new_names)==n and not new_names & previous,"C UI symbols already installed"
+          root=Path("expanded-c-ui-source-trial")
+          assert validate_stages(root,old)["checked_unique_source_labels"]==2093
+          assert [validate_stages(root,{"map":r})["checked_unique_source_labels"]
+                  for r in map_batches]==[292,175]
+          assert validate_stages(root,{"system-text":system})["checked_unique_source_labels"]==500
+          assert validate_stages(root,{"ui":new})["checked_unique_source_labels"]==n
+          result={"previous_compiled_source_labels":3060,
+                  "new_C_UI_source_labels":n,
+                  "combined_distinct_compiled_labels":3060+n,
+                  "all_older_source_payloads_revalidated":True,
+                  "no_cross_batch_duplicates":True,
+                  "font_artwork_grafted":False,
+                  "emulator_tested":False,"release_ready":False}
+          (d/"SOURCE_SHORT_C_UI_ATTESTATION.json").write_text(
+              json.dumps(result,indent=2)+"\n")
+          print("PASS: verified additional static C UI labels",n,"total",3060+n)
+          PY
+          make -C expanded-c-ui-source-trial -j2
+          test -s expanded-c-ui-source-trial/pokeemerald.gba
+          sha256sum expanded-c-ui-source-trial/pokeemerald.gba > artifact/SOURCE_SHORT_C_UI_SHA256.txt
+          arm-none-eabi-nm -n expanded-c-ui-source-trial/pokeemerald.elf > artifact/SOURCE_SHORT_C_UI_FONT.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom expanded-c-ui-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_SHORT_C_UI_FONT.sym \
+            --out artifact/SOURCE_SHORT_C_UI_FONT_AUDIT.json
+          echo "Additive 3060+ static C UI source trial attested/compiled; English glyphs, NO emulator QA." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
