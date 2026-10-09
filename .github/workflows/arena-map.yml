@@ -169,6 +169,8 @@ jobs:
           python3 - <<'PY'
           import json
           book=json.load(open("artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json"))
+          pinned=json.load(open("checkpoints/v05-collision-free-codebook.json"))
+          assert book["glyph_bytes"]==pinned["glyph_bytes"], "codebook drift against tracked v0.5 glyph plan"
           assert book["glyph_bytes"]["f"]=="0xDA"
           assert book["glyph_bytes"]["w"]=="0xEB"
           assert book["glyph_bytes"]["z"]=="0xEE"
