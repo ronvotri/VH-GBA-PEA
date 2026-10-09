@@ -630,6 +630,35 @@ jobs:
             --out artifact/SOURCE_SHORT_C_UI_FONT_AUDIT.json
           echo "Additive 3060+ static C UI source trial attested/compiled; English glyphs, NO emulator QA." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Experimentally synthesize Vietnamese glyphs in 3360-text source ROM (no donor)
+        run: |
+          # This experimental result is LOCAL CI-ONLY; never publish the
+          # commercial game ROM or source bitmap assets as an Actions artifact.
+          python3 tools/synthesize_vietnamese_source_fonts.py \
+            --source-built expanded-c-ui-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_SHORT_C_UI_FONT.sym \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --output experimental-synthetic-vietnamese.gba \
+            --report artifact/SOURCE_3360_SYNTH_FONT_QA.json
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          r=json.loads(Path("artifact/SOURCE_3360_SYNTH_FONT_QA.json").read_text())
+          assert r["source_sha256"]=="9e804a005210d59d4dc1806d387d3b50ee412ab9e7f5df0f56d5f27e43407f7a",r
+          assert r["font_styles"]==5 and r["glyphs_per_font"]>=45,r
+          assert r["native_ascii_and_pokeblock_preserved"] and r["no_non_font_writes"],r
+          assert r["font_only_byte_changes"]>100,r
+          result=hashlib.sha256(Path("experimental-synthetic-vietnamese.gba").read_bytes()).hexdigest()
+          assert result==r["result_sha256"],r
+          assert r["synthetic_unreviewed_visuals"] and not r["emulator_tested"] and not r["release_ready"]
+          print("PASS: synthetic accents actually written into all five source fonts;",
+                "glyphs/font:",r["glyphs_per_font"],
+                "modified bytes:",r["font_only_byte_changes"])
+          PY
+          # We keep the report/hash, never the unlicensed ROM in artifact/.
+          rm experimental-synthetic-vietnamese.gba
+          echo "PRIVATE font+translated-text synthesis PASS (pixel/gameplay not yet visually certified); ROM NOT distributed." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
