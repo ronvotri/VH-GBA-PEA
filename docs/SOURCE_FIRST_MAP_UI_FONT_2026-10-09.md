@@ -58,3 +58,10 @@ An initial combined map + C UI CI run `37884118717` **FAILED** because C source 
 New `tools/audit_source_font_layout.py` with its regression tests protects the five source-compiled Latin glyph block SHA-256 values against the verified clean Arena font content. The workflow now exports `SOURCE_LEVEL_FONT.sym` and `SOURCE_LEVEL_FONT_AUDIT.json` **without publishing a ROM**. The compiled source ROM must pass this gate before any private v0.4 font import is allowed. This workflow change is commit `b6400f3`; follow its CI run for real status. Matching stock font hashes alone still does not mean the Vietnamese donor font has been imported into the compiled ROM or visually verified.
 
 **No full user-playable GBA released in this follow-up.**
+
+
+## VERIFIED combined map + C UI compiler milestone
+
+[GitHub Actions run 37884608217](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37884608217) **COMPLETED SUCCESS** after fixing the C implicit terminator and regression fixture. The actual source build artifact `SOURCE_LEVEL_UI_PILOT.json` independently confirms **30 C UI labels** staged (3 auto-wrapped) alongside **200 map/story labels** (85 auto-wrapped) in the other source report, totaling **230 source-built Vietnamese strings** in that *one isolated compiler test ROM*. Source-built ROM SHA-256: `950f15995a78783d58ac405cf4cc72199ec725d2b2e7c80f3b6acd2759befffe` (the ROM itself is intentionally not published to GitHub). Examples: `gText_WirelessNotConnected`, `gText_SaveFileErased`, various Pokédex sort descriptions, `gText_NoRoomForItems`, `gText_CantStoreImportantItems`.
+
+**These 230 are not yet incorporated into the user's original v0.4 binary**, and are not verified to render Vietnamese correctly under source-built stock fonts. The newer CI addition to check font block hashes is separate and needs its own final verdict. The codebook entry updates for `ẹ` and `ẻ` were made later, so this specific 230-row artifact reflects the earlier codebook snapshot.
