@@ -180,10 +180,29 @@ jobs:
           assert "Ừ" not in book["glyph_bytes"]
           print("PASS: collision-free source codebook; FONT ASSETS NOT PATCHED")
           PY
+          python3 tools/plan_v06_pokeblock_safe_font.py \
+            --v05-codebook checkpoints/v05-collision-free-codebook.json \
+            --charmap source-localization-smoke/charmap.txt \
+            --out-codebook artifact/POKEBLOCK_SAFE_SOURCE_CODEBOOK.json \
+            --report artifact/POKEBLOCK_SAFE_CODEBOOK_QA.json
+          python3 - <<'PY'
+          import json
+          generated=json.load(open("artifact/POKEBLOCK_SAFE_SOURCE_CODEBOOK.json"))
+          pinned=json.load(open("checkpoints/v06-pokeblock-safe-codebook.json"))
+          assert generated["glyph_bytes"]==pinned["glyph_bytes"],"v0.6 source codebook drift"
+          codes=generated["glyph_bytes"]
+          assert codes["đ"]=="0x33" and codes["ì"]=="0x37"
+          assert codes["ấ"]=="0x30" and codes["ằ"]=="0x31" and codes["ắ"]=="0x32"
+          assert codes["f"]=="0xDA" and codes["w"]=="0xEB" and codes["z"]=="0xEE"
+          assert not any(int(value,16) in range(0x53,0x5A)
+                         for char,value in codes.items() if ord(char)>127)
+          assert not any(int(value,16)==0x35 for char,value in codes.items() if char!="=")
+          print("PASS: v0.6 Vietnamese codebook preserves POKEBLOCK, PKMN and =; FONT UNCHANGED")
+          PY
           python3 tools/stage_source_map_translations.py \
             --workspace source-localization-smoke \
             --plan artifact/user-facing-integration-plan.json \
-            --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
+            --codebook artifact/POKEBLOCK_SAFE_SOURCE_CODEBOOK.json \
             --source-prefix data/maps/ \
             --priority-source-prefix data/maps/InsideOfTruck/ \
             --priority-source-prefix data/maps/LittlerootTown/ \
@@ -207,7 +226,7 @@ jobs:
           python3 tools/stage_source_ui_translations.py \
             --workspace source-localization-smoke \
             --plan artifact/user-facing-integration-plan.json \
-            --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
+            --codebook artifact/POKEBLOCK_SAFE_SOURCE_CODEBOOK.json \
             --limit 80 \
             --auto-wrap \
             --apply \
@@ -221,7 +240,7 @@ jobs:
           python3 tools/stage_dynamic_map_translations.py \
             --workspace source-localization-smoke \
             --plan artifact/user-facing-integration-plan.json \
-            --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
+            --codebook artifact/POKEBLOCK_SAFE_SOURCE_CODEBOOK.json \
             --charmap source-localization-smoke/charmap.txt \
             --source-prefix data/maps/ \
             --priority-source-prefix data/maps/InsideOfTruck/ \
@@ -248,7 +267,7 @@ jobs:
           python3 tools/stage_source_map_translations.py \
             --workspace source-localization-smoke \
             --plan artifact/user-facing-integration-plan.json \
-            --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
+            --codebook artifact/POKEBLOCK_SAFE_SOURCE_CODEBOOK.json \
             --source-prefix data/text/ \
             --category battle \
             --limit 200 \
@@ -265,7 +284,7 @@ jobs:
           python3 tools/stage_source_battle_c_messages.py \
             --workspace source-localization-smoke \
             --plan artifact/user-facing-integration-plan.json \
-            --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
+            --codebook artifact/POKEBLOCK_SAFE_SOURCE_CODEBOOK.json \
             --limit 80 \
             --auto-wrap \
             --apply \
@@ -280,7 +299,7 @@ jobs:
           python3 tools/stage_source_descriptions.py \
             --workspace source-localization-smoke \
             --plan artifact/user-facing-integration-plan.json \
-            --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
+            --codebook artifact/POKEBLOCK_SAFE_SOURCE_CODEBOOK.json \
             --kind move \
             --limit 355 \
             --rebalance \
@@ -289,7 +308,7 @@ jobs:
           python3 tools/stage_source_descriptions.py \
             --workspace source-localization-smoke \
             --plan artifact/user-facing-integration-plan.json \
-            --codebook artifact/COLLISION_SAFE_SOURCE_CODEBOOK.json \
+            --codebook artifact/POKEBLOCK_SAFE_SOURCE_CODEBOOK.json \
             --kind item \
             --limit 310 \
             --apply \
