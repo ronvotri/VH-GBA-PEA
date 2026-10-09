@@ -464,6 +464,93 @@ jobs:
             --out artifact/SOURCE_EXPANDED_MAP_FONT_AUDIT.json
           echo "Additive map source build compiled, independently source-attested; STOCK font, not a playable Vietnamese release." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Compile additive source-owned system-text (separate 2560+ trial, stock font)
+        run: |
+          # Exact 2,560-label map trial is preserved unchanged for rollback.
+          cp -a expanded-map-source-trial expanded-system-text-source-trial
+          python3 tools/stage_source_map_translations.py \
+            --workspace expanded-system-text-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --source-prefix data/text/ \
+            --category system-text \
+            --priority-source-prefix data/text/cable_club.inc \
+            --priority-source-prefix data/text/pkmn_center_nurse.inc \
+            --priority-source-prefix data/text/berries.inc \
+            --priority-source-prefix data/text/trainers.inc \
+            --limit 500 \
+            --auto-wrap \
+            --apply \
+            --report artifact/SOURCE_SYSTEM_TEXT_STAGE.json
+          python3 - <<'PY'
+          import json,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import validate_stages
+          folder=Path("artifact")
+          stage=json.loads((folder/"SOURCE_SYSTEM_TEXT_STAGE.json").read_text())
+          base=json.loads((folder/"SOURCE_EXPANDED_MAP_ATTESTATION.json").read_text())
+          n=stage["labels_staged"]
+          assert stage["mode"]=="apply" and stage["category"]=="system-text",stage
+          assert 150<=n<=500,stage
+          assert base["combined_distinct_compiled_labels"]==2560,base
+          assert all(row["source_file"].startswith("data/text/")
+                     for row in stage["translated"])
+          original_names={
+              "map":"SOURCE_LEVEL_VIETNAMESE_PILOT.json",
+              "ui":"SOURCE_LEVEL_UI_PILOT.json",
+              "dynamic":"SOURCE_LEVEL_DYNAMIC_PILOT.json",
+              "battle":"SOURCE_LEVEL_BATTLE_PILOT.json",
+              "battle-c":"SOURCE_LEVEL_BATTLE_C_PILOT.json",
+              "move-desc":"SOURCE_LEVEL_MOVE_DESC_PILOT.json",
+              "item-desc":"SOURCE_LEVEL_ITEM_DESC_PILOT.json",
+              "pokeblock":"SOURCE_LEVEL_POKEBLOCK_ITEM_PILOT.json",
+          }
+          old={k:json.loads((folder/v).read_text()) for k,v in original_names.items()}
+          extra=[json.loads((folder/f).read_text()) for f in (
+              "SOURCE_EXPANDED_MAP_STAGE.json","SOURCE_EXPANDED_MAP_LF_STAGE.json")]
+          def labels(r,group="map"):
+              return {item["label"] for item in
+                      r["accepted" if group=="dynamic" else "translated"]}
+          previous=set()
+          for group,report in old.items():
+              keys=labels(report,group)
+              assert not previous & keys, "duplicate old label"
+              previous |= keys
+          for report in extra:
+              keys=labels(report)
+              assert not previous & keys,"map batch label overlap"
+              previous |= keys
+          current=labels(stage,"system-text")
+          assert len(previous)==2560, len(previous)
+          assert len(current)==n and not current & previous,"system-text overlaps old source"
+          root=Path("expanded-system-text-source-trial")
+          prior_qa=validate_stages(root,old)
+          map_qa=[validate_stages(root,{"map":report}) for report in extra]
+          text_qa=validate_stages(root,{"system-text":stage})
+          assert prior_qa["checked_unique_source_labels"]==2093,prior_qa
+          assert [q["checked_unique_source_labels"] for q in map_qa]==[292,175],map_qa
+          assert text_qa["checked_unique_source_labels"]==n,text_qa
+          attestation={"previous_compiled_source_labels":2560,
+              "new_system_text_labels":n,"combined_distinct_compiled_labels":2560+n,
+              "all_original_source_owners_revalidated":True,
+              "no_cross_group_duplicates":True,"font_artwork_grafted":False,
+              "emulator_tested":False,"release_ready":False}
+          (folder/"SOURCE_SYSTEM_TEXT_ATTESTATION.json").write_text(
+              json.dumps(attestation,ensure_ascii=False,indent=2)+"\n")
+          print("PASS: independently source-attested system-text",n,
+                "combined",2560+n)
+          PY
+          make -C expanded-system-text-source-trial -j2
+          test -s expanded-system-text-source-trial/pokeemerald.gba
+          sha256sum expanded-system-text-source-trial/pokeemerald.gba > artifact/SOURCE_SYSTEM_TEXT_SHA256.txt
+          arm-none-eabi-nm -n expanded-system-text-source-trial/pokeemerald.elf > artifact/SOURCE_SYSTEM_TEXT_FONT.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom expanded-system-text-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_SYSTEM_TEXT_FONT.sym \
+            --out artifact/SOURCE_SYSTEM_TEXT_FONT_AUDIT.json
+          echo "System-text incremental source build: compiled/attested but STOCK font; not end-user release." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
