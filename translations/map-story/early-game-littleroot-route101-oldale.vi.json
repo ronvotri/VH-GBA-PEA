@@ -6,7 +6,7 @@
   "status": "translation-complete-source-qa",
   "notes": "Catalog-driven complete batch for Littleroot Town (119/119), Route 101 (7/7), and Oldale Town (20/20). Placeholders and paragraph controls preserved; line/scroll controls reflowed for Vietnamese readability. No ROM patch or pointer write performed.",
   "translations": {
-    "LittlerootTown_Text_OurNewHomeLetsGoInside": "Mẹ: {PLAYER}, tới nơi rồi con yêu!\\pNgồi chung với đống đồ đạc trên xe\\nchuyển nhà chắc mệt lắm nhỉ.\\pĐây là THỊ TRẤN LITTLEROOT.\\pCon thấy sao?\\nNhà mới của mình đó!\\pNơi này hơi mộc mạc, nhưng có vẻ\\nrất dễ sống, đúng không?\\pVới lại, con còn có phòng riêng nữa, {PLAYER}!\\nVào nhà thôi nào.$",
+    "LittlerootTown_Text_OurNewHomeLetsGoInside": "Mẹ: {PLAYER}, tới nơi rồi con yêu!\\pNgồi chung với đống đồ đạc trên xe\\nchuyển nhà chắc mệt lắm nhỉ.\\pĐây là thị trấn Littleroot.\\pCon thấy sao?\\nNhà mới của mình đó!\\pNơi này hơi mộc mạc, nhưng có vẻ\\nrất dễ sống, đúng không?\\pVới lại, con còn có phòng riêng nữa, {PLAYER}!\\nVào nhà thôi nào.$",
     "LittlerootTown_Text_WaitPlayer": "Mẹ: Khoan đã, {PLAYER}!$",
     "LittlerootTown_Text_WearTheseRunningShoes": "Mẹ: {PLAYER}! {PLAYER}! Con đã\\nchào hỏi GS. BIRCH chưa?\\pÔi! POKéMON dễ thương quá!\\nGS. BIRCH cho con đó hả? Tuyệt quá!\\pĐúng là con của ba con mà.\\nCon đứng cạnh POKéMON trông hợp ghê!\\pĐây, con yêu! Nếu định lên đường phiêu lưu,\\nhãy mang đôi RUNNING SHOES này.\\pĐi đứng sẽ nhanh nhẹn hơn nhiều đấy!$",
     "LittlerootTown_Text_SwitchShoesWithRunningShoes": "{PLAYER} đổi sang\\nRUNNING SHOES.$",
