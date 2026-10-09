@@ -24,11 +24,11 @@
     "sHydroPumpDescription": "Phóng nước áp lực cao\\nđể tấn công đối thủ.",
     "sSurfDescription": "Tạo một con sóng lớn rồi\\nập xuống đối thủ.",
     "sIceBeamDescription": "Bắn tia băng có thể\\nkhiến đối thủ đóng băng.",
-    "sBlizzardDescription": "Đánh đối thủ bằng bão băng,\\ncó thể gây đóng băng.",
+    "sBlizzardDescription": "Gọi bão tuyết tấn công.\\nCó thể gây đóng băng.",
     "sPsybeamDescription": "Bắn tia sáng kỳ lạ có thể\\nkhiến đối thủ bối rối.",
     "sBubbleBeamDescription": "Phun bong bóng cực mạnh,\\ncó thể giảm SPEED.",
     "sAuroraBeamDescription": "Bắn tia cầu vồng có thể\\ngiảm ATTACK.",
-    "sHyperBeamDescription": "Rất mạnh, nhưng lượt sau\\nngười dùng không thể hành động.",
+    "sHyperBeamDescription": "Đòn rất mạnh, nhưng\\nlượt sau phải nghỉ.",
     "sPeckDescription": "Tấn công bằng cú mổ\\ncủa mỏ, v.v.",
     "sDrillPeckDescription": "Xoáy người tấn công, dùng\\nmỏ như một mũi khoan.",
     "sSubmissionDescription": "Cú đè liều lĩnh cũng\\nlàm người dùng bị thương.",
@@ -45,6 +45,6 @@
     "sPoisonPowderDescription": "Rải bột độc có thể\\nkhiến đối thủ trúng độc.",
     "sStunSporeDescription": "Rải bột có thể khiến\\nđối thủ bị tê liệt.",
     "sSleepPowderDescription": "Rải bột có thể khiến\\nđối thủ ngủ.",
-    "sPetalDanceDescription": "Quậy điên cuồng 2 đến 3 lượt,\\nrồi khiến người dùng bối rối."
+    "sPetalDanceDescription": "Cuồng vũ 2-3 lượt,\\nrồi tự rơi vào bối rối."
   }
 }
