@@ -36,10 +36,30 @@ ATTESTED_SOURCE_FONT_OFFSETS={
     "gFontNormalLatinGlyphs":0x73BD9C,
 }
 
+# Independent compiler + font-symbol audit, GitHub Actions 37973599855.
+# Distinct from the earlier 2,093-label release-gated source trial.
+PINNED_3360_SOURCE_SHA256="9e804a005210d59d4dc1806d387d3b50ee412ab9e7f5df0f56d5f27e43407f7a"
+ATTESTED_3360_FONT_OFFSETS={
+    "gFontSmallNarrowLatinGlyphs":0x71A798,
+    "gFontSmallLatinGlyphs":0x722998,
+    "gFontNarrowLatinGlyphs":0x72AB98,
+    "gFontShortLatinGlyphs":0x732D98,
+    "gFontNormalLatinGlyphs":0x73AF98,
+}
 
-def require_pinned_target_symbols(target_offsets:dict[str,int])->None:
-    if target_offsets!=ATTESTED_SOURCE_FONT_OFFSETS:
-        raise ValueError("wrong v0.6 target .sym: expected SOURCE_LEVEL_FONT.sym for exact 2,093-label build")
+
+
+def require_pinned_target_symbols(target_offsets:dict[str,int],
+                                  source_sha256:str=PINNED_SOURCE_SHA256)->None:
+    profiles={
+        PINNED_SOURCE_SHA256:ATTESTED_SOURCE_FONT_OFFSETS,
+        PINNED_3360_SOURCE_SHA256:ATTESTED_3360_FONT_OFFSETS,
+    }
+    expected=profiles.get(source_sha256.lower())
+    if expected is None:
+        raise ValueError("unrecognized v0.6 source build SHA; no attested font profile")
+    if target_offsets!=expected:
+        raise ValueError("wrong v0.6 target .sym: source SHA and font symbol map are not paired")
     spans=sorted((a,a+GLYPH_BLOCK_SIZE+0x100)
                  for a in target_offsets.values())
     if any(a<0 or b>0x2000000 for a,b in spans):
@@ -50,8 +70,9 @@ def require_pinned_target_symbols(target_offsets:dict[str,int])->None:
 
 def graft_v06_font(clean:bytes,donor:bytes,built:bytes,
                    source_offsets:dict[str,int],target_offsets:dict[str,int],
-                   glyphs:dict[str,str])->tuple[bytes,dict]:
-    require_pinned_target_symbols(target_offsets)
+                   glyphs:dict[str,str],
+                   source_build_sha256:str=PINNED_SOURCE_SHA256)->tuple[bytes,dict]:
+    require_pinned_target_symbols(target_offsets,source_build_sha256)
     for character,rule in NEW_RELOCATION.items():
         if glyphs.get(character)!=f'0x{rule["target"]:02X}':
             raise ValueError(f"v0.6 codebook lacks new byte {character}")
@@ -136,6 +157,7 @@ def graft_v06_font(clean:bytes,donor:bytes,built:bytes,
             raise ValueError(f"non-font ROM modification at 0x{p:X}")
     info={
         "stage":"v06 PRIVATE FONT-ONLY RASTER EXPERIMENT",
+        "attested_source_profile_sha256":source_build_sha256.lower(),
         "previous_v05_graft":first["result_sha256"],
         "new_accent_glyphs":audit,
         "synthetic_small_font_glyphs":synthetic,
@@ -159,8 +181,8 @@ def main():
     p.add_argument("--expected-source-sha256",required=True)
     p.add_argument("--output",type=Path)
     a=p.parse_args()
-    if a.expected_source_sha256.lower()!=PINNED_SOURCE_SHA256:
-        p.error("expected source SHA256 does not match the attested 2,093-label v0.6 build")
+    if a.expected_source_sha256.lower() not in (PINNED_SOURCE_SHA256,PINNED_3360_SOURCE_SHA256):
+        p.error("source SHA256 has no attested v0.6 font geometry profile")
     if a.output and a.output.resolve() in {a.clean.resolve(),a.v04.resolve(),a.source_built.resolve()}:
         p.error("output must not overwrite source or donor ROM")
     clean=checked_rom(a.clean,CLEAN_SHA256,"clean Arena shipping")
@@ -173,7 +195,7 @@ def main():
         clean,donor,built,
         read_symbol_offsets(a.reference_sym.read_text(encoding="utf-8")),
         read_symbol_offsets(a.target_sym.read_text(encoding="utf-8")),
-        book["glyph_bytes"])
+        book["glyph_bytes"],a.expected_source_sha256.lower())
     qa["exact_source_input_sha256"]=hashlib.sha256(built).hexdigest()
     a.report.parent.mkdir(parents=True,exist_ok=True)
     a.report.write_text(json.dumps(qa,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
