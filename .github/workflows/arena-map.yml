@@ -370,6 +370,72 @@ jobs:
             --out artifact/SOURCE_LEVEL_FONT_AUDIT.json
           echo "Source-level Vietnamese map staging and assembler/linker pilot: PASS (not runtime/visual certified)." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Additive second map source batch (experimental; preserve pinned v0.6)
+        run: |
+          # Clone the already compiled and separately certified 2,093-label
+          # source tree. NEVER overwrite the pinned initial GBA/SHA/symbols.
+          cp -a source-localization-smoke expanded-map-source-trial
+          python3 tools/stage_source_map_translations.py \
+            --workspace expanded-map-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --source-prefix data/maps/ \
+            --exclude-report artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json \
+            --limit 1000 \
+            --auto-wrap \
+            --apply \
+            --report artifact/SOURCE_EXPANDED_MAP_STAGE.json
+          python3 - <<'PY'
+          import json,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import validate_stages
+          folder=Path("artifact")
+          names={
+              "map":"SOURCE_LEVEL_VIETNAMESE_PILOT.json",
+              "ui":"SOURCE_LEVEL_UI_PILOT.json",
+              "dynamic":"SOURCE_LEVEL_DYNAMIC_PILOT.json",
+              "battle":"SOURCE_LEVEL_BATTLE_PILOT.json",
+              "battle-c":"SOURCE_LEVEL_BATTLE_C_PILOT.json",
+              "move-desc":"SOURCE_LEVEL_MOVE_DESC_PILOT.json",
+              "item-desc":"SOURCE_LEVEL_ITEM_DESC_PILOT.json",
+              "pokeblock":"SOURCE_LEVEL_POKEBLOCK_ITEM_PILOT.json",
+          }
+          old={k:json.loads((folder/v).read_text()) for k,v in names.items()}
+          additional=json.loads((folder/"SOURCE_EXPANDED_MAP_STAGE.json").read_text())
+          n=additional["labels_staged"]
+          assert additional["mode"]=="apply" and 50<=n<=1000, additional
+          assert additional["previously_staged_label_exclusions"]==1000,additional
+          original_labels={r["label"] for group,report in old.items()
+                           for r in report["accepted" if group=="dynamic" else "translated"]}
+          extra_labels={r["label"] for r in additional["translated"]}
+          assert len(extra_labels)==n and not extra_labels & original_labels,"duplicate source-owner labels"
+          root=Path("expanded-map-source-trial")
+          original_qa=validate_stages(root,old)
+          extra_qa=validate_stages(root,{"map":additional})
+          assert original_qa["checked_unique_source_labels"]==2093,original_qa
+          assert extra_qa["checked_unique_source_labels"]==n,extra_qa
+          result={"previous_compiled_source_labels":2093,"additional_map_source_labels":n,
+                  "combined_distinct_compiled_labels":2093+n,
+                  "original_payloads_still_valid":True,
+                  "additional_source_payloads_valid":True,
+                  "no_cross_batch_duplicate_labels":True,
+                  "font_grafted":False,"emulator_tested":False,"release_ready":False}
+          (folder/"SOURCE_EXPANDED_MAP_ATTESTATION.json").write_text(
+              json.dumps(result,ensure_ascii=False,indent=2)+"\n")
+          print("PASS: distinct source-owned trial labels",2093+n,
+                "(original 2093 unchanged + new map",n,")")
+          PY
+          make -C expanded-map-source-trial -j2
+          test -s expanded-map-source-trial/pokeemerald.gba
+          sha256sum expanded-map-source-trial/pokeemerald.gba > artifact/SOURCE_EXPANDED_MAP_SHA256.txt
+          arm-none-eabi-nm -n expanded-map-source-trial/pokeemerald.elf > artifact/SOURCE_EXPANDED_MAP_FONT.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom expanded-map-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_EXPANDED_MAP_FONT.sym \
+            --out artifact/SOURCE_EXPANDED_MAP_FONT_AUDIT.json
+          echo "Additive map source build compiled, independently source-attested; STOCK font, not a playable Vietnamese release." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
