@@ -1529,3 +1529,16 @@ Whole source manifest coverage remains 17,512/17,512, not runtime installation c
 **POST-ARTIFACT VERIFIED:** v0.6 2,093 source-compiled localized trial ROM SHA256 **`5cae1a20698fcd7036ccdc0f2bdbc0c0c80d942380ab48611fb3ec816ebcab7f`**. Use the artifact's **`SOURCE_LEVEL_FONT.sym`** (not baseline `pokeemerald.sym`) for exact transplanted-font target offsets: **SmallNarrow 0x71B59C; Small 0x72379C; Narrow 0x72B99C; Short 0x733B9C; Normal 0x73BD9C**. The source glyph audit validates 5 stock glyph blocks, donor_font_patched=false. The baseline `pokeemerald.sym` 0x71DEA0 etc. describes reference shipping, not compiled localized font addresses; using it would damage the v0.6 ROM. Updated technical detail: [docs/V06_POKEBLOCK_SAFE_SOURCE_2026-10-09.md](docs/V06_POKEBLOCK_SAFE_SOURCE_2026-10-09.md), commit `25eda69d`.
 
 **Next REQUIRED action**: reproduce *this exact source-built 32MiB ROM* in a private workspace, apply `tools/graft_v06_pokeblock_safe_fonts.py` with `--expected-source-sha256 5cae1a...`, and the correct shipping/reference and localized/target `.sym`. Then verify actual GBA rendering and gameplay (Pokeblock, save/load, title credit). No matching source-built GBA full bytes in CI artifact; cannot declare local font graft or a playable end-user v0.6 done. Preserved original v0.4 rollback.
+
+
+## 2026-10-10 — EXACT v0.6 FONT GRAFT INPUT PIN (safety checkpoint)
+
+**Latest verified full source-build still: 2,093 compiler-integrated text labels**, v0.6 SOURCE-BUILT ROM SHA-256 `5cae1a20698fcd7036ccdc0f2bdbc0c0c80d942380ab48611fb3ec816ebcab7f`. No released Vietnamese v0.6 ROM has been produced, and no mGBA gameplay QA has been certified. The safe original v0.4 rollback remains unchanged.
+
+`tools/graft_v06_pokeblock_safe_fonts.py` now *fails closed* unless both of these match the 2,093-label trial build:
+- Caller supplied `--expected-source-sha256` equals the exact pinned source-built ROM digest above (not merely any 64-character hash).
+- Target symbol offsets parsed from `SOURCE_LEVEL_FONT.sym` exactly match SmallNarrow `0x71B59C`, Small `0x72379C`, Narrow `0x72B99C`, Short `0x733B9C`, Normal `0x73BD9C`. Old baseline `pokeemerald.sym` must be rejected. Glyph-block **and width-table** regions must be disjoint and in bounds.
+- This is in addition to the existing SHA-pinned clean/v0.4 donors, source font pixel/layout checks, native `PKMN`/`POKEBLOCK`/`=` protections, 25 accent glyph audit, and zero non-font writes.
+- Regressions added in `tools/tests/test_graft_v06_pokeblock_safe_fonts.py` for stale `.sym`, single-symbol drift, and wrong reference geometry. Check latest GitHub Actions run result; a *unit PASS is not emulator QA*.
+
+**Next real action:** reproduce or obtain the exact private 32MiB source-compiled GBA and symbol file, graft fonts via the updated fail-closed tool, verify byte-range report, then independently inspect glyphs and gameplay in emulator (title credit, truck/Mom, battle, Pokéblock, saves). Do **not** upload full ROMs/font artwork to public GitHub; do not adjust the compiled source integration count before a new independently attested build.
