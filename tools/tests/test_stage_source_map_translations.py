@@ -4,7 +4,7 @@ import sys
 import unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from stage_source_map_translations import encode_text, patch_labeled_block, plan_rows, prioritized_rows, normalize_authored_linefeeds
+from stage_source_map_translations import encode_text, patch_labeled_block, plan_rows, prioritized_rows, normalize_authored_linefeeds, exclude_previously_staged
 
 
 class SourceStagingTests(unittest.TestCase):
@@ -56,6 +56,29 @@ class SourceStagingTests(unittest.TestCase):
         self.assertEqual(patched[0][1],bytes([0xD5,0xFE,0xD6,0xFF]))
         self.assertEqual(patched[0][0]["authored_vietnamese"],original)
         self.assertTrue(patched[0][0]["literal_newlines_normalized"])
+
+    def test_exact_prior_source_labels_are_excluded_for_incremental_stage(self):
+        rows=[
+            {"source_label":"A","source_file":"data/maps/A/scripts.inc","category":"map-story"},
+            {"source_label":"A","source_file":"data/maps/B/scripts.inc","category":"map-story"},
+            {"source_label":"C","source_file":"data/maps/A/scripts.inc","category":"map-story"},
+        ]
+        prior={"mode":"apply","labels_staged":1,"translated":[
+            {"label":"A","source_file":"data/maps/A/scripts.inc"}]}
+        remaining,count=exclude_previously_staged(rows,[prior])
+        self.assertEqual(count,1)
+        self.assertEqual([(r["source_file"],r["source_label"]) for r in remaining],
+                         [("data/maps/B/scripts.inc","A"),("data/maps/A/scripts.inc","C")])
+
+    def test_invalid_or_duplicate_prior_stage_reports_are_rejected(self):
+        rows=[{"source_label":"A","source_file":"data/maps/A/scripts.inc"}]
+        prior={"mode":"dry-run","labels_staged":1,"translated":[
+            {"label":"A","source_file":"data/maps/A/scripts.inc"}]}
+        with self.assertRaisesRegex(ValueError,"invalid previously"):
+            exclude_previously_staged(rows,[prior])
+        prior["mode"]="apply"
+        with self.assertRaisesRegex(ValueError,"duplicate label"):
+            exclude_previously_staged(rows,[prior,prior])
 
     def test_only_literal_lf_batch_does_not_restage_normal_rows(self):
         rows=[
