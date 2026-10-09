@@ -19,6 +19,34 @@ class SourceAttestationTests(unittest.TestCase):
         self.assertEqual(extract_asm_payload(src,"BattleDome_Text_Potential1"),
                          b"\xC7\x0A\xFF")
 
+    def test_move_and_item_description_source_attestation(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            folder=root/"src/data/text"
+            folder.mkdir(parents=True)
+            (folder/"move_descriptions.h").write_text(
+                "static const u8 sPoundDescription[] = {0xD5, 0xFE, 0xD6, 0xFF};\n",
+                encoding="utf-8")
+            (folder/"item_descriptions.h").write_text(
+                "static const u8 sMasterBallDesc[] = {0xD5, 0xFE, 0xD6, 0xFE, 0xD7, 0xFF};\n",
+                encoding="utf-8")
+            reports={
+                "move-desc":{"mode":"apply",
+                             "source_file":"src/data/text/move_descriptions.h",
+                             "labels_staged":1,
+                             "translated":[{"label":"sPoundDescription","visible_lines":2}]},
+                "item-desc":{"mode":"apply",
+                             "source_file":"src/data/text/item_descriptions.h",
+                             "labels_staged":1,
+                             "translated":[{"label":"sMasterBallDesc","visible_lines":3}]},
+            }
+            verified=validate_stages(root,reports)
+            self.assertEqual(verified["checked_unique_source_labels"],2)
+            self.assertEqual(verified["source_groups"],{"move-desc":1,"item-desc":1})
+            reports["move-desc"]["source_file"]="src/battle_message.c"
+            with self.assertRaises(ValueError):
+                validate_stages(root,reports)
+
     def test_static_battle_c_literal_exact_text(self):
         src='static const u8 sText_CriticalHit[] = {0xC7, 0xFE, 0x10, 0xFF};\n'
         self.assertEqual(extract_c_payload(src,"sText_CriticalHit"),
