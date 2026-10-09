@@ -40,11 +40,11 @@
     "sSilverPowderDesc": "ITEM cầm theo giúp\\ntăng sức mạnh MOVE\\nhệ BUG.",
     "sAmuletCoinDesc": "Nhân đôi tiền nhận được\\nnếu người cầm\\ntham gia trận đấu.",
     "sCleanseTagDesc": "ITEM cầm theo giúp\\nxua POKéMON\\nhoang dã.",
-    "sSoulDewDesc": "ITEM cầm theo tăng\\nSP. ATK & SP. DEF của\\nLATIOS & LATIAS.",
+    "sSoulDewDesc": "ITEM tăng SP. ATK\\nvà SP. DEF cho\\nLATIOS, LATIAS.",
     "sDeepSeaToothDesc": "ITEM cầm theo tăng\\nSP. ATK của\\nCLAMPERL.",
     "sDeepSeaScaleDesc": "ITEM cầm theo tăng\\nSP. DEF của\\nCLAMPERL.",
     "sSmokeBallDesc": "ITEM cầm theo bảo đảm\\nchạy thoát khỏi\\nPOKéMON hoang dã.",
-    "sEverstoneDesc": "ITEM cầm theo kỳ lạ\\nngăn POKéMON\\ntiến hóa.",
+    "sEverstoneDesc": "Đá giữ bên mình\\nđể POKéMON\\nkhông tiến hóa.",
     "sFocusBandDesc": "ITEM cầm theo đôi khi\\ngiúp tránh\\nbị ngất."
   }
 }
