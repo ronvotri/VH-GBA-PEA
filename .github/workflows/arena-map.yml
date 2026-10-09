@@ -177,6 +177,8 @@ jobs:
           import json
           d=json.load(open("artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json"))
           assert d["labels_staged"] == 200 and d["mode"]=="apply", d
+          names = {entry["label"] for entry in d["translated"]}
+          assert "InsideOfTruck_Text_BoxPrintedWithMonLogo" in names, "Moving-truck box description not compiled in source"
           print("Source-level Vietnamese map pilot rows:",d["labels_staged"])
           PY
           python3 tools/stage_source_ui_translations.py \
