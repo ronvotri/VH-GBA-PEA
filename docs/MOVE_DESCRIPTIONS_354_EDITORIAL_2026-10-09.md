@@ -44,3 +44,16 @@ If new CI fails, inspect the exact failed step/logs, fix the source/test tool an
 - The experimental source ROM still uses **stock English font shapes**. The verified private donor v0.4 bitmap has yet to be imported using the source ROM SHA and v0.5 remapped glyph slots; correct small-font glyphs, glyph widths and rendered Vietnamese require actual emulator QA.
 - Remaining variable-bearing item descriptions, complex battle message placeholders, rare case-sensitive Vietnamese characters, map/story/catalog strings and battle/item user-facing text need dedicated integration.
 - Preserve stable original v0.4 as rollback and do not treat the **17,512 source translation manifest entries** as installed playable game strings.
+
+
+## Verified after writing this checkpoint
+
+**[GitHub Actions #37950847854](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37950847854) completed SUCCESS.** Compiler, all unit tests, title credit and the independent 7-group source-byte ownership scanner PASS. Actual results from the workflow logs:
+
+- `SOURCE_LEVEL_MOVE_DESC_PILOT.json`: **354 move descriptions staged**, **39 rebalanced**, no unsupported glyph/source drift.
+- `SOURCE_LEVEL_ITEM_DESC_PILOT.json`: **285 item descriptions staged** (unchanged).
+- `SOURCE_TEXT_INDEPENDENT_QA.json`: **2,069 distinct integrated source text labels**, with zero duplicated source owners.
+- Other unchanged groups: 1,000 map/story + 41 common UI + 134 dynamic-name + 196 scripted battle + 59 C battle + 354 move + 285 item = **2,069**.
+- Experimental ROM is built with **stock English font glyph graphics**; a successful compilation does not mean readable Vietnamese or a release-ready GBA.
+
+A new read-only item review found **seven** ordinary item descriptions still using unavailable v0.5 accent/format glyphs and **16** cases involving source token `{POKEBLOCK}`. That token is a **five-byte fixed Latin charmap ligature `55 56 57 58 59`**, not a variable player name. It collides with current v0.5 glyph allocations: `đ=56` and `ì=59`, and private ROM comparisons show donor font changes inside the ligature glyph range. **Do NOT blindly add POKEBLOCK item texts or graft donor v0.4 font until those symbols are protected/remapped and visual QA is performed.**
