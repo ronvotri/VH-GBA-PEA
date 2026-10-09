@@ -301,7 +301,8 @@ jobs:
               assert d["mode"]=="apply" and d["line_box_limits_preserved"],d
               assert d["labels_staged"]>=minimum,d
               if kind=="ITEM":
-                  assert d["labels_staged"]>=292, d
+                  assert d["labels_staged"]==293, d
+                  assert d["skipped_reasons"]=={"dynamic/control variable left for separate engine":16},d
               assert all(r["visible_lines"] in ((2,) if kind=="MOVE" else (2,3))
                          for r in d["translated"]),d
               if kind=="MOVE":
