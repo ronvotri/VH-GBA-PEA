@@ -1761,3 +1761,11 @@ Full [GitHub Actions #37972752960](https://github.com/ronvotri/VH-GBA-PEA/action
 
 **Important:** Fonts remain the clean English bitmaps and this trial ROM is NOT released or mGBA-verified. Public repository contains only tooling, translation manifests and checkpoint hashes/symbol facts, no commercial ROM. v0.4 stable rollback remains untouched. Exact next steps and artifact filenames recorded in `CONTINUE_WITH_MODEL.md`.
 
+
+
+## 2026-10-10 — 3,360 VERIFIED SOURCE-INTEGRATED TEXTS, FULL CI SUCCESS
+
+GitHub Actions [#37973599855](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37973599855) concluded SUCCESS for commit `c45a5ef5`. A separately compiled additive `src/strings.c` UI trial integrated **300 new source labels** (41 wrapped lines) over the independent 3,060-label combined trial. The pre-existing 41 C UI rows were excluded exactly. Source arrays, all original batches, final FF terminators and label uniqueness independently PASS. **Total 3,360** source-installed texts; catalog manifest entries remain 17,512.
+
+Exact 32MiB source-built trial SHA256 `9e804a005210d59d4dc1806d387d3b50ee412ab9e7f5df0f56d5f27e43407f7a`; FONT.sym offsets SmallNarrow/Small/Narrow/Short/Normal are respectively `0x71A798`, `0x722998`, `0x72AB98`, `0x732D98`, `0x73AF98`. Five GBA font graphics blocks verified **STOCK ENGLISH**. Not font-grafted, emulator tested or release-ready. Tested v0.4 user rollback intact. Detailed integration profile and artifacts in latest `CONTINUE_WITH_MODEL.md`.
+
