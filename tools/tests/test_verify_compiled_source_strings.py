@@ -23,6 +23,9 @@ class SourceAttestationTests(unittest.TestCase):
                 "translated":[{"label":"SystemGreeting","source_file":"data/text/cable_club.inc"}]}}
             self.assertEqual(validate_stages(root,report)["source_groups"],
                              {"system-text":1})
+            fake=root/"data/maps/X/scripts.inc"
+            fake.parent.mkdir(parents=True)
+            fake.write_text("SystemGreeting::\n\t.byte 0xD5, 0xFF\n",encoding="utf-8")
             report["system-text"]["translated"][0]["source_file"]="data/maps/X/scripts.inc"
             with self.assertRaisesRegex(ValueError,"system-text source path wrong"):
                 validate_stages(root,report)
