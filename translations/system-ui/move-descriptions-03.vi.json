@@ -14,10 +14,10 @@
     "sThunderWaveDescription": "Luồng điện yếu khiến\\nđối thủ bị tê liệt.",
     "sThunderDescription": "Đòn sét có thể khiến\\nđối thủ bị tê liệt.",
     "sRockThrowDescription": "Ném những hòn đá nhỏ\\nđể tấn công đối thủ.",
-    "sEarthquakeDescription": "Động đất cực mạnh, nhưng\\nkhông ảnh hưởng mục tiêu bay.",
+    "sEarthquakeDescription": "Gây động đất dữ dội.\\nKhông trúng mục tiêu bay.",
     "sFissureDescription": "Đòn hạ gục 1 hit, khiến\\nđối thủ rơi xuống khe nứt.",
     "sDigDescription": "Đào xuống đất ở lượt đầu,\\nrồi tấn công lượt kế.",
-    "sToxicDescription": "Đầu độc đối thủ bằng chất độc\\nngày càng nghiêm trọng.",
+    "sToxicDescription": "Đầu độc đối thủ.\\nĐộc nặng dần mỗi lượt.",
     "sConfusionDescription": "Đòn tâm linh có thể khiến\\nđối thủ bối rối.",
     "sPsychicDescription": "Đòn tâm linh mạnh có thể\\ngiảm SP. DEF.",
     "sHypnosisDescription": "Thôi miên đối thủ và có thể\\nkhiến mục tiêu ngủ.",
@@ -33,7 +33,7 @@
     "sRecoverDescription": "Hồi tối đa một nửa\\nHP tối đa của người dùng.",
     "sHardenDescription": "Siết cứng cơ bắp để\\ntăng DEFENSE.",
     "sMinimizeDescription": "Thu nhỏ cơ thể để\\ntăng khả năng né tránh.",
-    "sSmokescreenDescription": "Dùng khói, mực, v.v. để giảm\\nđộ chính xác của đối thủ.",
+    "sSmokescreenDescription": "Phun khói làm giảm\\nđộ chính xác của địch.",
     "sConfuseRayDescription": "Bắn tia sáng đáng ngại\\nkhiến đối thủ bối rối.",
     "sWithdrawDescription": "Thu mình vào lớp vỏ cứng\\nđể tăng DEFENSE.",
     "sDefenseCurlDescription": "Cuộn tròn che điểm yếu\\nvà tăng DEFENSE.",
@@ -42,9 +42,9 @@
     "sHazeDescription": "Tạo màn sương đen xóa\\ntoàn bộ thay đổi chỉ số.",
     "sReflectDescription": "Tạo tường ánh sáng làm\\nyếu các đòn vật lý.",
     "sFocusEnergyDescription": "Tập trung sức mạnh để tăng\\ntỉ lệ chí mạng.",
-    "sBideDescription": "Chịu đòn trong 2 lượt rồi\\nphản lại sát thương gấp đôi.",
-    "sMetronomeDescription": "Ngoáy ngón tay để dùng ngẫu nhiên\\nmột MOVE của POKéMON.",
+    "sBideDescription": "Chịu đòn suốt 2 lượt,\\ntrả gấp đôi sát thương.",
+    "sMetronomeDescription": "Vẫy ngón tay để dùng\\nngẫu nhiên một chiêu.",
     "sMirrorMoveDescription": "Phản lại đòn của đối thủ\\nbằng chính MOVE đó.",
-    "sSelfDestructDescription": "Gây sát thương cực lớn nhưng\\nkhiến người dùng ngất."
+    "sSelfDestructDescription": "Tự nổ gây sát thương lớn.\\nNgười dùng cũng ngất."
   }
 }
