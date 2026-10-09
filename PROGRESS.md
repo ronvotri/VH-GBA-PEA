@@ -1737,3 +1737,19 @@ Whole source manifest coverage remains 17,512/17,512, not runtime installation c
 **POST-ARTIFACT VERIFIED:** v0.6 2,093 source-compiled localized trial ROM SHA256 **`5cae1a20698fcd7036ccdc0f2bdbc0c0c80d942380ab48611fb3ec816ebcab7f`**. Use the artifact's **`SOURCE_LEVEL_FONT.sym`** (not baseline `pokeemerald.sym`) for exact transplanted-font target offsets: **SmallNarrow 0x71B59C; Small 0x72379C; Narrow 0x72B99C; Short 0x733B9C; Normal 0x73BD9C**. The source glyph audit validates 5 stock glyph blocks, donor_font_patched=false. The baseline `pokeemerald.sym` 0x71DEA0 etc. describes reference shipping, not compiled localized font addresses; using it would damage the v0.6 ROM. Updated technical detail: [docs/V06_POKEBLOCK_SAFE_SOURCE_2026-10-09.md](docs/V06_POKEBLOCK_SAFE_SOURCE_2026-10-09.md), commit `25eda69d`.
 
 **Next REQUIRED action**: reproduce *this exact source-built 32MiB ROM* in a private workspace, apply `tools/graft_v06_pokeblock_safe_fonts.py` with `--expected-source-sha256 5cae1a...`, and the correct shipping/reference and localized/target `.sym`. Then verify actual GBA rendering and gameplay (Pokeblock, save/load, title credit). No matching source-built GBA full bytes in CI artifact; cannot declare local font graft or a playable end-user v0.6 done. Preserved original v0.4 rollback.
+
+
+## 2026-10-10 — 2,560 SOURCE-INTEGRATED LABELS (FULL CI SUCCESS, STOCK FONT)
+
+Verified [Actions #37971516257](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37971516257), committed implementation `ce4f4c85`:
+
+| Source stage | Independently verified compiled labels |
+| --- | ---: |
+| Original v0.6 source build (unchanged) | 2,093 |
+| New static map/story group (75 files, 156 wraps) | +292 |
+| Safe literal-LF map/story recovery (23 files, 71 wraps) | +175 |
+| **Single combined source-compiled trial GBA** | **2,560** |
+
+Combined source-ROM SHA256: `ea47eddda541d66f6aedf9e61f0816e7135349a0b5ac23529776f8ac6a6b5530`. Source font target offsets (`SOURCE_EXPANDED_MAP_FONT.sym`): SmallNarrow `71AB04`, Small `722D04`, Narrow `72AF04`, Short `733104`, Normal `73B304` (hex). All five fonts remain exact stock English glyphs. The original `5cae1a...` / 2,093 source build is preserved separately; compiled source text QA confirms original labels unchanged, additions disjoint, all final FF bytes correct, and no change to title-credit source.
+
+**Not a localized playable GBA.** This stage does not graft donor font artwork or confirm gameplay. The new SHA/offsets must be added to a strictly validated font-layout profile before any private graft; do not disable the original 2,093 SHA guard. Original v0.4 rollback remains intact; no commercial ROM or glyph asset committed. Full details and next action in `CONTINUE_WITH_MODEL.md` latest checkpoint.
