@@ -51,6 +51,7 @@ class GraftV06Tests(unittest.TestCase):
 
     def apply(self,book=None):
         with patch.object(v06,"ATTESTED_CLEAN_OFFSETS",self.offsets),\
+             patch.object(v06,"ATTESTED_SOURCE_FONT_OFFSETS",self.offsets),\
              patch.object(v06,"GLYPH_BLOCK_SIZE",self.size),\
              patch.object(v05,"ATTESTED_CLEAN_OFFSETS",self.offsets),\
              patch.object(v05,"GLYPH_BLOCK_SIZE",self.size),\
@@ -87,6 +88,23 @@ class GraftV06Tests(unittest.TestCase):
         out,_=self.apply()
         self.assertEqual(out[:0x1000],self.clean[:0x1000])
         self.assertEqual(out[0x17000:],self.clean[0x17000:])
+
+    def test_wrong_compiled_source_symbol_positions_refused(self):
+        # Baseline pokeemerald.sym must not be used for SOURCE_LEVEL_FONT.sym.
+        with self.assertRaisesRegex(ValueError,"wrong v0.6 target"):
+            v06.require_pinned_target_symbols(v06.ATTESTED_CLEAN_OFFSETS)
+
+    def test_pinned_2093_source_build_identity(self):
+        self.assertEqual(
+            v06.PINNED_SOURCE_SHA256,
+            "5cae1a20698fcd7036ccdc0f2bdbc0c0c80d942380ab48611fb3ec816ebcab7f")
+        self.assertEqual(
+            v06.ATTESTED_SOURCE_FONT_OFFSETS["gFontNormalLatinGlyphs"],
+            0x73BD9C)
+        shifted=dict(v06.ATTESTED_SOURCE_FONT_OFFSETS)
+        shifted["gFontNormalLatinGlyphs"]+=4
+        with self.assertRaisesRegex(ValueError,"wrong v0.6 target"):
+            v06.require_pinned_target_symbols(shifted)
 
     def test_requires_exact_clean_source_font_geometry(self):
         with patch.object(v06,"ATTESTED_CLEAN_OFFSETS",self.offsets):
