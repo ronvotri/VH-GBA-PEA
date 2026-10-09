@@ -63,13 +63,20 @@ class AccentRelocationTests(unittest.TestCase):
         self.assertEqual(result[:0x1000],self.clean[:0x1000])
         self.assertEqual(result[-0x2000:],self.clean[-0x2000:])
 
-    def test_missing_small_font_accent_art_reported(self):
-        _,r=self.run_copy()
-        self.assertEqual(set(r["small_font_missing_accents"]),
+    def test_synthetic_small_font_accents_are_flagged(self):
+        updated,r=self.run_copy()
+        self.assertEqual(set(r["small_font_synthetically_drawn_accents"]),
                          graft.UNVERIFIED_SMALL_FONTS)
         self.assertEqual(
-            r["small_font_missing_accents"]["gFontSmallLatinGlyphs"],
+            r["small_font_synthetically_drawn_accents"]["gFontSmallLatinGlyphs"],
             ["ấ","ằ","ắ"])
+        self.assertFalse(r["pixel_accuracy_and_emulator_tested"])
+        self.assertFalse(r["release_ready"])
+        for font in graft.UNVERIFIED_SMALL_FONTS:
+            base=self.positions[font]
+            for _,old,slot in RELOCATION.values():
+                self.assertNotEqual(updated[base+slot*64:base+(slot+1)*64],
+                                    self.clean[base+slot*64:base+(slot+1)*64])
 
     def test_wrong_source_codebook_refused(self):
         with self.assertRaisesRegex(ValueError,"does not reserve"):
