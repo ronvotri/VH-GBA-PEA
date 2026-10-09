@@ -69,11 +69,12 @@ def prioritized_rows(rows: list[dict], prefixes: list[str]) -> list[dict]:
 
 
 def plan_rows(rows:list,codes:dict[str,int],src_prefix:str,max_segment:int,limit:int,
-              auto_wrap:bool=False, priority_prefixes:list[str]|None=None):
+              auto_wrap:bool=False, priority_prefixes:list[str]|None=None,
+              category:str="map-story"):
     chosen=[]; rejected=Counter()
     for row in prioritized_rows(rows, priority_prefixes or []):
         if len(chosen)>=limit:break
-        if row.get("category")!="map-story" or not row.get("source_file","").startswith(src_prefix):
+        if row.get("category")!=category or not row.get("source_file","").startswith(src_prefix):
             continue
         english,vietnamese=row.get("english",""),row.get("vietnamese","")
         if not vietnamese or english==vietnamese or not row.get("source_label"):continue
@@ -103,6 +104,7 @@ def main():
     p.add_argument("--plan",type=Path,required=True)
     p.add_argument("--codebook",type=Path,required=True)
     p.add_argument("--source-prefix",default="data/maps/LittlerootTown/")
+    p.add_argument("--category",choices=["map-story","battle"],default="map-story",help="Source text category, never infer from filenames")
     p.add_argument("--limit",type=int,default=20)
     p.add_argument("--max-segment",type=int,default=26)
     p.add_argument("--report",type=Path,required=True)
@@ -112,10 +114,13 @@ def main():
     a=p.parse_args()
     if a.limit<1 or a.limit>1000 or not 10<=a.max_segment<=30:
         p.error("limit 1..1000 and max-segment 10..30")
+    if a.category=="battle" and not a.source_prefix.startswith("data/text/"):
+        p.error("battle source staging restricted to data/text/ assembly files")
+
     plan=json.loads(a.plan.read_text(encoding="utf-8"))
     raw=json.loads(a.codebook.read_text(encoding="utf-8"))
     codes={c:int(v,16) for c,v in raw["glyph_bytes"].items()}
-    selected, skipped=plan_rows(plan,codes,a.source_prefix,a.max_segment,a.limit,a.auto_wrap,a.priority_source_prefix)
+    selected, skipped=plan_rows(plan,codes,a.source_prefix,a.max_segment,a.limit,a.auto_wrap,a.priority_source_prefix,a.category)
     skipped=Counter(skipped); changes={}; accepted=[]
     for row, encoded in selected:
         relative=row["source_file"]
@@ -136,7 +141,8 @@ def main():
     if a.apply:
         for filepath,updated in changes.items():
             filepath.write_text(updated,encoding="utf-8")
-    report={"mode":"apply" if a.apply else "dry-run",
+    report={"category":a.category,
+            "mode":"apply" if a.apply else "dry-run",
             "source_prefix":a.source_prefix,"labels_staged":len(accepted),
             "files_staged":len(changes),
             "auto_wrapped_labels":sum(1 for row in accepted if row["auto_wrapped"]),
