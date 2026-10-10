@@ -659,13 +659,14 @@ jobs:
 
       - name: Boot 3360-text synthesized-font ROM in mGBA under Xvfb (no ROM artifact)
         run: |
-          sudo apt-get install -y mgba-sdl xvfb xauth imagemagick
+          sudo apt-get install -y mgba-sdl xvfb xauth imagemagick xdotool
           test -s experimental-synthetic-vietnamese.gba
           xvfb-run -a --server-args="-screen 0 800x600x24" bash -c '
             set -e
             export SDL_AUDIODRIVER=dummy
             /usr/games/mgba experimental-synthetic-vietnamese.gba > artifact/SOURCE_3360_MGBA_CONSOLE.log 2>&1 &
             pid=$!
+            trap "kill $pid 2>/dev/null || :" EXIT
             sleep 12
             if ! kill -0 "$pid" 2>/dev/null; then
               cat artifact/SOURCE_3360_MGBA_CONSOLE.log
@@ -673,29 +674,62 @@ jobs:
               exit 1
             fi
             import -window root artifact/SOURCE_3360_MGBA_BOOT.png
+            sleep 22
+            import -window root artifact/SOURCE_3360_MGBA_34S.png
+            sleep 20
+            import -window root artifact/SOURCE_3360_MGBA_54S.png
+            # mGBA default SDL keys: Return=START, x=A, z=B.
+            # We observe BEFORE and AFTER input; actions are a smoke attempt,
+            # not a declaration that the player has reached scripted dialogue.
+            xdotool key --clearmodifiers Return
+            sleep 3
+            import -window root artifact/SOURCE_3360_MGBA_AFTER_START.png
+            for i in $(seq 1 8); do
+              xdotool key --clearmodifiers x
+              sleep 2
+            done
+            import -window root artifact/SOURCE_3360_MGBA_AFTER_8A.png
+            for i in $(seq 1 8); do
+              xdotool key --clearmodifiers x
+              sleep 2
+            done
+            import -window root artifact/SOURCE_3360_MGBA_AFTER_16A.png
+            if ! kill -0 "$pid" 2>/dev/null; then
+              cat artifact/SOURCE_3360_MGBA_CONSOLE.log
+              echo "FAIL: emulator terminated during input smoke"
+              exit 1
+            fi
             kill "$pid" || :
             wait "$pid" || :
           '
           python3 - <<'PY'
-          import json
+          import json,hashlib
           from pathlib import Path
           from PIL import Image
-          pic=Path("artifact/SOURCE_3360_MGBA_BOOT.png")
-          im=Image.open(pic).convert("RGB")
-          assert im.width>=240 and im.height>=160,(im.width,im.height)
-          sampled=im.resize((160,120))
-          distinct=len(set(sampled.getdata()))
-          assert distinct>=16,"mGBA screenshot blank or not rendered: "+str(distinct)
-          report={"boot_emulator":"mGBA SDL Ubuntu 22.04","visible_frame_captured":True,
-                  "frame_size":[im.width,im.height],
-                  "sampled_distinct_colors":distinct,
-                  "emulator_exited_early":False,
+          names=["BOOT","34S","54S","AFTER_START","AFTER_8A","AFTER_16A"]
+          frames=[]
+          for name in names:
+              pic=Path("artifact")/f"SOURCE_3360_MGBA_{name}.png"
+              im=Image.open(pic).convert("RGB")
+              assert im.width>=240 and im.height>=160,(name,im.size)
+              sampled=im.resize((160,120))
+              distinct=len(set(sampled.getdata()))
+              assert distinct>=16,"mGBA screenshot blank or not rendered: "+name+" "+str(distinct)
+              frames.append({"phase":name,"size":list(im.size),
+                             "distinct_colors":distinct,
+                             "fingerprint":hashlib.sha256(sampled.tobytes()).hexdigest()})
+          assert len({x["fingerprint"] for x in frames})>=2,"all emulator phases are visually identical"
+          report={"boot_emulator":"mGBA SDL Ubuntu 22.04",
+                  "visible_frame_captured":True,
+                  "frames":frames,"different_visual_phases":len({x["fingerprint"] for x in frames}),
+                  "start_and_A_pressed":True,"emulator_exited_early":False,
                   "title_text_reviewed":False,"vietnamese_glyph_legibility_reviewed":False,
                   "battle_save_load_reviewed":False,"release_ready":False}
           Path("artifact/SOURCE_3360_MGBA_BOOT_QA.json").write_text(
               json.dumps(report,indent=2)+"\n")
-          print("PASS: mGBA boot remains live; screen visibly rendered with",
-                distinct,"sampled colors. Game/font QA NOT certified.")
+          print("PASS: mGBA boot stays live across",len(frames),
+                "screens and",report["different_visual_phases"],
+                "distinct phases. Text/gameplay not yet certified.")
           PY
           # ROM remains CI-private; never upload even for successful smoke.
           rm experimental-synthetic-vietnamese.gba
