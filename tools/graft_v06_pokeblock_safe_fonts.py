@@ -81,6 +81,17 @@ ATTESTED_BIRCH_3364_FONT_OFFSETS={
     "gFontNormalLatinGlyphs":0x73AEFC,
 }
 
+# Exact independently attested Birch PLAYER + KUN source trial from CI
+# 38042181252. Two late name-dialogue pointers resolved; no gameplay QA yet.
+PINNED_BIRCH_3366_SOURCE_SHA256="a887c81b426c11be12257b66286166b11ac50b4081e06782792f5ce972e97cd0"
+ATTESTED_BIRCH_3366_FONT_OFFSETS={
+    "gFontSmallNarrowLatinGlyphs":0x71A6F8,
+    "gFontSmallLatinGlyphs":0x7228F8,
+    "gFontNarrowLatinGlyphs":0x72AAF8,
+    "gFontShortLatinGlyphs":0x732CF8,
+    "gFontNormalLatinGlyphs":0x73AEF8,
+}
+
 
 
 def require_pinned_target_symbols(target_offsets:dict[str,int],
@@ -91,6 +102,7 @@ def require_pinned_target_symbols(target_offsets:dict[str,int],
         PINNED_BIRCH_3360_SOURCE_SHA256:ATTESTED_BIRCH_3360_FONT_OFFSETS,
         PINNED_BIRCH_3363_SOURCE_SHA256:ATTESTED_BIRCH_3363_FONT_OFFSETS,
         PINNED_BIRCH_3364_SOURCE_SHA256:ATTESTED_BIRCH_3364_FONT_OFFSETS,
+        PINNED_BIRCH_3366_SOURCE_SHA256:ATTESTED_BIRCH_3366_FONT_OFFSETS,
     }
     expected=profiles.get(source_sha256.lower())
     if expected is None:
@@ -218,7 +230,7 @@ def main():
     p.add_argument("--expected-source-sha256",required=True)
     p.add_argument("--output",type=Path)
     a=p.parse_args()
-    if a.expected_source_sha256.lower() not in (PINNED_SOURCE_SHA256,PINNED_3360_SOURCE_SHA256,PINNED_BIRCH_3360_SOURCE_SHA256,PINNED_BIRCH_3363_SOURCE_SHA256,PINNED_BIRCH_3364_SOURCE_SHA256):
+    if a.expected_source_sha256.lower() not in (PINNED_SOURCE_SHA256,PINNED_3360_SOURCE_SHA256,PINNED_BIRCH_3360_SOURCE_SHA256,PINNED_BIRCH_3363_SOURCE_SHA256,PINNED_BIRCH_3364_SOURCE_SHA256,PINNED_BIRCH_3366_SOURCE_SHA256):
         p.error("source SHA256 has no attested v0.6 font geometry profile")
     if a.output and a.output.resolve() in {a.clean.resolve(),a.v04.resolve(),a.source_built.resolve()}:
         p.error("output must not overwrite source or donor ROM")
