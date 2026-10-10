@@ -1289,7 +1289,7 @@ jobs:
               assert len(rows)==report["labels_staged"],fn
               for row in rows:
                   label=row["label"]
-                  owner=row.get("source_file") or report.get("source_file")
+                  owner=row.get("source_file") or row.get("file") or report.get("source_file")
                   assert owner, (fn,label)
                   assert label not in installed,(label,installed.get(label),fn)
                   installed[label]=(owner,fn)
