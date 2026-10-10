@@ -1031,6 +1031,92 @@ jobs:
           rm experimental-synthetic-vietnamese.gba
           echo "mGBA headless screen smoke PASS; gameplay/font detail still needs human visual QA." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Bulk-install ALL further safe static C UI labels in one extra source build (experimental; no ROM uploaded)
+        run: |
+          # Preserve the verified 3,666-text+font ROM: only operate on a
+          # separate fresh clone of the successful 300-label UI source.
+          cp -a expanded-title-c-ui-trial full-c-ui-source-trial
+          python3 - <<'PY'
+          import json,subprocess,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import validate_stages
+          p=Path("artifact")
+          workspace=Path("full-c-ui-source-trial")
+          earlier=["SOURCE_LEVEL_UI_PILOT.json",
+                   "SOURCE_SHORT_C_UI_STAGE.json",
+                   "SOURCE_EXTRA_SHORT_C_UI_STAGE.json"]
+          previous={}
+          for fn in earlier:
+              d=json.loads((p/fn).read_text())
+              assert d["mode"]=="apply" and d["source_file"]=="src/strings.c",fn
+              assert len(d["translated"])==d["labels_staged"],fn
+              for row in d["translated"]:
+                  assert row["label"] not in previous,(fn,row["label"])
+                  previous[row["label"]]=fn
+          all_new={}
+          runs=[]
+          for i in range(1,6):
+              fn=f"SOURCE_REMAINING_C_UI_BATCH_{i}.json"
+              command=["python3","tools/stage_source_ui_translations.py",
+                       "--workspace",str(workspace),
+                       "--plan",str(p/"user-facing-integration-plan.json"),
+                       "--codebook","checkpoints/v06-pokeblock-safe-codebook.json",
+                       "--include-short-static","--auto-wrap",
+                       "--normalize-unsupported-uppercase","--limit","300",
+                       "--apply","--report",str(p/fn)]
+              for old in earlier+runs:command.extend(["--exclude-report",str(p/old)])
+              subprocess.run(command,check=True)
+              d=json.loads((p/fn).read_text())
+              assert d["mode"]=="apply" and d["source_file"]=="src/strings.c",d
+              assert d["normalized_caps_labels"]<=d["labels_staged"],d
+              assert d["previously_staged_label_exclusions"]==len(previous)+len(all_new),d
+              assert d["labels_staged"]==len(d["translated"]),d
+              if d["labels_staged"]==0:
+                  break
+              for row in d["translated"]:
+                  label=row["label"]
+                  assert label not in previous and label not in all_new,(fn,label)
+                  all_new[label]=fn
+              runs.append(fn)
+              if d["labels_staged"]<300:
+                  # Exhausted currently safe unique C strings under this font.
+                  break
+          # Independently re-read every final C-owned byte string, and all
+          # previous 641 C-owned labels, after EVERY mutation.
+          for fn in earlier+runs:
+              report=json.loads((p/fn).read_text())
+              count=validate_stages(workspace,{"ui":report})["checked_unique_source_labels"]
+              assert count==report["labels_staged"],(fn,count)
+          assert len(all_new)>=1,"no extra static C UI texts available"
+          assert len(all_new)<=1500,len(all_new)
+          base=json.loads((p/"SOURCE_EXTRA_SHORT_C_UI_ATTESTATION.json").read_text())
+          assert base["combined_compiled_labels"]==3666,base
+          result={"previously_compiled_labels":3666,
+                  "extra_static_C_ui_labels":len(all_new),
+                  "combined_compiled_labels":3666+len(all_new),
+                  "batch_report_files":runs,
+                  "no_duplicate_source_labels":True,
+                  "all_source_payloads_independently_verified":True,
+                  "new_case_normalized_labels":sum(
+                      json.loads((p/fn).read_text())["normalized_caps_labels"]
+                      for fn in runs),
+                  "font_grafted":False,"mGBA_tested":False,
+                  "release_ready":False}
+          (p/"SOURCE_REMAINING_C_UI_ATTESTATION.json").write_text(
+              json.dumps(result,ensure_ascii=False,indent=2)+"\n")
+          print("PASS bulk source C UI:",json.dumps(result,ensure_ascii=False))
+          PY
+          make -C full-c-ui-source-trial -j2
+          test -s full-c-ui-source-trial/pokeemerald.gba
+          sha256sum full-c-ui-source-trial/pokeemerald.gba > artifact/SOURCE_REMAINING_C_UI_SHA256.txt
+          arm-none-eabi-nm -n full-c-ui-source-trial/pokeemerald.elf > artifact/SOURCE_REMAINING_C_UI_FONT.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom full-c-ui-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_REMAINING_C_UI_FONT.sym \
+            --out artifact/SOURCE_REMAINING_C_UI_FONT_AUDIT.json
+          echo "Additional independently attested bulk C UI labels compiled once, in a separate stock-font source trial. New font profile & mGBA QA STILL REQUIRED." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
