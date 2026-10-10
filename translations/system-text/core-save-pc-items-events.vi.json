@@ -15,7 +15,7 @@
     "gText_Birch_BoyOrGirl": "Cháu là con trai?\\nHay con gái?$",
     "gText_Birch_WhatsYourName": "Được rồi.\\nCháu tên gì?$",
     "gText_Birch_SoItsPlayer": "Vậy cháu là {PLAYER}{KUN}?$",
-    "gText_Birch_YourePlayer": "À, hiểu rồi!\\pCháu là {PLAYER}{KUN}, người sắp chuyển đến\\nquê ta ở LITTLEROOT.\\lGiờ ta nhớ ra rồi!\\p$",
+    "gText_Birch_YourePlayer": "Ra là vậy!\\p{PLAYER}{KUN} sẽ chuyển tới\\nLITTLEROOT, quê ta.\\lGiờ ta nhớ ra rồi!\\p$",
     "gText_Birch_AreYouReady": "Cháu đã sẵn sàng chưa?\\pCuộc phiêu lưu của cháu\\nsắp bắt đầu rồi.\\pHãy can đảm bước vào thế\\ngiới POKéMON đầy ước mơ,\\lphiêu lưu và tình bạn!\\pTa chờ cháu ở phòng lab.\\nLát nữa nhớ ghé nhé!\\p$",
     "EventTicket_Text_ShowOldSeaMap": "Chuyến phà tới SLATEPORT là…\\pXin lỗi, cậu nói gì cơ?\\nMuốn chúng tôi đưa cậu tới nơi này trên bản đồ?\\pTôi biết một người phù hợp hơn để giúp cậu.\\nXin chờ một chút.$",
     "EventTicket_Text_ThatPass": "Chuyến phà tới SLATEPORT là…\\pỒ?\\nTấm PASS đó…$",

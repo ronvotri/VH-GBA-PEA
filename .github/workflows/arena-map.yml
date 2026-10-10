@@ -878,6 +878,68 @@ jobs:
           rm experimental-synthetic-vietnamese.gba
           echo "mGBA headless screen smoke PASS; gameplay/font detail still needs human visual QA." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Compile and link Birch PLAYER KUN dynamic confirmations (3366 source trial)
+        run: |
+          cp -a birch-runtime-c-source-trial birch-dynamic-source-trial
+          python3 tools/stage_birch_dynamic_intro.py \
+            --workspace birch-dynamic-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --apply --report artifact/SOURCE_BIRCH_DYNAMIC_STAGE.json
+          python3 - <<'PY'
+          import json,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import validate_stages
+          p=Path("artifact")
+          dyn=json.loads((p/"SOURCE_BIRCH_DYNAMIC_STAGE.json").read_text())
+          assert dyn["mode"]=="apply" and dyn["labels_staged"]==2,dyn
+          labels={r["label"] for r in dyn["translated"]}
+          assert labels=={"gText_Birch_SoItsPlayer","gText_Birch_YourePlayer"},labels
+          assert all(r["source_file"]=="data/text/birch_speech.inc" for r in dyn["translated"])
+          assert dyn["PLAYER_max_width"]==7 and dyn["KUN_runtime_width"]==0,dyn
+          assert dyn["control_and_placeholder_order_verified"],dyn
+          assert validate_stages(Path("birch-dynamic-source-trial"),{"system-text":dyn})["checked_unique_source_labels"]==2
+          for old in ("SOURCE_SYSTEM_TEXT_STAGE.json","SOURCE_BIRCH_NARRATIVE_STAGE.json"):
+              a=json.loads((p/old).read_text())
+              assert labels.isdisjoint({r["label"] for r in a["translated"]}),old
+              assert validate_stages(Path("birch-dynamic-source-trial"),{"system-text":a})["checked_unique_source_labels"]==a["labels_staged"],old
+          previous=json.loads((p/"SOURCE_BIRCH_RUNTIME_C_ATTESTATION.json").read_text())
+          assert previous["combined_source_compiled_labels"]==3364,previous
+          print("PASS: exactly 2 source-owned gender-safe Birch dynamic labels staged after 3364")
+          PY
+          make -C birch-dynamic-source-trial -j2
+          test -s birch-dynamic-source-trial/pokeemerald.gba
+          sha256sum birch-dynamic-source-trial/pokeemerald.gba > artifact/SOURCE_BIRCH_DYNAMIC_SHA256.txt
+          arm-none-eabi-nm -n birch-dynamic-source-trial/pokeemerald.elf > artifact/SOURCE_BIRCH_DYNAMIC_FONT.sym
+          python3 tools/stage_birch_dynamic_intro.py \
+            --workspace birch-dynamic-source-trial \
+            --rom birch-dynamic-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_BIRCH_DYNAMIC_FONT.sym \
+            --report artifact/SOURCE_BIRCH_DYNAMIC_STAGE.json
+          python3 tools/audit_source_font_layout.py \
+            --rom birch-dynamic-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_BIRCH_DYNAMIC_FONT.sym \
+            --out artifact/SOURCE_BIRCH_DYNAMIC_FONT_AUDIT.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("artifact")
+          d=json.loads((p/"SOURCE_BIRCH_DYNAMIC_STAGE.json").read_text())
+          assert d["linked_ROM_payloads_verified"] and len(d["linked_symbols"])==2,d
+          assert all(x["tokens_verified"] for x in d["linked_symbols"]),d
+          assert all(bytes.fromhex(x["payload_hex"]).count(b"\xfd\x05")==1 for x in d["translated"]),d
+          result={"previously_compiled_labels":3364,"new_Birch_dynamic_labels":2,
+                  "total_source_compiled_labels":3366,
+                  "both_gender_KUN_expansion_checked_empty":True,
+                  "PLAYER_name_7_cell_max_checked":True,
+                  "placeholder_order_and_linker_bytes_checked":True,
+                  "font_synthesized":False,"emulator_tested":False,"release_ready":False}
+          (p/"SOURCE_BIRCH_DYNAMIC_ATTESTATION.json").write_text(json.dumps(result,indent=2)+"\n")
+          print("PASS: 3366 source-compiled Birch+PLAYER/KUN labels (STOCK FONT experimental ROM).")
+          PY
+          echo "Compiled 2 Birch PLAYER/KUN labels in an isolated 3366-source stock-font trial; NEVER claim this ROM passed emulator QA." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
