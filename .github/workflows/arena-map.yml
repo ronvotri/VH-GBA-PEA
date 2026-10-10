@@ -229,6 +229,8 @@ jobs:
             --codebook artifact/POKEBLOCK_SAFE_SOURCE_CODEBOOK.json \
             --limit 80 \
             --auto-wrap \
+            --exclude-label gText_MoveOkBack \
+            --exclude-label gText_YesNo \
             --apply \
             --report artifact/SOURCE_LEVEL_UI_PILOT.json
           python3 - <<'PY'
@@ -578,6 +580,8 @@ jobs:
             --exclude-label gText_Time \
             --exclude-label gText_Badges \
             --exclude-label gText_YourName \
+            --exclude-label gText_MoveOkBack \
+            --exclude-label gText_YesNo \
             --include-short-static \
             --limit 300 \
             --auto-wrap \
@@ -593,8 +597,8 @@ jobs:
           prior=json.loads((d/"SOURCE_SYSTEM_TEXT_ATTESTATION.json").read_text())
           n=new["labels_staged"]
           assert new["mode"]=="apply" and new["source_file"]=="src/strings.c"
-          assert new["include_short_static"] and new["previously_staged_label_exclusions"]==49,new
-          assert set(new["explicit_reserved_labels"])==set(["gText_EggNickname","gText_MainMenuNewGame","gText_MainMenuContinue","gText_MainMenuOption","gText_Player","gText_Time","gText_Badges","gText_YourName"]),new
+          assert new["include_short_static"] and new["previously_staged_label_exclusions"]==51,new
+          assert set(new["explicit_reserved_labels"])==set(["gText_EggNickname","gText_MainMenuNewGame","gText_MainMenuContinue","gText_MainMenuOption","gText_Player","gText_Time","gText_Badges","gText_YourName","gText_MoveOkBack","gText_YesNo"]),new
           assert 100<=n<=300,new
           assert prior["combined_distinct_compiled_labels"]==3060,prior
           old_names={
@@ -832,6 +836,8 @@ jobs:
             --codebook checkpoints/v06-pokeblock-safe-codebook.json \
             --exclude-report artifact/SOURCE_LEVEL_UI_PILOT.json \
             --exclude-report artifact/SOURCE_SHORT_C_UI_STAGE.json \
+            --exclude-label gText_MoveOkBack \
+            --exclude-label gText_YesNo \
             --include-short-static --auto-wrap \
             --normalize-unsupported-uppercase \
             --priority-label gText_YourName \
@@ -852,7 +858,7 @@ jobs:
           assert new["normalize_unsupported_uppercase"] and new["normalized_caps_labels"]>=75,new
           assert reserved<=labels,sorted(reserved-labels)
           assert new["mode"]=="apply" and new["source_file"]=="src/strings.c",new
-          assert new["previously_staged_label_exclusions"]==341,new
+          assert new["previously_staged_label_exclusions"]==343,new
           assert new["priority_labels"]==["gText_YourName"],new
           assert validate_stages(Path("expanded-title-c-ui-trial"),{"ui":new})[
               "checked_unique_source_labels"]==new["labels_staged"],new
@@ -1064,13 +1070,15 @@ jobs:
                        "--codebook","checkpoints/v06-pokeblock-safe-codebook.json",
                        "--include-short-static","--auto-wrap",
                        "--normalize-unsupported-uppercase","--limit","300",
+                       "--exclude-label","gText_MoveOkBack",
+                       "--exclude-label","gText_YesNo",
                        "--apply","--report",str(p/fn)]
               for old in earlier+runs:command.extend(["--exclude-report",str(p/old)])
               subprocess.run(command,check=True)
               d=json.loads((p/fn).read_text())
               assert d["mode"]=="apply" and d["source_file"]=="src/strings.c",d
               assert d["normalized_caps_labels"]<=d["labels_staged"],d
-              assert d["previously_staged_label_exclusions"]==len(previous)+len(all_new),d
+              assert d["previously_staged_label_exclusions"]==len(previous)+len(all_new)+2,d
               assert d["labels_staged"]==len(d["translated"]),d
               if d["labels_staged"]==0:
                   break
