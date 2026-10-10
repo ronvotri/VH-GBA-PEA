@@ -1812,3 +1812,10 @@ Exact 3364 SOURCE/stock-font ROM SHA256 5b63c67009140c309aa1f6339df2abef158e6bb4
 
 Eight primary menu/naming labels revised to glyph-available sentence case, original 300 C UI labels preserved. A new *experimental isolated* additive 300-label C UI sweep with opt-in uppercase Vietnamese re-casing exists; first test stage found 300 candidates including 261 case-normalized and corrected source-priority failure is now under [CI #38045294719](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38045294719). **Do NOT count additive 300 as installed before CI finishes**. Need next pin SHA/font for the expanded source, view actual menu/naming screenshot, then continue major batches/gameplay. No full ROM published; not release-ready.
 
+
+
+
+## 2026-10-10 — 3,666 SOURCE-COMPILED STRINGS, 300 MORE C UI; FONT+mGBA VERIFYING
+
+[Full CI #38045294719](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38045294719) SUCCESS for **3,666** source-compiled distinct labels: previous 3,366 + exactly 300 additional C-owned system UI, including actual naming title `gText_YourName` = `Tên bạn?`, new game/continue/options and 261 re-cased otherwise-unencodable uppercase Vietnamese UI labels. No prior UI sources changed; all source owners and engine symbol references checked. Exact new STOCK-font source GBA SHA256 `f9a31e14e763e6f71adbd02930d5e7d35365fb8f392b717cbb7834244c15d41c`; font offsets `0x71A754,0x722954,0x72AB54,0x732D54,0x73AF54` (SmallNarrow/Small/Narrow/Short/Normal). Source-only 3,666 beta trial is NOT yet visually verified with Vietnamese fonts. Commit `ecf000f88` enables SHA-bound font synthesis and real mGBA screenshots for this 3,666 source trial, running in [CI #38046063440](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38046063440). Do not prematurely mark full QA completed. Original 3,366 font+runtime Birch/name flow passed, fallback v0.4 remains untouched. No full ROM published.
+
