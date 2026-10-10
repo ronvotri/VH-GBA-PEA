@@ -92,6 +92,18 @@ ATTESTED_BIRCH_3366_FONT_OFFSETS={
     "gFontNormalLatinGlyphs":0x73AEF8,
 }
 
+# FULL PASS Actions #38045294719: +300 source-owned C UI labels,
+# including main menu and real naming-screen title. All five font
+# glyph banks are untouched stock art at these exactly SHA-paired offsets.
+PINNED_C_UI_3666_SOURCE_SHA256="f9a31e14e763e6f71adbd02930d5e7d35365fb8f392b717cbb7834244c15d41c"
+ATTESTED_C_UI_3666_FONT_OFFSETS={
+    "gFontSmallNarrowLatinGlyphs":0x71A754,
+    "gFontSmallLatinGlyphs":0x722954,
+    "gFontNarrowLatinGlyphs":0x72AB54,
+    "gFontShortLatinGlyphs":0x732D54,
+    "gFontNormalLatinGlyphs":0x73AF54,
+}
+
 
 
 def require_pinned_target_symbols(target_offsets:dict[str,int],
@@ -103,6 +115,7 @@ def require_pinned_target_symbols(target_offsets:dict[str,int],
         PINNED_BIRCH_3363_SOURCE_SHA256:ATTESTED_BIRCH_3363_FONT_OFFSETS,
         PINNED_BIRCH_3364_SOURCE_SHA256:ATTESTED_BIRCH_3364_FONT_OFFSETS,
         PINNED_BIRCH_3366_SOURCE_SHA256:ATTESTED_BIRCH_3366_FONT_OFFSETS,
+        PINNED_C_UI_3666_SOURCE_SHA256:ATTESTED_C_UI_3666_FONT_OFFSETS,
     }
     expected=profiles.get(source_sha256.lower())
     if expected is None:
@@ -230,7 +243,8 @@ def main():
     p.add_argument("--expected-source-sha256",required=True)
     p.add_argument("--output",type=Path)
     a=p.parse_args()
-    if a.expected_source_sha256.lower() not in (PINNED_SOURCE_SHA256,PINNED_3360_SOURCE_SHA256,PINNED_BIRCH_3360_SOURCE_SHA256,PINNED_BIRCH_3363_SOURCE_SHA256,PINNED_BIRCH_3364_SOURCE_SHA256,PINNED_BIRCH_3366_SOURCE_SHA256):
+    if a.expected_source_sha256.lower() not in (PINNED_SOURCE_SHA256,PINNED_3360_SOURCE_SHA256,PINNED_BIRCH_3360_SOURCE_SHA256,PINNED_BIRCH_3363_SOURCE_SHA256,PINNED_BIRCH_3364_SOURCE_SHA256,PINNED_BIRCH_3366_SOURCE_SHA256,
+        PINNED_C_UI_3666_SOURCE_SHA256):
         p.error("source SHA256 has no attested v0.6 font geometry profile")
     if a.output and a.output.resolve() in {a.clean.resolve(),a.v04.resolve(),a.source_built.resolve()}:
         p.error("output must not overwrite source or donor ROM")

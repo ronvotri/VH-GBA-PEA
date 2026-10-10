@@ -21,6 +21,7 @@ from graft_v06_pokeblock_safe_fonts import (
     PINNED_BIRCH_3363_SOURCE_SHA256, ATTESTED_BIRCH_3363_FONT_OFFSETS,
     PINNED_BIRCH_3364_SOURCE_SHA256, ATTESTED_BIRCH_3364_FONT_OFFSETS,
     PINNED_BIRCH_3366_SOURCE_SHA256, ATTESTED_BIRCH_3366_FONT_OFFSETS,
+    PINNED_C_UI_3666_SOURCE_SHA256, ATTESTED_C_UI_3666_FONT_OFFSETS,
     require_pinned_target_symbols
 )
 from pokemon_gba_font_glyphs import decode_glyph, encode_glyph
@@ -131,7 +132,7 @@ def synthesize_fonts(rom:bytes, offsets:dict[str,int],
     if len(rom)!=ROM_BYTES or source_sha not in (
             PINNED_3360_SOURCE_SHA256,PINNED_BIRCH_3360_SOURCE_SHA256,
             PINNED_BIRCH_3363_SOURCE_SHA256,PINNED_BIRCH_3364_SOURCE_SHA256,
-            PINNED_BIRCH_3366_SOURCE_SHA256):
+            PINNED_BIRCH_3366_SOURCE_SHA256,PINNED_C_UI_3666_SOURCE_SHA256):
         raise ValueError("source ROM is not an independently attested 3,360-text build")
     require_pinned_target_symbols(offsets,source_sha)
     codes={ch:int(value,16) for ch,value in glyphs.items()}
