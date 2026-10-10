@@ -888,6 +888,25 @@ jobs:
                 import -window root artifact/SOURCE_3366_MGBA_AFTER_24A_SETTLED.png
               fi
             done
+            # src/naming_screen.c handles START by MoveCursorToOKButton().
+            # The established A88 frame shows a nonempty name entry. Press
+            # START then A to leave the keyboard, and A to accept Birch.
+            # Capture BEFORE/AFTER each action; never claim arrival from keys alone.
+            xdotool key --clearmodifiers Return
+            sleep 3
+            import -window root artifact/SOURCE_3366_MGBA_NAME_START.png
+            xdotool key --clearmodifiers x
+            sleep 8
+            import -window root artifact/SOURCE_3366_MGBA_NAME_OK.png
+            for i in $(seq 1 18); do
+              xdotool key --clearmodifiers x
+              sleep 2
+              case "$i" in
+                1|2|4|6|8|10|12|14|16|18)
+                  import -window root "artifact/SOURCE_3366_MGBA_AFTER_NAME_${i}A.png"
+                  ;;
+              esac
+            done
             if ! kill -0 "$pid" 2>/dev/null; then
               cat artifact/SOURCE_3366_MGBA_CONSOLE.log
               echo "FAIL: emulator terminated during input smoke"
@@ -903,7 +922,9 @@ jobs:
           names=["BOOT","34S","54S","AFTER_START","AFTER_8A"]+[
               f"AFTER_{i}A" for i in (9,10,12,14,16,18,20,22,24)]+[
               "AFTER_24A_SETTLED"]+[
-              f"AFTER_{i}A" for i in (26,28,30,32,34,36,40,44,48,52,56,60,64,68,72,76,80,84,88)]
+              f"AFTER_{i}A" for i in (26,28,30,32,34,36,40,44,48,52,56,60,64,68,72,76,80,84,88)]+[
+              "NAME_START","NAME_OK"]+[
+              f"AFTER_NAME_{i}A" for i in (1,2,4,6,8,10,12,14,16,18)]
           frames=[]
           for name in names:
               pic=Path("artifact")/f"SOURCE_3366_MGBA_{name}.png"
@@ -924,6 +945,8 @@ jobs:
                   "visible_frame_captured":True,
                   "sampled_A_inputs":list(range(9,89)),
                   "post_typewriter_capture":"AFTER_24A_SETTLED",
+                  "naming_screen_input_attempt":"A88, START-to-OK, A, then 18 A",
+                  "naming_screen_completion_visual_review_pending":True,
                   "intro_dialogue_visual_review_pending":True,
                   "frames":frames,"different_visual_phases":len({x["fingerprint"] for x in frames}),
                   "low_color_transition_frames":[x["phase"] for x in frames if x["transition_or_low_color"]],
