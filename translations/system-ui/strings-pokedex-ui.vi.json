@@ -6,7 +6,7 @@
   "status": "translation-complete-source-qa",
   "notes": "Source-driven block from gText_ThisIsAPokemon through gText_DexSearchTypeNone in pret/pokeemerald 5eff786. Pokémon names and canonical MOVE/ITEM/TM/HM identifiers remain English; structural/empty sentinels are intentionally retained. Control tokens and source line-break counts are preserved where functional. No ROM patch or pointer write performed.",
   "translations": {
-    "gText_ThisIsAPokemon": "Đây là loài mà chúng ta gọi là “POKéMON.”{PAUSE 96}\\p",
+    "gText_ThisIsAPokemon": "Đây là một POKéMON.{PAUSE 96}\\p",
     "gText_5MarksPokemon": "????? POKéMON",
     "gText_UnkHeight": "{CLEAR_TO 12}??'??”",
     "gText_UnkWeight": "????.? lbs.",

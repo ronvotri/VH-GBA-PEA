@@ -825,6 +825,59 @@ jobs:
           rm experimental-synthetic-vietnamese.gba
           echo "mGBA headless screen smoke PASS; gameplay/font detail still needs human visual QA." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Compile real C-runtime Birch Pokemon text with exact PAUSE 96 bytes (3364 source trial)
+        run: |
+          # Retain separately boot-tested 3363-label/font build and exact SHA.
+          cp -a birch-narrative-source-trial birch-runtime-c-source-trial
+          python3 tools/stage_birch_runtime_pokemon_c.py \
+            --workspace birch-runtime-c-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --charmap birch-runtime-c-source-trial/charmap.txt \
+            --apply \
+            --report artifact/SOURCE_BIRCH_RUNTIME_C_STAGE.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=Path("artifact")
+          old=json.loads((d/"SOURCE_BIRCH_NARRATIVE_ATTESTATION.json").read_text())
+          c=json.loads((d/"SOURCE_BIRCH_RUNTIME_C_STAGE.json").read_text())
+          assert old["combined_compiled_source_labels"]==3363,old
+          assert c["mode"]=="apply" and c["labels_staged"]==1,c
+          assert c["source_label"]=="gText_ThisIsAPokemon" and c["source_file"]=="src/strings.c",c
+          assert c["pause_96_preserved"] and c["page_and_terminator_preserved"],c
+          assert c["payload_hex"].endswith("fc0860fbff"),c
+          assert "Đây là một POKéMON." in c["vietnamese"],c
+          print("PASS: exact Birch runtime C control bytes staged on 3363 source GBA")
+          PY
+          make -C birch-runtime-c-source-trial -j2
+          test -s birch-runtime-c-source-trial/pokeemerald.gba
+          sha256sum birch-runtime-c-source-trial/pokeemerald.gba > artifact/SOURCE_BIRCH_RUNTIME_C_SHA256.txt
+          arm-none-eabi-nm -n birch-runtime-c-source-trial/pokeemerald.elf > artifact/SOURCE_BIRCH_RUNTIME_C_FONT.sym
+          python3 tools/stage_birch_runtime_pokemon_c.py \
+            --workspace birch-runtime-c-source-trial \
+            --verify-rom birch-runtime-c-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_BIRCH_RUNTIME_C_FONT.sym \
+            --report artifact/SOURCE_BIRCH_RUNTIME_C_STAGE.json
+          python3 tools/audit_source_font_layout.py \
+            --rom birch-runtime-c-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_BIRCH_RUNTIME_C_FONT.sym \
+            --out artifact/SOURCE_BIRCH_RUNTIME_C_FONT_AUDIT.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("artifact/SOURCE_BIRCH_RUNTIME_C_STAGE.json").read_text())
+          assert r["compiled_rom_byte_verified"] and r["payload_hex"].endswith("fc0860fbff"),r
+          check={"earlier_compiled_labels":3363,"new_runtime_C_labels":1,
+                 "combined_source_compiled_labels":3364,
+                 "runtime_C_label":"gText_ThisIsAPokemon",
+                 "pause_96_page_and_terminator_bytes_verified_in_compiled_GBA":True,
+                 "font_grafted":False,"emulator_verified":False,"release_ready":False}
+          Path("artifact/SOURCE_BIRCH_RUNTIME_C_ATTESTATION.json").write_text(json.dumps(check,indent=2)+"\n")
+          print("PASS: 3,364 compiled source labels, real runtime source pointer and pause control preserved")
+          PY
+          echo "Verified the REAL gText_ThisIsAPokemon C runtime label as a 3364-label stock-font source trial; no gameplay claim." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
