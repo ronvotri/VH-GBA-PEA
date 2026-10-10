@@ -59,6 +59,17 @@ ATTESTED_BIRCH_3360_FONT_OFFSETS={
     "gFontNormalLatinGlyphs":0x73AF8C,
 }
 
+# Independent CI #38032748175: +3 exact Birch narrative labels on the
+# immutable 3,360 source branch; all five clean Latin stock fonts attested.
+PINNED_BIRCH_3363_SOURCE_SHA256="af67fe4775bf29a110b77573667ac397c6933174e1bd6a470e7927f870d9d77f"
+ATTESTED_BIRCH_3363_FONT_OFFSETS={
+    "gFontSmallNarrowLatinGlyphs":0x71A708,
+    "gFontSmallLatinGlyphs":0x722908,
+    "gFontNarrowLatinGlyphs":0x72AB08,
+    "gFontShortLatinGlyphs":0x732D08,
+    "gFontNormalLatinGlyphs":0x73AF08,
+}
+
 
 
 def require_pinned_target_symbols(target_offsets:dict[str,int],
@@ -67,6 +78,7 @@ def require_pinned_target_symbols(target_offsets:dict[str,int],
         PINNED_SOURCE_SHA256:ATTESTED_SOURCE_FONT_OFFSETS,
         PINNED_3360_SOURCE_SHA256:ATTESTED_3360_FONT_OFFSETS,
         PINNED_BIRCH_3360_SOURCE_SHA256:ATTESTED_BIRCH_3360_FONT_OFFSETS,
+        PINNED_BIRCH_3363_SOURCE_SHA256:ATTESTED_BIRCH_3363_FONT_OFFSETS,
     }
     expected=profiles.get(source_sha256.lower())
     if expected is None:
@@ -194,7 +206,7 @@ def main():
     p.add_argument("--expected-source-sha256",required=True)
     p.add_argument("--output",type=Path)
     a=p.parse_args()
-    if a.expected_source_sha256.lower() not in (PINNED_SOURCE_SHA256,PINNED_3360_SOURCE_SHA256,PINNED_BIRCH_3360_SOURCE_SHA256):
+    if a.expected_source_sha256.lower() not in (PINNED_SOURCE_SHA256,PINNED_3360_SOURCE_SHA256,PINNED_BIRCH_3360_SOURCE_SHA256,PINNED_BIRCH_3363_SOURCE_SHA256):
         p.error("source SHA256 has no attested v0.6 font geometry profile")
     if a.output and a.output.resolve() in {a.clean.resolve(),a.v04.resolve(),a.source_built.resolve()}:
         p.error("output must not overwrite source or donor ROM")

@@ -641,132 +641,6 @@ jobs:
             --out artifact/SOURCE_SHORT_C_UI_FONT_AUDIT.json
           echo "Additive 3060+ static C UI source trial attested/compiled; English glyphs, NO emulator QA." >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Experimentally synthesize Vietnamese glyphs in 3360-text source ROM (no donor)
-        run: |
-          # This experimental result is LOCAL CI-ONLY; never publish the
-          # commercial game ROM or source bitmap assets as an Actions artifact.
-          python3 tools/synthesize_vietnamese_source_fonts.py \
-            --source-built expanded-c-ui-source-trial/pokeemerald.gba \
-            --sym artifact/SOURCE_SHORT_C_UI_FONT.sym \
-            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
-            --output experimental-synthetic-vietnamese.gba \
-            --report artifact/SOURCE_3360_SYNTH_FONT_QA.json
-          python3 - <<'PY'
-          import hashlib,json
-          from pathlib import Path
-          r=json.loads(Path("artifact/SOURCE_3360_SYNTH_FONT_QA.json").read_text())
-          assert r["source_sha256"]=="c1756599fa7ffd227c073891ab43765aff3442bf0b6a15aa07efb624dbcc6f78",r
-          assert r["font_styles"]==5 and r["glyphs_per_font"]>=45,r
-          assert r["native_ascii_and_pokeblock_preserved"] and r["no_non_font_writes"],r
-          assert r["font_only_byte_changes"]>100,r
-          result=hashlib.sha256(Path("experimental-synthetic-vietnamese.gba").read_bytes()).hexdigest()
-          assert result==r["result_sha256"],r
-          assert r["synthetic_unreviewed_visuals"] and not r["emulator_tested"] and not r["release_ready"]
-          print("PASS: synthetic accents actually written into all five source fonts;",
-                "glyphs/font:",r["glyphs_per_font"],
-                "modified bytes:",r["font_only_byte_changes"])
-          PY
-          echo "PRIVATE font+translated-text synthesis PASS; experimental ROM kept ONLY for immediate CI emulator smoke." >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Boot 3360-text synthesized-font ROM in mGBA under Xvfb (no ROM artifact)
-        run: |
-          sudo apt-get install -y mgba-sdl xvfb xauth imagemagick xdotool
-          test -s experimental-synthetic-vietnamese.gba
-          xvfb-run -a --server-args="-screen 0 800x600x24" bash -c '
-            set -e
-            export SDL_AUDIODRIVER=dummy
-            /usr/games/mgba experimental-synthetic-vietnamese.gba > artifact/SOURCE_3360_MGBA_CONSOLE.log 2>&1 &
-            pid=$!
-            trap "kill $pid 2>/dev/null || :" EXIT
-            sleep 12
-            if ! kill -0 "$pid" 2>/dev/null; then
-              cat artifact/SOURCE_3360_MGBA_CONSOLE.log
-              echo "FAIL: emulator exited before screenshot"
-              exit 1
-            fi
-            import -window root artifact/SOURCE_3360_MGBA_BOOT.png
-            sleep 22
-            import -window root artifact/SOURCE_3360_MGBA_34S.png
-            sleep 20
-            import -window root artifact/SOURCE_3360_MGBA_54S.png
-            # mGBA default SDL keys: Return=START, x=A, z=B.
-            # We observe BEFORE and AFTER input; actions are a smoke attempt,
-            # not a declaration that the player has reached scripted dialogue.
-            xdotool key --clearmodifiers Return
-            sleep 3
-            import -window root artifact/SOURCE_3360_MGBA_AFTER_START.png
-            for i in $(seq 1 8); do
-              xdotool key --clearmodifiers x
-              sleep 2
-            done
-            import -window root artifact/SOURCE_3360_MGBA_AFTER_8A.png
-            for i in $(seq 9 36); do
-              xdotool key --clearmodifiers x
-              sleep 2
-              case "$i" in
-                9|10|12|14|16|18|20|22|24|26|28|30|32|34|36)
-                  import -window root "artifact/SOURCE_3360_MGBA_AFTER_${i}A.png"
-                  ;;
-              esac
-              if [ "$i" -eq 24 ]; then
-                # Check an already-visible dialogue page AFTER its typewriter
-                # animation finishes, not only at the exact A press.
-                sleep 4
-                import -window root artifact/SOURCE_3360_MGBA_AFTER_24A_SETTLED.png
-              fi
-            done
-            if ! kill -0 "$pid" 2>/dev/null; then
-              cat artifact/SOURCE_3360_MGBA_CONSOLE.log
-              echo "FAIL: emulator terminated during input smoke"
-              exit 1
-            fi
-            kill "$pid" || :
-            wait "$pid" || :
-          '
-          python3 - <<'PY'
-          import json,hashlib
-          from pathlib import Path
-          from PIL import Image
-          names=["BOOT","34S","54S","AFTER_START","AFTER_8A"]+[
-              f"AFTER_{i}A" for i in (9,10,12,14,16,18,20,22,24)]+[
-              "AFTER_24A_SETTLED"]+[
-              f"AFTER_{i}A" for i in (26,28,30,32,34,36)]
-          frames=[]
-          for name in names:
-              pic=Path("artifact")/f"SOURCE_3360_MGBA_{name}.png"
-              im=Image.open(pic).convert("RGB")
-              assert im.width>=240 and im.height>=160,(name,im.size)
-              sampled=im.resize((160,120))
-              distinct=len(set(sampled.getdata()))
-              # White/black fades are valid between intro animation scenes;
-              # require nonblank evidence at stable boot/play checkpoints.
-              if name in ("BOOT","34S","AFTER_START","AFTER_16A"):
-                  assert distinct>=16,"stable mGBA screenshot blank: "+name+" "+str(distinct)
-              frames.append({"phase":name,"size":list(im.size),
-                             "distinct_colors":distinct,
-                             "transition_or_low_color":distinct<16,
-                             "fingerprint":hashlib.sha256(sampled.tobytes()).hexdigest()})
-          assert len({x["fingerprint"] for x in frames})>=3,"emulator intro never visually progressed"
-          report={"boot_emulator":"mGBA SDL Ubuntu 22.04",
-                  "visible_frame_captured":True,
-                  "sampled_A_inputs":list(range(9,37)),
-                  "post_typewriter_capture":"AFTER_24A_SETTLED",
-                  "intro_dialogue_visual_review_pending":True,
-                  "frames":frames,"different_visual_phases":len({x["fingerprint"] for x in frames}),
-                  "low_color_transition_frames":[x["phase"] for x in frames if x["transition_or_low_color"]],
-                  "start_and_A_pressed":True,"emulator_exited_early":False,
-                  "title_text_reviewed":False,"vietnamese_glyph_legibility_reviewed":False,
-                  "battle_save_load_reviewed":False,"release_ready":False}
-          Path("artifact/SOURCE_3360_MGBA_BOOT_QA.json").write_text(
-              json.dumps(report,indent=2)+"\n")
-          print("PASS: mGBA boot stays live across",len(frames),
-                "screens and",report["different_visual_phases"],
-                "distinct phases. Text/gameplay not yet certified.")
-          PY
-          # ROM remains CI-private; never upload even for successful smoke.
-          rm experimental-synthetic-vietnamese.gba
-          echo "mGBA headless screen smoke PASS; gameplay/font detail still needs human visual QA." >> "$GITHUB_STEP_SUMMARY"
-
       - name: Compile newly reflowed Birch narrative as additive source trial (keep 3360 fonts pinned)
         run: |
           # The already boot-tested 3,360-text + synthetic-font branch remains
@@ -824,6 +698,132 @@ jobs:
             --sym artifact/SOURCE_BIRCH_NARRATIVE_FONT.sym \
             --out artifact/SOURCE_BIRCH_NARRATIVE_FONT_AUDIT.json
           echo "Compiled three new Birch narrative pages as a separate 3,363-label source trial; stock font, NO emulator QA, prior 3,360 build preserved." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Experimentally synthesize Vietnamese glyphs in 3363-text source ROM (no donor)
+        run: |
+          # This experimental result is LOCAL CI-ONLY; never publish the
+          # commercial game ROM or source bitmap assets as an Actions artifact.
+          python3 tools/synthesize_vietnamese_source_fonts.py \
+            --source-built birch-narrative-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_BIRCH_NARRATIVE_FONT.sym \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --output experimental-synthetic-vietnamese.gba \
+            --report artifact/SOURCE_3363_SYNTH_FONT_QA.json
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          r=json.loads(Path("artifact/SOURCE_3363_SYNTH_FONT_QA.json").read_text())
+          assert r["source_sha256"]=="af67fe4775bf29a110b77573667ac397c6933174e1bd6a470e7927f870d9d77f",r
+          assert r["font_styles"]==5 and r["glyphs_per_font"]>=45,r
+          assert r["native_ascii_and_pokeblock_preserved"] and r["no_non_font_writes"],r
+          assert r["font_only_byte_changes"]>100,r
+          result=hashlib.sha256(Path("experimental-synthetic-vietnamese.gba").read_bytes()).hexdigest()
+          assert result==r["result_sha256"],r
+          assert r["synthetic_unreviewed_visuals"] and not r["emulator_tested"] and not r["release_ready"]
+          print("PASS: synthetic accents actually written into all five source fonts;",
+                "glyphs/font:",r["glyphs_per_font"],
+                "modified bytes:",r["font_only_byte_changes"])
+          PY
+          echo "PRIVATE font+translated-text synthesis PASS; experimental ROM kept ONLY for immediate CI emulator smoke." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Boot 3363-text synthesized-font ROM in mGBA under Xvfb (no ROM artifact)
+        run: |
+          sudo apt-get install -y mgba-sdl xvfb xauth imagemagick xdotool
+          test -s experimental-synthetic-vietnamese.gba
+          xvfb-run -a --server-args="-screen 0 800x600x24" bash -c '
+            set -e
+            export SDL_AUDIODRIVER=dummy
+            /usr/games/mgba experimental-synthetic-vietnamese.gba > artifact/SOURCE_3363_MGBA_CONSOLE.log 2>&1 &
+            pid=$!
+            trap "kill $pid 2>/dev/null || :" EXIT
+            sleep 12
+            if ! kill -0 "$pid" 2>/dev/null; then
+              cat artifact/SOURCE_3363_MGBA_CONSOLE.log
+              echo "FAIL: emulator exited before screenshot"
+              exit 1
+            fi
+            import -window root artifact/SOURCE_3363_MGBA_BOOT.png
+            sleep 22
+            import -window root artifact/SOURCE_3363_MGBA_34S.png
+            sleep 20
+            import -window root artifact/SOURCE_3363_MGBA_54S.png
+            # mGBA default SDL keys: Return=START, x=A, z=B.
+            # We observe BEFORE and AFTER input; actions are a smoke attempt,
+            # not a declaration that the player has reached scripted dialogue.
+            xdotool key --clearmodifiers Return
+            sleep 3
+            import -window root artifact/SOURCE_3363_MGBA_AFTER_START.png
+            for i in $(seq 1 8); do
+              xdotool key --clearmodifiers x
+              sleep 2
+            done
+            import -window root artifact/SOURCE_3363_MGBA_AFTER_8A.png
+            for i in $(seq 9 36); do
+              xdotool key --clearmodifiers x
+              sleep 2
+              case "$i" in
+                9|10|12|14|16|18|20|22|24|26|28|30|32|34|36)
+                  import -window root "artifact/SOURCE_3363_MGBA_AFTER_${i}A.png"
+                  ;;
+              esac
+              if [ "$i" -eq 24 ]; then
+                # Check an already-visible dialogue page AFTER its typewriter
+                # animation finishes, not only at the exact A press.
+                sleep 4
+                import -window root artifact/SOURCE_3363_MGBA_AFTER_24A_SETTLED.png
+              fi
+            done
+            if ! kill -0 "$pid" 2>/dev/null; then
+              cat artifact/SOURCE_3363_MGBA_CONSOLE.log
+              echo "FAIL: emulator terminated during input smoke"
+              exit 1
+            fi
+            kill "$pid" || :
+            wait "$pid" || :
+          '
+          python3 - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          from PIL import Image
+          names=["BOOT","34S","54S","AFTER_START","AFTER_8A"]+[
+              f"AFTER_{i}A" for i in (9,10,12,14,16,18,20,22,24)]+[
+              "AFTER_24A_SETTLED"]+[
+              f"AFTER_{i}A" for i in (26,28,30,32,34,36)]
+          frames=[]
+          for name in names:
+              pic=Path("artifact")/f"SOURCE_3363_MGBA_{name}.png"
+              im=Image.open(pic).convert("RGB")
+              assert im.width>=240 and im.height>=160,(name,im.size)
+              sampled=im.resize((160,120))
+              distinct=len(set(sampled.getdata()))
+              # White/black fades are valid between intro animation scenes;
+              # require nonblank evidence at stable boot/play checkpoints.
+              if name in ("BOOT","34S","AFTER_START","AFTER_16A"):
+                  assert distinct>=16,"stable mGBA screenshot blank: "+name+" "+str(distinct)
+              frames.append({"phase":name,"size":list(im.size),
+                             "distinct_colors":distinct,
+                             "transition_or_low_color":distinct<16,
+                             "fingerprint":hashlib.sha256(sampled.tobytes()).hexdigest()})
+          assert len({x["fingerprint"] for x in frames})>=3,"emulator intro never visually progressed"
+          report={"boot_emulator":"mGBA SDL Ubuntu 22.04",
+                  "visible_frame_captured":True,
+                  "sampled_A_inputs":list(range(9,37)),
+                  "post_typewriter_capture":"AFTER_24A_SETTLED",
+                  "intro_dialogue_visual_review_pending":True,
+                  "frames":frames,"different_visual_phases":len({x["fingerprint"] for x in frames}),
+                  "low_color_transition_frames":[x["phase"] for x in frames if x["transition_or_low_color"]],
+                  "start_and_A_pressed":True,"emulator_exited_early":False,
+                  "title_text_reviewed":False,"vietnamese_glyph_legibility_reviewed":False,
+                  "battle_save_load_reviewed":False,"release_ready":False}
+          Path("artifact/SOURCE_3363_MGBA_BOOT_QA.json").write_text(
+              json.dumps(report,indent=2)+"\n")
+          print("PASS: mGBA boot stays live across",len(frames),
+                "screens and",report["different_visual_phases"],
+                "distinct phases. Text/gameplay not yet certified.")
+          PY
+          # ROM remains CI-private; never upload even for successful smoke.
+          rm experimental-synthetic-vietnamese.gba
+          echo "mGBA headless screen smoke PASS; gameplay/font detail still needs human visual QA." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
