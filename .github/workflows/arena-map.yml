@@ -1827,6 +1827,36 @@ jobs:
           PY
           echo "17 source-verified Arena UI labels compiled. The game's separate 3x5 ASCII-only HUD is intentionally unchanged pending proper Vietnamese raster support." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Compile additive static battle messages with native scroll and exact GBA linked-byte QA
+        run: |
+          # 5299 baseline is source-compiled and preserved. No ROM pointer edits.
+          # No synthetic font; use user-approved v0.4 donor only in a later
+          # independently SHA-pinned PRIVATE font-grafting and runtime QA step.
+          cp -a arena-native-popup-source-trial battle-scroll-source-trial
+          python3 tools/stage_source_map_translations.py \
+            --workspace battle-scroll-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --category battle \
+            --source-prefix data/text/ \
+            --exclude-report artifact/SOURCE_LEVEL_BATTLE_PILOT.json \
+            --limit 1000 \
+            --auto-wrap \
+            --page-scroll-reflow \
+            --apply \
+            --report artifact/SOURCE_BATTLE_SCROLL_REFLOW_STAGE.json
+          python3 tools/verify_additive_battle_scroll.py pre
+          make -C battle-scroll-source-trial -j2
+          test -s battle-scroll-source-trial/pokeemerald.gba
+          sha256sum battle-scroll-source-trial/pokeemerald.gba > artifact/SOURCE_BATTLE_SCROLL_REFLOW_SHA256.txt
+          arm-none-eabi-nm -n battle-scroll-source-trial/pokeemerald.elf > artifact/SOURCE_BATTLE_SCROLL_REFLOW_FONT.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom battle-scroll-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_BATTLE_SCROLL_REFLOW_FONT.sym \
+            --out artifact/SOURCE_BATTLE_SCROLL_REFLOW_FONT_AUDIT.json
+          python3 tools/verify_additive_battle_scroll.py post
+          echo "Static battle labels source-compiled and individually ELF/GBA byte-attested; v0.4 font and gameplay QA still pending." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
