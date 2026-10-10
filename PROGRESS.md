@@ -1793,3 +1793,14 @@ Exact 32MiB source-built trial SHA256 `9e804a005210d59d4dc1806d387d3b50ee412ab9e
 
 [Actions #38032748175](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38032748175) full SUCCESS: old 3,360 pinned GBA source labels preserved; 3 additionally translated/compiler-installed Birch narrative labels `gText_Birch_Pokemon`, `gText_Birch_MainSpeech`, `gText_Birch_AreYouReady` independently compiled in a separate experimental source build. **3,363 unique source-compiled messages**, source ROM SHA256 `af67fe4775bf29a110b77573667ac397c6933174e1bd6a470e7927f870d9d77f`; attested font offsets (SmallNarrow/Small/Narrow/Short/Normal) `0x71A708`, `0x722908`, `0x72AB08`, `0x732D08`, `0x73AF08`. This source trial still used stock font artwork. Commit `78dd7ce7` pins the exact 3,363 SHA/font map and now attempts a combined Vietnamese-glyph font/mGBA boot in [Actions #38033333400](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38033333400). The latter must fully pass and screenshots need visual review before any playable-beta claim. Do not conflate translation catalog 17,512 with 3,363 actually compiled. v0.4 rollback preserved.
 
+
+
+## 2026-10-10 — VERIFIED 3364 FONT+RUNTIME BIRCH mGBA INTRO PASS
+
+CI https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38038283878 FULL SUCCESS. 3363 previous source labels plus +1 actual C-runtime Birch introduction gText_ThisIsAPokemon (src/strings.c) = 3364 compiled labels. Original duplicate source label gText_Birch_Pokemon was unreferenced; source runtime src/main_menu.c:1357 proves exact ownership.
+
+Verified after linker that byte payload at ROM offset 0x006D7BA2 contains Vietnamese sentence 'Đây là một POKéMON.' and preserved PAUSE 96 + paragraph + FF bytes FC 08 60 FB FF. REAL mGBA screenshots at A26/A28 show the new Vietnamese sentence onscreen replacing English. Birch narrative afterwards also Vietnamese.
+
+Exact 3364 SOURCE/stock-font ROM SHA256 5b63c67009140c309aa1f6339df2abef158e6bb43aa4cb08b6f6e557e5967ea5. Exact 3364 + 315 Vietnamese synthesized fonts experimental GBA SHA256 b8a0915d07e516900dc694dabfb0f12caa212c6616d22734147dea948bfaf509. 8380 font-only bytes changed. Full ROM is NOT uploaded to public repo.
+
+17,512 authored/catalog entries remain distinct from 3,364 actually source-compiled. Game-wide playtesting, player-name dynamic placeholders, font aesthetics, save/battle/Pokéblock coverage still incomplete. v0.4 backup remains unchanged. Detailed handoff in CONTINUE_WITH_MODEL.md.
