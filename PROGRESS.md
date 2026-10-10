@@ -1804,3 +1804,11 @@ Verified after linker that byte payload at ROM offset 0x006D7BA2 contains Vietna
 Exact 3364 SOURCE/stock-font ROM SHA256 5b63c67009140c309aa1f6339df2abef158e6bb43aa4cb08b6f6e557e5967ea5. Exact 3364 + 315 Vietnamese synthesized fonts experimental GBA SHA256 b8a0915d07e516900dc694dabfb0f12caa212c6616d22734147dea948bfaf509. 8380 font-only bytes changed. Full ROM is NOT uploaded to public repo.
 
 17,512 authored/catalog entries remain distinct from 3,364 actually source-compiled. Game-wide playtesting, player-name dynamic placeholders, font aesthetics, save/battle/Pokéblock coverage still incomplete. v0.4 backup remains unchanged. Detailed handoff in CONTINUE_WITH_MODEL.md.
+
+
+## 2026-10-10 — NAME CONFIRMATION RUNS IN GBA; 300-MENU-COMPILATION TRIAL PENDING
+
+[CI #38042835572](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38042835572) SUCCESS: 3,366 source-compiled Vietnamese labels, synthesized glyphs and emulator smoke PASS. Verified true gameplay through gender and name selection: after 88 A presses plus naming-screen START→OK and A, mGBA displays `Vậy cháu là AAAAAAA?` and subsequent Birch `Ra là vậy!` at 7-char name max ([screenshots in run #38044559086](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38044559086)); previous C-batch QA failed due gText_YourName falling outside cap, NOT emulator/crash. Exact 3,366 stock-font source SHA `a887c81b426c11be12257b66286166b11ac50b4081e06782792f5ce972e97cd0`, experimental final font+text SHA `e43544396e0d024c9db82c39082067ba78826738581e407b524159e324b89ad9`.
+
+Eight primary menu/naming labels revised to glyph-available sentence case, original 300 C UI labels preserved. A new *experimental isolated* additive 300-label C UI sweep with opt-in uppercase Vietnamese re-casing exists; first test stage found 300 candidates including 261 case-normalized and corrected source-priority failure is now under [CI #38045294719](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38045294719). **Do NOT count additive 300 as installed before CI finishes**. Need next pin SHA/font for the expanded source, view actual menu/naming screenshot, then continue major batches/gameplay. No full ROM published; not release-ready.
+
