@@ -1426,6 +1426,13 @@ jobs:
             import -window root artifact/SOURCE_3894_MGBA_34S.png
             sleep 20
             import -window root artifact/SOURCE_3894_MGBA_54S.png
+            # Capture settled title-screen frames after the logo transition.
+            sleep 12
+            import -window root artifact/SOURCE_3894_MGBA_TITLE_66S.png
+            sleep 12
+            import -window root artifact/SOURCE_3894_MGBA_TITLE_78S.png
+            sleep 12
+            import -window root artifact/SOURCE_3894_MGBA_TITLE_90S.png
             # mGBA default SDL keys: Return=START, x=A, z=B.
             # We observe BEFORE and AFTER input; actions are a smoke attempt,
             # not a declaration that the player has reached scripted dialogue.
@@ -1471,6 +1478,17 @@ jobs:
                   ;;
               esac
             done
+            # Continue beyond Birch naming/confirmation to inspect whether
+            # early-game truck/overworld transition actually becomes visible.
+            for i in $(seq 19 46); do
+              xdotool key --clearmodifiers x
+              sleep 2
+              case "$i" in
+                20|22|24|26|28|30|32|36|40|46)
+                  import -window root "artifact/SOURCE_3894_MGBA_AFTER_NAME_${i}A.png"
+                  ;;
+              esac
+            done
             if ! kill -0 "$pid" 2>/dev/null; then
               cat artifact/SOURCE_3894_MGBA_CONSOLE.log
               echo "FAIL: emulator terminated during input smoke"
@@ -1483,12 +1501,12 @@ jobs:
           import json,hashlib
           from pathlib import Path
           from PIL import Image
-          names=["BOOT","34S","54S","AFTER_START","AFTER_8A"]+[
+          names=["BOOT","34S","54S","TITLE_66S","TITLE_78S","TITLE_90S","AFTER_START","AFTER_8A"]+[
               f"AFTER_{i}A" for i in (9,10,12,14,16,18,20,22,24)]+[
               "AFTER_24A_SETTLED"]+[
               f"AFTER_{i}A" for i in (26,28,30,32,34,36,40,44,48,52,56,60,64,68,72,76,80,84,88)]+[
               "NAME_START","NAME_OK"]+[
-              f"AFTER_NAME_{i}A" for i in (1,2,4,6,8,10,12,14,16,18)]
+              f"AFTER_NAME_{i}A" for i in (1,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,36,40,46)]
           frames=[]
           for name in names:
               pic=Path("artifact")/f"SOURCE_3894_MGBA_{name}.png"
@@ -1509,7 +1527,9 @@ jobs:
                   "visible_frame_captured":True,
                   "sampled_A_inputs":list(range(9,89)),
                   "post_typewriter_capture":"AFTER_24A_SETTLED",
-                  "naming_screen_input_attempt":"A88, START-to-OK, A, then 18 A",
+                  "naming_screen_input_attempt":"A88, START-to-OK, A, then 46 A",
+                  "settled_title_frames":["TITLE_66S","TITLE_78S","TITLE_90S"],
+                  "post_name_followup_frames":[20,22,24,26,28,30,32,36,40,46],
                   "naming_screen_completion_visual_review_pending":True,
                   "intro_dialogue_visual_review_pending":True,
                   "frames":frames,"different_visual_phases":len({x["fingerprint"] for x in frames}),
