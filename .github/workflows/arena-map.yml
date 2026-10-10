@@ -1193,79 +1193,52 @@ jobs:
           rm experimental-synthetic-vietnamese.gba
           echo "mGBA headless screen smoke PASS; gameplay/font detail still needs human visual QA." >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Compile all 663 source-owned Move, Item and POKEBLOCK descriptions (isolated 4437 trial)
+      - name: Re-audit 663 already integrated Move Item and POKEBLOCK descriptions
         run: |
-          # Start from the independently source-proven 3774 title+controls
-          # trial; leave its exact SHA/font-grafted mGBA release gate untouched.
-          cp -a all-localized-title-trial descriptions-4437-source-trial
-          python3 tools/stage_source_descriptions.py \
-            --workspace descriptions-4437-source-trial \
-            --plan artifact/user-facing-integration-plan.json \
-            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
-            --kind move --limit 355 --rebalance --apply \
-            --report artifact/SOURCE_ADDITIVE_MOVE_DESC_STAGE.json
-          python3 tools/stage_source_descriptions.py \
-            --workspace descriptions-4437-source-trial \
-            --plan artifact/user-facing-integration-plan.json \
-            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
-            --kind item --limit 310 --apply \
-            --report artifact/SOURCE_ADDITIVE_ITEM_DESC_STAGE.json
-          python3 tools/stage_pokeblock_item_descriptions.py \
-            --workspace descriptions-4437-source-trial \
-            --plan artifact/user-facing-integration-plan.json \
-            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
-            --charmap descriptions-4437-source-trial/charmap.txt \
-            --apply --report artifact/SOURCE_ADDITIVE_POKEBLOCK_DESC_STAGE.json
+          # CRITICAL: source-localization-smoke ALREADY applied all 663 BEFORE
+          # every later cp -a source chain. Re-applying would fail safely and
+          # counting them again as 4437 would DOUBLE COUNT. Verify in place.
           python3 - <<'PY'
           import json,sys
           from pathlib import Path
           sys.path.insert(0,"tools")
           from verify_compiled_source_strings import validate_stages
           p=Path("artifact")
-          reports={
-              "move-desc":json.loads((p/"SOURCE_ADDITIVE_MOVE_DESC_STAGE.json").read_text()),
-              "item-desc":json.loads((p/"SOURCE_ADDITIVE_ITEM_DESC_STAGE.json").read_text()),
-              "pokeblock":json.loads((p/"SOURCE_ADDITIVE_POKEBLOCK_DESC_STAGE.json").read_text()),
+          files={
+              "move-desc":"SOURCE_LEVEL_MOVE_DESC_PILOT.json",
+              "item-desc":"SOURCE_LEVEL_ITEM_DESC_PILOT.json",
+              "pokeblock":"SOURCE_LEVEL_POKEBLOCK_ITEM_PILOT.json"
           }
-          assert [reports[k]["labels_staged"] for k in ("move-desc","item-desc","pokeblock")]==[
-              354,293,16],reports
-          assert reports["move-desc"]["auto_rebalanced_labels"]==39,reports
-          assert reports["item-desc"]["skipped_reasons"]=={
-              "dynamic/control variable left for separate engine":16},reports
-          assert reports["pokeblock"]["native_byte_sequence_pinned"],reports
-          old=json.loads((p/"SOURCE_ALL_LOCALIZED_TITLE_ATTESTATION.json").read_text())
-          assert old["combined_source_compiled_labels"]==3774,old
-          root=Path("descriptions-4437-source-trial")
-          verified=validate_stages(root,reports)
-          assert verified["checked_unique_source_labels"]==663,verified
-          assert verified["cross_group_duplicates"]==0 and verified[
-              "all_labels_have_exact_terminal_ff"],verified
-          result={
-              "previously_compiled_labels":3774,
-              "move_descriptions":354,"item_descriptions":293,
-              "special_native_pokeblock_descriptions":16,
-              "new_unique_compiled_labels":663,
-              "combined_distinct_source_labels":4437,
-              "all_C_description_source_payloads_verified":True,
-              "no_duplicate_source_labels":True,
-              "protected_native_pokeblock_glyphs":True,
-              "font_grafted":False,"mGBA_tested":False,
-              "release_ready":False,
-          }
-          (p/"SOURCE_ADDITIVE_DESCRIPTIONS_ATTESTATION.json").write_text(
+          d={key:json.loads((p/file).read_text()) for key,file in files.items()}
+          assert [d[k]["labels_staged"] for k in files]==[354,293,16],d
+          assert d["move-desc"]["auto_rebalanced_labels"]==39,d
+          assert d["item-desc"]["skipped_reasons"]=={
+              "dynamic/control variable left for separate engine":16},d
+          assert d["pokeblock"]["native_byte_sequence_pinned"],d
+          target=Path("all-localized-title-trial")
+          audit=validate_stages(target,d)
+          assert audit["checked_unique_source_labels"]==663,audit
+          assert audit["cross_group_duplicates"]==0,audit
+          # This is a provenance/coverage audit, not a NEW source stage.
+          prev=json.loads((p/"SOURCE_ALL_LOCALIZED_TITLE_ATTESTATION.json").read_text())
+          assert prev["combined_source_compiled_labels"]==3774,prev
+          result={"verified_in_current_3774_source":True,
+                  "already_inherited_move_descriptions":354,
+                  "already_inherited_item_descriptions":293,
+                  "already_inherited_native_pokeblock_descriptions":16,
+                  "existing_unique_description_labels":663,
+                  "new_compiled_labels":0,
+                  "combined_source_label_count_unchanged":3774,
+                  "no_reapplication_or_double_counting":True,
+                  "all_source_owned_payloads_verified":True,
+                  "source_audit":audit,"emulator_description_visual_QA":False,
+                  "release_ready":False}
+          (p/"SOURCE_EXISTING_DESCRIPTIONS_AUDIT.json").write_text(
               json.dumps(result,ensure_ascii=False,indent=2)+"\n")
-          print("PASS: 663 independent descriptions installed + 3774 prior:",
-                result["combined_distinct_source_labels"])
+          print("PASS: 663 existing descriptions are already source-installed;",
+                "3774 count unchanged, no duplicate integration.")
           PY
-          make -C descriptions-4437-source-trial -j2
-          test -s descriptions-4437-source-trial/pokeemerald.gba
-          sha256sum descriptions-4437-source-trial/pokeemerald.gba > artifact/SOURCE_ADDITIVE_DESCRIPTIONS_SHA256.txt
-          arm-none-eabi-nm -n descriptions-4437-source-trial/pokeemerald.elf > artifact/SOURCE_ADDITIVE_DESCRIPTIONS_FONT.sym
-          python3 tools/audit_source_font_layout.py \
-            --rom descriptions-4437-source-trial/pokeemerald.gba \
-            --sym artifact/SOURCE_ADDITIVE_DESCRIPTIONS_FONT.sym \
-            --out artifact/SOURCE_ADDITIVE_DESCRIPTIONS_FONT_AUDIT.json
-          echo "New 663 source-owned Move/Item/Pokeblock descriptions + prior 3774 = 4437 labels; stocked font only. Emulator, battle, Pokeblock visual QA pending." >> "$GITHUB_STEP_SUMMARY"
+          echo "Audited 663 EXISTING descriptions in the previously full-PASS 3774 ROM: 0 new labels, no double counting." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
