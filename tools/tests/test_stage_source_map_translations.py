@@ -179,6 +179,32 @@ class SourceStagingTests(unittest.TestCase):
         self.assertIn(r"\l",chosen[0][0]["vietnamese"])
         self.assertEqual(chosen[0][1][-1],0xFF)
 
+    def test_battle_scrolling_preserves_control_order_and_words(self):
+        row={"source_label":"BattleDome_Text_LongNotice","category":"battle",
+             "source_file":"data/text/battle_dome.inc",
+             "english":r"a\nb$",
+             "vietnamese":r"aaa aaa aaa aaa\nbbb bbb bbb bbb$"}
+        codes={"a":0xD5,"b":0xD6," ":0x00}
+        baseline,reject=plan_rows([row],codes,"data/text/",10,100,
+                                   auto_wrap=True,category="battle")
+        self.assertFalse(baseline)
+        self.assertIn("auto-wrap: explicit third line requires review",reject)
+        fixed,reject=plan_rows([row],codes,"data/text/",10,100,
+                                auto_wrap=True,category="battle",
+                                page_scroll_reflow=True)
+        self.assertFalse(reject)
+        self.assertEqual(len(fixed),1)
+        self.assertTrue(fixed[0][0]["page_scroll_reflowed"])
+        self.assertIn(r"\l",fixed[0][0]["vietnamese"])
+        self.assertIn(0xFA,fixed[0][1])
+        self.assertEqual(fixed[0][1][-1],0xFF)
+        bad={**row,"vietnamese":r"aaa aaa aaa aaa\pbbb bbb bbb bbb$"}
+        refused,reject=plan_rows([bad],codes,"data/text/",10,100,
+                                  auto_wrap=True,category="battle",
+                                  page_scroll_reflow=True)
+        self.assertFalse(refused)
+        self.assertIn("page-scroll: source controls/placeholder drift",reject)
+
     def test_unknown_glyph_rejected(self):
         with self.assertRaisesRegex(ValueError,"missing Vietnamese glyph"):
             encode_text("Mẹ Æ$",self.codes,26)
