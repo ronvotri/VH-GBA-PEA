@@ -696,14 +696,20 @@ jobs:
               sleep 2
             done
             import -window root artifact/SOURCE_3360_MGBA_AFTER_8A.png
-            for i in $(seq 9 24); do
+            for i in $(seq 9 36); do
               xdotool key --clearmodifiers x
               sleep 2
               case "$i" in
-                9|10|12|14|16|18|20|22|24)
+                9|10|12|14|16|18|20|22|24|26|28|30|32|34|36)
                   import -window root "artifact/SOURCE_3360_MGBA_AFTER_${i}A.png"
                   ;;
               esac
+              if [ "$i" -eq 24 ]; then
+                # Check an already-visible dialogue page AFTER its typewriter
+                # animation finishes, not only at the exact A press.
+                sleep 4
+                import -window root artifact/SOURCE_3360_MGBA_AFTER_24A_SETTLED.png
+              fi
             done
             if ! kill -0 "$pid" 2>/dev/null; then
               cat artifact/SOURCE_3360_MGBA_CONSOLE.log
@@ -718,7 +724,9 @@ jobs:
           from pathlib import Path
           from PIL import Image
           names=["BOOT","34S","54S","AFTER_START","AFTER_8A"]+[
-              f"AFTER_{i}A" for i in (9,10,12,14,16,18,20,22,24)]
+              f"AFTER_{i}A" for i in (9,10,12,14,16,18,20,22,24)]+[
+              "AFTER_24A_SETTLED"]+[
+              f"AFTER_{i}A" for i in (26,28,30,32,34,36)]
           frames=[]
           for name in names:
               pic=Path("artifact")/f"SOURCE_3360_MGBA_{name}.png"
@@ -737,7 +745,8 @@ jobs:
           assert len({x["fingerprint"] for x in frames})>=3,"emulator intro never visually progressed"
           report={"boot_emulator":"mGBA SDL Ubuntu 22.04",
                   "visible_frame_captured":True,
-                  "sampled_A_inputs":list(range(9,25)),
+                  "sampled_A_inputs":list(range(9,37)),
+                  "post_typewriter_capture":"AFTER_24A_SETTLED",
                   "intro_dialogue_visual_review_pending":True,
                   "frames":frames,"different_visual_phases":len({x["fingerprint"] for x in frames}),
                   "low_color_transition_frames":[x["phase"] for x in frames if x["transition_or_low_color"]],
