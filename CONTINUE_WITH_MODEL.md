@@ -1660,3 +1660,16 @@ Full SUCCESS **[GitHub Actions #37976103270](https://github.com/ronvotri/VH-GBA-
 - Previous 3,360-text stock-font identity `9e804a...` and original playable v0.4 remain valid older checkpoints. Screenshots are not a general emulator completion certificate; **next priority is controlled captures for full Birch first/second/fourth pages, Vietnamese vowel accent sizing/reading at 240×160, intro choices, in-truck/Mom, then Pokéblock/save/battle and beta patch**.
 - Do not claim all 17,512 source manifest rows integrated; count remains **3,360 source-compiled out of 17,512 translated represented rows**. Don't send a stock-font full ROM as completed Vietnamese release; public GitHub contains only code, manifests, QA image/metadata artifact, no licensed ROM.
 
+
+
+## 2026-10-10 — FOLLOW-UP 14-FRAME BIRCH PAGINATION VISUAL QA
+
+CI [#38028464686](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38028464686) **full SUCCESS**, implementation commit `46c34244`. Inspected the actual non-ROM artifact (14 mGBA frames, `SOURCE_3360_MGBA_BOOT_QA.json`): image phases BOOT / 34s / white-fade 54s / START / A8 / A9 / A10 / A12 / A14 / A16 / A18 / A20 / A22 / A24.
+
+**Observed in the in-game textbox:** A12 `Chào cháu! Xin lỗi vì đợi lâu!` (wrapped across two visible lines), A14/A16 `Chào mừng đến với thế giới POKéMON!`, A18/A20/A22 `Ta là BIRCH.`. A24 showed next `Mọi người gọi ta là` + part of `giáo sư PO...` while the typewriter was still drawing. No glitch/crash through these stages. The synthetic accent strokes look small/uneven at native resolution; editorial legibility QA remains pending, and A24 text must be assessed after settling. Avoid OCR and avoid claiming incomplete typewriter text is truncation.
+
+**New focused follow-up in progress:** GitHub Actions [#38031617919](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38031617919), commit `05daf7b0`, captures A24 settled and A26/A28/A30/A32/A34/A36 so successive Birch pages can be reviewed. Do not count full gameplay/battle/save as tested.
+
+**Current additional source-ownership finding:** in `SOURCE_SYSTEM_TEXT_STAGE.json`, Birch intro `gText_Birch_Welcome`, `gText_Birch_AndYouAre`, `gText_Birch_BoyOrGirl`, `gText_Birch_WhatsYourName` are integrated. But `gText_Birch_Pokemon`, `gText_Birch_MainSpeech`, `gText_Birch_AreYouReady` are **NOT** among the 500 compiler-installed `system-text` stage labels because of strict source box line-size and/or glyph controls. These are already translated in `translations/system-text/core-save-pc-items-events.vi.json`, but are not in the 3,360 compiled subset yet. Need manual compact reflow preserving original `\\p/\\n/\\l` order, then an independent additive source stage that does not mutate the SHA-pinned 3,360 donor-free font baseline. Dynamic `{PLAYER}{KUN}` speech requires dedicated placeholder-preserving support, NOT unsafe generic replacement.
+
+No commercial ROM in public repo. Original tested v0.4 rollback and pinned 3,360+synthetic-font CI remain intact.
