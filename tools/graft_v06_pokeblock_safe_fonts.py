@@ -166,6 +166,17 @@ ATTESTED_ARENA_NATIVE_5299_FONT_OFFSETS={
 }
 
 
+# Full SUCCESS CI #38083932879: 257 new static battle messages ELF-byte QA.
+# 5556 source-compiled labels. The original five GBA font banks are intact.
+PINNED_BATTLE_SCROLL_5556_SOURCE_SHA256="b3d79575d7fcd27031c9b01dfbc4994493eea499d8f63ee61866ed9a31c980c7"
+ATTESTED_BATTLE_SCROLL_5556_FONT_OFFSETS={
+    "gFontSmallNarrowLatinGlyphs":0x718ADC,
+    "gFontSmallLatinGlyphs":0x720CDC,
+    "gFontNarrowLatinGlyphs":0x728EDC,
+    "gFontShortLatinGlyphs":0x7310DC,
+    "gFontNormalLatinGlyphs":0x7392DC,
+}
+
 def require_pinned_target_symbols(target_offsets:dict[str,int],
                                   source_sha256:str=PINNED_SOURCE_SHA256)->None:
     profiles={
@@ -181,6 +192,7 @@ def require_pinned_target_symbols(target_offsets:dict[str,int],
         PINNED_SYSTEM_SCROLL_4406_SOURCE_SHA256:ATTESTED_SYSTEM_SCROLL_4406_FONT_OFFSETS,
         PINNED_MAP_SCROLL_5282_SOURCE_SHA256:ATTESTED_MAP_SCROLL_5282_FONT_OFFSETS,
         PINNED_ARENA_NATIVE_5299_SOURCE_SHA256:ATTESTED_ARENA_NATIVE_5299_FONT_OFFSETS,
+        PINNED_BATTLE_SCROLL_5556_SOURCE_SHA256:ATTESTED_BATTLE_SCROLL_5556_FONT_OFFSETS,
     }
     expected=profiles.get(source_sha256.lower())
     if expected is None:
@@ -313,7 +325,8 @@ def main():
         PINNED_SYSTEM_SECOND_3894_SOURCE_SHA256,
         PINNED_SYSTEM_SCROLL_4406_SOURCE_SHA256,
         PINNED_MAP_SCROLL_5282_SOURCE_SHA256,
-        PINNED_ARENA_NATIVE_5299_SOURCE_SHA256):
+        PINNED_ARENA_NATIVE_5299_SOURCE_SHA256,
+        PINNED_BATTLE_SCROLL_5556_SOURCE_SHA256):
         p.error("source SHA256 has no attested v0.6 font geometry profile")
     if a.output and a.output.resolve() in {a.clean.resolve(),a.v04.resolve(),a.source_built.resolve()}:
         p.error("output must not overwrite source or donor ROM")
