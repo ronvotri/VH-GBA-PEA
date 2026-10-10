@@ -128,6 +128,21 @@ class UppercaseAccentSourceRegression(unittest.TestCase):
         self.assertFalse(done)
 
 class ReservedNamingUIRegression(unittest.TestCase):
+
+    def test_prioritize_naming_screen_title_under_hard_batch_limit(self):
+        c={ch:i+1 for i,ch in enumerate("Tên bạn?Game mới")}
+        source=('const u8 gText_MainMenuOption[] = _("OPTION");\n'
+                'const u8 gText_YourName[] = _("YOUR NAME?");\n')
+        rows=[{"category":"system-ui","source_file":"src/strings.c",
+               "source_label":"gText_MainMenuOption","english":"OPTION",
+               "vietnamese":"Game mới"},
+              {"category":"system-ui","source_file":"src/strings.c",
+               "source_label":"gText_YourName","english":"YOUR NAME?",
+               "vietnamese":"Tên bạn?"}]
+        _,chosen,_=stage(rows,source,c,limit=1,include_short_static=True,
+                         priority_labels=("gText_YourName",))
+        self.assertEqual([r["label"] for r in chosen],["gText_YourName"])
+
     def test_main_menu_and_naming_title_can_be_reserved_from_old_batch(self):
         from stage_source_ui_translations import stage
         codes={ch:i+1 for i,ch in enumerate("Tên bạn?Game mới")}

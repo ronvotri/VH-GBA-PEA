@@ -983,6 +983,7 @@ jobs:
             --exclude-report artifact/SOURCE_SHORT_C_UI_STAGE.json \
             --include-short-static --auto-wrap \
             --normalize-unsupported-uppercase \
+            --priority-label gText_YourName \
             --limit 300 --apply \
             --report artifact/SOURCE_EXTRA_SHORT_C_UI_STAGE.json
           python3 - <<'PY'
@@ -1001,6 +1002,7 @@ jobs:
           assert reserved<=labels,sorted(reserved-labels)
           assert new["mode"]=="apply" and new["source_file"]=="src/strings.c",new
           assert new["previously_staged_label_exclusions"]==341,new
+          assert new["priority_labels"]==["gText_YourName"],new
           assert validate_stages(Path("expanded-title-c-ui-trial"),{"ui":new})[
               "checked_unique_source_labels"]==new["labels_staged"],new
           old=json.loads((p/"SOURCE_SHORT_C_UI_STAGE.json").read_text())

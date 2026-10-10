@@ -37,9 +37,13 @@ def stage(rows:list, source:str, codes:dict[str,int],
           limit:int=30, max_segment:int=26, auto_wrap:bool=False,
           include_short_static:bool=False,
           excluded_labels:set[str]|None=None,
-          normalize_unsupported_uppercase:bool=False):
+          normalize_unsupported_uppercase:bool=False,
+          priority_labels:tuple[str,...]=()):
     accepted=[]; skipped=Counter()
     excluded_labels=excluded_labels or set()
+    if priority_labels:
+        priority={label:i for i,label in enumerate(priority_labels)}
+        rows=sorted(rows,key=lambda row:priority.get(row.get("source_label"),len(priority)))
     for row in rows:
         if len(accepted)>=limit:
             break
@@ -99,6 +103,8 @@ def main():
     ap.add_argument("--limit",type=int,default=30)
     ap.add_argument("--max-segment",type=int,default=26)
     ap.add_argument("--auto-wrap",action="store_true")
+    ap.add_argument("--priority-label",action="append",default=[],
+                    help="Prioritize exact source-owned high-visibility UI labels before the batch limit")
     ap.add_argument("--normalize-unsupported-uppercase",action="store_true",
                     help="Only in additive batches: re-case ALL CAPS Vietnamese UI with unavailable capital glyphs")
     ap.add_argument("--include-short-static",action="store_true",
@@ -129,6 +135,15 @@ def main():
             excluded.add(label)
     if len(set(a.exclude_label))!=len(a.exclude_label):
         ap.error("duplicate explicit C UI label exclusion")
+    if len(set(a.priority_label))!=len(a.priority_label):
+        ap.error("duplicate priority C UI label")
+    for label in a.priority_label:
+        match=[r for r in plan if r.get("source_label")==label]
+        if (len(match)!=1 or match[0].get("category")!="system-ui"
+                or match[0].get("source_file")!="src/strings.c"):
+            ap.error("priority C UI label lacks one source owner: "+label)
+        if label in excluded or label in a.exclude_label:
+            ap.error("priority C UI label was explicitly excluded: "+label)
     for label in a.exclude_label:
         candidates=[r for r in plan if r.get("source_label")==label]
         if (len(candidates)!=1 or candidates[0].get("category")!="system-ui"
@@ -146,7 +161,8 @@ def main():
     source=source_file.read_text(encoding="utf-8")
     new_source,accepted,skipped=stage(
         plan,source,codes,a.limit,a.max_segment,a.auto_wrap,
-        a.include_short_static,excluded,a.normalize_unsupported_uppercase)
+        a.include_short_static,excluded,a.normalize_unsupported_uppercase,
+        tuple(a.priority_label))
     if a.apply:
         source_file.write_text(new_source,encoding="utf-8")
     report={"mode":"apply" if a.apply else "dry-run",
@@ -155,6 +171,7 @@ def main():
             "include_short_static":a.include_short_static,
             "normalize_unsupported_uppercase":a.normalize_unsupported_uppercase,
             "normalized_caps_labels":sum(bool(v["normalized_from_caps"]) for v in accepted),
+            "priority_labels":a.priority_label,
             "previously_staged_label_exclusions":len(excluded),
             "explicit_reserved_labels":list(a.exclude_label),
             "skipped_reasons":skipped,"translated":accepted,
