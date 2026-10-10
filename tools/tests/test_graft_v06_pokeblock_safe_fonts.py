@@ -94,6 +94,20 @@ class GraftV06Tests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"wrong v0.6 target"):
             v06.require_pinned_target_symbols(v06.ATTESTED_CLEAN_OFFSETS)
 
+    def test_birch_reflow_source_profile_pairs_its_own_symbols(self):
+        self.assertEqual(v06.PINNED_BIRCH_3360_SOURCE_SHA256,
+                         "c1756599fa7ffd227c073891ab43765aff3442bf0b6a15aa07efb624dbcc6f78")
+        self.assertEqual(v06.ATTESTED_BIRCH_3360_FONT_OFFSETS[
+                         "gFontNormalLatinGlyphs"],0x73AF8C)
+        v06.require_pinned_target_symbols(v06.ATTESTED_BIRCH_3360_FONT_OFFSETS,
+                                           v06.PINNED_BIRCH_3360_SOURCE_SHA256)
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(v06.ATTESTED_3360_FONT_OFFSETS,
+                                               v06.PINNED_BIRCH_3360_SOURCE_SHA256)
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(v06.ATTESTED_BIRCH_3360_FONT_OFFSETS,
+                                               v06.PINNED_3360_SOURCE_SHA256)
+
     def test_pinned_3360_source_font_profile_is_exactly_paired(self):
         self.assertEqual(
             v06.PINNED_3360_SOURCE_SHA256,
