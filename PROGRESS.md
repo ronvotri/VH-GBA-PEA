@@ -1781,3 +1781,9 @@ Exact 32MiB source-built trial SHA256 `9e804a005210d59d4dc1806d387d3b50ee412ab9e
 
 [Actions #37976103270](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/37976103270) full SUCCESS: synthesized Vietnamese-font 3,360-source-label experimental ROM (SHA256 `0c1944e241d7e00765e2ef6cc5ba7912600694df8fa6a151985a051a09a23591`) ran for at least 12 seconds in Ubuntu 22.04 mGBA SDL via Xvfb and produced a nonblank 800×600 capture (458 distinct downsampled colors). Visually examined screenshot: green jungle opening animation at the center 240×160 viewport; **NO Vietnamese text/dialogue yet visible**. Proof limited to boot/initial graphics, not font legibility or gameplay/save. Non-ROM artifact screenshot `SOURCE_3360_MGBA_BOOT.png`, report `SOURCE_3360_MGBA_BOOT_QA.json`; private ROM never uploaded. Next checkpoint must test accented dialogue, title credit, battle/Pokéblock/save and review raster quality before public beta. Original v0.4 preserved.
 
+
+
+## 2026-10-10 — REAL VIETNAMESE GAME DIALOGUE SCREENSHOT IN mGBA, CI PASS
+
+[Actions #38027882107](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38027882107) **SUCCESS**: 3,360 source-owned Vietnamese labels (including newly reflowed and attested `gText_Birch_Welcome`) + 315 synthesized Vietnamese font glyphs. A real 240×160 mGBA textbox after START+16×A shows **“Ta là BIRCH.”**, replacing **“My name is BIRCH.”** in the matched older control-frame capture. Six screenshot phases, one valid ~54s white fade, source font/text attestation passed. Exact new source GBA SHA256 `c1756599fa7ffd227c073891ab43765aff3442bf0b6a15aa07efb624dbcc6f78`; exact font+text GBA SHA256 `966de9fd324c1e286a5fa4d83d612e939a0dfbe7c9d779666b3f6ffd13f03890`. All 8,380 font-only byte changes safely isolated. **Not beta/release-certified:** inspect additional accented text/shape, menu, gameplay, battle, Pokéblock and saves. 17,512 translated-manifest rows are NOT all ROM-integrated; v0.4 rollback preserved.
+
