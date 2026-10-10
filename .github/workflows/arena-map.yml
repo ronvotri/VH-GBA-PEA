@@ -7,6 +7,12 @@ on:
       - 'tools/**'
       - 'translations/**'
   workflow_dispatch:
+    inputs:
+      experimental_synthetic_font_smoke:
+        description: "Run DEBUG-ONLY synthesized-font emulator tests (not the v0.4 font)"
+        type: boolean
+        default: false
+        required: false
 
 concurrency:
   group: arena-symbol-map-${{ github.ref }}
@@ -1045,6 +1051,7 @@ jobs:
           echo "Compiled source with naming controls and visible Votri credit, audit PASS. Stock-font only: do NOT declare emulator/beta QA." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Experimentally synthesize Vietnamese glyphs in 3774-text source ROM (no donor)
+        if: github.event_name == 'workflow_dispatch' && inputs.experimental_synthetic_font_smoke
         run: |
           # This experimental result is LOCAL CI-ONLY; never publish the
           # commercial game ROM or source bitmap assets as an Actions artifact.
@@ -1072,6 +1079,7 @@ jobs:
           echo "PRIVATE font+translated-text synthesis PASS; experimental ROM kept ONLY for immediate CI emulator smoke." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Boot 3774-text synthesized-font ROM in mGBA under Xvfb (no ROM artifact)
+        if: github.event_name == 'workflow_dispatch' && inputs.experimental_synthetic_font_smoke
         run: |
           sudo apt-get install -y mgba-sdl xvfb xauth imagemagick xdotool
           test -s experimental-synthetic-vietnamese.gba
@@ -1379,6 +1387,7 @@ jobs:
           echo "Additional system text source-owned bytes compiled and linker-attested separately; stock font only, no mGBA visual or released ROM. Prior 3774-font trial unchanged." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Experimentally synthesize Vietnamese glyphs in 3894-text source ROM (no donor)
+        if: github.event_name == 'workflow_dispatch' && inputs.experimental_synthetic_font_smoke
         run: |
           # This experimental result is LOCAL CI-ONLY; never publish the
           # commercial game ROM or source bitmap assets as an Actions artifact.
@@ -1406,6 +1415,7 @@ jobs:
           echo "PRIVATE font+translated-text synthesis PASS; experimental ROM kept ONLY for immediate CI emulator smoke." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Boot 3894-text synthesized-font ROM in mGBA under Xvfb (no ROM artifact)
+        if: github.event_name == 'workflow_dispatch' && inputs.experimental_synthetic_font_smoke
         run: |
           sudo apt-get install -y mgba-sdl xvfb xauth imagemagick xdotool
           test -s experimental-3894-synthetic-vietnamese.gba
@@ -1546,6 +1556,108 @@ jobs:
           # ROM remains CI-private; never upload even for successful smoke.
           rm experimental-3894-synthetic-vietnamese.gba
           echo "mGBA headless screen smoke PASS; gameplay/font detail still needs human visual QA." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Compile source-verified long-form system dialogue with native GBA scroll (no synthetic font)
+        run: |
+          # ONLY static strings, exact original control order, and word-preserved
+          # layout. Third visible line must use native \l scrolling, NEVER an
+          # arbitrary pointer edit. The 3894 earlier source ROM remains intact.
+          cp -a expanded-system-second-trial system-safe-scroll-source-trial
+          python3 tools/stage_source_map_translations.py \
+            --workspace system-safe-scroll-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --category system-text \
+            --source-prefix data/text/ \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_STAGE.json \
+            --exclude-report artifact/SOURCE_BIRCH_NARRATIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_BIRCH_DYNAMIC_STAGE.json \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_SECOND_STAGE.json \
+            --limit 1000 \
+            --auto-wrap \
+            --page-scroll-reflow \
+            --apply \
+            --report artifact/SOURCE_SYSTEM_SCROLL_REFLOW_STAGE.json
+          python3 - <<'PY'
+          import json,re,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import validate_stages
+          p=Path("artifact")
+          names=("SOURCE_SYSTEM_TEXT_STAGE.json","SOURCE_BIRCH_NARRATIVE_STAGE.json",
+                 "SOURCE_BIRCH_DYNAMIC_STAGE.json","SOURCE_SYSTEM_TEXT_SECOND_STAGE.json")
+          previous=[json.loads((p/n).read_text()) for n in names]
+          new=json.loads((p/"SOURCE_SYSTEM_SCROLL_REFLOW_STAGE.json").read_text())
+          prior=json.loads((p/"SOURCE_SYSTEM_TEXT_SECOND_ATTESTATION.json").read_text())
+          n=new["labels_staged"]
+          assert prior["combined_unique_source_labels"]==3894,prior
+          assert new["mode"]=="apply" and new["category"]=="system-text",new
+          assert new["previously_staged_label_exclusions"]==625,new
+          assert 100<=n<=1000,("no substantial safe scroll batch",new["skipped_reasons"])
+          assert new["page_scroll_reflowed_labels"]==n,new
+          labels={r["label"] for r in new["translated"]}
+          previous_labels={r["label"] for report in previous for r in report["translated"]}
+          assert len(labels)==n and len(previous_labels)==625 and not labels&previous_labels
+          control=lambda s:re.findall(r"\\[npl]",s)
+          words=lambda s:re.sub(r"\\[npl]"," ",s[:-1]).split()
+          for row in new["translated"]:
+              assert row["source_file"].startswith("data/text/"),row
+              assert row["page_scroll_reflowed"] and row["auto_wrapped"],row
+              assert control(row["english"])==control(row["authored_vietnamese"]),row["label"]
+              assert words(row["authored_vietnamese"])==words(row["vietnamese"]),row["label"]
+              assert control(row["authored_vietnamese"]).count(r"\p")==control(row["vietnamese"]).count(r"\p")
+          root=Path("system-safe-scroll-source-trial")
+          assert validate_stages(root,{"system-text":new})["checked_unique_source_labels"]==n
+          attest={"previous_unique_source_labels":3894,"new_unique_scroll_dialogue_labels":n,
+                  "combined_unique_source_labels":3894+n,
+                  "prior_system_source_labels_excluded":625,
+                  "original_source_page_control_signature_pinned":True,
+                  "all_translation_words_preserved":True,
+                  "all_new_source_payloads_independently_rechecked":True,
+                  "source_v04_font_grafted":False,
+                  "emulator_gameplay_tested":False,"release_ready":False}
+          (p/"SOURCE_SYSTEM_SCROLL_REFLOW_ATTESTATION.json").write_text(
+              json.dumps(attest,ensure_ascii=False,indent=2)+"\n")
+          print("PASS native-scroll system text staged",n,"new labels; total",3894+n)
+          PY
+          make -C system-safe-scroll-source-trial -j2
+          test -s system-safe-scroll-source-trial/pokeemerald.gba
+          sha256sum system-safe-scroll-source-trial/pokeemerald.gba > artifact/SOURCE_SYSTEM_SCROLL_REFLOW_SHA256.txt
+          arm-none-eabi-nm -n system-safe-scroll-source-trial/pokeemerald.elf > artifact/SOURCE_SYSTEM_SCROLL_REFLOW_FONT.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom system-safe-scroll-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_SYSTEM_SCROLL_REFLOW_FONT.sym \
+            --out artifact/SOURCE_SYSTEM_SCROLL_REFLOW_FONT_AUDIT.json
+          python3 - <<'PY'
+          import json,re,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import extract_asm_payload
+          p=Path("artifact")
+          d=json.loads((p/"SOURCE_SYSTEM_SCROLL_REFLOW_STAGE.json").read_text())
+          rom=Path("system-safe-scroll-source-trial/pokeemerald.gba").read_bytes()
+          sym=(p/"SOURCE_SYSTEM_SCROLL_REFLOW_FONT.sym").read_text()
+          found={}
+          for address,name in re.findall(r"(?m)^([0-9A-Fa-f]+)\s+\w\s+([A-Za-z_][A-Za-z0-9_]*)$",sym):
+              found.setdefault(name,[]).append(int(address,16))
+          for row in d["translated"]:
+              label=row["label"]
+              addrs=found.get(label,[])
+              assert len(addrs)==1,(label,addrs)
+              addr=addrs[0]
+              assert 0x08000000<=addr<0x0A000000,(label,addr)
+              payload=extract_asm_payload(
+                  (Path("system-safe-scroll-source-trial")/row["source_file"]).read_text(),label)
+              off=addr-0x08000000
+              assert rom[off:off+len(payload)]==payload,("linked source text bytes mismatch",label)
+          report=p/"SOURCE_SYSTEM_SCROLL_REFLOW_ATTESTATION.json"
+          att=json.loads(report.read_text())
+          att["actual_rom_linker_payloads_checked"]=d["labels_staged"]
+          att["every_new_payload_verified_at_linked_rom_address"]=True
+          report.write_text(json.dumps(att,ensure_ascii=False,indent=2)+"\n")
+          print("PASS native-scroll GBA linked payloads",d["labels_staged"])
+          PY
+          echo "Static system-text scroll batch compiled with stock source fonts; private real-v0.4 donor graft and gameplay QA still pending." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |

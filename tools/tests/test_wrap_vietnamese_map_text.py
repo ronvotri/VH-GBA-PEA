@@ -47,6 +47,17 @@ class TextWrappingTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"explicit third"):
             auto_wrap_script_text(r"Xin chào\nTạm biệt\nLần sau gặp!$")
 
+    def test_explicit_third_line_opt_in_scrolls_not_pages(self):
+        source=r"Xin chào\\nTạm biệt\\nLần sau gặp!$"
+        fixed=auto_wrap_script_text(source,page_scroll_reflow=True)
+        self.assertEqual(fixed,r"Xin chào\\nTạm biệt\\lLần sau gặp!$")
+        self.assertEqual(fixed.count(r"\\p"),source.count(r"\\p"))
+
+    def test_explicit_third_line_opt_in_keeps_page_break(self):
+        source=r"Xin chào\\pTạm biệt\\nHôm nay\\nCảm ơn!$"
+        fixed=auto_wrap_script_text(source,page_scroll_reflow=True)
+        self.assertEqual(fixed,r"Xin chào\\pTạm biệt\\nHôm nay\\lCảm ơn!$")
+
     def test_unknown_control_rejected(self):
         with self.assertRaisesRegex(ValueError,"unrecognized"):
             auto_wrap_script_text(r"Có gì\c kỳ lạ?$")

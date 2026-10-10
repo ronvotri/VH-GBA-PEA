@@ -133,7 +133,7 @@ def normalize_authored_linefeeds(english:str,vietnamese:str)->str:
 def plan_rows(rows:list,codes:dict[str,int],src_prefix:str,max_segment:int,limit:int,
               auto_wrap:bool=False, priority_prefixes:list[str]|None=None,
               category:str="map-story",normalize_literal_newlines:bool=False,
-              only_literal_newlines:bool=False):
+              only_literal_newlines:bool=False,page_scroll_reflow:bool=False):
     chosen=[]; rejected=Counter()
     for row in prioritized_rows(rows, priority_prefixes or []):
         if len(chosen)>=limit:break
@@ -153,11 +153,23 @@ def plan_rows(rows:list,codes:dict[str,int],src_prefix:str,max_segment:int,limit
             row["authored_vietnamese"]=vietnamese
             row["vietnamese"]=vietnamese=normalized
             row["literal_newlines_normalized"]=True
+        if page_scroll_reflow:
+            # Fail closed: the authored GBA page/newline/scroll order must
+            # already match the pinned English owner before layout adaptation.
+            # Never let this mode process dynamic placeholders or raw LF.
+            signature=lambda s:re.findall(r"\\[npl]",s)
+            if (signature(english)!=signature(vietnamese) or
+                    "{" in english or "}" in english or
+                    "\n" in vietnamese):
+                rejected["page-scroll: source controls/placeholder drift"]+=1
+                continue
         try:payload=encode_text(vietnamese,codes,max_segment)
         except ValueError as exc:
             if auto_wrap and str(exc).startswith("line exceeds "):
                 try:
-                    wrapped=auto_wrap_script_text(vietnamese,max_segment)
+                    wrapped=auto_wrap_script_text(
+                        vietnamese,max_segment,
+                        page_scroll_reflow=page_scroll_reflow)
                     payload=encode_text(wrapped,codes,max_segment)
                 except ValueError as wrap_exc:
                     rejected["auto-wrap: "+str(wrap_exc)]+=1
@@ -166,6 +178,11 @@ def plan_rows(rows:list,codes:dict[str,int],src_prefix:str,max_segment:int,limit
                 row["authored_vietnamese"]=row.get("authored_vietnamese",vietnamese)
                 row["vietnamese"]=wrapped
                 row["auto_wrapped"]=True
+                if page_scroll_reflow:
+                    # This is a source-verified layout adaptation, not a new
+                    # translation or permission to change control/page order.
+                    assert wrapped.count(r"\p")==vietnamese.count(r"\p")
+                    row["page_scroll_reflowed"]=True
             else:
                 rejected[str(exc)]+=1
                 continue
@@ -185,6 +202,8 @@ def main():
     p.add_argument("--report",type=Path,required=True)
     p.add_argument("--apply",action="store_true")
     p.add_argument("--auto-wrap",action="store_true",help="Only word-boundary newline/scroll conversion for overlong non-dynamic text")
+    p.add_argument("--page-scroll-reflow",action="store_true",
+                   help="Opt-in: repair third visible line as native GBA scroll for source-pinned static system text; page breaks remain unchanged")
     p.add_argument("--normalize-literal-newlines",action="store_true",
                    help="Opt-in: change literal JSON LF to \\n only when ordered source controls match")
     p.add_argument("--only-literal-newlines",action="store_true",
@@ -201,6 +220,10 @@ def main():
         p.error("battle/system-text source staging restricted to data/text/ assembly files")
     if a.only_literal_newlines and not a.normalize_literal_newlines:
         p.error("--only-literal-newlines requires --normalize-literal-newlines")
+    if a.page_scroll_reflow and (a.category!="system-text" or
+                                  not a.source_prefix.startswith("data/text/") or
+                                  not a.auto_wrap or a.normalize_literal_newlines):
+        p.error("--page-scroll-reflow requires static system-text, --auto-wrap, and no literal-LF normalization")
 
     plan=json.loads(a.plan.read_text(encoding="utf-8"))
     if a.exclude_label:
@@ -219,7 +242,8 @@ def main():
             p.error(str(exc))
     raw=json.loads(a.codebook.read_text(encoding="utf-8"))
     codes={c:int(v,16) for c,v in raw["glyph_bytes"].items()}
-    selected, skipped=plan_rows(plan,codes,a.source_prefix,a.max_segment,a.limit,a.auto_wrap,a.priority_source_prefix,a.category,a.normalize_literal_newlines,a.only_literal_newlines)
+    selected, skipped=plan_rows(plan,codes,a.source_prefix,a.max_segment,a.limit,a.auto_wrap,a.priority_source_prefix,a.category,a.normalize_literal_newlines,a.only_literal_newlines,
+                                  a.page_scroll_reflow)
     skipped=Counter(skipped); changes={}; accepted=[]
     for row, encoded in selected:
         relative=row["source_file"]
@@ -237,6 +261,7 @@ def main():
                          "english":row["english"],"vietnamese":row["vietnamese"],
                          "authored_vietnamese":row.get("authored_vietnamese",row["vietnamese"]),
                          "auto_wrapped":bool(row.get("auto_wrapped")),
+                         "page_scroll_reflowed":bool(row.get("page_scroll_reflowed")),
                          "literal_newlines_normalized":bool(row.get("literal_newlines_normalized"))})
     if a.apply:
         for filepath,updated in changes.items():
@@ -248,6 +273,7 @@ def main():
             "explicit_owned_label_exclusions":len(a.exclude_label),
             "files_staged":len(changes),
             "auto_wrapped_labels":sum(1 for row in accepted if row["auto_wrapped"]),
+            "page_scroll_reflowed_labels":sum(1 for row in accepted if row["page_scroll_reflowed"]),
             "literal_newlines_normalized":sum(1 for row in accepted if row["literal_newlines_normalized"]),
             "skipped_reasons":dict(skipped),
             "translated":accepted,"font_rendering_emulator_certified":False,

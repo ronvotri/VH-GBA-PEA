@@ -13,7 +13,7 @@ import re
 CONTROLS = (r"\n",r"\p",r"\l")
 
 
-def auto_wrap_script_text(text: str, width: int = 26) -> str:
+def auto_wrap_script_text(text: str, width: int = 26, *, page_scroll_reflow: bool = False) -> str:
     if not text.endswith("$") or text.count("$") != 1:
         raise ValueError("missing or extra terminator")
     if "{" in text or "}" in text:
@@ -32,7 +32,13 @@ def auto_wrap_script_text(text: str, width: int = 26) -> str:
                 line = 0
             elif chunk == r"\n":
                 if line == 1:
-                    raise ValueError("explicit third line requires review")
+                    if not page_scroll_reflow:
+                        raise ValueError("explicit third line requires review")
+                    # The regular GBA dialog window holds two lines. Native
+                    # \l scrolls the box for overflow; never change a \p page.
+                    # This option is only used by a source-signature-gated
+                    # static system-text build, not the default wrapper.
+                    chunk = r"\l"
                 line = 1
             else:
                 line = 1

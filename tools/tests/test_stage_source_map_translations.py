@@ -132,6 +132,40 @@ class SourceStagingTests(unittest.TestCase):
         text=r"a\nb\p$"
         self.assertEqual(normalize_authored_linefeeds(text,text),text)
 
+    def test_system_text_static_page_scroll_reflow_has_explicit_gate(self):
+        row={"source_label":"SystemStory","source_file":"data/text/a.inc",
+             "category":"system-text","english":r"a\\nb$",
+             "vietnamese":r"aaa aaa aaa aaa\\nbbb bbb bbb bbb$"}
+        codes={"a":0xD5,"b":0xD6," ":0x00}
+        blocked,errors=plan_rows([row],codes,"data/text/",10,100,
+                                  auto_wrap=True,category="system-text")
+        self.assertFalse(blocked)
+        self.assertIn("auto-wrap: explicit third line requires review",errors)
+        chosen,errors=plan_rows([row],codes,"data/text/",10,100,
+                                 auto_wrap=True,category="system-text",
+                                 page_scroll_reflow=True)
+        self.assertFalse(errors)
+        self.assertEqual(len(chosen),1)
+        self.assertTrue(chosen[0][0]["page_scroll_reflowed"])
+        self.assertIn(r"\\l",chosen[0][0]["vietnamese"])
+        self.assertEqual(chosen[0][1][-1],0xFF)
+
+    def test_system_scroll_reflow_rejects_control_drift_and_dynamic(self):
+        codes={"a":0xD5,"b":0xD6," ":0x00}
+        base={"source_label":"SystemStory","source_file":"data/text/a.inc",
+              "category":"system-text","english":r"a\\pb$",
+              "vietnamese":r"aaa aaa aaa aaa\\nbbb bbb bbb bbb$"}
+        chosen,errors=plan_rows([base],codes,"data/text/",10,100,
+                                 auto_wrap=True,category="system-text",
+                                 page_scroll_reflow=True)
+        self.assertFalse(chosen)
+        self.assertIn("page-scroll: source controls/placeholder drift",errors)
+        dyn={**base,"english":r"{PLAYER}\\nb$"}
+        chosen,_=plan_rows([dyn],codes,"data/text/",10,100,
+                            auto_wrap=True,category="system-text",
+                            page_scroll_reflow=True)
+        self.assertFalse(chosen)
+
     def test_unknown_glyph_rejected(self):
         with self.assertRaisesRegex(ValueError,"missing Vietnamese glyph"):
             encode_text("Mẹ Æ$",self.codes,26)

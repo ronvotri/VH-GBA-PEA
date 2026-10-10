@@ -268,7 +268,8 @@ def main():
     p.add_argument("--output",type=Path)
     a=p.parse_args()
     if a.expected_source_sha256.lower() not in (PINNED_SOURCE_SHA256,PINNED_3360_SOURCE_SHA256,PINNED_BIRCH_3360_SOURCE_SHA256,PINNED_BIRCH_3363_SOURCE_SHA256,PINNED_BIRCH_3364_SOURCE_SHA256,PINNED_BIRCH_3366_SOURCE_SHA256,
-        PINNED_C_UI_3666_SOURCE_SHA256,PINNED_NAMING_3774_SOURCE_SHA256):
+        PINNED_C_UI_3666_SOURCE_SHA256,PINNED_NAMING_3774_SOURCE_SHA256,
+        PINNED_SYSTEM_SECOND_3894_SOURCE_SHA256):
         p.error("source SHA256 has no attested v0.6 font geometry profile")
     if a.output and a.output.resolve() in {a.clean.resolve(),a.v04.resolve(),a.source_built.resolve()}:
         p.error("output must not overwrite source or donor ROM")
