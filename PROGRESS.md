@@ -1868,3 +1868,9 @@ CI [#38073554131](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/3807355413
 Commits 035e1888 and 330f313e add a source-only trial for at most 300 NEW source-owned battle labels, with explicit 200-label prior exclusion, historical 3774-label duplicate ledger, source byte validation, compiler build and stock-font audit. Expected reports (only if CI completes): SOURCE_ADDITIONAL_BATTLE_STAGE.json, SOURCE_ADDITIONAL_BATTLE_ATTESTATION.json, SOURCE_ADDITIONAL_BATTLE_SHA256.txt and SOURCE_ADDITIONAL_BATTLE_FONT.sym.
 
 No additional count or playable ROM is certified by these commits. Count is still 3774 source labels in the proven Vietnamese-font mGBA trial; inherited 663 descriptions already included, never add them again. New isolated battle trial remains stock-font, not visually tested in battle or save/load. Keep previously validated v0.4 and 3774 unchanged.
+
+## 2026-10-11 — Battle safe-source exhaustion; system-text batch 2 now in CI
+
+CI #38074410319 PASSED prior 663-description provenance re-audit. CI #38076060393 FAILED CLOSED at new battle trial because no eligible additional plain, non-dynamic battle .inc source labels remain after the original 200; candidates contain unsupported placeholders/controls. No extra battle labels added and no ROM corrupted.
+
+Commit 1397bc56 shifts to up to 300 genuinely new system-text .inc labels, excluding exactly 505 old system-text/Birch owners, and independently verifying every staged label in the *compiled* GBA using the newly linked .sym addresses. CI #38077468592 underway at this checkpoint; no additional count certified. Only 3,774 source+Vietnamese font labels have already passed actual mGBA text/name flow. Existing v0.4 rollback unaffected.
