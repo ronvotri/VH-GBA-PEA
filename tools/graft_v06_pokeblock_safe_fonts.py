@@ -47,6 +47,18 @@ ATTESTED_3360_FONT_OFFSETS={
     "gFontNormalLatinGlyphs":0x73AF98,
 }
 
+# The Professor Birch welcome sentence was brought into the 500-label
+# system-text batch after a glyph-safe reflow. Exact CI artifact from
+# run 38027431812 (source SHA + compiler-generated SOURCE_SHORT_C_UI_FONT.sym).
+PINNED_BIRCH_3360_SOURCE_SHA256="c1756599fa7ffd227c073891ab43765aff3442bf0b6a15aa07efb624dbcc6f78"
+ATTESTED_BIRCH_3360_FONT_OFFSETS={
+    "gFontSmallNarrowLatinGlyphs":0x71A78C,
+    "gFontSmallLatinGlyphs":0x72298C,
+    "gFontNarrowLatinGlyphs":0x72AB8C,
+    "gFontShortLatinGlyphs":0x732D8C,
+    "gFontNormalLatinGlyphs":0x73AF8C,
+}
+
 
 
 def require_pinned_target_symbols(target_offsets:dict[str,int],
@@ -54,6 +66,7 @@ def require_pinned_target_symbols(target_offsets:dict[str,int],
     profiles={
         PINNED_SOURCE_SHA256:ATTESTED_SOURCE_FONT_OFFSETS,
         PINNED_3360_SOURCE_SHA256:ATTESTED_3360_FONT_OFFSETS,
+        PINNED_BIRCH_3360_SOURCE_SHA256:ATTESTED_BIRCH_3360_FONT_OFFSETS,
     }
     expected=profiles.get(source_sha256.lower())
     if expected is None:
@@ -181,7 +194,7 @@ def main():
     p.add_argument("--expected-source-sha256",required=True)
     p.add_argument("--output",type=Path)
     a=p.parse_args()
-    if a.expected_source_sha256.lower() not in (PINNED_SOURCE_SHA256,PINNED_3360_SOURCE_SHA256):
+    if a.expected_source_sha256.lower() not in (PINNED_SOURCE_SHA256,PINNED_3360_SOURCE_SHA256,PINNED_BIRCH_3360_SOURCE_SHA256):
         p.error("source SHA256 has no attested v0.6 font geometry profile")
     if a.output and a.output.resolve() in {a.clean.resolve(),a.v04.resolve(),a.source_built.resolve()}:
         p.error("output must not overwrite source or donor ROM")
