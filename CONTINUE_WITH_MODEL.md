@@ -1702,3 +1702,26 @@ Commit [`78dd7ce7`](https://github.com/ronvotri/VH-GBA-PEA/commit/78dd7ce70b4177
 
 The two dynamic Birch `{PLAYER}{KUN}` strings remain unsolved by the existing plain-text stage. `charmap.txt` maps `PLAYER = FD 01`, `KUN = FD 05`. Extend dedicated dynamic control encoder only with exact owner, original token order and worst-case player-name width, never flatten or drop placeholders. Font design remains experimental and gameplay/battle/save/Pokéblock QA pending. Keep stable v0.4 rollback untouched. No full commercial ROM uploaded.
 
+
+
+## 2026-10-10 — VERIFIED 3364 SOURCE LABELS AND REAL BIRCH RUNTIME FONTS
+
+Authoritative workflow FULL SUCCESS: https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38038283878 ; source/font/emulator commit 8ab7d252bf3d51472bc4c71086e7b6135e1395e3.
+
+ACTUAL mGBA screenshots SOURCE_3364_MGBA_AFTER_26A.png and AFTER_28A.png visually show Vietnamese 'Đây là một POKéMON.' replacing the previously English 'This is what we call a POKéMON.' Later screens A30-A36 show Vietnamese Birch narrative. Full CI PASS; emulator runs through Start and A36.
+
+ROOT CAUSE: src/main_menu.c:1357 calls gText_ThisIsAPokemon in src/strings.c; does NOT use unreferenced data/text/birch_speech.inc:gText_Birch_Pokemon. The previous wrong-label translation compiled but was not referenced. Now real C label is correctly translated and source + linker ROM bytes independently verified.
+
+Source manifest translations/system-ui/strings-pokedex-ui.vi.json translated this exact C string to 'Đây là một POKéMON.{PAUSE 96}\p'. Tool tools/stage_birch_runtime_pokemon_c.py verifies source owner, exactly one label, English baseline, charmap PAUSE FC 08, runtime suffix FC 08 60 FB FF, correct C-linked symbol ROM bytes and source codebook; exact ROM offset 0x006D7BA2. Unit tests reject drift and bad tokens.
+
+Count: 3363 earlier independently source-installed labels plus 1 verified true runtime C label = 3364 unique source-compiled labels. Catalog has 17512 translation records, NOT all installed.
+
+EXACT clean STOCK font 3364 source GBA SHA256: 5b63c67009140c309aa1f6339df2abef158e6bb43aa4cb08b6f6e557e5967ea5. Source font symbols SmallNarrow 0x71A6FC; Small 0x7228FC; Narrow 0x72AAFC; Short 0x732CFC; Normal 0x73AEFC. All 5 glyph blocks originally stock English; immutable source/offset pairing.
+
+EXACT 3364-source + 63 Vietnamese accented characters x 5 fonts (315 glyphs) final experimental font ROM SHA256: b8a0915d07e516900dc694dabfb0f12caa212c6616d22734147dea948bfaf509. Only 8380 font-data bytes changed and native English, PKMN, Pokéblock and special graphic glyphs protected. This combined font/text ROM was tested under mGBA, never published as commercial ROM.
+
+QA artifact: arena-0.13.0-symbol-map, run 38038283878; metadata SOURCE_BIRCH_RUNTIME_C_STAGE.json / ATTESTATION.json / SHA256.txt / FONT.sym / FONT_AUDIT.json; SOURCE_3364_SYNTH_FONT_QA.json; SOURCE_3364_MGBA_BOOT_QA.json; 21 screenshots. 3364 full ROM was removed from temporary CI workspace, not uploaded.
+
+NOT release-ready: font aesthetic still rough, dynamic Birch placeholders {PLAYER}{KUN}, character selection, in-truck/Littleroot progression, battle, Pokéblock, saves, sprite and layout coverage need dedicated QA. Original v0.4 stable rollback untouched.
+
+Next: dedicated PLAYER=FD 01 KUN=FD 05 token-aware dynamic intro integration preserving source order and worst-case player name width. Verify referenced symbols and play to name-choice/truck. Do not change pinned 3364 SHA/offsets or claim unseen screenshots.
