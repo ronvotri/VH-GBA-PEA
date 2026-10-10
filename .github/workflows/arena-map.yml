@@ -496,6 +496,13 @@ jobs:
           assert base["combined_distinct_compiled_labels"]==2560,base
           assert all(row["source_file"].startswith("data/text/")
                      for row in stage["translated"])
+          # The greeting visibly stayed English in the previous six-frame
+          # emulator inspection; pin its exact owner and revised source text.
+          greetings=[row for row in stage["translated"]
+                     if row["label"]=="gText_Birch_Welcome"]
+          assert len(greetings)==1 and greetings[0]["source_file"]=="data/text/birch_speech.inc",greetings
+          assert "Ta là BIRCH." in greetings[0]["vietnamese"],greetings
+          assert "giáo sư POKéMON." in greetings[0]["vietnamese"],greetings
           original_names={
               "map":"SOURCE_LEVEL_VIETNAMESE_PILOT.json",
               "ui":"SOURCE_LEVEL_UI_PILOT.json",
