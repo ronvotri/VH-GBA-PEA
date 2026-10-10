@@ -1847,3 +1847,9 @@ Early CI #38071188171 caught a naming tool variable typo (fixed). CI #3807123811
 
 [Actions #38072650328](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38072650328) FULL SUCCESS: 3,774 compiler-installed Vietnamese source labels + 315 synthetic accented glyphs, exact **font+text GBA SHA256 `3750c01b802dd9a14ee7dbf1cc5ce7c807567d62c7697eef7aa493a09f6684f9`**. Real mGBA screenshots show the naming bar **`Di chuyển / OK / Quay lại`**, name box `Tên bạn?`, dialog choice **`Có / Không`** and Birch expanded seven-character player name **`Vậy cháu là AAAAAAA?`**, no crash. Title sprite `Việt hóa bởi Votri Valley` source-compiled but not yet visually photographed on the title logo. Main game/battle/save/Pokéblock remain untested. Next combine previously smoke-tested 354 move descriptions, 293 item descriptions and 16 special Pokéblock item descriptions on top of the confirmed source, then source-build/mGBA-QA independently; keep v0.4 fallback and past SHA profiles untouched. DO NOT falsely count +663 before separate CI pass.
 
+
+
+## 2026-10-11 — +663 ADDITIVE DESCRIPTIONS SUBMITTED TO GITHUB CI
+
+Commit `438e287bc501ee95607ed3ddf74e2dedb3dc87bd` adds an isolated source integration test for 354 translated move descriptions, 293 item descriptions and 16 native Pokéblock descriptions, **target source total 4,437**. Workflow [#38073554131](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38073554131) is running, with full source compiler and five-stock-font geometry audit still pending. Do not claim 4,437 compiled until CI PASS; no new combined-font/gameplay certification. The previous 3,774+Vietnamese font run [#38072650328](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38072650328) FULL SUCCESS and 7-char player-name/YES-NO/name-bar screenshots remain the latest *actual* emulator-proven baseline. Next pin the 4,437 exact SHA and symbols and run mGBA. Commercial ROM not uploaded.
+
