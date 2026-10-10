@@ -1117,6 +1117,74 @@ jobs:
             --out artifact/SOURCE_REMAINING_C_UI_FONT_AUDIT.json
           echo "Additional independently attested bulk C UI labels compiled once, in a separate stock-font source trial. New font profile & mGBA QA STILL REQUIRED." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Source-compile authentic naming controls and integrated Votri Valley credit (isolated trial)
+        run: |
+          cp -a full-c-ui-source-trial all-localized-title-trial
+          python3 tools/stage_naming_controls.py \
+            --workspace all-localized-title-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --apply --report artifact/SOURCE_NAMING_CONTROLS_STAGE.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("artifact")
+          prev=json.loads((p/"SOURCE_REMAINING_C_UI_ATTESTATION.json").read_text())
+          d=json.loads((p/"SOURCE_NAMING_CONTROLS_STAGE.json").read_text())
+          assert d["mode"]=="apply" and d["labels_staged"]==2,d
+          assert {x["label"] for x in d["translated"]}=={
+              "gText_MoveOkBack","gText_YesNo"},d
+          assert d["button_and_newline_sequence_preserved"],d
+          reports=["SOURCE_LEVEL_UI_PILOT.json","SOURCE_SHORT_C_UI_STAGE.json",
+                   "SOURCE_EXTRA_SHORT_C_UI_STAGE.json"]+prev["batch_report_files"]
+          used=set()
+          for fn in reports:
+              old=json.loads((p/fn).read_text())
+              current={x["label"] for x in old["translated"]}
+              assert not current & used,(fn,sorted(current & used))
+              used|=current
+          assert not {x["label"] for x in d["translated"]}&used
+          assert len(used)==641+prev["extra_static_C_ui_labels"],len(used)
+          print("PASS: both naming icon+YESNO texts staged on top of",
+                prev["combined_compiled_labels"],"source labels")
+          PY
+          python3 tools/apply_title_credit.py all-localized-title-trial
+          test -s all-localized-title-trial/graphics/title_screen/translation_credit.png
+          make -C all-localized-title-trial -j2
+          test -s all-localized-title-trial/pokeemerald.gba
+          sha256sum all-localized-title-trial/pokeemerald.gba > artifact/SOURCE_ALL_LOCALIZED_TITLE_SHA256.txt
+          arm-none-eabi-nm -n all-localized-title-trial/pokeemerald.elf > artifact/SOURCE_ALL_LOCALIZED_TITLE_FONT.sym
+          python3 tools/stage_naming_controls.py \
+            --workspace all-localized-title-trial \
+            --rom all-localized-title-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_ALL_LOCALIZED_TITLE_FONT.sym \
+            --report artifact/SOURCE_NAMING_CONTROLS_STAGE.json
+          python3 tools/audit_source_font_layout.py \
+            --rom all-localized-title-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_ALL_LOCALIZED_TITLE_FONT.sym \
+            --out artifact/SOURCE_ALL_LOCALIZED_TITLE_FONT_AUDIT.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("artifact")
+          d=json.loads((p/"SOURCE_NAMING_CONTROLS_STAGE.json").read_text())
+          prior=json.loads((p/"SOURCE_REMAINING_C_UI_ATTESTATION.json").read_text())
+          assert d["linked_ROM_verified"] and len(d["linked_checks"])==2,d
+          assert all(x["icons_and_linebreak_verified"] for x in d["linked_checks"]),d
+          att={"previous_compiled_source_labels":prior["combined_compiled_labels"],
+               "new_naming_controls_compiled":2,
+               "combined_source_compiled_labels":prior["combined_compiled_labels"]+2,
+               "game_title_credit_compiled":True,
+               "button_icon_and_newline_ROM_bytes_verified":True,
+               "source_font_attested":True,
+               "synthesized_Vietnamese_font":False,
+               "emulator_verified":False,"release_ready":False}
+          (p/"SOURCE_ALL_LOCALIZED_TITLE_ATTESTATION.json").write_text(
+              json.dumps(att,ensure_ascii=False,indent=2)+"\n")
+          print("PASS combined source compiled:",att["combined_source_compiled_labels"])
+          PY
+          echo "Compiled source with naming controls and visible Votri credit, audit PASS. Stock-font only: do NOT declare emulator/beta QA." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned

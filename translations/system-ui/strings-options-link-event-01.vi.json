@@ -7,7 +7,7 @@
   "notes": "Source-driven contiguous slice after gText_BlenderMaxSpeedRecord with seven battle-classified labels excluded into battle scope. Canonical Pokémon, POKéNAV and SAFARI BALL names remain English. Color/control tokens and newline order are preserved. No ROM patch or pointer write performed.",
   "translations": {
     "gText_234Players": "2 NGƯỜI CHƠI\\n3 NGƯỜI CHƠI\\n4 NGƯỜI CHƠI",
-    "gText_YesNo": "CÓ\\nKHÔNG",
+    "gText_YesNo": "Có\\nKhông",
     "gText_SelectorArrow3": "▶",
     "gText_Peekaboo": "Ú ÒA!",
     "gText_CommErrorCheckConnections": "Lỗi kết nối…\\nHãy kiểm tra mọi kết nối,\\nrồi tắt và bật lại nguồn.",
