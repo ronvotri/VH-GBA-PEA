@@ -1684,3 +1684,21 @@ No commercial ROM in public repo. Original tested v0.4 rollback and pinned 3,360
 - Future Birch dynamic `{PLAYER}{KUN}` strings are still blocked intentionally, because `tools/stage_dynamic_map_translations.py` currently permits only PLAYER/RIVAL and system-text KUN must be verified from pinned charmap (`PLAYER=FD 01`, `KUN=FD 05`) and conservative runtime width before adapting; never flatten placeholders into fixed names.
 - Stable v0.4 and full 3,360 source+Vietnamese synth-font boot proof preserved. No commercial ROM binary uploaded to repo/artifact.
 
+
+
+## 2026-10-10 — VERIFIED 3,363 SOURCE LABELS + SOURCE-MATCHED FONT PROFILE
+
+[Actions #38032748175](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38032748175) **FULL SUCCESS**. The previous **3,360** source-installed text labels and SHA-locked donor-free synthesized font/real mGBA regression stayed intact. A separate exact-owner source stage compiled **+3** previously English Birch introduction messages from `data/text/birch_speech.inc`: `gText_Birch_Pokemon`, `gText_Birch_MainSpeech`, `gText_Birch_AreYouReady`, with no prior source label collisions. The stage independently validated exact English-source label ownership, original ordered `\\n/\\p/\\l` sequence, FF terminators, no dynamic-variable edits, and successful compilation. **3,363 unique source-compiled labels** in the *new* trial, but this 3,363 build's bitmap artwork was stock English until the next font graft.
+
+A previous intermediate run #38032233808 correctly FAILED because `gText_Birch_Pokemon` originally had an extra Vietnamese newline not present in the original English control sequence. That was corrected in translation to `Đây chính là “POKéMON.”\\p\\n$`, preserving EXACT source page/scroll controls; source compiler now passes. No screenshot from the 3,360 ROM should be interpreted as visual verification of the NEW 3,363 ROM.
+
+**Exact new 32MiB source GBA SHA256:** `af67fe4775bf29a110b77573667ac397c6933174e1bd6a470e7927f870d9d77f`. Read `SOURCE_BIRCH_NARRATIVE_FONT.sym`, not `SOURCE_SHORT_C_UI_FONT.sym` or original game symbols. Exact stock-font glyph offsets attested by `SOURCE_BIRCH_NARRATIVE_FONT_AUDIT.json`:
+- SmallNarrow `0x71A708`; Small `0x722908`; Narrow `0x72AB08`; Short `0x732D08`; Normal `0x73AF08`.
+- All five font block SHA checks match original clean English artwork at relocated positions; no bitmap graft in source trial.
+
+Artifacts: `SOURCE_BIRCH_NARRATIVE_STAGE.json`, `SOURCE_BIRCH_NARRATIVE_ATTESTATION.json`, `SOURCE_BIRCH_NARRATIVE_SHA256.txt`, `SOURCE_BIRCH_NARRATIVE_FONT.sym`, `SOURCE_BIRCH_NARRATIVE_FONT_AUDIT.json`.
+
+Commit [`78dd7ce7`](https://github.com/ronvotri/VH-GBA-PEA/commit/78dd7ce70b41777edacdc8e47498fbf013d2fff8) added this new exact SHA/font-symbol pair to the collision-safe font graft and donor-free synthesis whitelists with wrong-pair regression tests, moved the already attested three-label source stage BEFORE font synthesis, and re-targeted the emulator screenshots to **the 3,363-text+Vietnamese-font combined trial**, which should now show formerly English Birch pages after A28/A32. CI [#38033333400](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38033333400) was running when handoff written. **Do NOT claim the 3,363-text+new glyph ROM passed mGBA or has a new final hash until this CI concludes SUCCESS and its images are inspected.**
+
+The two dynamic Birch `{PLAYER}{KUN}` strings remain unsolved by the existing plain-text stage. `charmap.txt` maps `PLAYER = FD 01`, `KUN = FD 05`. Extend dedicated dynamic control encoder only with exact owner, original token order and worst-case player-name width, never flatten or drop placeholders. Font design remains experimental and gameplay/battle/save/Pokéblock QA pending. Keep stable v0.4 rollback untouched. No full commercial ROM uploaded.
+
