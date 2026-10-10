@@ -36,7 +36,8 @@ def replace_c_string(src: str, label: str, english: str, payload: bytes) -> str:
 def stage(rows:list, source:str, codes:dict[str,int],
           limit:int=30, max_segment:int=26, auto_wrap:bool=False,
           include_short_static:bool=False,
-          excluded_labels:set[str]|None=None):
+          excluded_labels:set[str]|None=None,
+          normalize_unsupported_uppercase:bool=False):
     accepted=[]; skipped=Counter()
     excluded_labels=excluded_labels or set()
     for row in rows:
@@ -53,6 +54,18 @@ def stage(rows:list, source:str, codes:dict[str,int],
              (len(english)<32 or not (r"\n" in english or r"\p" in english)))):
             continue
         try:
+            original_translation=translation
+            # UI in all caps may use Vietnamese accented capital glyphs not in
+            # the pinned GBA codebook. Optional *additive* trial only: normalize
+            # plain ALL CAPS display text to readable sentence case.
+            # Never alter dynamic tokens, engine escapes or mixed-case strings.
+            if (normalize_unsupported_uppercase and translation==translation.upper()
+                    and not any(ch in translation for ch in "{}\\")
+                    and any(ch not in codes for ch in translation)):
+                candidate=translation.capitalize()
+                if candidate and len(candidate)<=max_segment and all(ch in codes for ch in candidate):
+                    translation=candidate
+            normalized_from_caps=translation!=original_translation
             # C's _("...") source automatically adds the FF terminator.
             # Map .string manifests normally include $, C UI manifests do not.
             authored_with_end = translation if translation.endswith("$") else translation+"$"
@@ -73,6 +86,7 @@ def stage(rows:list, source:str, codes:dict[str,int],
                          "authored_vietnamese":translation,
                          "compiled_vietnamese":proposed,
                          "auto_wrapped":proposed!=authored_with_end,
+                         "normalized_from_caps":normalized_from_caps,
                          "encoded_bytes":len(encoded)})
     return source,accepted,dict(skipped)
 
@@ -85,6 +99,8 @@ def main():
     ap.add_argument("--limit",type=int,default=30)
     ap.add_argument("--max-segment",type=int,default=26)
     ap.add_argument("--auto-wrap",action="store_true")
+    ap.add_argument("--normalize-unsupported-uppercase",action="store_true",
+                    help="Only in additive batches: re-case ALL CAPS Vietnamese UI with unavailable capital glyphs")
     ap.add_argument("--include-short-static",action="store_true",
                     help="Opt-in: stage C-owned gText_ UI labels even without long multiline text")
     ap.add_argument("--exclude-report",type=Path,action="append",default=[],
@@ -130,13 +146,15 @@ def main():
     source=source_file.read_text(encoding="utf-8")
     new_source,accepted,skipped=stage(
         plan,source,codes,a.limit,a.max_segment,a.auto_wrap,
-        a.include_short_static,excluded)
+        a.include_short_static,excluded,a.normalize_unsupported_uppercase)
     if a.apply:
         source_file.write_text(new_source,encoding="utf-8")
     report={"mode":"apply" if a.apply else "dry-run",
             "source_file":"src/strings.c","labels_staged":len(accepted),
             "auto_wrapped_labels":sum(v["auto_wrapped"] for v in accepted),
             "include_short_static":a.include_short_static,
+            "normalize_unsupported_uppercase":a.normalize_unsupported_uppercase,
+            "normalized_caps_labels":sum(bool(v["normalized_from_caps"]) for v in accepted),
             "previously_staged_label_exclusions":len(excluded),
             "explicit_reserved_labels":list(a.exclude_label),
             "skipped_reasons":skipped,"translated":accepted,

@@ -982,7 +982,8 @@ jobs:
             --exclude-report artifact/SOURCE_LEVEL_UI_PILOT.json \
             --exclude-report artifact/SOURCE_SHORT_C_UI_STAGE.json \
             --include-short-static --auto-wrap \
-            --limit 250 --apply \
+            --normalize-unsupported-uppercase \
+            --limit 300 --apply \
             --report artifact/SOURCE_EXTRA_SHORT_C_UI_STAGE.json
           python3 - <<'PY'
           import json,sys
@@ -995,7 +996,8 @@ jobs:
                     "gText_MainMenuOption","gText_Player","gText_Time",
                     "gText_Badges","gText_YourName"}
           labels={e["label"] for e in new["translated"]}
-          assert 30<=new["labels_staged"]<=250,new
+          assert 200<=new["labels_staged"]<=300,new
+          assert new["normalize_unsupported_uppercase"] and new["normalized_caps_labels"]>=75,new
           assert reserved<=labels,sorted(reserved-labels)
           assert new["mode"]=="apply" and new["source_file"]=="src/strings.c",new
           assert new["previously_staged_label_exclusions"]==341,new
@@ -1010,6 +1012,7 @@ jobs:
                    "combined_compiled_labels":3366+new["labels_staged"],
                    "naming_title_and_main_menu_labels_included":sorted(reserved),
                    "source_integrity_verified":True,
+                   "all_caps_labels_reflowed_to_GBA_supported_sentence_case":new["normalized_caps_labels"],
                    "font_grafted":False,"emulator_tested":False,"release_ready":False}
           (p/"SOURCE_EXTRA_SHORT_C_UI_ATTESTATION.json").write_text(
               json.dumps(details,indent=2)+"\n")

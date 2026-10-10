@@ -99,6 +99,34 @@ class CSourceStageTests(unittest.TestCase):
 
 
 
+
+class UppercaseAccentSourceRegression(unittest.TestCase):
+    def test_only_explicit_additive_batch_rewrites_all_caps_Vietnamese(self):
+        src='const u8 gText_MainMenuOption[] = _("OPTION");\n'
+        row={"category":"system-ui","source_file":"src/strings.c",
+             "source_label":"gText_MainMenuOption","english":"OPTION",
+             "vietnamese":"TÙY CHỌN"}
+        glyphs={ch:i+1 for i,ch in enumerate("Tùy chọn")}
+        raw,blocked,_=stage([row],src,glyphs,include_short_static=True)
+        self.assertFalse(blocked)
+        self.assertEqual(raw,src)
+        coded,done,rejected=stage([row],src,glyphs,
+                                  include_short_static=True,
+                                  normalize_unsupported_uppercase=True)
+        self.assertEqual(len(done),1,rejected)
+        self.assertEqual(done[0]["compiled_vietnamese"],"Tùy chọn$")
+        self.assertTrue(done[0]["normalized_from_caps"])
+        self.assertIn("0xFF",coded)
+    def test_dynamic_and_mixed_case_never_normalized(self):
+        src='const u8 gText_MainMenuOption[] = _("OPTION");\n'
+        row={"category":"system-ui","source_file":"src/strings.c",
+             "source_label":"gText_MainMenuOption","english":"OPTION",
+             "vietnamese":"{PLAYER} TÙY CHỌN"}
+        glyphs={ch:i+1 for i,ch in enumerate("Tùy chọn")}
+        _,done,_=stage([row],src,glyphs,include_short_static=True,
+                       normalize_unsupported_uppercase=True)
+        self.assertFalse(done)
+
 class ReservedNamingUIRegression(unittest.TestCase):
     def test_main_menu_and_naming_title_can_be_reserved_from_old_batch(self):
         from stage_source_ui_translations import stage
