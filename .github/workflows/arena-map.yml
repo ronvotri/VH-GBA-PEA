@@ -594,7 +594,7 @@ jobs:
           n=new["labels_staged"]
           assert new["mode"]=="apply" and new["source_file"]=="src/strings.c"
           assert new["include_short_static"] and new["previously_staged_label_exclusions"]==49,new
-          assert set(new["explicit_reserved_labels"])==["gText_EggNickname","gText_MainMenuNewGame","gText_MainMenuContinue","gText_MainMenuOption","gText_Player","gText_Time","gText_Badges","gText_YourName"],new
+          assert set(new["explicit_reserved_labels"])==set(["gText_EggNickname","gText_MainMenuNewGame","gText_MainMenuContinue","gText_MainMenuOption","gText_Player","gText_Time","gText_Badges","gText_YourName"]),new
           assert 100<=n<=300,new
           assert prior["combined_distinct_compiled_labels"]==3060,prior
           old_names={
