@@ -89,6 +89,8 @@ def main():
                     help="Opt-in: stage C-owned gText_ UI labels even without long multiline text")
     ap.add_argument("--exclude-report",type=Path,action="append",default=[],
                     help="Skip previously staged gText_ labels, requiring an exact applied source report")
+    ap.add_argument("--exclude-label",action="append",default=[],
+                    help="Reserve exact uniquely owned C UI labels for a later additive source stage")
     ap.add_argument("--apply",action="store_true")
     ap.add_argument("--report",type=Path,required=True)
     a=ap.parse_args()
@@ -109,6 +111,16 @@ def main():
             if label in excluded:
                 ap.error("duplicate C UI exclusion label")
             excluded.add(label)
+    if len(set(a.exclude_label))!=len(a.exclude_label):
+        ap.error("duplicate explicit C UI label exclusion")
+    for label in a.exclude_label:
+        candidates=[r for r in plan if r.get("source_label")==label]
+        if (len(candidates)!=1 or candidates[0].get("category")!="system-ui"
+                or candidates[0].get("source_file")!="src/strings.c"):
+            ap.error("C UI label exclusion lacks exactly one source owner: "+label)
+        if label in excluded:
+            ap.error("C UI label is in both a prior source report and explicit exclusions: "+label)
+        excluded.add(label)
     raw=json.loads(a.codebook.read_text(encoding="utf-8"))
     codes={ch:int(value,16) for ch,value in raw["glyph_bytes"].items()}
     root=a.workspace.resolve()
@@ -126,6 +138,7 @@ def main():
             "auto_wrapped_labels":sum(v["auto_wrapped"] for v in accepted),
             "include_short_static":a.include_short_static,
             "previously_staged_label_exclusions":len(excluded),
+            "explicit_reserved_labels":list(a.exclude_label),
             "skipped_reasons":skipped,"translated":accepted,
             "font_emulator_validated":False,
             "rom_modified_by_tool":False}

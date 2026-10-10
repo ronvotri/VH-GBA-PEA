@@ -570,6 +570,14 @@ jobs:
             --plan artifact/user-facing-integration-plan.json \
             --codebook checkpoints/v06-pokeblock-safe-codebook.json \
             --exclude-report artifact/SOURCE_LEVEL_UI_PILOT.json \
+            --exclude-label gText_EggNickname \
+            --exclude-label gText_MainMenuNewGame \
+            --exclude-label gText_MainMenuContinue \
+            --exclude-label gText_MainMenuOption \
+            --exclude-label gText_Player \
+            --exclude-label gText_Time \
+            --exclude-label gText_Badges \
+            --exclude-label gText_YourName \
             --include-short-static \
             --limit 300 \
             --auto-wrap \
@@ -585,7 +593,8 @@ jobs:
           prior=json.loads((d/"SOURCE_SYSTEM_TEXT_ATTESTATION.json").read_text())
           n=new["labels_staged"]
           assert new["mode"]=="apply" and new["source_file"]=="src/strings.c"
-          assert new["include_short_static"] and new["previously_staged_label_exclusions"]==41,new
+          assert new["include_short_static"] and new["previously_staged_label_exclusions"]==49,new
+          assert set(new["explicit_reserved_labels"])==["gText_EggNickname","gText_MainMenuNewGame","gText_MainMenuContinue","gText_MainMenuOption","gText_Player","gText_Time","gText_Badges","gText_YourName"],new
           assert 100<=n<=300,new
           assert prior["combined_distinct_compiled_labels"]==3060,prior
           old_names={
@@ -962,6 +971,60 @@ jobs:
           # ROM remains CI-private; never upload even for successful smoke.
           rm experimental-synthetic-vietnamese.gba
           echo "mGBA headless screen smoke PASS; gameplay/font detail still needs human visual QA." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Bulk-add remaining source-owned short UI with naming/title labels (separate stock-font trial)
+        run: |
+          cp -a birch-dynamic-source-trial expanded-title-c-ui-trial
+          python3 tools/stage_source_ui_translations.py \
+            --workspace expanded-title-c-ui-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --exclude-report artifact/SOURCE_LEVEL_UI_PILOT.json \
+            --exclude-report artifact/SOURCE_SHORT_C_UI_STAGE.json \
+            --include-short-static --auto-wrap \
+            --limit 250 --apply \
+            --report artifact/SOURCE_EXTRA_SHORT_C_UI_STAGE.json
+          python3 - <<'PY'
+          import json,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import validate_stages
+          p=Path("artifact")
+          new=json.loads((p/"SOURCE_EXTRA_SHORT_C_UI_STAGE.json").read_text())
+          reserved={"gText_EggNickname","gText_MainMenuNewGame","gText_MainMenuContinue",
+                    "gText_MainMenuOption","gText_Player","gText_Time",
+                    "gText_Badges","gText_YourName"}
+          labels={e["label"] for e in new["translated"]}
+          assert 30<=new["labels_staged"]<=250,new
+          assert reserved<=labels,sorted(reserved-labels)
+          assert new["mode"]=="apply" and new["source_file"]=="src/strings.c",new
+          assert new["previously_staged_label_exclusions"]==341,new
+          assert validate_stages(Path("expanded-title-c-ui-trial"),{"ui":new})[
+              "checked_unique_source_labels"]==new["labels_staged"],new
+          old=json.loads((p/"SOURCE_SHORT_C_UI_STAGE.json").read_text())
+          assert not labels & {e["label"] for e in old["translated"]}, "UI label overlap"
+          dyn=json.loads((p/"SOURCE_BIRCH_DYNAMIC_ATTESTATION.json").read_text())
+          assert dyn["total_source_compiled_labels"]==3366,dyn
+          details={"previously_compiled_labels":3366,
+                   "new_extra_short_C_UI_labels":new["labels_staged"],
+                   "combined_compiled_labels":3366+new["labels_staged"],
+                   "naming_title_and_main_menu_labels_included":sorted(reserved),
+                   "source_integrity_verified":True,
+                   "font_grafted":False,"emulator_tested":False,"release_ready":False}
+          (p/"SOURCE_EXTRA_SHORT_C_UI_ATTESTATION.json").write_text(
+              json.dumps(details,indent=2)+"\n")
+          print("PASS: extra source-owned short C UI:",new["labels_staged"],
+                "combined source:",details["combined_compiled_labels"])
+          PY
+          make -C expanded-title-c-ui-trial -j2
+          test -s expanded-title-c-ui-trial/pokeemerald.gba
+          sha256sum expanded-title-c-ui-trial/pokeemerald.gba > artifact/SOURCE_EXTRA_SHORT_C_UI_SHA256.txt
+          arm-none-eabi-nm -n expanded-title-c-ui-trial/pokeemerald.elf > artifact/SOURCE_EXTRA_SHORT_C_UI_FONT.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom expanded-title-c-ui-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_EXTRA_SHORT_C_UI_FONT.sym \
+            --out artifact/SOURCE_EXTRA_SHORT_C_UI_FONT_AUDIT.json
+          echo "Additional short C UI labels and naming screen title compiled in isolated stock-font source build; no emulator certification." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |

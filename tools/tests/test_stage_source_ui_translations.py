@@ -97,5 +97,27 @@ class CSourceStageTests(unittest.TestCase):
         self.assertTrue(skipped)
 
 
+
+
+class ReservedNamingUIRegression(unittest.TestCase):
+    def test_main_menu_and_naming_title_can_be_reserved_from_old_batch(self):
+        from stage_source_ui_translations import stage
+        codes={ch:i+1 for i,ch in enumerate("Tên bạn?Game mới")}
+        source='const u8 gText_YourName[] = _("YOUR NAME?");\n'
+        row={"category":"system-ui","source_file":"src/strings.c",
+             "source_label":"gText_YourName","english":"YOUR NAME?",
+             "vietnamese":"Tên bạn?"}
+        same,accepted,issues=stage([row],source,codes,limit=1,
+                                   include_short_static=True,
+                                   excluded_labels={"gText_YourName"})
+        self.assertEqual(same,source)
+        self.assertEqual(accepted,[])
+        self.assertEqual(issues,{})
+        written,accepted,_=stage([row],source,codes,limit=1,
+                                 include_short_static=True)
+        self.assertEqual(len(accepted),1)
+        self.assertIn("0x",written)
+
+
 if __name__=="__main__":
     unittest.main()
