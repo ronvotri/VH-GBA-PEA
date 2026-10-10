@@ -474,6 +474,9 @@ jobs:
             --codebook checkpoints/v06-pokeblock-safe-codebook.json \
             --source-prefix data/text/ \
             --category system-text \
+            --exclude-label gText_Birch_Pokemon \
+            --exclude-label gText_Birch_MainSpeech \
+            --exclude-label gText_Birch_AreYouReady \
             --priority-source-prefix data/text/cable_club.inc \
             --priority-source-prefix data/text/pkmn_center_nurse.inc \
             --priority-source-prefix data/text/berries.inc \
@@ -492,6 +495,7 @@ jobs:
           base=json.loads((folder/"SOURCE_EXPANDED_MAP_ATTESTATION.json").read_text())
           n=stage["labels_staged"]
           assert stage["mode"]=="apply" and stage["category"]=="system-text",stage
+          assert stage["explicit_owned_label_exclusions"]==3,stage
           assert 150<=n<=500,stage
           assert base["combined_distinct_compiled_labels"]==2560,base
           assert all(row["source_file"].startswith("data/text/")
@@ -762,6 +766,64 @@ jobs:
           # ROM remains CI-private; never upload even for successful smoke.
           rm experimental-synthetic-vietnamese.gba
           echo "mGBA headless screen smoke PASS; gameplay/font detail still needs human visual QA." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Compile newly reflowed Birch narrative as additive source trial (keep 3360 fonts pinned)
+        run: |
+          # The already boot-tested 3,360-text + synthetic-font branch remains
+          # bit-identical. The following 3 source-owned texts are independent.
+          cp -a expanded-c-ui-source-trial birch-narrative-source-trial
+          python3 tools/stage_source_map_translations.py \
+            --workspace birch-narrative-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --category system-text \
+            --source-prefix data/text/birch_speech.inc \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_STAGE.json \
+            --limit 12 \
+            --apply \
+            --report artifact/SOURCE_BIRCH_NARRATIVE_STAGE.json
+          python3 - <<'PY'
+          import json,re,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import validate_stages
+          folder=Path("artifact")
+          d=json.loads((folder/"SOURCE_BIRCH_NARRATIVE_STAGE.json").read_text())
+          old=json.loads((folder/"SOURCE_SYSTEM_TEXT_STAGE.json").read_text())
+          expected={"gText_Birch_Pokemon","gText_Birch_MainSpeech",
+                    "gText_Birch_AreYouReady"}
+          labels={row["label"] for row in d["translated"]}
+          assert d["mode"]=="apply" and d["labels_staged"]==3, d
+          assert labels==expected and d["files_staged"]==1,d
+          assert all(row["source_file"]=="data/text/birch_speech.inc" and
+                     re.findall(r"\\[npl]",row["english"])==
+                     re.findall(r"\\[npl]",row["vietnamese"])
+                     for row in d["translated"]),"Birch pagination/owner drift"
+          assert not labels & {row["label"] for row in old["translated"]},"prior 500 overlap"
+          root=Path("birch-narrative-source-trial")
+          attested=validate_stages(root,{"system-text":d})
+          assert attested["checked_unique_source_labels"]==3,attested
+          assert validate_stages(root,{"system-text":old})["checked_unique_source_labels"]==500
+          before=json.loads((folder/"SOURCE_SHORT_C_UI_ATTESTATION.json").read_text())
+          assert before["combined_distinct_compiled_labels"]==3360,before
+          result={"earlier_verified_source_labels":3360,
+                  "new_birch_narrative_labels":3,
+                  "combined_compiled_source_labels":3363,
+                  "source_owner_controls_and_terminators_pass":True,
+                  "font_patched":False,"emulator_text_checked":False,"release_ready":False}
+          (folder/"SOURCE_BIRCH_NARRATIVE_ATTESTATION.json").write_text(
+              json.dumps(result,indent=2)+"\n")
+          print("PASS: 3 independent Birch pages ready for source compilation")
+          PY
+          make -C birch-narrative-source-trial -j2
+          test -s birch-narrative-source-trial/pokeemerald.gba
+          sha256sum birch-narrative-source-trial/pokeemerald.gba > artifact/SOURCE_BIRCH_NARRATIVE_SHA256.txt
+          arm-none-eabi-nm -n birch-narrative-source-trial/pokeemerald.elf > artifact/SOURCE_BIRCH_NARRATIVE_FONT.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom birch-narrative-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_BIRCH_NARRATIVE_FONT.sym \
+            --out artifact/SOURCE_BIRCH_NARRATIVE_FONT_AUDIT.json
+          echo "Compiled three new Birch narrative pages as a separate 3,363-label source trial; stock font, NO emulator QA, prior 3,360 build preserved." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |

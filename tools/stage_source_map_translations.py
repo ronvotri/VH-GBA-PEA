@@ -92,6 +92,28 @@ def exclude_previously_staged(rows:list[dict],reports:list[dict])->tuple[list[di
     return [r for r in rows if (r.get("source_file"),r.get("source_label")) not in used],len(used)
 
 
+def exclude_explicit_source_labels(rows:list[dict],names:list[str],
+                                   category:str,source_prefix:str)->list[dict]:
+    """Protect a previously SHA-pinned source batch from new candidate priorities.
+
+    Every requested exclusion must have exactly one full source owner; rejects
+    missing/ambiguous labels instead of silently changing the selection.
+    """
+    if len(names)!=len(set(names)):
+        raise ValueError("duplicate explicit source exclusion label")
+    selected=set()
+    for label in names:
+        owned=[(row.get("source_file"),row.get("source_label"))
+               for row in rows if row.get("source_label")==label
+               and row.get("category")==category
+               and row.get("source_file","").startswith(source_prefix)]
+        if len(owned)!=1:
+            raise ValueError(f"missing or ambiguous explicit source exclusion: {label}")
+        selected.add(owned[0])
+    return [row for row in rows
+            if (row.get("source_file"),row.get("source_label")) not in selected]
+
+
 def normalize_authored_linefeeds(english:str,vietnamese:str)->str:
     """Repair literal LF as GBA \\n ONLY if the ordered source controls agree.
 
@@ -169,6 +191,8 @@ def main():
                    help="Restrict selection to authored literal LF; requires --normalize-literal-newlines")
     p.add_argument("--exclude-report",type=Path,action="append",default=[],
                    help="Exclude exact label/source identities from a previously applied stage report")
+    p.add_argument("--exclude-label",action="append",default=[],
+                   help="Reserve exact owned source label for a later independent compilation stage")
     p.add_argument("--priority-source-prefix",action="append",default=[],help="Stable source-map priority for early-game QA; repeatable")
     a=p.parse_args()
     if a.limit<1 or a.limit>1000 or not 10<=a.max_segment<=30:
@@ -179,6 +203,12 @@ def main():
         p.error("--only-literal-newlines requires --normalize-literal-newlines")
 
     plan=json.loads(a.plan.read_text(encoding="utf-8"))
+    if a.exclude_label:
+        try:
+            plan=exclude_explicit_source_labels(
+                plan,a.exclude_label,a.category,a.source_prefix)
+        except ValueError as exc:
+            p.error(str(exc))
     excluded_count=0
     if a.exclude_report:
         try:
@@ -215,6 +245,7 @@ def main():
             "mode":"apply" if a.apply else "dry-run",
             "source_prefix":a.source_prefix,"labels_staged":len(accepted),
             "previously_staged_label_exclusions":excluded_count,
+            "explicit_owned_label_exclusions":len(a.exclude_label),
             "files_staged":len(changes),
             "auto_wrapped_labels":sum(1 for row in accepted if row["auto_wrapped"]),
             "literal_newlines_normalized":sum(1 for row in accepted if row["literal_newlines_normalized"]),

@@ -4,7 +4,7 @@ import sys
 import unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from stage_source_map_translations import encode_text, patch_labeled_block, plan_rows, prioritized_rows, normalize_authored_linefeeds, exclude_previously_staged
+from stage_source_map_translations import encode_text, patch_labeled_block, plan_rows, prioritized_rows, normalize_authored_linefeeds, exclude_previously_staged, exclude_explicit_source_labels
 
 
 class SourceStagingTests(unittest.TestCase):
@@ -79,6 +79,30 @@ class SourceStagingTests(unittest.TestCase):
         prior["mode"]="apply"
         with self.assertRaisesRegex(ValueError,"duplicate label"):
             exclude_previously_staged(rows,[prior,prior])
+
+    def test_explicit_source_exclusion_preserves_exact_other_category(self):
+        rows=[
+            {"source_file":"data/text/birch_speech.inc","source_label":"BirchX",
+             "category":"system-text","english":"a$","vietnamese":"b$"},
+            {"source_file":"data/text/birch_speech.inc","source_label":"BirchY",
+             "category":"system-text","english":"a$","vietnamese":"b$"},
+            {"source_file":"data/maps/X/scripts.inc","source_label":"BirchX",
+             "category":"map-story","english":"a$","vietnamese":"b$"},
+        ]
+        filtered=exclude_explicit_source_labels(rows,["BirchX"],
+                                                "system-text","data/text/")
+        self.assertEqual(len(filtered),2)
+        self.assertTrue(any(row["category"]=="map-story" for row in filtered))
+        remaining,errors=plan_rows(filtered,self.codes,"data/text/",26,10,
+                                   category="system-text")
+        self.assertFalse(errors)
+        self.assertEqual([row["source_label"] for row,_ in remaining],["BirchY"])
+        with self.assertRaisesRegex(ValueError,"duplicate explicit"):
+            exclude_explicit_source_labels(rows,["BirchX","BirchX"],
+                                           "system-text","data/text/")
+        with self.assertRaisesRegex(ValueError,"missing or ambiguous"):
+            exclude_explicit_source_labels(rows,["NotARealLabel"],
+                                           "system-text","data/text/")
 
     def test_only_literal_lf_batch_does_not_restage_normal_rows(self):
         rows=[
