@@ -6,7 +6,7 @@ Source Arena v0.13.0 defines 46 `arena-only` source catalog entries. Its `src/re
 
 Commit [86db2a6](https://github.com/ronvotri/VH-GBA-PEA/commit/86db2a6dc4a6d24024400774bb42c7382116eea2) adds `tools/stage_arena_native_popup.py`, unit tests, integration into `.github/workflows/arena-map.yml`, and revises **17 actual player-facing PrintPopup menu labels** to byte-encodable, context-correct Vietnamese. This includes directional labels, 6 move styles, status label, pause menu title and four menu choices. The original C source line / name / English initializer and fixed row capacity are checked individually; unknown codepoints, changed source and label ambiguity fail closed. The source-built GBA is intended to be verified against *each* original local/C-array linker symbol and offset (including 7/8/18-byte fixed rows), **not inferred from a random ROM string search**.
 
-GitHub Actions [#38082880980](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38082880980) was pending completion when this document was written. A CI PASS is required before increasing the source-compiled label count from 5,282 to 5,299. The `SOURCE_ARENA_NATIVE_POPUP_ATTESTATION.json` artifact is the exact output to inspect.
+GitHub Actions [#38082880980](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38082880980) FULL SUCCESS: all 17 Arena native-font UI labels were compiled and matched byte-for-byte at exact linker symbols. The source-compiled count is now 5,299. The `SOURCE_ARENA_NATIVE_POPUP_ATTESTATION.json` artifact is the exact output to inspect.
 
 ## Non-overwritable UI boundaries
 
@@ -20,3 +20,8 @@ GitHub Actions [#38082880980](https://github.com/ronvotri/VH-GBA-PEA/actions/run
 2. Address the tiny HUD separately with source-level font/rendering tests and actual readable in-game screenshots; prefer the user-approved v0.4 glyph forms in any normal native-font panel.
 3. Continue integrating system-UI/battle/dynamic variable messages from the 17,512-user-facing source translation catalog. New CLI staging steps must be additive on the last verified translated source tree and their source labels counted once only.
 4. Do not publish a ROM before private user-accepted v0.4 donor-font graft, title-credit visibility, intro, overworld, battle, post-battle and save/load QA. Never commit commercial ROMs to GitHub.
+
+
+## Confirmed validation
+
+PASS #38082880980. Stock-font source SHA256 `9184e79be184501e7d9cd4cdfaaabdc11cb44a0d95e51d773c51d1933ab2db0b`; all five glyph banks unchanged. The real donor-font graft and rendered title/HUD/gameplay tests remain pending.

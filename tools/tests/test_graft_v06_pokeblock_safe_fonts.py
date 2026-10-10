@@ -246,6 +246,22 @@ class GraftV06Tests(unittest.TestCase):
             v06.require_pinned_target_symbols(
                 offsets,v06.PINNED_SYSTEM_SCROLL_4406_SOURCE_SHA256)
 
+    def test_exact_5299_source_native_arena_profile_can_use_verified_v04_donor(self):
+        self.assertEqual(v06.PINNED_ARENA_NATIVE_5299_SOURCE_SHA256,
+                         "9184e79be184501e7d9cd4cdfaaabdc11cb44a0d95e51d773c51d1933ab2db0b")
+        offsets=v06.ATTESTED_ARENA_NATIVE_5299_FONT_OFFSETS
+        self.assertEqual(offsets["gFontSmallNarrowLatinGlyphs"],0x718E8C)
+        self.assertEqual(offsets["gFontNormalLatinGlyphs"],0x73968C)
+        v06.require_pinned_target_symbols(
+            offsets,v06.PINNED_ARENA_NATIVE_5299_SOURCE_SHA256)
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(
+                v06.ATTESTED_MAP_SCROLL_5282_FONT_OFFSETS,
+                v06.PINNED_ARENA_NATIVE_5299_SOURCE_SHA256)
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(
+                offsets,v06.PINNED_MAP_SCROLL_5282_SOURCE_SHA256)
+
     def test_unattested_source_sha_rejected(self):
         with self.assertRaisesRegex(ValueError,"no attested font profile"):
             v06.require_pinned_target_symbols(
