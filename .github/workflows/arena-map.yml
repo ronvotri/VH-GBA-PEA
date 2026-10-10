@@ -696,11 +696,15 @@ jobs:
               sleep 2
             done
             import -window root artifact/SOURCE_3360_MGBA_AFTER_8A.png
-            for i in $(seq 1 8); do
+            for i in $(seq 9 24); do
               xdotool key --clearmodifiers x
               sleep 2
+              case "$i" in
+                9|10|12|14|16|18|20|22|24)
+                  import -window root "artifact/SOURCE_3360_MGBA_AFTER_${i}A.png"
+                  ;;
+              esac
             done
-            import -window root artifact/SOURCE_3360_MGBA_AFTER_16A.png
             if ! kill -0 "$pid" 2>/dev/null; then
               cat artifact/SOURCE_3360_MGBA_CONSOLE.log
               echo "FAIL: emulator terminated during input smoke"
@@ -713,7 +717,8 @@ jobs:
           import json,hashlib
           from pathlib import Path
           from PIL import Image
-          names=["BOOT","34S","54S","AFTER_START","AFTER_8A","AFTER_16A"]
+          names=["BOOT","34S","54S","AFTER_START","AFTER_8A"]+[
+              f"AFTER_{i}A" for i in (9,10,12,14,16,18,20,22,24)]
           frames=[]
           for name in names:
               pic=Path("artifact")/f"SOURCE_3360_MGBA_{name}.png"
@@ -732,6 +737,8 @@ jobs:
           assert len({x["fingerprint"] for x in frames})>=3,"emulator intro never visually progressed"
           report={"boot_emulator":"mGBA SDL Ubuntu 22.04",
                   "visible_frame_captured":True,
+                  "sampled_A_inputs":list(range(9,25)),
+                  "intro_dialogue_visual_review_pending":True,
                   "frames":frames,"different_visual_phases":len({x["fingerprint"] for x in frames}),
                   "low_color_transition_frames":[x["phase"] for x in frames if x["transition_or_low_color"]],
                   "start_and_A_pressed":True,"emulator_exited_early":False,
