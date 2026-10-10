@@ -1240,29 +1240,33 @@ jobs:
           PY
           echo "Audited 663 EXISTING descriptions in the previously full-PASS 3774 ROM: 0 new labels, no double counting." >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Compile next unique battle dialogue batch after verified 3774 (isolated stock-font trial)
+      - name: Compile additional unique system text after battle safe-cap exhausted (isolated stock-font trial)
         run: |
-          # Keep verified 3774-text + Vietnamese-font mGBA source and SHA intact.
-          # Compile new source-owned battle labels; no raw ROM repoint.
-          cp -a all-localized-title-trial expanded-battle-source-trial
+          # The previous 200 battle .inc strings are the complete eligible
+          # non-dynamic second pass under current safe encoding. Do not force
+          # any of the rejected placeholders into plain-byte strings.
+          # Preserve the 3774-source+font mGBA baseline unchanged.
+          cp -a all-localized-title-trial expanded-system-second-trial
           python3 tools/stage_source_map_translations.py \
-            --workspace expanded-battle-source-trial \
+            --workspace expanded-system-second-trial \
             --plan artifact/user-facing-integration-plan.json \
             --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --category system-text \
             --source-prefix data/text/ \
-            --category battle \
-            --exclude-report artifact/SOURCE_LEVEL_BATTLE_PILOT.json \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_STAGE.json \
+            --exclude-report artifact/SOURCE_BIRCH_NARRATIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_BIRCH_DYNAMIC_STAGE.json \
             --limit 300 \
             --auto-wrap \
             --apply \
-            --report artifact/SOURCE_ADDITIONAL_BATTLE_STAGE.json
+            --report artifact/SOURCE_SYSTEM_TEXT_SECOND_STAGE.json
           python3 - <<'PY'
           import json,sys
           from pathlib import Path
           sys.path.insert(0,"tools")
           from verify_compiled_source_strings import validate_stages
           p=Path("artifact")
-          old_files=[
+          names=[
               "SOURCE_LEVEL_VIETNAMESE_PILOT.json",
               "SOURCE_LEVEL_UI_PILOT.json",
               "SOURCE_LEVEL_DYNAMIC_PILOT.json",
@@ -1280,9 +1284,9 @@ jobs:
               "SOURCE_EXTRA_SHORT_C_UI_STAGE.json",
               "SOURCE_NAMING_CONTROLS_STAGE.json"]
           c_ui=json.loads((p/"SOURCE_REMAINING_C_UI_ATTESTATION.json").read_text())
-          old_files.extend(c_ui["batch_report_files"])
+          names.extend(c_ui["batch_report_files"])
           installed={}
-          for fn in old_files:
+          for fn in names:
               report=json.loads((p/fn).read_text())
               rows=report.get("translated",report.get("accepted"))
               assert report.get("mode")=="apply" and isinstance(rows,list),fn
@@ -1290,10 +1294,9 @@ jobs:
               for row in rows:
                   label=row["label"]
                   owner=row.get("source_file") or row.get("file") or report.get("source_file")
-                  assert owner, (fn,label)
+                  assert owner,(fn,label)
                   assert label not in installed,(label,installed.get(label),fn)
                   installed[label]=(owner,fn)
-          # Birch C PAUSE96 is one separately staged label.
           birch=json.loads((p/"SOURCE_BIRCH_RUNTIME_C_STAGE.json").read_text())
           assert birch["mode"]=="apply" and birch["labels_staged"]==1,birch
           assert birch["source_label"]=="gText_ThisIsAPokemon",birch
@@ -1301,44 +1304,79 @@ jobs:
           installed[birch["source_label"]]=(birch["source_file"],"SOURCE_BIRCH_RUNTIME_C_STAGE.json")
           prev=json.loads((p/"SOURCE_ALL_LOCALIZED_TITLE_ATTESTATION.json").read_text())
           assert prev["combined_source_compiled_labels"]==3774,prev
-          assert len(installed)==3774,("baseline ledger mismatch",len(installed))
-          new=json.loads((p/"SOURCE_ADDITIONAL_BATTLE_STAGE.json").read_text())
+          assert len(installed)==3774,("old source-label ledger mismatch",len(installed))
+          new=json.loads((p/"SOURCE_SYSTEM_TEXT_SECOND_STAGE.json").read_text())
           n=new["labels_staged"]
-          assert new["mode"]=="apply" and new["category"]=="battle",new
-          assert new["previously_staged_label_exclusions"]==200,new
-          assert 1<=n<=300,("no safe new battle rows",new["skipped_reasons"])
+          assert new["mode"]=="apply" and new["category"]=="system-text",new
+          assert new["previously_staged_label_exclusions"]==505,new
+          assert 1<=n<=300,("no safe new system-text rows; do not force unsafe controls",new["skipped_reasons"])
           assert len(new["translated"])==n,new
           labels={row["label"] for row in new["translated"]}
-          assert len(labels)==n and labels.isdisjoint(installed),"duplicate compiled source"
+          assert len(labels)==n and not labels.intersection(installed),"repeated source labels"
           assert all(row["source_file"].startswith("data/text/") for row in new["translated"])
-          root=Path("expanded-battle-source-trial")
-          old_battle=json.loads((p/"SOURCE_LEVEL_BATTLE_PILOT.json").read_text())
-          assert validate_stages(root,{"battle":new})["checked_unique_source_labels"]==n
-          assert validate_stages(root,{"battle":old_battle,"new-battle":new})["checked_unique_source_labels"]==200+n
+          target=Path("expanded-system-second-trial")
+          first=json.loads((p/"SOURCE_SYSTEM_TEXT_STAGE.json").read_text())
+          intro=json.loads((p/"SOURCE_BIRCH_NARRATIVE_STAGE.json").read_text())
+          dynamic=json.loads((p/"SOURCE_BIRCH_DYNAMIC_STAGE.json").read_text())
+          assert validate_stages(target,{"system-text":new})["checked_unique_source_labels"]==n
+          assert validate_stages(target,{"system-text":first,"second":new,
+              "narrative":intro,"dynamic-birch":dynamic})["checked_unique_source_labels"]==505+n
           result={
-              "verified_prior_unique_source_labels":3774,
-              "already_installed_move_item_pokeblock_descriptions":663,
-              "new_unique_battle_source_labels":n,
+              "previously_verified_source_labels":3774,
+              "existing_description_labels_already_included":663,
+              "battle_new_safe_labels_in_prior_failed_attempt":0,
+              "new_unique_system_text_source_labels":n,
               "combined_unique_source_labels":3774+n,
-              "prior_battle_labels":200,
-              "source_payloads_verified":True,
-              "no_duplicate_source_labels":True,
-              "font_synthesized":False,
-              "mGBA_tested":False,
+              "previous_system_text_labels":505,
+              "source_owned_byte_payloads_verified":True,
+              "no_duplicate_labels":True,
+              "font_grafted":False,
+              "emulator_tested":False,
               "release_ready":False}
-          (p/"SOURCE_ADDITIONAL_BATTLE_ATTESTATION.json").write_text(
+          (p/"SOURCE_SYSTEM_TEXT_SECOND_ATTESTATION.json").write_text(
               json.dumps(result,ensure_ascii=False,indent=2)+"\n")
-          print("PASS additive battle source audit:",json.dumps(result))
+          print("PASS additive system text source ledger:",json.dumps(result))
           PY
-          make -C expanded-battle-source-trial -j2
-          test -s expanded-battle-source-trial/pokeemerald.gba
-          sha256sum expanded-battle-source-trial/pokeemerald.gba > artifact/SOURCE_ADDITIONAL_BATTLE_SHA256.txt
-          arm-none-eabi-nm -n expanded-battle-source-trial/pokeemerald.elf > artifact/SOURCE_ADDITIONAL_BATTLE_FONT.sym
+          make -C expanded-system-second-trial -j2
+          test -s expanded-system-second-trial/pokeemerald.gba
+          sha256sum expanded-system-second-trial/pokeemerald.gba > artifact/SOURCE_SYSTEM_TEXT_SECOND_SHA256.txt
+          arm-none-eabi-nm -n expanded-system-second-trial/pokeemerald.elf > artifact/SOURCE_SYSTEM_TEXT_SECOND_FONT.sym
           python3 tools/audit_source_font_layout.py \
-            --rom expanded-battle-source-trial/pokeemerald.gba \
-            --sym artifact/SOURCE_ADDITIONAL_BATTLE_FONT.sym \
-            --out artifact/SOURCE_ADDITIONAL_BATTLE_FONT_AUDIT.json
-          echo "Additional unique battle texts compiled on an isolated stock-font source ROM. Prior 3774+mGBA baseline unchanged; emulator gameplay QA pending." >> "$GITHUB_STEP_SUMMARY"
+            --rom expanded-system-second-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_SYSTEM_TEXT_SECOND_FONT.sym \
+            --out artifact/SOURCE_SYSTEM_TEXT_SECOND_FONT_AUDIT.json
+          python3 - <<'PY'
+          import json,re,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import extract_asm_payload
+          p=Path("artifact")
+          d=json.loads((p/"SOURCE_SYSTEM_TEXT_SECOND_STAGE.json").read_text())
+          rom=(Path("expanded-system-second-trial")/"pokeemerald.gba").read_bytes()
+          sym=(p/"SOURCE_SYSTEM_TEXT_SECOND_FONT.sym").read_text()
+          found={}
+          for address,name in re.findall(r"(?m)^([0-9A-Fa-f]+)\s+\w\s+([A-Za-z_][A-Za-z0-9_]*)$",sym):
+              found.setdefault(name,[]).append(int(address,16))
+          proven=[]
+          for row in d["translated"]:
+              label=row["label"]
+              addrs=found.get(label,[])
+              assert len(addrs)==1,(label,addrs)
+              addr=addrs[0]
+              assert 0x08000000<=addr<0x0A000000,(label,addr)
+              payload=extract_asm_payload((Path("expanded-system-second-trial")/row["source_file"]).read_text(),label)
+              off=addr-0x08000000
+              assert rom[off:off+len(payload)]==payload,("linker payload differs from staged text",label)
+              proven.append(label)
+          report=p/"SOURCE_SYSTEM_TEXT_SECOND_ATTESTATION.json"
+          att=json.loads(report.read_text())
+          assert len(proven)==att["new_unique_system_text_source_labels"]
+          att["all_new_labels_verified_at_actual_linked_rom_offsets"]=True
+          att["actual_linked_rom_labels_checked"]=len(proven)
+          report.write_text(json.dumps(att,ensure_ascii=False,indent=2)+"\n")
+          print("PASS actual GBA source-payload/linker checks for",len(proven),"new labels")
+          PY
+          echo "Additional system text source-owned bytes compiled and linker-attested separately; stock font only, no mGBA visual or released ROM. Prior 3774-font trial unchanged." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
