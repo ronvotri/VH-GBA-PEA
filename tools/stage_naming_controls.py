@@ -59,7 +59,7 @@ def encode(text:str,glyphs:dict[str,int],max_cells:int)->bytes:
         elif text[i]=="{":
             end=text.find("}",i+1)
             token=text[i+1:end] if end>=0 else ""
-            if token not in PINN:raise ValueError("unsupported controller icon")
+            if token not in PINNED:raise ValueError("unsupported controller icon")
             out.extend(PINNED[token]);cells+=1;i=end+1
         else:
             ch=text[i]
