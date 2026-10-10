@@ -203,7 +203,7 @@ def main():
     p.add_argument("--apply",action="store_true")
     p.add_argument("--auto-wrap",action="store_true",help="Only word-boundary newline/scroll conversion for overlong non-dynamic text")
     p.add_argument("--page-scroll-reflow",action="store_true",
-                   help="Opt-in: repair third visible line as native GBA scroll for source-pinned static system text; page breaks remain unchanged")
+                   help="Opt-in: repair third visible line as native GBA scroll for source-pinned static map/system text; page breaks remain unchanged")
     p.add_argument("--normalize-literal-newlines",action="store_true",
                    help="Opt-in: change literal JSON LF to \\n only when ordered source controls match")
     p.add_argument("--only-literal-newlines",action="store_true",
@@ -220,10 +220,11 @@ def main():
         p.error("battle/system-text source staging restricted to data/text/ assembly files")
     if a.only_literal_newlines and not a.normalize_literal_newlines:
         p.error("--only-literal-newlines requires --normalize-literal-newlines")
-    if a.page_scroll_reflow and (a.category!="system-text" or
-                                  not a.source_prefix.startswith("data/text/") or
-                                  not a.auto_wrap or a.normalize_literal_newlines):
-        p.error("--page-scroll-reflow requires static system-text, --auto-wrap, and no literal-LF normalization")
+    if a.page_scroll_reflow:
+        valid_source=((a.category=="system-text" and a.source_prefix.startswith("data/text/"))
+                      or (a.category=="map-story" and a.source_prefix.startswith("data/maps/")))
+        if not valid_source or not a.auto_wrap or a.normalize_literal_newlines:
+            p.error("--page-scroll-reflow requires static source-owned data/text/ or data/maps/ category with --auto-wrap")
 
     plan=json.loads(a.plan.read_text(encoding="utf-8"))
     if a.exclude_label:

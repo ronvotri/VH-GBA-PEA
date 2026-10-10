@@ -128,6 +128,18 @@ ATTESTED_SYSTEM_SECOND_3894_FONT_OFFSETS={
 }
 
 
+# CI #38080934557 FULL SUCCESS: 512 new native-scroll system labels;
+# independently linked 4406 source translations, stock Latin font SHA pinned.
+PINNED_SYSTEM_SCROLL_4406_SOURCE_SHA256="ae37ecd0af0b3c0d5976fa1dacf6a5009ca2ecb3367f125c6c202ef77c4358d3"
+ATTESTED_SYSTEM_SCROLL_4406_FONT_OFFSETS={
+    "gFontSmallNarrowLatinGlyphs":0x71A324,
+    "gFontSmallLatinGlyphs":0x722524,
+    "gFontNarrowLatinGlyphs":0x72A724,
+    "gFontShortLatinGlyphs":0x732924,
+    "gFontNormalLatinGlyphs":0x73AB24,
+}
+
+
 def require_pinned_target_symbols(target_offsets:dict[str,int],
                                   source_sha256:str=PINNED_SOURCE_SHA256)->None:
     profiles={
@@ -140,6 +152,7 @@ def require_pinned_target_symbols(target_offsets:dict[str,int],
         PINNED_C_UI_3666_SOURCE_SHA256:ATTESTED_C_UI_3666_FONT_OFFSETS,
         PINNED_NAMING_3774_SOURCE_SHA256:ATTESTED_NAMING_3774_FONT_OFFSETS,
         PINNED_SYSTEM_SECOND_3894_SOURCE_SHA256:ATTESTED_SYSTEM_SECOND_3894_FONT_OFFSETS,
+        PINNED_SYSTEM_SCROLL_4406_SOURCE_SHA256:ATTESTED_SYSTEM_SCROLL_4406_FONT_OFFSETS,
     }
     expected=profiles.get(source_sha256.lower())
     if expected is None:
@@ -269,7 +282,8 @@ def main():
     a=p.parse_args()
     if a.expected_source_sha256.lower() not in (PINNED_SOURCE_SHA256,PINNED_3360_SOURCE_SHA256,PINNED_BIRCH_3360_SOURCE_SHA256,PINNED_BIRCH_3363_SOURCE_SHA256,PINNED_BIRCH_3364_SOURCE_SHA256,PINNED_BIRCH_3366_SOURCE_SHA256,
         PINNED_C_UI_3666_SOURCE_SHA256,PINNED_NAMING_3774_SOURCE_SHA256,
-        PINNED_SYSTEM_SECOND_3894_SOURCE_SHA256):
+        PINNED_SYSTEM_SECOND_3894_SOURCE_SHA256,
+        PINNED_SYSTEM_SCROLL_4406_SOURCE_SHA256):
         p.error("source SHA256 has no attested v0.6 font geometry profile")
     if a.output and a.output.resolve() in {a.clean.resolve(),a.v04.resolve(),a.source_built.resolve()}:
         p.error("output must not overwrite source or donor ROM")

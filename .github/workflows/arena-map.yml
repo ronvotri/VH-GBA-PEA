@@ -1659,6 +1659,111 @@ jobs:
           PY
           echo "Static system-text scroll batch compiled with stock source fonts; private real-v0.4 donor graft and gameplay QA still pending." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Compile source-owned overworld and NPC dialogues with native scroll (separate stock-font trial)
+        run: |
+          # Separate source branch: verified 4406 remains exactly unchanged.
+          # Preserve all original page/control order and the entire word stream.
+          # No arbitrary ROM repoint or donor/synthetic font insertion.
+          cp -a system-safe-scroll-source-trial map-safe-scroll-source-trial
+          python3 tools/stage_source_map_translations.py \
+            --workspace map-safe-scroll-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --category map-story \
+            --source-prefix data/maps/ \
+            --exclude-report artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json \
+            --exclude-report artifact/SOURCE_EXPANDED_MAP_STAGE.json \
+            --exclude-report artifact/SOURCE_EXPANDED_MAP_LF_STAGE.json \
+            --limit 1000 \
+            --auto-wrap \
+            --page-scroll-reflow \
+            --apply \
+            --report artifact/SOURCE_MAP_SCROLL_REFLOW_STAGE.json
+          python3 - <<'PY'
+          import json,re,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import validate_stages
+          p=Path("artifact")
+          old_names=("SOURCE_LEVEL_VIETNAMESE_PILOT.json",
+                     "SOURCE_EXPANDED_MAP_STAGE.json","SOURCE_EXPANDED_MAP_LF_STAGE.json")
+          earlier=[json.loads((p/f).read_text()) for f in old_names]
+          dynamic=json.loads((p/"SOURCE_LEVEL_DYNAMIC_PILOT.json").read_text())
+          new=json.loads((p/"SOURCE_MAP_SCROLL_REFLOW_STAGE.json").read_text())
+          system=json.loads((p/"SOURCE_SYSTEM_SCROLL_REFLOW_ATTESTATION.json").read_text())
+          n=new["labels_staged"]
+          assert system["combined_unique_source_labels"]==4406,system
+          assert new["mode"]=="apply" and new["category"]=="map-story",new
+          assert new["previously_staged_label_exclusions"]==1467,new
+          assert 200<=n<=1000,("no meaningful safe map/dialogue batch",new["skipped_reasons"])
+          assert new["page_scroll_reflowed_labels"]==n,new
+          selected={r["label"] for r in new["translated"]}
+          earlier_names={r["label"] for report in earlier for r in report["translated"]}
+          dynamic_names={r["label"] for r in dynamic["accepted"]}
+          assert len(selected)==n and len(earlier_names)==1467, len(earlier_names)
+          assert not selected.intersection(earlier_names|dynamic_names),"duplicate dynamic/static map source label"
+          control=lambda s:re.findall(r"\\[npl]",s)
+          words=lambda s:re.sub(r"\\[npl]"," ",s[:-1]).split()
+          for row in new["translated"]:
+              assert row["source_file"].startswith("data/maps/"),row
+              assert row["auto_wrapped"] and row["page_scroll_reflowed"],row
+              assert control(row["english"])==control(row["authored_vietnamese"]),row["label"]
+              assert words(row["authored_vietnamese"])==words(row["vietnamese"]),row["label"]
+              assert control(row["authored_vietnamese"]).count(r"\p")==control(row["vietnamese"]).count(r"\p")
+          root=Path("map-safe-scroll-source-trial")
+          assert validate_stages(root,{"map":new})["checked_unique_source_labels"]==n
+          report={"verified_prior_source_labels":4406,
+                  "new_unique_map_story_labels":n,
+                  "combined_unique_source_labels":4406+n,
+                  "previously_staged_map_labels_excluded":1467,
+                  "no_cross_batch_or_dynamic_duplicate":True,
+                  "original_page_controls_and_word_order_preserved":True,
+                  "source_payload_bytes_verified":True,
+                  "source_v04_font_grafted":False,
+                  "runtime_emulator_tested":False,"release_ready":False}
+          (p/"SOURCE_MAP_SCROLL_REFLOW_ATTESTATION.json").write_text(
+              json.dumps(report,ensure_ascii=False,indent=2)+"\n")
+          print("PASS native-scroll map/NPC source stage",n,"new labels; total",4406+n)
+          PY
+          make -C map-safe-scroll-source-trial -j2
+          test -s map-safe-scroll-source-trial/pokeemerald.gba
+          sha256sum map-safe-scroll-source-trial/pokeemerald.gba > artifact/SOURCE_MAP_SCROLL_REFLOW_SHA256.txt
+          arm-none-eabi-nm -n map-safe-scroll-source-trial/pokeemerald.elf > artifact/SOURCE_MAP_SCROLL_REFLOW_FONT.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom map-safe-scroll-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_MAP_SCROLL_REFLOW_FONT.sym \
+            --out artifact/SOURCE_MAP_SCROLL_REFLOW_FONT_AUDIT.json
+          python3 - <<'PY'
+          import json,re,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import extract_asm_payload
+          p=Path("artifact")
+          d=json.loads((p/"SOURCE_MAP_SCROLL_REFLOW_STAGE.json").read_text())
+          rom=Path("map-safe-scroll-source-trial/pokeemerald.gba").read_bytes()
+          sym=(p/"SOURCE_MAP_SCROLL_REFLOW_FONT.sym").read_text()
+          found={}
+          for address,name in re.findall(r"(?m)^([0-9A-Fa-f]+)\s+\w\s+([A-Za-z_][A-Za-z0-9_]*)$",sym):
+              found.setdefault(name,[]).append(int(address,16))
+          for row in d["translated"]:
+              label=row["label"]
+              addresses=found.get(label,[])
+              assert len(addresses)==1,(label,addresses)
+              addr=addresses[0]
+              assert 0x08000000<=addr<0x0A000000,(label,addr)
+              payload=extract_asm_payload(
+                  (Path("map-safe-scroll-source-trial")/row["source_file"]).read_text(),label)
+              off=addr-0x08000000
+              assert rom[off:off+len(payload)]==payload,("linked map source payload differs",label)
+          report=p/"SOURCE_MAP_SCROLL_REFLOW_ATTESTATION.json"
+          att=json.loads(report.read_text())
+          att["actual_linked_GBA_payloads_checked"]=d["labels_staged"]
+          att["every_new_payload_verified_at_linker_rom_address"]=True
+          report.write_text(json.dumps(att,ensure_ascii=False,indent=2)+"\n")
+          print("PASS actual map/NPC GBA linked byte payloads",d["labels_staged"])
+          PY
+          echo "New NPC/overworld map static strings source-compiled and ELF-linked, private v0.4 font and gameplay QA still required." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned

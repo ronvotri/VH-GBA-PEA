@@ -218,6 +218,18 @@ class GraftV06Tests(unittest.TestCase):
                 v06.ATTESTED_NAMING_3774_FONT_OFFSETS,
                 v06.PINNED_SYSTEM_SECOND_3894_SOURCE_SHA256)
 
+    def test_v04_donor_profile_4406_sha_paired_and_protected(self):
+        self.assertEqual(v06.PINNED_SYSTEM_SCROLL_4406_SOURCE_SHA256,
+                         "ae37ecd0af0b3c0d5976fa1dacf6a5009ca2ecb3367f125c6c202ef77c4358d3")
+        offsets=v06.ATTESTED_SYSTEM_SCROLL_4406_FONT_OFFSETS
+        self.assertEqual(offsets["gFontNormalLatinGlyphs"],0x73AB24)
+        v06.require_pinned_target_symbols(
+            offsets,v06.PINNED_SYSTEM_SCROLL_4406_SOURCE_SHA256)
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(
+                v06.ATTESTED_SYSTEM_SECOND_3894_FONT_OFFSETS,
+                v06.PINNED_SYSTEM_SCROLL_4406_SOURCE_SHA256)
+
     def test_unattested_source_sha_rejected(self):
         with self.assertRaisesRegex(ValueError,"no attested font profile"):
             v06.require_pinned_target_symbols(

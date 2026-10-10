@@ -166,6 +166,19 @@ class SourceStagingTests(unittest.TestCase):
                             page_scroll_reflow=True)
         self.assertFalse(chosen)
 
+    def test_map_static_page_scroll_reflow_uses_same_exact_owner_safety(self):
+        row={"source_label":"RouteText","source_file":"data/maps/Route101/scripts.inc",
+             "category":"map-story","english":r"a\nb$",
+             "vietnamese":r"aaa aaa aaa aaa\nbbb bbb bbb bbb$"}
+        codes={"a":0xD5,"b":0xD6," ":0x00}
+        chosen,errors=plan_rows([row],codes,"data/maps/",10,100,
+                                 auto_wrap=True,page_scroll_reflow=True)
+        self.assertFalse(errors)
+        self.assertEqual(len(chosen),1)
+        self.assertTrue(chosen[0][0]["page_scroll_reflowed"])
+        self.assertIn(r"\l",chosen[0][0]["vietnamese"])
+        self.assertEqual(chosen[0][1][-1],0xFF)
+
     def test_unknown_glyph_rejected(self):
         with self.assertRaisesRegex(ValueError,"missing Vietnamese glyph"):
             encode_text("Mẹ Æ$",self.codes,26)
