@@ -1256,7 +1256,7 @@ jobs:
             --exclude-report artifact/SOURCE_SYSTEM_TEXT_STAGE.json \
             --exclude-report artifact/SOURCE_BIRCH_NARRATIVE_STAGE.json \
             --exclude-report artifact/SOURCE_BIRCH_DYNAMIC_STAGE.json \
-            --limit 300 \
+            --limit 1000 \
             --auto-wrap \
             --apply \
             --report artifact/SOURCE_SYSTEM_TEXT_SECOND_STAGE.json
@@ -1309,7 +1309,7 @@ jobs:
           n=new["labels_staged"]
           assert new["mode"]=="apply" and new["category"]=="system-text",new
           assert new["previously_staged_label_exclusions"]==505,new
-          assert 1<=n<=300,("no safe new system-text rows; do not force unsafe controls",new["skipped_reasons"])
+          assert 1<=n<=1000,("no safe new system-text rows; do not force unsafe controls",new["skipped_reasons"])
           assert len(new["translated"])==n,new
           labels={row["label"] for row in new["translated"]}
           assert len(labels)==n and not labels.intersection(installed),"repeated source labels"
