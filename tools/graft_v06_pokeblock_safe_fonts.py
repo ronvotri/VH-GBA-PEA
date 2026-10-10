@@ -116,6 +116,18 @@ ATTESTED_NAMING_3774_FONT_OFFSETS={
 
 
 
+# CI #38077592184 FULL PASS: 120 NEW system-text labels added to 3774;
+# SHA-locked all five untouched source Latin glyph banks and ELF symbols.
+PINNED_SYSTEM_SECOND_3894_SOURCE_SHA256="7bf9b814a415f814c51c2e900638fda8ee9c87b533688d828f4134336e316bd9"
+ATTESTED_SYSTEM_SECOND_3894_FONT_OFFSETS={
+    "gFontSmallNarrowLatinGlyphs":0x71A588,
+    "gFontSmallLatinGlyphs":0x722788,
+    "gFontNarrowLatinGlyphs":0x72A988,
+    "gFontShortLatinGlyphs":0x732B88,
+    "gFontNormalLatinGlyphs":0x73AD88,
+}
+
+
 def require_pinned_target_symbols(target_offsets:dict[str,int],
                                   source_sha256:str=PINNED_SOURCE_SHA256)->None:
     profiles={
@@ -127,6 +139,7 @@ def require_pinned_target_symbols(target_offsets:dict[str,int],
         PINNED_BIRCH_3366_SOURCE_SHA256:ATTESTED_BIRCH_3366_FONT_OFFSETS,
         PINNED_C_UI_3666_SOURCE_SHA256:ATTESTED_C_UI_3666_FONT_OFFSETS,
         PINNED_NAMING_3774_SOURCE_SHA256:ATTESTED_NAMING_3774_FONT_OFFSETS,
+        PINNED_SYSTEM_SECOND_3894_SOURCE_SHA256:ATTESTED_SYSTEM_SECOND_3894_FONT_OFFSETS,
     }
     expected=profiles.get(source_sha256.lower())
     if expected is None:

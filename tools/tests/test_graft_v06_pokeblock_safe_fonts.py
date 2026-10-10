@@ -121,6 +121,21 @@ class GraftV06Tests(unittest.TestCase):
             v06.require_pinned_target_symbols(v06.ATTESTED_NAMING_3774_FONT_OFFSETS,
                                                v06.PINNED_C_UI_3666_SOURCE_SHA256)
 
+    def test_system_second_3894_exact_SHA_and_font_pair(self):
+        self.assertEqual(v06.PINNED_SYSTEM_SECOND_3894_SOURCE_SHA256,
+                         "7bf9b814a415f814c51c2e900638fda8ee9c87b533688d828f4134336e316bd9")
+        offsets=v06.ATTESTED_SYSTEM_SECOND_3894_FONT_OFFSETS
+        self.assertEqual(offsets["gFontSmallNarrowLatinGlyphs"],0x71A588)
+        self.assertEqual(offsets["gFontNormalLatinGlyphs"],0x73AD88)
+        v06.require_pinned_target_symbols(offsets,
+                                           v06.PINNED_SYSTEM_SECOND_3894_SOURCE_SHA256)
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(v06.ATTESTED_NAMING_3774_FONT_OFFSETS,
+                                               v06.PINNED_SYSTEM_SECOND_3894_SOURCE_SHA256)
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(offsets,
+                                               v06.PINNED_NAMING_3774_SOURCE_SHA256)
+
     def test_dynamic_birch_3366_SHA_paired_with_five_font_symbols(self):
         self.assertEqual(v06.PINNED_BIRCH_3366_SOURCE_SHA256,
                          "a887c81b426c11be12257b66286166b11ac50b4081e06782792f5ce972e97cd0")
