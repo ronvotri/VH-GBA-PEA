@@ -714,14 +714,19 @@ jobs:
               assert im.width>=240 and im.height>=160,(name,im.size)
               sampled=im.resize((160,120))
               distinct=len(set(sampled.getdata()))
-              assert distinct>=16,"mGBA screenshot blank or not rendered: "+name+" "+str(distinct)
+              # White/black fades are valid between intro animation scenes;
+              # require nonblank evidence at stable boot/play checkpoints.
+              if name in ("BOOT","34S","AFTER_START","AFTER_16A"):
+                  assert distinct>=16,"stable mGBA screenshot blank: "+name+" "+str(distinct)
               frames.append({"phase":name,"size":list(im.size),
                              "distinct_colors":distinct,
+                             "transition_or_low_color":distinct<16,
                              "fingerprint":hashlib.sha256(sampled.tobytes()).hexdigest()})
-          assert len({x["fingerprint"] for x in frames})>=2,"all emulator phases are visually identical"
+          assert len({x["fingerprint"] for x in frames})>=3,"emulator intro never visually progressed"
           report={"boot_emulator":"mGBA SDL Ubuntu 22.04",
                   "visible_frame_captured":True,
                   "frames":frames,"different_visual_phases":len({x["fingerprint"] for x in frames}),
+                  "low_color_transition_frames":[x["phase"] for x in frames if x["transition_or_low_color"]],
                   "start_and_A_pressed":True,"emulator_exited_early":False,
                   "title_text_reviewed":False,"vietnamese_glyph_legibility_reviewed":False,
                   "battle_save_load_reviewed":False,"release_ready":False}
@@ -734,6 +739,62 @@ jobs:
           # ROM remains CI-private; never upload even for successful smoke.
           rm experimental-synthetic-vietnamese.gba
           echo "mGBA headless screen smoke PASS; gameplay/font detail still needs human visual QA." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Build focused Professor Birch introduction source translation (separate beta trial)
+        run: |
+          # Independent 3,360-label verified branch remains unchanged.
+          cp -a expanded-c-ui-source-trial birch-intro-source-trial
+          python3 tools/stage_source_map_translations.py \
+            --workspace birch-intro-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --category system-text \
+            --source-prefix data/text/birch_speech.inc \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_STAGE.json \
+            --auto-wrap \
+            --limit 40 \
+            --apply \
+            --report artifact/SOURCE_BIRCH_INTRO_STAGE.json
+          python3 - <<'PY'
+          import json,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import validate_stages
+          base=Path("artifact")
+          report=json.loads((base/"SOURCE_BIRCH_INTRO_STAGE.json").read_text())
+          old=json.loads((base/"SOURCE_SYSTEM_TEXT_STAGE.json").read_text())
+          assert report["mode"]=="apply" and report["category"]=="system-text",report
+          assert 1<=report["labels_staged"]<=9,report
+          labels={r["label"] for r in report["translated"]}
+          assert len(labels)==report["labels_staged"],report
+          assert "gText_Birch_Welcome" in labels,(
+              "Intro greeting was not installed; inspect skipped reasons",report["skipped_reasons"])
+          assert all(r["source_file"]=="data/text/birch_speech.inc" for r in report["translated"])
+          assert not labels & {r["label"] for r in old["translated"]},"overlap with prior system text"
+          check=validate_stages(Path("birch-intro-source-trial"),{"system-text":report})
+          assert check["checked_unique_source_labels"]==report["labels_staged"],check
+          prior=json.loads((base/"SOURCE_SHORT_C_UI_ATTESTATION.json").read_text())
+          assert prior["combined_distinct_compiled_labels"]==3360,prior
+          attested={"previous_compiled_source_labels":3360,
+                    "new_birch_intro_labels":report["labels_staged"],
+                    "intro_greeting_installed":True,
+                    "combined_distinct_compiled_labels":3360+report["labels_staged"],
+                    "source_payloads_independently_verified":True,
+                    "font_grafted":False,"emulator_tested":False,"release_ready":False}
+          (base/"SOURCE_BIRCH_INTRO_ATTESTATION.json").write_text(
+              json.dumps(attested,indent=2)+"\n")
+          print("PASS: Birch intro source compiled with",report["labels_staged"],
+                "new labels; no prior source overwritten.")
+          PY
+          make -C birch-intro-source-trial -j2
+          test -s birch-intro-source-trial/pokeemerald.gba
+          sha256sum birch-intro-source-trial/pokeemerald.gba > artifact/SOURCE_BIRCH_INTRO_SHA256.txt
+          arm-none-eabi-nm -n birch-intro-source-trial/pokeemerald.elf > artifact/SOURCE_BIRCH_INTRO_FONT.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom birch-intro-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_BIRCH_INTRO_FONT.sym \
+            --out artifact/SOURCE_BIRCH_INTRO_FONT_AUDIT.json
+          echo "Intro source staged, independently verified and compiled with STOCK font, not release." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
