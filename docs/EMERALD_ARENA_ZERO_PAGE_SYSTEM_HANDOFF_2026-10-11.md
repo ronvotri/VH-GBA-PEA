@@ -3,7 +3,7 @@
 ## State when this source work was committed
 
 - Last independently **FULL PASS** source milestone: **5,967 unique source-compiled labels** in Actions [#38137406551](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38137406551).
-- New additive system-text stage added on `main` in commit `b43005a`. Its first CI run is [#38139355341](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38139355341). **Do not increase the 5,967 count unless this run finishes FULL PASS and its attestation confirms an exact value.**
+- New additive system-text stage added on `main` through commit `ea54962`. Its current CI run is [#38139503164](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38139503164). The new unit-test step is PASS; **do not increase the 5,967 count unless this run finishes FULL PASS and its attestation confirms an exact value.**
 - This experiment is **not** a downloadable Vietnamese ROM. Source-built fonts are still stock English glyph art, not the user's visually accepted v0.4 Vietnamese font. No source-level addition can replace actual emulator gameplay/visual validation.
 
 ## Work performed
@@ -17,7 +17,7 @@
 
 ## Where to inspect the result
 
-Workflow run: https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38139355341
+Workflow run: https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38139503164
 
 Expected artifact files, if this pipeline reaches the new stage:
 - `SOURCE_ZERO_PAGE_SYSTEM_ADDITIVE_STAGE.json`
