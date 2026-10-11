@@ -1882,7 +1882,7 @@ jobs:
           prev=json.loads((p/"SOURCE_BATTLE_SCROLL_REFLOW_ATTESTATION.json").read_text())
           first=json.loads((p/"SOURCE_LEVEL_DYNAMIC_PILOT.json").read_text())
           new=json.loads((p/"SOURCE_DYNAMIC_PLAYER_RIVAL_SECOND_STAGE.json").read_text())
-          assert prev["combined_unique_source_labels"]==5556,prev
+          assert prev["combined_source_compiled_labels"]==5556,prev
           assert first["mode"]=="apply" and first["labels_staged"]==len(first["accepted"])
           n=new["labels_staged"]
           assert new["mode"]=="apply" and 1<=n<=200,(n,new["rejected"])
