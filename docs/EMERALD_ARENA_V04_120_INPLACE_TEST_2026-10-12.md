@@ -2,7 +2,7 @@
 
 ## Outcome: real donor ROM bytes changed; not a source-built label promotion
 
-The user supplied exact private stable `Emerald-Arena-0.13.0-VietHoa-v0.4-TextCluster-Pass(1).gba`, **32,554,432? CORRECTION: 33,554,432 bytes**, SHA-256 `c500bb1cdb0f2cf43d24c04a943854bbd9b1b83b0569f0a5f9c8d13480be83f9`, confirmed against the user's `Emerald-Arena-v0.4-audit.txt`.
+The user supplied exact private stable `Emerald-Arena-0.13.0-VietHoa-v0.4-TextCluster-Pass(1).gba`, **33,554,432 bytes**, SHA-256 `c500bb1cdb0f2cf43d24c04a943854bbd9b1b83b0569f0a5f9c8d13480be83f9`, confirmed against the user's `Emerald-Arena-v0.4-audit.txt`.
 
 Read the FULL SUCCESS Actions #38162619581 artifact `arena-0.13.0-symbol-map` (`user-facing-integration-plan.json` and `POKEBLOCK_SAFE_SOURCE_CODEBOOK.json`). Compared exact actual v0.4 bytes at 6,680 shipping-verified source offsets. An intentionally strict one-line, no-control, no-repoint batch has been privately applied **directly to the user-uploaded v0.4 ROM**, not to the 7,134-label stock-font source build.
 
