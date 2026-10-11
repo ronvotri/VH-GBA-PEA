@@ -15,6 +15,8 @@ def audit(rows, glyphs):
     classes = defaultdict(Counter)
     examples = defaultdict(list)
     owners = set()
+    overlapping_blockers = Counter()
+    overlap_examples = []
     for row in rows:
         file, label = row.get("source_file"), row.get("source_label")
         if not isinstance(file, str) or not FILE_RE.fullmatch(file):
@@ -47,6 +49,24 @@ def audit(rows, glyphs):
                 else:
                     cause = "other_encoding_or_layout_blocker"
         c[cause] += 1
+        # Independent flags: longer strings can also need unavailable glyphs.
+        # Existing exclusive classes above retain their original meaning.
+        if isinstance(en, str) and isinstance(vi, str) and vi:
+            reasons = []
+            if len(vi) > len(en):
+                reasons.append("longer_than_english")
+            if len(vi) > 15:
+                reasons.append("over_15_character_trial_cap")
+            missing = sorted(set(vi) - set(glyphs))
+            if missing:
+                reasons.append("missing_codebook_glyphs")
+            if len(reasons) > 1:
+                overlapping_blockers["+".join(reasons)] += 1
+                if len(overlap_examples) < 10:
+                    overlap_examples.append({
+                        "file": file, "label": label,
+                        "blockers": reasons, "missing_glyphs": missing,
+                    })
         if cause != "eligible_with_current_codebook" and len(examples[cause]) < 10:
             examples[cause].append({
                 "file": file, "label": label,
@@ -64,6 +84,8 @@ def audit(rows, glyphs):
         "totals": dict(totals),
         "by_group": {k: dict(v) for k,v in sorted(classes.items())},
         "representative_blockers": dict(examples),
+        "overlapping_blockers": dict(overlapping_blockers),
+        "overlapping_blocker_examples": overlap_examples,
         "source_text_modified": False, "font_art_generated": False,
         "safe_to_expand_UI_width_without_renderer_proof": False,
         "release_ready": False,
