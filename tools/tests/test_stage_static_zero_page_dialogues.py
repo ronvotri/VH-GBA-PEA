@@ -19,7 +19,7 @@ class StaticZeroPageTests(unittest.TestCase):
         en=r"abc\nabc$"
         vi=r"abc def ghi jkl mno pqr stu vwx yza bcd efg hij$"
         reformatted,payload=compile_zero_page(en,vi,CODES,11)
-        self.assertEqual(reformatted.replace(r"\n"," ").replace(r"\l"," ").split(),
+        self.assertEqual(reformatted[:-1].replace(r"\n"," ").replace(r"\l"," ").split(),
                          vi[:-1].split())
         self.assertIn(r"\n",reformatted)
         self.assertIn(r"\l",reformatted)
