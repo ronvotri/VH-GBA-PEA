@@ -2012,6 +2012,11 @@ jobs:
             --sym artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_FONT.sym \
             --out artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_FONT_AUDIT.json
           python3 tools/verify_additive_literal_lf_scroll.py post
+          python3 tools/audit_source_rom_headroom.py \
+            --elf literal-lf-scroll-additive-trial/pokeemerald.elf \
+            --rom literal-lf-scroll-additive-trial/pokeemerald.gba \
+            --minimum-free-bytes 49152 \
+            --out artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_ROM_HEADROOM.json
           python3 - <<'PY'
           import json,sys
           from pathlib import Path
