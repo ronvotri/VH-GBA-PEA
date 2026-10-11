@@ -55,7 +55,7 @@ class PokedexSourceTests(unittest.TestCase):
 
     def test_long_text_four_lines_word_boundary_only(self):
         original = (
-            r"very long descriptions are now written here in this one line which cannot fit\n"
+            r"long descriptions are now written here in this one line which cannot fit\n"
             r"but these must preserve all of their words\n"
             r"yes they do\n"
             r"and the fourth line also")
