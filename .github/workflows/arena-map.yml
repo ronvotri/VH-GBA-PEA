@@ -3072,6 +3072,22 @@ jobs:
             --out artifact/SOURCE_ABILITY_MATCHCALL_ONE_LINE_ATTESTATION.json
           echo "Additional source-only Ability/Match Call Vietnamese labels independently ELF/GBA-verified. Approved v0.4 font NOT merged; no gameplay/visual QA." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Audit exact Easy Chat rejected owners and original UI cell budgets
+        run: |
+          python3 tools/audit_easy_chat_ui_blockers.py \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --out artifact/SOURCE_EASY_CHAT_UI_BLOCKERS.json
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          a=json.loads(Path("artifact/SOURCE_EASY_CHAT_UI_BLOCKERS.json").read_text())
+          print("### Easy Chat diagnostic only — no translated string or font altered")
+          for key,value in sorted(a["totals"].items()):
+              print(f"- {key}: {value}")
+          print("The English character count is NOT a proven pixel/UI width.")
+          PY
+
       - name: Integrate authored Easy Chat words with exact per-symbol source and ROM QA
         run: |
           # Distinct source stage after verified 7091 C Ability/Match Call
