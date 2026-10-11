@@ -92,8 +92,8 @@ def summarize(rows: list[dict], glyphs: dict[str, int]) -> dict:
         vi = row.get("vietnamese", "")
         if not isinstance(vi, str) or not isinstance(file, str) or not isinstance(label, str):
             raise ValueError("malformed source plan fields")
-        owner = (file, label)
-        if not all(owner):
+        owner = (file, label, str(row.get("source_line", "")))
+        if not file or not label:
             continue
         if owner in seen:
             raise ValueError(f"duplicate source owner in glyph report: {owner}")
@@ -113,6 +113,7 @@ def summarize(rows: list[dict], glyphs: dict[str, int]) -> dict:
             if len(examples[ch]) < 3:
                 examples[ch].append({
                     "source_file": file, "source_label": label,
+                    "source_line": str(row.get("source_line", "")),
                     "category": category,
                 })
         for issue in issues:
