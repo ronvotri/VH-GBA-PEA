@@ -2012,6 +2012,26 @@ jobs:
             --sym artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_FONT.sym \
             --out artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_FONT_AUDIT.json
           python3 tools/verify_additive_literal_lf_scroll.py post
+          python3 tools/audit_duplicate_source_payloads.py \
+            --workspace literal-lf-scroll-additive-trial \
+            --report artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json \
+            --report artifact/SOURCE_EXPANDED_MAP_STAGE.json \
+            --report artifact/SOURCE_EXPANDED_MAP_LF_STAGE.json \
+            --report artifact/SOURCE_MAP_SCROLL_REFLOW_STAGE.json \
+            --report artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json \
+            --report artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_STAGE.json \
+            --out artifact/SOURCE_5777_DUPLICATE_MAP_PAYLOAD_AUDIT.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path("artifact/SOURCE_5777_DUPLICATE_MAP_PAYLOAD_AUDIT.json").read_text())
+          assert data["source_owned_map_labels_checked"]==2698,data
+          assert data["applied_reports_checked"]==6
+          assert data["actual_linker_bytes_reclaimed"]==0
+          assert not data["ROM_data_or_font_modified"]
+          assert not data["pointer_references_or_layout_safety_proven"]
+          print("PASS read-only exact-byte duplicate map text audit; NO alias writes")
+          PY
           python3 tools/audit_source_rom_headroom.py \
             --elf literal-lf-scroll-additive-trial/pokeemerald.elf \
             --rom literal-lf-scroll-additive-trial/pokeemerald.gba \
