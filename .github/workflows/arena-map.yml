@@ -137,6 +137,26 @@ jobs:
             --out artifact/user-facing-integration-plan.json \
             --summary artifact/user-facing-integration-summary.json
 
+      - name: Audit source translation glyph blockers without changing approved font
+        run: |
+          python3 tools/audit_missing_vietnamese_source_glyphs.py \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --out artifact/SOURCE_VIETNAMESE_GLYPH_BLOCKERS.json
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          audit=json.loads(Path("artifact/SOURCE_VIETNAMESE_GLYPH_BLOCKERS.json").read_text())
+          print("### Missing Vietnamese glyphs — read-only source-codebook audit")
+          print("Rows reviewed:",audit["source_plan_distinct_rows"])
+          print("Candidate rows affected by an unsupported glyph/control:",
+                audit["candidate_rows_with_unsupported_glyph_or_control"])
+          print("Missing distinct Unicode glyphs:",audit["total_unique_missing_characters"])
+          for x in audit["glyph_inventory"][:12]:
+              print(f'- {x["character"]} ({x["unicode_codepoint"]}): {x["rows_blocked"]} source rows')
+          print("No glyph art was generated and the approved v0.4 visual font is unchanged.")
+          PY
+
       - name: Publish safe integration readiness
         run: |
           python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
@@ -2843,6 +2863,50 @@ jobs:
             --codebook checkpoints/v06-pokeblock-safe-codebook.json \
             --out artifact/SOURCE_STATIC_BUDGET_DYNAMIC_REFLOW_ATTESTATION.json
           echo "System STR_VAR source reflow: original English dynamic lines' static-cell budget, words and pages preserved; still STOCK font and NOT emulator-tested." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Reflow source-owned dynamic NPC map text with exact variable budgets
+        run: |
+          # Inherit the verified 6361-source work, including all prior
+          # source-owned map NPCs and system text. Never mutate the accepted
+          # v0.4 font or invent runtime widths for STR_VAR values.
+          cp -a static-budget-system-dynamic-source-trial map-dynamic-static-budget-source-trial
+          python3 tools/stage_dynamic_map_static_budget.py \
+            --workspace map-dynamic-static-budget-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --exclude-report artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json \
+            --exclude-report artifact/SOURCE_EXPANDED_MAP_STAGE.json \
+            --exclude-report artifact/SOURCE_EXPANDED_MAP_LF_STAGE.json \
+            --exclude-report artifact/SOURCE_MAP_SCROLL_REFLOW_STAGE.json \
+            --exclude-report artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json \
+            --exclude-report artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_STAGE.json \
+            --exclude-report artifact/SOURCE_ZERO_PAGE_MAP_ADDITIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_PAGED_MAP_ADDITIVE_STAGE.json \
+            --limit 800 --width 26 --apply \
+            --report artifact/SOURCE_MAP_DYNAMIC_STATIC_BUDGET_STAGE.json
+          make -C map-dynamic-static-budget-source-trial -j2
+          test -s map-dynamic-static-budget-source-trial/pokeemerald.gba
+          arm-none-eabi-nm -n map-dynamic-static-budget-source-trial/pokeemerald.elf \
+            > artifact/SOURCE_MAP_DYNAMIC_STATIC_BUDGET.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom map-dynamic-static-budget-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_MAP_DYNAMIC_STATIC_BUDGET.sym \
+            --out artifact/SOURCE_MAP_DYNAMIC_STATIC_BUDGET_FONT_AUDIT.json
+          python3 tools/audit_source_rom_headroom.py \
+            --elf map-dynamic-static-budget-source-trial/pokeemerald.elf \
+            --rom map-dynamic-static-budget-source-trial/pokeemerald.gba \
+            --minimum-free-bytes 1048576 \
+            --out artifact/SOURCE_MAP_DYNAMIC_STATIC_BUDGET_HEADROOM.json
+          python3 tools/verify_dynamic_map_static_budget.py \
+            --workspace map-dynamic-static-budget-source-trial \
+            --artifact artifact \
+            --rom map-dynamic-static-budget-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_MAP_DYNAMIC_STATIC_BUDGET.sym \
+            --font-audit artifact/SOURCE_MAP_DYNAMIC_STATIC_BUDGET_FONT_AUDIT.json \
+            --headroom artifact/SOURCE_MAP_DYNAMIC_STATIC_BUDGET_HEADROOM.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --out artifact/SOURCE_MAP_DYNAMIC_STATIC_BUDGET_ATTESTATION.json
+          echo "NPC map dynamic text source compiled with original English variable budgets and ELF/GBA byte attestation. STOCK font only; no emulator/gameplay proof." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
