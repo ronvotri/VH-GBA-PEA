@@ -278,6 +278,28 @@ class GraftV06Tests(unittest.TestCase):
             v06.require_pinned_target_symbols(
                 offsets,v06.PINNED_ARENA_NATIVE_5299_SOURCE_SHA256)
 
+    def test_5777_literal_LF_scroll_profile_is_exactly_SHA_paired(self):
+        self.assertEqual(
+            v06.PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256,
+            "a812ad75ba3729076c274c3ddca643e1c1eff9ddcedca409e86ebb049ca8fa14")
+        offsets=v06.ATTESTED_LITERAL_LF_SCROLL_5777_FONT_OFFSETS
+        self.assertEqual(offsets["gFontSmallNarrowLatinGlyphs"],0x7182AC)
+        self.assertEqual(offsets["gFontNormalLatinGlyphs"],0x738AAC)
+        v06.require_pinned_target_symbols(
+            offsets,v06.PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256)
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(
+                v06.ATTESTED_BATTLE_SCROLL_5556_FONT_OFFSETS,
+                v06.PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256)
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(
+                offsets,v06.PINNED_BATTLE_SCROLL_5556_SOURCE_SHA256)
+        shifted=dict(offsets)
+        shifted["gFontNormalLatinGlyphs"]+=4
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(
+                shifted,v06.PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256)
+
     def test_unattested_source_sha_rejected(self):
         with self.assertRaisesRegex(ValueError,"no attested font profile"):
             v06.require_pinned_target_symbols(
