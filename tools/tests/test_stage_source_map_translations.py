@@ -205,6 +205,52 @@ class SourceStagingTests(unittest.TestCase):
         self.assertFalse(refused)
         self.assertIn("page-scroll: source controls/placeholder drift",reject)
 
+    def test_literal_lf_scroll_reflow_is_source_signature_gated(self):
+        row={"source_label":"LongLF","category":"map-story",
+             "source_file":"data/maps/Route101/scripts.inc",
+             "english":r"a\nb\nc$",
+             "vietnamese":"aaa aaa aaa aaa\nbbb bbb bbb bbb\nccc ccc ccc ccc$"}
+        codes={"a":0xD5,"b":0xD6,"c":0xD7," ":0x00}
+        blocked,reject=plan_rows([row],codes,"data/maps/",10,20,
+                                 auto_wrap=True,normalize_literal_newlines=True,
+                                 only_literal_newlines=True)
+        self.assertFalse(blocked)
+        self.assertIn("auto-wrap: explicit third line requires review",reject)
+        chosen,reject=plan_rows([row],codes,"data/maps/",10,20,
+                                auto_wrap=True,normalize_literal_newlines=True,
+                                only_literal_newlines=True,page_scroll_reflow=True)
+        self.assertFalse(reject)
+        self.assertEqual(len(chosen),1)
+        translated=chosen[0][0]
+        self.assertTrue(translated["literal_newlines_normalized"])
+        self.assertTrue(translated["page_scroll_reflowed"])
+        self.assertEqual(translated["authored_vietnamese"],row["vietnamese"])
+        self.assertEqual(translated["vietnamese"].count(r"\p"),0)
+        self.assertIn(r"\l",translated["vietnamese"])
+        original_words=row["vietnamese"][:-1].replace("\n"," ").split()
+        compiled_words=(translated["vietnamese"][:-1]
+                        .replace(r"\n"," ").replace(r"\l"," ").split())
+        self.assertEqual(compiled_words,original_words)
+        self.assertEqual(chosen[0][1][-1],0xFF)
+
+    def test_literal_lf_scroll_rejects_page_drift_and_placeholders(self):
+        codes={"a":0xD5,"b":0xD6," ":0x00}
+        base={"source_label":"StrictLF","category":"map-story",
+              "source_file":"data/maps/Route101/scripts.inc",
+              "english":r"a\pb$","vietnamese":"a\nb$"}
+        rejected,reasons=plan_rows([base],codes,"data/maps/",10,20,
+                                   auto_wrap=True,normalize_literal_newlines=True,
+                                   only_literal_newlines=True,page_scroll_reflow=True)
+        self.assertFalse(rejected)
+        self.assertIn("literal LF: source control sequence differs",reasons)
+        dynamic={**base,"english":r"{PLAYER}\nb$",
+                 "vietnamese":"{PLAYER}\nb$"}
+        rejected,reasons=plan_rows([dynamic],codes,"data/maps/",10,20,
+                                   auto_wrap=True,normalize_literal_newlines=True,
+                                   only_literal_newlines=True,page_scroll_reflow=True)
+        self.assertFalse(rejected)
+        self.assertIn("page-scroll: source controls/placeholder drift",reasons)
+
     def test_unknown_glyph_rejected(self):
         with self.assertRaisesRegex(ValueError,"missing Vietnamese glyph"):
             encode_text("Mẹ Æ$",self.codes,26)
