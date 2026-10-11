@@ -2183,6 +2183,148 @@ jobs:
           PY
           echo "Experimental Arena linker layout can reclaim zero-padding; 2698 map-linked bytes and all five STOCK font banks confirmed. NOT gameplay/visual QA or a release." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Integrate new static zero-page NPC dialogues after experimental linker packing (additional source labels)
+        run: |
+          # Strict subset: no \p pages, no {variable} placeholders, no unknown
+          # escapes, and only fully pinned data/maps/... script source owners.
+          # The 5777 build and the packed 5777 build remain unchanged.
+          cp -a compacted-linker-source-trial zero-page-additive-source-trial
+          python3 tools/stage_static_zero_page_dialogues.py \
+            --workspace zero-page-additive-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --exclude-report artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json \
+            --exclude-report artifact/SOURCE_EXPANDED_MAP_STAGE.json \
+            --exclude-report artifact/SOURCE_EXPANDED_MAP_LF_STAGE.json \
+            --exclude-report artifact/SOURCE_MAP_SCROLL_REFLOW_STAGE.json \
+            --exclude-report artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json \
+            --exclude-report artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_STAGE.json \
+            --limit 400 --width 26 --apply \
+            --report artifact/SOURCE_ZERO_PAGE_MAP_ADDITIVE_STAGE.json
+          python3 - <<'PY'
+          import json,re,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from stage_static_zero_page_dialogues import zero_page_words
+          from verify_compiled_source_strings import validate_stages
+          report=json.loads(Path("artifact/SOURCE_ZERO_PAGE_MAP_ADDITIVE_STAGE.json").read_text())
+          rows=report["translated"]
+          n=len(rows)
+          assert report["mode"]=="apply" and report["category"]=="map-story"
+          assert report["previously_compiled_map_owner_exclusions"]==2698
+          assert 1<=n<=400, ("no additionally eligible static dialogue",report["skipped_reasons"])
+          assert report["new_ROM_pointer_writes"]==0 and not report["dynamic_placeholders_admitted"]
+          owners={(r["source_file"],r["label"]) for r in rows}
+          assert len(owners)==n
+          for row in rows:
+              original=row["authored_vietnamese"]
+              compiled=row["vietnamese"]
+              assert row["word_count"]==len(zero_page_words(row["english"],original))
+              assert zero_page_words(row["english"],original)==zero_page_words(row["english"],compiled)
+              assert r"\p" not in compiled and r"\p" not in row["english"]
+              assert "{" not in compiled and "}" not in compiled
+              assert row["source_page_breaks"]==row["authored_page_breaks"]==0
+          source_qa=validate_stages(Path("zero-page-additive-source-trial"),{"map":report})
+          assert source_qa["checked_unique_source_labels"]==n,source_qa
+          print("PASS",n,"NEW native-wrap static NPC source texts, prior 2698 owners excluded")
+          PY
+          make -C zero-page-additive-source-trial -j2
+          test -s zero-page-additive-source-trial/pokeemerald.gba
+          sha256sum zero-page-additive-source-trial/pokeemerald.gba \
+            > artifact/SOURCE_ZERO_PAGE_MAP_ADDITIVE_SHA256.txt
+          arm-none-eabi-nm -n zero-page-additive-source-trial/pokeemerald.elf \
+            > artifact/SOURCE_ZERO_PAGE_MAP_ADDITIVE.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom zero-page-additive-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_ZERO_PAGE_MAP_ADDITIVE.sym \
+            --out artifact/SOURCE_ZERO_PAGE_MAP_ADDITIVE_FONT_AUDIT.json
+          python3 tools/audit_source_rom_headroom.py \
+            --elf zero-page-additive-source-trial/pokeemerald.elf \
+            --rom zero-page-additive-source-trial/pokeemerald.gba \
+            --minimum-free-bytes 1048576 \
+            --out artifact/SOURCE_ZERO_PAGE_MAP_ADDITIVE_HEADROOM.json
+          python3 - <<'PY'
+          import json,re,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import extract_asm_payload,validate_byte_string
+          root=Path("artifact")
+          stage=json.loads((root/"SOURCE_ZERO_PAGE_MAP_ADDITIVE_STAGE.json").read_text())
+          baseline=json.loads((root/"SOURCE_5777_EXPERIMENTAL_PACK_ATTESTATION.json").read_text())
+          font=json.loads((root/"SOURCE_ZERO_PAGE_MAP_ADDITIVE_FONT_AUDIT.json").read_text())
+          cap=json.loads((root/"SOURCE_ZERO_PAGE_MAP_ADDITIVE_HEADROOM.json").read_text())
+          assert baseline["prior_compiled_unique_source_labels"]==5777
+          assert baseline["all_2698_map_dialogue_payloads_linker_verified"]
+          assert font["glyph_blocks_matched_clean"]==5
+          assert font["source_rom_sha256"]==cap["source_ROM_sha256"]
+          assert cap["linker_free_bytes"]>=1048576
+          reports=("SOURCE_LEVEL_VIETNAMESE_PILOT.json",
+                   "SOURCE_EXPANDED_MAP_STAGE.json",
+                   "SOURCE_EXPANDED_MAP_LF_STAGE.json",
+                   "SOURCE_MAP_SCROLL_REFLOW_STAGE.json",
+                   "SOURCE_LEVEL_DYNAMIC_PILOT.json",
+                   "SOURCE_ADDITIVE_LITERAL_LF_SCROLL_STAGE.json",
+                   "SOURCE_ZERO_PAGE_MAP_ADDITIVE_STAGE.json")
+          owners=set()
+          sources={}
+          for name in reports:
+              old=json.loads((root/name).read_text())
+              items=old.get("accepted",old.get("translated"))
+              assert old["mode"]=="apply" and len(items)==old["labels_staged"]
+              for item in items:
+                  owner=(item.get("source_file") or item.get("file"),item["label"])
+                  assert owner not in owners,owner
+                  owners.add(owner)
+                  sources[owner]=None
+          n=stage["labels_staged"]
+          assert len(owners)==2698+n,len(owners)
+          for item in stage["translated"]:
+              assert item["source_page_breaks"]==0
+              assert item["word_count"]>0
+          rom=Path("zero-page-additive-source-trial/pokeemerald.gba").read_bytes()
+          sym=(root/"SOURCE_ZERO_PAGE_MAP_ADDITIVE.sym").read_text()
+          linked={}
+          for address,name in re.findall(r"(?m)^([0-9A-Fa-f]+)\s+\w\s+([A-Za-z_][A-Za-z0-9_]*)$",sym):
+              linked.setdefault(name,[]).append(int(address,16))
+          verified=0
+          for file,label in owners:
+              if file not in sources or sources[(file,label)] is None:
+                  pass
+              path=Path("zero-page-additive-source-trial")/file
+              if file not in sources or sources[(file,label)] is None:
+                  pass
+              content=path.read_text(encoding="utf-8")
+              payload=extract_asm_payload(content,label)
+              validate_byte_string(payload,label)
+              addresses=linked.get(label,[])
+              assert len(addresses)==1,(label,addresses)
+              offset=addresses[0]-0x08000000
+              assert 0<=offset<len(rom) and rom[offset:offset+len(payload)]==payload,(
+                  "linked payload differs",file,label)
+              verified+=1
+          assert verified==2698+n
+          proof={
+              "baseline_unique_source_labels":5777,
+              "new_static_zero_page_map_labels":n,
+              "combined_unique_source_labels":5777+n,
+              "all_unique_map_dialogue_ROM_symbols_verified":verified,
+              "newly_compiled_source_owner_exclusions":2698,
+              "all_new_source_pages_preserved":True,
+              "no_dynamic_tokens_entered":True,
+              "five_clean_stock_font_banks_verified":True,
+              "source_ROM_SHA256":cap["source_ROM_sha256"],
+              "ROM_linker_remaining_bytes":cap["linker_free_bytes"],
+              "source_strings_and_pointers_only_linker_relocated":True,
+              "approved_v04_donor_imported":False,
+              "emulator_visual_and_gameplay_QA":False,
+              "release_ready":False,
+          }
+          (root/"SOURCE_ZERO_PAGE_MAP_ADDITIVE_ATTESTATION.json").write_text(
+              json.dumps(proof,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          print("PASS additive static zero-page source-integration:",json.dumps(proof,indent=2))
+          PY
+          echo "Additional source-owned Vietnamese NPC texts compiled with no pages/dynamic controls. Still STOCK font; not playable release." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
