@@ -2953,6 +2953,52 @@ jobs:
             --out artifact/SOURCE_MAP_DYNAMIC_PAGE_LINE_REPAIR_ATTESTATION.json
           echo "Native NPC page-line recovery: exactly sourced ELF ROM symbols; approved v0.4 art NOT applied, gameplay not tested." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Compile only slot-aligned multi-variable NPC map text
+        run: |
+          # Inherit the 6648 ROM; token-bearing native source lines remain
+          # separately anchored. Never approximate STR_VAR display lengths,
+          # change private v0.4 glyph art, move \p pages or repoint raw ROM.
+          cp -a map-native-line-repair-source-trial map-multi-dynamic-line-slots-source-trial
+          python3 tools/stage_map_multi_dynamic_line_slots.py \
+            --workspace map-multi-dynamic-line-slots-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --exclude-report artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json \
+            --exclude-report artifact/SOURCE_EXPANDED_MAP_STAGE.json \
+            --exclude-report artifact/SOURCE_EXPANDED_MAP_LF_STAGE.json \
+            --exclude-report artifact/SOURCE_MAP_SCROLL_REFLOW_STAGE.json \
+            --exclude-report artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json \
+            --exclude-report artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_STAGE.json \
+            --exclude-report artifact/SOURCE_ZERO_PAGE_MAP_ADDITIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_PAGED_MAP_ADDITIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_MAP_DYNAMIC_STATIC_BUDGET_STAGE.json \
+            --exclude-report artifact/SOURCE_MAP_DYNAMIC_PAGE_LINE_REPAIR_STAGE.json \
+            --limit 450 --width 26 --apply \
+            --report artifact/SOURCE_MAP_MULTI_DYNAMIC_LINE_SLOTS_STAGE.json
+          make -C map-multi-dynamic-line-slots-source-trial -j2
+          test -s map-multi-dynamic-line-slots-source-trial/pokeemerald.gba
+          arm-none-eabi-nm -n map-multi-dynamic-line-slots-source-trial/pokeemerald.elf \
+            > artifact/SOURCE_MAP_MULTI_DYNAMIC_LINE_SLOTS.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom map-multi-dynamic-line-slots-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_MAP_MULTI_DYNAMIC_LINE_SLOTS.sym \
+            --out artifact/SOURCE_MAP_MULTI_DYNAMIC_LINE_SLOTS_FONT_AUDIT.json
+          python3 tools/audit_source_rom_headroom.py \
+            --elf map-multi-dynamic-line-slots-source-trial/pokeemerald.elf \
+            --rom map-multi-dynamic-line-slots-source-trial/pokeemerald.gba \
+            --minimum-free-bytes 1048576 \
+            --out artifact/SOURCE_MAP_MULTI_DYNAMIC_LINE_SLOTS_HEADROOM.json
+          python3 tools/verify_map_multi_dynamic_line_slots.py \
+            --workspace map-multi-dynamic-line-slots-source-trial \
+            --artifact artifact \
+            --rom map-multi-dynamic-line-slots-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_MAP_MULTI_DYNAMIC_LINE_SLOTS.sym \
+            --font-audit artifact/SOURCE_MAP_MULTI_DYNAMIC_LINE_SLOTS_FONT_AUDIT.json \
+            --headroom artifact/SOURCE_MAP_MULTI_DYNAMIC_LINE_SLOTS_HEADROOM.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --out artifact/SOURCE_MAP_MULTI_DYNAMIC_LINE_SLOTS_ATTESTATION.json
+          echo "Multi-variable NPC page slots source-linked and ELF/GBA byte-attested without rewriting approved v0.4 font or user words." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
