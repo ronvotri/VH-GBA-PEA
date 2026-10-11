@@ -1,10 +1,11 @@
 # Pokémon Emerald Arena — zero-page system-text integration (11/10/2026)
 
-## State when this source work was committed
+## CI-confirmed source milestone
 
-- Last independently **FULL PASS** source milestone: **5,967 unique source-compiled labels** in Actions [#38137406551](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38137406551).
-- New additive system-text stage added on `main` through commit `ea54962`. Its current CI run is [#38139503164](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38139503164). The new unit-test step is PASS; **do not increase the 5,967 count unless this run finishes FULL PASS and its attestation confirms an exact value.**
-- This experiment is **not** a downloadable Vietnamese ROM. Source-built fonts are still stock English glyph art, not the user's visually accepted v0.4 Vietnamese font. No source-level addition can replace actual emulator gameplay/visual validation.
+- **GitHub Actions #38139503164 FULL PASS**: 5,967 → **5,969** unique source-compiled Vietnamese labels (+2 native zero-page system labels).
+- In the resulting ELF/GBA, **1,160 system** and **2,867 map/NPC** owned source byte arrays were independently compared with their exact linked symbol positions.
+- The rebuilt ROM kept all **five stock English Latin font banks** unchanged. This proves source/text/linker consistency only; it **does not** imply that the playable, user-approved v0.4 Vietnamese font has been grafted or that runtime QA passed.
+- Follow-up experiment: normalize only Vietnamese literal LF whose entire ordered native `\\n/\\l/\\p` control signature exactly matches the original English source; [GitHub Actions #38142750497](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38142750497). Do not increase **5,969** until a new FULL PASS with an attestation reports an actual positive addition.
 
 ## Work performed
 
