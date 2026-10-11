@@ -189,6 +189,20 @@ ATTESTED_LITERAL_LF_SCROLL_5777_FONT_OFFSETS={
     "gFontNormalLatinGlyphs":0x738AAC,
 }
 
+# CI #38131970183 FULL PASS: experimental source-only graphics linker packing
+# removes the two fixed 0x08C00000 / 0x08D00000 anchoring gaps and recovers
+# 1,739,728 bytes of contiguous tail headroom. All 2698 map dialogues were
+# independently ELF/ROM byte-verified; all five unchanged stock font banks
+# retain their prior symbol addresses. NOT emulator or visual QA.
+PINNED_PACKED_LINKER_5777_SOURCE_SHA256="5f80f5b8f8f18eebb158d500684283fe3cf5ccaf3c09b3bd1e05a4c40524cf1d"
+ATTESTED_PACKED_LINKER_5777_FONT_OFFSETS={
+    "gFontSmallNarrowLatinGlyphs":0x7182AC,
+    "gFontSmallLatinGlyphs":0x7204AC,
+    "gFontNarrowLatinGlyphs":0x7286AC,
+    "gFontShortLatinGlyphs":0x7308AC,
+    "gFontNormalLatinGlyphs":0x738AAC,
+}
+
 def require_pinned_target_symbols(target_offsets:dict[str,int],
                                   source_sha256:str=PINNED_SOURCE_SHA256)->None:
     profiles={
@@ -206,6 +220,7 @@ def require_pinned_target_symbols(target_offsets:dict[str,int],
         PINNED_ARENA_NATIVE_5299_SOURCE_SHA256:ATTESTED_ARENA_NATIVE_5299_FONT_OFFSETS,
         PINNED_BATTLE_SCROLL_5556_SOURCE_SHA256:ATTESTED_BATTLE_SCROLL_5556_FONT_OFFSETS,
         PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256:ATTESTED_LITERAL_LF_SCROLL_5777_FONT_OFFSETS,
+        PINNED_PACKED_LINKER_5777_SOURCE_SHA256:ATTESTED_PACKED_LINKER_5777_FONT_OFFSETS,
     }
     expected=profiles.get(source_sha256.lower())
     if expected is None:
@@ -340,7 +355,8 @@ def main():
         PINNED_MAP_SCROLL_5282_SOURCE_SHA256,
         PINNED_ARENA_NATIVE_5299_SOURCE_SHA256,
         PINNED_BATTLE_SCROLL_5556_SOURCE_SHA256,
-        PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256):
+        PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256,
+        PINNED_PACKED_LINKER_5777_SOURCE_SHA256):
         p.error("source SHA256 has no attested v0.6 font geometry profile")
     if a.output and a.output.resolve() in {a.clean.resolve(),a.v04.resolve(),a.source_built.resolve()}:
         p.error("output must not overwrite source or donor ROM")
