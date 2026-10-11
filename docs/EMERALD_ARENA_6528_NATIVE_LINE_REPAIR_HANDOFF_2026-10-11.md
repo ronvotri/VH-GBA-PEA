@@ -1,5 +1,13 @@
 # Pokémon Emerald Arena — source owner page-line repair checkpoint (11/10/2026)
 
+## Kết quả đã xác minh sau khi CI hoàn thành
+
+- **[Actions #38150623105](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38150623105) FULL PASS**, source count **6.528 → 6.648 (+120)**, thêm thoại NPC trong **21 file nguồn**, xác minh mỗi nhãn với ELF symbol và byte trong GBA.
+- Sau liên kết lại, **1.552 system + 3.034 map owner cũ** được đối chiếu, tất cả đều PASS. **120** map owner mới cũng PASS; tổng **3.154** map/dialogue nhãn đã có bằng chứng source-owned chính xác.
+- Build source ROM SHA256 `19b1edd0168a9005dd8a6d5b08a15259ea6106646316e04f0bf5d1f29d86858a`; vùng trống liền ở cuối ROM **1.812.148 byte**; 5 ngân hàng hình font vẫn là stock tiếng Anh.
+- Phần còn lại tại vòng này vẫn chủ yếu bị khóa bởi codebook thiếu glyph (ví dụ `Ồ` 42, `À` 31, `Ô` 11), nhiều biến động trong cùng trang (30) và dynamic core vượt ô chữ tĩnh gốc (41). Không xóa dấu, dời biến bừa hoặc dựng font giả để tăng chỉ số.
+- Chưa ghép font v0.4 / chưa chơi thử mGBA, **chưa phát hành**.
+
 ## Verified baseline and counting rules
 
 - Last confirmed binary-attested source build is **6,528** distinct Vietnamese source-owned labels ([FULL PASS Actions #38149462164](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38149462164)). This is not the fraction of user-visible screens fully localized.
