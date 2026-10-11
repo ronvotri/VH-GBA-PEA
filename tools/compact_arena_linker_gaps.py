@@ -28,12 +28,12 @@ SECTIONS = (
 def compact_linker_text(source: str) -> str:
     if "/* Modify the following load addresses as needed to make more room." not in source:
         raise ValueError("unrecognized original pokeemerald linker comment")
-    for definition, symbol in DECLARATIONS:
-        if source.count(definition) != 1 or source.count(symbol) != 2:
-            raise ValueError(f"{symbol}: expected exact Arena 0.13.0 fixed anchor pair")
     for old, _ in SECTIONS:
         if source.count(old) != 1:
             raise ValueError(f"unrecognized Arena section anchor {old}")
+    for definition, symbol in DECLARATIONS:
+        if source.count(definition) != 1 or source.count(symbol) != 2:
+            raise ValueError(f"{symbol}: expected exact Arena 0.13.0 fixed anchor pair")
     replacement = source
     for definition, _ in DECLARATIONS:
         replacement = replacement.replace(definition + "\n", "")
