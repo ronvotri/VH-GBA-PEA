@@ -42,6 +42,11 @@ def compile_line_repaired_page(en: str, vi: str, codes: dict[str, int],
     details = []
     any_variables = False
     for source_page, authored_page in zip(eng_pages, vn_pages):
+        if (authored_page.startswith(" ") or authored_page.endswith(" ")
+                or "  " in authored_page
+                or any(mark in authored_page for mark in
+                       (r" \n", r"\n ", r" \l", r"\l "))):
+            raise ValueError("ambiguous authored whitespace around native controls")
         source_lines = LAYOUT.split(source_page)
         source_variable_lines = [
             line for line in source_lines if TOKEN.findall(line)
