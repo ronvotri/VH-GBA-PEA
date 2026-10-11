@@ -6,6 +6,15 @@ Dự án Việt hóa **Pokémon Emerald Arena 0.13.0** sang tiếng Việt có d
 
 ## Trạng thái hiện tại
 
+**MỐC MỚI NHẤT — 6.528 NHÃN NGUỒN TIẾNG VIỆT ĐÃ KIỂM CHỨNG (11/10/2026):** [GitHub Actions #38148731660](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38148731660) **FULL PASS**. Thêm **167 câu NPC/bản đồ có biến STR_VAR/PLAYER/RIVAL/KUN** vào bản nguồn với chứng thực đúng từng nhãn ELF/GBA; **1.552** nhãn hệ thống cũ và **2.867** nhãn map cũ được xác minh lại. Font bản build vẫn là 5 bộ stock tiếng Anh, **chưa ghép nét font Việt v0.4 đã duyệt**; chưa QA chơi thử. Bộ kiểm kê glyph đầu đã hoàn tất nhưng đang sửa riêng quy tắc phân biệt chuỗi C/UI không có ký hiệu `# Pokémon Emerald Arena – Việt hóa
+
+Dự án Việt hóa **Pokémon Emerald Arena 0.13.0** sang tiếng Việt có dấu.
+
+> Repo này theo dõi mã vá, công cụ, tài liệu kỹ thuật và tiến độ. Không lưu ROM Pokémon gốc/ROM đầy đủ.
+
+ với thoại GBA `.inc`, **không dùng số liệu blocker ban đầu để kết luận**. Catalog **17.512 mục dịch** vẫn không đồng nghĩa 17.512 mục đã tích hợp. [Checkpoint](docs/EMERALD_ARENA_6361_MAP_DYNAMIC_GLYPH_HANDOFF_2026-10-11.md).
+
+
 **MỐC MỚI NHẤT — 6.361 NHÃN NGUỒN TIẾNG VIỆT ĐÃ XÁC MINH (11/10/2026):** [CI #38146099792](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38146099792) **FULL PASS**. Thêm **271 câu thoại hệ thống có STR_VAR/PLAYER/RIVAL/KUN** trên **10 tệp nguồn**, áp dụng chia dòng chỉ trong cùng trang, giữ nguyên số ô chữ tĩnh tối đa của dòng tiếng Anh tương ứng và không đoán độ dài của biến STR_VAR. Tổng từ checkpoint 5.974 đầu lượt đến nay **+387 nhãn**. Tất cả bản build nguồn vẫn **dùng font tiếng Anh stock**, **chưa nhập bộ nét font Việt v0.4 đã duyệt**, chưa có QA đồ họa/gameplay; 17.512 bản dịch manifest **không đồng nghĩa** với 17.512 nhãn đã ghép vào game. [Checkpoint chi tiết](docs/EMERALD_ARENA_6361_DYNAMIC_STRVAR_PASS_2026-10-11.md).
 
 **MỐC 6.090 NHÃN NGUỒN TIẾNG VIỆT ĐÃ XÁC MINH (11/10/2026):** [CI #38145240337](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38145240337) **FULL PASS**, thêm **85 câu thoại hệ thống** có biến PLAYER/RIVAL/KUN được tự dàn dòng trong **7 file nguồn** sau mốc 6.005 trước đó. Kiểm tra byte tại đúng địa chỉ ELF/GBA, bảo toàn lời thoại theo từng trang, thứ tự biến và nguồn mã. Font ROM nguồn **vẫn là stock tiếng Anh**, chưa ghép raster font Việt v0.4 đã duyệt, và chưa QA gameplay. Đang thử kế tiếp [STR_VAR static-budget CI #38146099792](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38146099792); **chưa cộng số mới khi chưa FULL PASS**. [Checkpoint 6.090](docs/EMERALD_ARENA_6005_DYNAMIC_REFLOW_HANDOFF_2026-10-11.md).
