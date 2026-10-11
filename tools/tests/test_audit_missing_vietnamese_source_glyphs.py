@@ -44,6 +44,25 @@ class MissingGlyphInventoryTests(unittest.TestCase):
         self.assertFalse(report["synthetic_glyphs_generated"])
         self.assertFalse(report["v04_approved_font_grafted"])
 
+    def test_c_ui_string_without_native_dollar_is_valid(self):
+        visible, issues = visible_glyphs(
+            "Chào {PLAYER}, mình là Ừ!", require_terminator=False)
+        self.assertEqual(issues, [])
+        self.assertIn("Ừ", visible)
+        self.assertNotIn("{PLAYER}", visible)
+        result = summarize([
+            {"source_file": "src/realtime_arena.c",
+             "source_label": "sDemoName",
+             "source_line": "501",
+             "category": "arena-only",
+             "vietnamese": "Chào bạn!"}
+        ], {"C": 0xBD})
+        self.assertEqual(result["source_plan_distinct_rows"], 1)
+        self.assertNotIn(
+            "malformed GBA text terminator", result["non_glyph_text_issues"])
+        self.assertEqual(
+            result["candidate_rows_with_unsupported_glyph_or_control"], 1)
+
     def test_codebook_avoids_pokeblock_equals_and_colliding_glyphs(self):
         good = validate_codebook({"glyph_bytes": {
             "a": "0xD5", "đ": "0x33", "ì": "0x37"
