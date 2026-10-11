@@ -34,7 +34,7 @@ ROWS = [
 GLYPHS = {
     ch: i + 1 for i, ch in enumerate(
         " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        "0123456789.!?,-éọiưữìếấ")
+        "0123456789.!?,-éọiưữìếấàĩđậ")
 }
 
 
