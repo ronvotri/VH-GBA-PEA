@@ -1885,7 +1885,23 @@ jobs:
           assert prev["combined_source_compiled_labels"]==5556,prev
           assert first["mode"]=="apply" and first["labels_staged"]==len(first["accepted"])
           n=new["labels_staged"]
-          assert new["mode"]=="apply" and 1<=n<=200,(n,new["rejected"])
+          assert new["mode"]=="apply" and 0<=n<=200,(n,new["rejected"])
+          # Zero is a legitimate fail-closed result: the first 134 labels
+          # exhausted the PLAYER/RIVAL-only candidates in the pinned catalog.
+          # Still require proof that the input was processed, with explicit
+          # rejection reasons, rather than silently passing an empty plan.
+          if n==0:
+              assert new["files_changed"]==0 and new["auto_wrapped_labels"]==0,new
+              rejected=new["rejected"]
+              assert rejected and sum(rejected.values())>0,"empty dynamic candidate audit"
+              assert all(
+                  reason=="source uses unapproved variable type"
+                  or reason.startswith("missing Vietnamese glyph ")
+                  or reason in ("ambiguous embedded control or whitespace",
+                                "unexpected control or brace",
+                                "word or quoted phrase wider than line")
+                  for reason in rejected
+              ),rejected
           assert new["previously_staged_label_exclusions"]==first["labels_staged"]
           assert len(new["accepted"])==n
           old={(r["file"],r["label"]) for r in first["accepted"]}
@@ -1905,6 +1921,8 @@ jobs:
           data={"previous_compiled_source_labels":5556,
                 "new_player_rival_source_labels":n,
                 "combined_unique_source_labels":5556+n,
+                "no_new_safe_PLAYER_RIVAL_candidates":n==0,
+                "rejected_candidate_counts":new["rejected"],
                 "previously_staged_dynamic_excluded":first["labels_staged"],
                 "placeholder_sequence_unchanged":True,
                 "conservative_maximum_name_cells":7,
@@ -1923,6 +1941,18 @@ jobs:
             --rom dynamic-player-rival-second-trial/pokeemerald.gba \
             --sym artifact/SOURCE_DYNAMIC_PLAYER_RIVAL_SECOND_FONT.sym \
             --out artifact/SOURCE_DYNAMIC_PLAYER_RIVAL_SECOND_FONT_AUDIT.json
+          # If no new rows were admitted, the copied candidate must remain
+          # byte-identical to the independently attested 5556-source baseline.
+          if python3 - <<'PY'
+          import json,sys
+          from pathlib import Path
+          stage=json.loads(Path("artifact/SOURCE_DYNAMIC_PLAYER_RIVAL_SECOND_STAGE.json").read_text())
+          sys.exit(0 if stage["labels_staged"]==0 else 1)
+          PY
+          then
+            cmp battle-scroll-source-trial/pokeemerald.gba dynamic-player-rival-second-trial/pokeemerald.gba
+            echo "No additional PLAYER/RIVAL-only safe candidates: 5556-source binary unchanged." >> "$GITHUB_STEP_SUMMARY"
+          fi
           python3 - <<'PY'
           import json,re,sys
           from pathlib import Path
