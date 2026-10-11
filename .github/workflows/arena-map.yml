@@ -3085,6 +3085,10 @@ jobs:
           print("### Easy Chat diagnostic only — no translated string or font altered")
           for key,value in sorted(a["totals"].items()):
               print(f"- {key}: {value}")
+          print("#### Overlapping Easy Chat blockers (diagnostic only)")
+          for key,value in sorted(a.get("overlapping_blockers", {}).items()):
+              print(f"- {key}: {value}")
+          print("Overlap counts do not increase source-integrated label coverage.")
           print("The English character count is NOT a proven pixel/UI width.")
           PY
 
