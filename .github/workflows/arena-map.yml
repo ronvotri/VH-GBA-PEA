@@ -2705,6 +2705,52 @@ jobs:
             --out artifact/SOURCE_PAGED_LITERAL_LF_SYSTEM_ADDITIVE_ATTESTATION.json
           echo "Page-locked native literal-LF system dialogues compiled into a separate source ROM. STOCK English glyphs only, not an end-user font or gameplay pass." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Integrate source-verified dynamic system text with no static-line expansion
+        run: |
+          # Fixed engine tokens are checked against pinned charmap.txt; English
+          # text length is the upper bound for Vietnamese static text on each
+          # corresponding native line, so runtime variables cannot worsen
+          # their previous line fit. Approved v0.4 art remains untouched.
+          cp -a paged-literal-lf-system-additive-source-trial safe-dynamic-system-additive-source-trial
+          python3 tools/stage_safe_system_dynamic_variables.py \
+            --workspace safe-dynamic-system-additive-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_STAGE.json \
+            --exclude-report artifact/SOURCE_BIRCH_NARRATIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_BIRCH_DYNAMIC_STAGE.json \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_SECOND_STAGE.json \
+            --exclude-report artifact/SOURCE_SYSTEM_SCROLL_REFLOW_STAGE.json \
+            --exclude-report artifact/SOURCE_PAGED_SYSTEM_ADDITIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_ZERO_PAGE_SYSTEM_ADDITIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_LITERAL_LF_SYSTEM_ADDITIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_PAGED_LITERAL_LF_SYSTEM_ADDITIVE_STAGE.json \
+            --limit 750 --apply \
+            --report artifact/SOURCE_SAFE_DYNAMIC_SYSTEM_ADDITIVE_STAGE.json
+          make -C safe-dynamic-system-additive-source-trial -j2
+          test -s safe-dynamic-system-additive-source-trial/pokeemerald.gba
+          arm-none-eabi-nm -n safe-dynamic-system-additive-source-trial/pokeemerald.elf \
+            > artifact/SOURCE_SAFE_DYNAMIC_SYSTEM_ADDITIVE.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom safe-dynamic-system-additive-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_SAFE_DYNAMIC_SYSTEM_ADDITIVE.sym \
+            --out artifact/SOURCE_SAFE_DYNAMIC_SYSTEM_ADDITIVE_FONT_AUDIT.json
+          python3 tools/audit_source_rom_headroom.py \
+            --elf safe-dynamic-system-additive-source-trial/pokeemerald.elf \
+            --rom safe-dynamic-system-additive-source-trial/pokeemerald.gba \
+            --minimum-free-bytes 1048576 \
+            --out artifact/SOURCE_SAFE_DYNAMIC_SYSTEM_ADDITIVE_HEADROOM.json
+          python3 tools/verify_safe_system_dynamic_variables.py \
+            --workspace safe-dynamic-system-additive-source-trial \
+            --artifact artifact \
+            --rom safe-dynamic-system-additive-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_SAFE_DYNAMIC_SYSTEM_ADDITIVE.sym \
+            --font-audit artifact/SOURCE_SAFE_DYNAMIC_SYSTEM_ADDITIVE_FONT_AUDIT.json \
+            --headroom artifact/SOURCE_SAFE_DYNAMIC_SYSTEM_ADDITIVE_HEADROOM.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --out artifact/SOURCE_SAFE_DYNAMIC_SYSTEM_ADDITIVE_ATTESTATION.json
+          echo "Engine-pinned system variables compiled from exact owner symbols without expanding static line widths. Still source/stock font only; not a playable release." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
