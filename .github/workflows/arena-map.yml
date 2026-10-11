@@ -2325,6 +2325,133 @@ jobs:
           PY
           echo "Additional source-owned Vietnamese NPC texts compiled with no pages/dynamic controls. Still STOCK font; not playable release." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Source-compile additional exact-page NPC dialogues on repacked 5791 ROM (experimental)
+        run: |
+          # Keep every source/authored \p page boundary and word order within
+          # that page. No source token escapes, pointer guesses or ROM edits.
+          cp -a zero-page-additive-source-trial paged-map-additive-source-trial
+          python3 tools/stage_static_paged_map_dialogues.py \
+            --workspace paged-map-additive-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --exclude-report artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json \
+            --exclude-report artifact/SOURCE_EXPANDED_MAP_STAGE.json \
+            --exclude-report artifact/SOURCE_EXPANDED_MAP_LF_STAGE.json \
+            --exclude-report artifact/SOURCE_MAP_SCROLL_REFLOW_STAGE.json \
+            --exclude-report artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json \
+            --exclude-report artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_STAGE.json \
+            --exclude-report artifact/SOURCE_ZERO_PAGE_MAP_ADDITIVE_STAGE.json \
+            --limit 750 --width 26 --apply \
+            --report artifact/SOURCE_PAGED_MAP_ADDITIVE_STAGE.json
+          python3 - <<'PY'
+          import json,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from stage_static_paged_map_dialogues import page_words
+          from verify_compiled_source_strings import validate_stages
+          p=Path("artifact")
+          stage=json.loads((p/"SOURCE_PAGED_MAP_ADDITIVE_STAGE.json").read_text())
+          earlier=json.loads((p/"SOURCE_ZERO_PAGE_MAP_ADDITIVE_ATTESTATION.json").read_text())
+          assert earlier["combined_unique_source_labels"]==5791
+          assert earlier["all_unique_map_dialogue_ROM_symbols_verified"]==2712
+          n=stage["labels_staged"]
+          assert stage["mode"]=="apply" and stage["category"]=="map-story"
+          assert stage["selection"]=="strict_authored_multi_page_word_and_page_preserving"
+          assert stage["previously_compiled_map_owner_exclusions"]==2712,stage
+          assert 1<=n<=750,("No additional safely authored paginated map texts",stage["skipped_reasons"])
+          assert stage["pointer_writes"]==0 and stage["unknown_controls_or_dynamic_allowed"] is False
+          assert stage["page_count_and_words_preserved"]
+          for row in stage["translated"]:
+              assert row["page_count"]>=2
+              assert page_words(row["english"],row["vietnamese"])==page_words(
+                  row["english"],row["authored_vietnamese"]),row["label"]
+              assert row["vietnamese"].count(r"\p")==row["english"].count(r"\p")
+              assert row["page_word_counts"]==[
+                  len(w) for w in page_words(row["english"],row["authored_vietnamese"])]
+              assert "{" not in row["vietnamese"] and "}" not in row["vietnamese"]
+          qa=validate_stages(Path("paged-map-additive-source-trial"),{"map":stage})
+          assert qa["checked_unique_source_labels"]==n,qa
+          print("PASS",n,"new page-locked source-owned map dialogue strings")
+          PY
+          make -C paged-map-additive-source-trial -j2
+          test -s paged-map-additive-source-trial/pokeemerald.gba
+          arm-none-eabi-nm -n paged-map-additive-source-trial/pokeemerald.elf \
+            > artifact/SOURCE_PAGED_MAP_ADDITIVE.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom paged-map-additive-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_PAGED_MAP_ADDITIVE.sym \
+            --out artifact/SOURCE_PAGED_MAP_ADDITIVE_FONT_AUDIT.json
+          python3 tools/audit_source_rom_headroom.py \
+            --elf paged-map-additive-source-trial/pokeemerald.elf \
+            --rom paged-map-additive-source-trial/pokeemerald.gba \
+            --minimum-free-bytes 1048576 \
+            --out artifact/SOURCE_PAGED_MAP_ADDITIVE_HEADROOM.json
+          python3 - <<'PY'
+          import json,re,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import extract_asm_payload,validate_byte_string
+          p=Path("artifact")
+          stage=json.loads((p/"SOURCE_PAGED_MAP_ADDITIVE_STAGE.json").read_text())
+          font=json.loads((p/"SOURCE_PAGED_MAP_ADDITIVE_FONT_AUDIT.json").read_text())
+          space=json.loads((p/"SOURCE_PAGED_MAP_ADDITIVE_HEADROOM.json").read_text())
+          assert font["source_rom_sha256"]==space["source_ROM_sha256"]
+          assert font["glyph_blocks_matched_clean"]==5
+          assert space["linker_free_bytes"]>=1048576
+          reports=("SOURCE_LEVEL_VIETNAMESE_PILOT.json",
+                   "SOURCE_EXPANDED_MAP_STAGE.json",
+                   "SOURCE_EXPANDED_MAP_LF_STAGE.json",
+                   "SOURCE_MAP_SCROLL_REFLOW_STAGE.json",
+                   "SOURCE_LEVEL_DYNAMIC_PILOT.json",
+                   "SOURCE_ADDITIVE_LITERAL_LF_SCROLL_STAGE.json",
+                   "SOURCE_ZERO_PAGE_MAP_ADDITIVE_STAGE.json",
+                   "SOURCE_PAGED_MAP_ADDITIVE_STAGE.json")
+          unique=set()
+          for name in reports:
+              r=json.loads((p/name).read_text())
+              rows=r.get("accepted",r.get("translated"))
+              assert r["mode"]=="apply" and len(rows)==r["labels_staged"]
+              for row in rows:
+                  identity=(row.get("source_file") or row.get("file"),row["label"])
+                  assert identity not in unique,identity
+                  unique.add(identity)
+          n=stage["labels_staged"]
+          assert len(unique)==2712+n,len(unique)
+          rom=Path("paged-map-additive-source-trial/pokeemerald.gba").read_bytes()
+          symbols=(p/"SOURCE_PAGED_MAP_ADDITIVE.sym").read_text()
+          addresses={}
+          for address,name in re.findall(r"(?m)^([0-9A-Fa-f]+)\s+\w\s+([A-Za-z_][A-Za-z0-9_]*)$",symbols):
+              addresses.setdefault(name,[]).append(int(address,16))
+          source_cache={}
+          for source_file,label in unique:
+              if source_file not in source_cache:
+                  source_cache[source_file]=(Path("paged-map-additive-source-trial")/source_file).read_text()
+              payload=extract_asm_payload(source_cache[source_file],label)
+              validate_byte_string(payload,label)
+              addrs=addresses.get(label,[])
+              assert len(addrs)==1,(label,addrs)
+              offset=addrs[0]-0x08000000
+              assert 0<=offset and rom[offset:offset+len(payload)]==payload,(
+                  "GBA symbol bytes differ after page-locked integration",label)
+          att={
+              "source_compiled_baseline_labels":5791,
+              "new_page_preserving_source_labels":n,
+              "combined_source_compiled_labels":5791+n,
+              "independently_linker_byte_verified_map_dialogues":len(unique),
+              "all_new_page_counts_and_page_word_order_preserved":True,
+              "all_existing_map_source_symbols_reverified":True,
+              "all_five_stock_font_blocks_clean":True,
+              "source_ROM_SHA256":space["source_ROM_sha256"],
+              "ROM_contiguous_tail_available_bytes":space["linker_free_bytes"],
+              "private_approved_v04_donor_applied":False,
+              "emulator_runtime_and_visual_QA":False,
+              "release_ready":False}
+          (p/"SOURCE_PAGED_MAP_ADDITIVE_ATTESTATION.json").write_text(
+              json.dumps(att,indent=2)+"\n")
+          print("PASS source-owned paginated GBA integration",json.dumps(att,indent=2))
+          PY
+          echo "Page-preserving source-owned map text compiled, but still STOCK-font / not an emulator-verified release." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
