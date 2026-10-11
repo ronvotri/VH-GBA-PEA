@@ -58,6 +58,19 @@ class MissingGlyphInventoryTests(unittest.TestCase):
                 "a": "0xD5", "ă": "0xD5"
             }})
 
+    def test_catalog_source_line_disambiguates_repeated_C_symbol_name(self):
+        rows = [
+            {"source_file": "src/realtime_arena.c", "source_label": "sDemoName",
+             "source_line": "100", "category": "arena-only",
+             "vietnamese": "Ừ$"},
+            {"source_file": "src/realtime_arena.c", "source_label": "sDemoName",
+             "source_line": "150", "category": "arena-only",
+             "vietnamese": "Ồ$"},
+        ]
+        report = summarize(rows, {"a": 0xD5})
+        self.assertEqual(report["source_plan_distinct_rows"], 2)
+        self.assertEqual(report["candidate_rows_with_unsupported_glyph_or_control"], 2)
+
     def test_unknown_escape_is_separate_from_unicode_mismatch(self):
         chars, issues = visible_glyphs(r"Xin \q {PLAYER}!$")
         self.assertIn("unknown GBA backslash control", issues)
