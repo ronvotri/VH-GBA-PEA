@@ -2395,7 +2395,12 @@ jobs:
           stage=json.loads((p/"SOURCE_PAGED_MAP_ADDITIVE_STAGE.json").read_text())
           font=json.loads((p/"SOURCE_PAGED_MAP_ADDITIVE_FONT_AUDIT.json").read_text())
           space=json.loads((p/"SOURCE_PAGED_MAP_ADDITIVE_HEADROOM.json").read_text())
+          import graft_v06_pokeblock_safe_fonts as font_guard
           assert font["source_rom_sha256"]==space["source_ROM_sha256"]
+          assert font["source_rom_sha256"]==font_guard.PINNED_PAGED_MAP_5946_SOURCE_SHA256
+          offsets={name:int(value,16) for name,value in font["source_font_offsets"].items()}
+          font_guard.require_pinned_target_symbols(
+              offsets,font_guard.PINNED_PAGED_MAP_5946_SOURCE_SHA256)
           assert font["glyph_blocks_matched_clean"]==5
           assert space["linker_free_bytes"]>=1048576
           reports=("SOURCE_LEVEL_VIETNAMESE_PILOT.json",
