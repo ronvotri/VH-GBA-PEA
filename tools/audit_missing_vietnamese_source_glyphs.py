@@ -52,7 +52,7 @@ def visible_glyphs(source: str) -> tuple[str, list[str]]:
                 i += 2
                 continue
             control_issues.append("unknown GBA backslash control")
-            i += 1
+            i += 2 if i + 1 < len(body) else 1
         elif c == "{":
             end = body.find("}", i + 1)
             if end < 0 or "{" in body[i + 1:end] or not body[i + 1:end]:
