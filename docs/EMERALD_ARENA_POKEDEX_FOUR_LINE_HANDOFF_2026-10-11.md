@@ -15,6 +15,10 @@
 - `.github/workflows/arena-map.yml`: new isolated Pokédex build after the 6,648 source-owning map trial. Artifact `SOURCE_POKEDEX_FOUR_LINE_STAGE.json` plus `SOURCE_POKEDEX_FOUR_LINE_ATTESTATION.json`.
 - Active build at checkpoint: [GitHub Actions #38157439511](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38157439511). **No new label counts should be reported unless FULL PASS and the attestation gives a positive count.**
 
+## Read-only authored Pokédex eligibility preview
+
+An independent audit of the ten authored `translations/system-ui/pokedex-text-01..10.vi.json` files found **387** distinct translated descriptions, all retaining exactly four authored text lines. **306** were preliminarily compatible with the current glyph-codebook inventory and a possible four-line, 40-cell word-preserving partition; **81** had missing glyphs or impossible layout combinations, and **239** authored entries needed at least some line-width repair before a physical fit. These are *pre-build candidates*, **not** attested source labels or gameplay coverage. Common unsupported glyphs in the authored Pokédex subset include `ỳ` (27 source rows), `è` (12), `õ` (8), `°` (3), plus `♀/♂`. Preserve accents and special symbols; do not silently normalize them away.
+
 ## Next bottlenecks and approved artwork
 
 Read `skipped_reasons` to understand actual missing Unicode glyphs, lines longer than 40 cells or English source-owner mismatch. The v0.6 codebook has 141 known unavailable Unicode characters in the broad catalog diagnostic; this does **not** mean the approved v0.4 donor font is visually defective. Do not erase Vietnamese diacritics or inject fabricated glyph bitmaps to increase staged numbers. Once stable, reconcile original approved glyph artwork and private donor code-to-pixel mapping, then visual/gameplay test title → intro → maps → Pokédex → battle → save/load → Arena UI. Preserve title credit **“Việt hóa bởi Votri Valley”**. Never commit full copyrighted Pokémon ROMs.
