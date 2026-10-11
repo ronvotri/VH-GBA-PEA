@@ -177,6 +177,18 @@ ATTESTED_BATTLE_SCROLL_5556_FONT_OFFSETS={
     "gFontNormalLatinGlyphs":0x7392DC,
 }
 
+# CI #38115481548 FULL PASS: 221 source-owned literal LF messages normalized
+# and reflowed with GBA native scroll, verified at actual ELF-linked GBA bytes.
+# The 5777-label source build uses STOCK glyphs, not the accepted v0.4 donor.
+PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256="a812ad75ba3729076c274c3ddca643e1c1eff9ddcedca409e86ebb049ca8fa14"
+ATTESTED_LITERAL_LF_SCROLL_5777_FONT_OFFSETS={
+    "gFontSmallNarrowLatinGlyphs":0x7182AC,
+    "gFontSmallLatinGlyphs":0x7204AC,
+    "gFontNarrowLatinGlyphs":0x7286AC,
+    "gFontShortLatinGlyphs":0x7308AC,
+    "gFontNormalLatinGlyphs":0x738AAC,
+}
+
 def require_pinned_target_symbols(target_offsets:dict[str,int],
                                   source_sha256:str=PINNED_SOURCE_SHA256)->None:
     profiles={
@@ -193,6 +205,7 @@ def require_pinned_target_symbols(target_offsets:dict[str,int],
         PINNED_MAP_SCROLL_5282_SOURCE_SHA256:ATTESTED_MAP_SCROLL_5282_FONT_OFFSETS,
         PINNED_ARENA_NATIVE_5299_SOURCE_SHA256:ATTESTED_ARENA_NATIVE_5299_FONT_OFFSETS,
         PINNED_BATTLE_SCROLL_5556_SOURCE_SHA256:ATTESTED_BATTLE_SCROLL_5556_FONT_OFFSETS,
+        PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256:ATTESTED_LITERAL_LF_SCROLL_5777_FONT_OFFSETS,
     }
     expected=profiles.get(source_sha256.lower())
     if expected is None:
@@ -326,7 +339,8 @@ def main():
         PINNED_SYSTEM_SCROLL_4406_SOURCE_SHA256,
         PINNED_MAP_SCROLL_5282_SOURCE_SHA256,
         PINNED_ARENA_NATIVE_5299_SOURCE_SHA256,
-        PINNED_BATTLE_SCROLL_5556_SOURCE_SHA256):
+        PINNED_BATTLE_SCROLL_5556_SOURCE_SHA256,
+        PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256):
         p.error("source SHA256 has no attested v0.6 font geometry profile")
     if a.output and a.output.resolve() in {a.clean.resolve(),a.v04.resolve(),a.source_built.resolve()}:
         p.error("output must not overwrite source or donor ROM")
