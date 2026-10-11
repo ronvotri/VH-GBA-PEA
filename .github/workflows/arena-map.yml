@@ -2622,6 +2622,47 @@ jobs:
             --out artifact/SOURCE_ZERO_PAGE_SYSTEM_ADDITIVE_ATTESTATION.json
           echo "Zero-page system text candidate: source and ELF/GBA byte attestation only; original stock font and no gameplay QA. Not a user release." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Compile only source-signature-matched literal-LF system text
+        run: |
+          # This stage starts from proven 5969 source strings. It does not
+          # change the stable v0.4 font art, sprites or unrelated source jobs.
+          cp -a zero-page-system-additive-source-trial literal-lf-system-additive-source-trial
+          python3 tools/stage_static_literal_lf_system_text.py \
+            --workspace literal-lf-system-additive-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_STAGE.json \
+            --exclude-report artifact/SOURCE_BIRCH_NARRATIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_BIRCH_DYNAMIC_STAGE.json \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_SECOND_STAGE.json \
+            --exclude-report artifact/SOURCE_SYSTEM_SCROLL_REFLOW_STAGE.json \
+            --exclude-report artifact/SOURCE_PAGED_SYSTEM_ADDITIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_ZERO_PAGE_SYSTEM_ADDITIVE_STAGE.json \
+            --limit 500 --width 26 --apply \
+            --report artifact/SOURCE_LITERAL_LF_SYSTEM_ADDITIVE_STAGE.json
+          make -C literal-lf-system-additive-source-trial -j2
+          test -s literal-lf-system-additive-source-trial/pokeemerald.gba
+          arm-none-eabi-nm -n literal-lf-system-additive-source-trial/pokeemerald.elf \
+            > artifact/SOURCE_LITERAL_LF_SYSTEM_ADDITIVE.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom literal-lf-system-additive-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_LITERAL_LF_SYSTEM_ADDITIVE.sym \
+            --out artifact/SOURCE_LITERAL_LF_SYSTEM_ADDITIVE_FONT_AUDIT.json
+          python3 tools/audit_source_rom_headroom.py \
+            --elf literal-lf-system-additive-source-trial/pokeemerald.elf \
+            --rom literal-lf-system-additive-source-trial/pokeemerald.gba \
+            --minimum-free-bytes 1048576 \
+            --out artifact/SOURCE_LITERAL_LF_SYSTEM_ADDITIVE_HEADROOM.json
+          python3 tools/verify_literal_lf_system_additive.py \
+            --workspace literal-lf-system-additive-source-trial \
+            --artifact artifact \
+            --rom literal-lf-system-additive-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_LITERAL_LF_SYSTEM_ADDITIVE.sym \
+            --font-audit artifact/SOURCE_LITERAL_LF_SYSTEM_ADDITIVE_FONT_AUDIT.json \
+            --headroom artifact/SOURCE_LITERAL_LF_SYSTEM_ADDITIVE_HEADROOM.json \
+            --out artifact/SOURCE_LITERAL_LF_SYSTEM_ADDITIVE_ATTESTATION.json
+          echo "Literal-LF system strings: exact original control signature, source/linker attested, approved v0.4 font NOT yet applied. Any zero-count result is reported explicitly." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
