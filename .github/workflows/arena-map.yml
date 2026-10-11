@@ -2080,6 +2080,109 @@ jobs:
           PY
           echo "Additional LF-scroll map source labels are compiler/linker-attested. STOCK source font; no playable release or private v0.4 donor font in CI." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Experimentally repack Arena graphics sections using upstream linker guidance (isolated stock-font trial)
+        run: |
+          # Exact same 5777 source translation tree; only unlink the two
+          # pinned 0x08C00000 and 0x08D00000 *linker* section anchors.
+          # No assembly symbol names, ROM pointers or original source build
+          # files are changed. The private approved v0.4 font is NOT applied.
+          cp -a literal-lf-scroll-additive-trial compacted-linker-source-trial
+          python3 tools/compact_arena_linker_gaps.py \
+            --workspace compacted-linker-source-trial \
+            --apply \
+            --report artifact/SOURCE_5777_EXPERIMENTAL_LINKER_PACK_STAGE.json
+          rm -f compacted-linker-source-trial/pokeemerald.elf \
+                compacted-linker-source-trial/pokeemerald.gba
+          make -C compacted-linker-source-trial -j2
+          test -s compacted-linker-source-trial/pokeemerald.gba
+          arm-none-eabi-nm -n compacted-linker-source-trial/pokeemerald.elf \
+            > artifact/SOURCE_5777_EXPERIMENTAL_PACK.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom compacted-linker-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_5777_EXPERIMENTAL_PACK.sym \
+            --out artifact/SOURCE_5777_EXPERIMENTAL_PACK_FONT_AUDIT.json
+          python3 tools/audit_source_rom_headroom.py \
+            --elf compacted-linker-source-trial/pokeemerald.elf \
+            --rom compacted-linker-source-trial/pokeemerald.gba \
+            --minimum-free-bytes 1048576 \
+            --out artifact/SOURCE_5777_EXPERIMENTAL_PACK_HEADROOM.json
+          python3 tools/audit_rom_internal_gaps.py \
+            --elf compacted-linker-source-trial/pokeemerald.elf \
+            --rom compacted-linker-source-trial/pokeemerald.gba \
+            --min-report-bytes 64 \
+            --out artifact/SOURCE_5777_EXPERIMENTAL_PACK_GAPS.json
+          python3 - <<'PY'
+          import json,re,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import extract_asm_payload,validate_byte_string
+          original=json.loads(Path("artifact/SOURCE_5777_ELF_INTERNAL_GAPS.json").read_text())
+          packed=json.loads(Path("artifact/SOURCE_5777_EXPERIMENTAL_PACK_GAPS.json").read_text())
+          font=json.loads(Path("artifact/SOURCE_5777_EXPERIMENTAL_PACK_FONT_AUDIT.json").read_text())
+          stage=json.loads(Path("artifact/SOURCE_5777_EXPERIMENTAL_LINKER_PACK_STAGE.json").read_text())
+          assert stage["mode"]=="apply" and stage["unfixed_graphics_anchor_symbols"]==2
+          assert stage["raw_ROM_or_pointer_writes"]==0
+          assert original["source_ROM_sha256"]!=packed["source_ROM_sha256"]
+          assert font["source_rom_sha256"]==packed["source_ROM_sha256"]
+          assert font["glyph_blocks_matched_clean"]==5
+          assert packed["accounting_exact"]
+          assert packed["linker_contiguous_tail_headroom_bytes"]>=1048576
+          saved=packed["linker_contiguous_tail_headroom_bytes"]-original["linker_contiguous_tail_headroom_bytes"]
+          assert saved>=1048576,(saved,packed)
+          assert packed["proved_safe_reclaimable_bytes"]==0
+          report_names=("SOURCE_LEVEL_VIETNAMESE_PILOT.json",
+                        "SOURCE_EXPANDED_MAP_STAGE.json",
+                        "SOURCE_EXPANDED_MAP_LF_STAGE.json",
+                        "SOURCE_MAP_SCROLL_REFLOW_STAGE.json",
+                        "SOURCE_LEVEL_DYNAMIC_PILOT.json",
+                        "SOURCE_ADDITIVE_LITERAL_LF_SCROLL_STAGE.json")
+          records=[]
+          for name in report_names:
+              report=json.loads((Path("artifact")/name).read_text())
+              rows=report.get("accepted",report.get("translated"))
+              assert report["mode"]=="apply" and len(rows)==report["labels_staged"],name
+              records.extend(rows)
+          assert len(records)==2698,len(records)
+          rom=Path("compacted-linker-source-trial/pokeemerald.gba").read_bytes()
+          symbols=Path("artifact/SOURCE_5777_EXPERIMENTAL_PACK.sym").read_text()
+          addresses={}
+          for addr,name in re.findall(r"(?m)^([0-9A-Fa-f]+)\s+\w\s+([A-Za-z_][A-Za-z0-9_]*)$",symbols):
+              addresses.setdefault(name,[]).append(int(addr,16))
+          checked=set()
+          for row in records:
+              label=row["label"]
+              assert label not in checked,label
+              checked.add(label)
+              addrs=addresses.get(label,[])
+              assert len(addrs)==1,(label,addrs)
+              payload=extract_asm_payload(
+                  Path("compacted-linker-source-trial",row.get("source_file") or row["file"]).read_text(),label)
+              validate_byte_string(payload,label)
+              start=addrs[0]-0x08000000
+              assert 0<=start<len(rom) and rom[start:start+len(payload)]==payload,(
+                  "packed GBA source payload differs",label)
+          assert len(checked)==2698
+          result={
+              "experimental_relinked_unique_map_source_labels":len(checked),
+              "prior_compiled_unique_source_labels":5777,
+              "prior_ROM_linker_headroom_bytes":original["linker_contiguous_tail_headroom_bytes"],
+              "new_ROM_linker_headroom_bytes":packed["linker_contiguous_tail_headroom_bytes"],
+              "recovered_contiguous_tail_bytes":saved,
+              "original_ROM_source_SHA256":original["source_ROM_sha256"],
+              "experimental_packed_ROM_SHA256":packed["source_ROM_sha256"],
+              "all_five_stock_font_banks_preserved":True,
+              "all_2698_map_dialogue_payloads_linker_verified":True,
+              "source_text_and_variables_unchanged":True,
+              "no_pointer_guesses_or_raw_ROM_patching":True,
+              "accepted_v04_font_present":False,
+              "emulator_runtime_QA_complete":False,
+              "release_ready":False}
+          Path("artifact/SOURCE_5777_EXPERIMENTAL_PACK_ATTESTATION.json").write_text(
+              json.dumps(result,ensure_ascii=False,indent=2)+"\n")
+          print("PASS packed-linker experimental source trial:",json.dumps(result,indent=2))
+          PY
+          echo "Experimental Arena linker layout can reclaim zero-padding; 2698 map-linked bytes and all five STOCK font banks confirmed. NOT gameplay/visual QA or a release." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
