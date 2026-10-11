@@ -224,8 +224,14 @@ def main():
         valid_source=((a.category=="system-text" and a.source_prefix.startswith("data/text/"))
                       or (a.category=="map-story" and a.source_prefix.startswith("data/maps/"))
                       or (a.category=="battle" and a.source_prefix.startswith("data/text/")))
-        if not valid_source or not a.auto_wrap or a.normalize_literal_newlines:
+        if not valid_source or not a.auto_wrap:
             p.error("--page-scroll-reflow requires static system-text, battle or map-story source with --auto-wrap")
+        # Raw JSON LF is an authoring defect, not an authorized page break.
+        # Combining normalization and scroll reflow is safe ONLY in the
+        # explicitly restricted literal-LF batch: normalize_authored_linefeeds
+        # first proves the *exact ordered* source control signature.
+        if a.normalize_literal_newlines and not a.only_literal_newlines:
+            p.error("--page-scroll-reflow with literal LF normalization requires --only-literal-newlines")
 
     plan=json.loads(a.plan.read_text(encoding="utf-8"))
     if a.exclude_label:
