@@ -1,5 +1,15 @@
 # Pokémon Emerald Arena — Easy Chat source-build handoff (12/10/2026)
 
+## Final CI result — 7,134 source labels verified
+
+[GitHub Actions #38161452509](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38161452509) **FULL PASS**. Easy Chat staging added **43 C-owned translated words from 15 source group files** on top of the confirmed 7,091 baseline. The independent ELF symbol and GBA ROM byte audit verifies each new owner and rechecks all 7,091 prior source labels.
+
+- Total: **7,134** distinct source-compiled, verified Vietnamese labels.
+- New source-ROM SHA256: `df7e47319aa9c054bd952d39ccb6cef8b2c36eedbc0ae1e7d1422cc558acf5fc`; contiguous ROM tail headroom: **1,816,164 bytes**.
+- **373 Easy Chat word candidates** failed the strict rule that Vietnamese must not have more static character cells than the source English word. Many other words require missing uppercase accented glyphs (e.g., `Ư`, `Ó`, `À`, `Ấ`, `Ắ`, `Ọ`). Every rejection remained unchanged; no accents were removed or new art generated.
+- Five unchanged English stock-font banks are still present in this experimental ROM. **No v0.4 approved Vietnamese font graft or emulator gameplay QA yet**. Not a playable patch/release.
+- The `17,512/17,512` catalog count is authored translation, not a binary installation or visible-release percentage.
+
 ## Starting checkpoint
 
 - [GitHub Actions #38159804341](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38159804341) **FULL PASS**: exactly **7,091 source-owned Vietnamese labels** in the experimental source-built ROM, including 137 verified Ability + Match Call C labels added after the previous 6,954. SHA256 `50c51fdcb73a9361fbf771fb9556adbf4de1569ebe9979036e34ee7171febd4d`.
