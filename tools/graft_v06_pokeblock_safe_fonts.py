@@ -216,6 +216,19 @@ ATTESTED_PAGED_MAP_5946_FONT_OFFSETS={
     "gFontNormalLatinGlyphs":0x737C48,
 }
 
+# CI #38137406551 FULL PASS: 21 additional source-owned paginated system
+# strings compiled on top of the 5,946 page-locked NPC source tree.
+# All 1,158 system and 2,867 prior map symbol bytes source-linked.
+# EXACT target geometry required, NOT a user-approved font graft.
+PINNED_PAGED_SYSTEM_5967_SOURCE_SHA256="4e54dcdf20ce4fa6899400069c99feb17723147227cd3693ac4ca78feec2838a"
+ATTESTED_PAGED_SYSTEM_5967_FONT_OFFSETS={
+    "gFontSmallNarrowLatinGlyphs":0x717360,
+    "gFontSmallLatinGlyphs":0x71F560,
+    "gFontNarrowLatinGlyphs":0x727760,
+    "gFontShortLatinGlyphs":0x72F960,
+    "gFontNormalLatinGlyphs":0x737B60,
+}
+
 def require_pinned_target_symbols(target_offsets:dict[str,int],
                                   source_sha256:str=PINNED_SOURCE_SHA256)->None:
     profiles={
@@ -235,6 +248,7 @@ def require_pinned_target_symbols(target_offsets:dict[str,int],
         PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256:ATTESTED_LITERAL_LF_SCROLL_5777_FONT_OFFSETS,
         PINNED_PACKED_LINKER_5777_SOURCE_SHA256:ATTESTED_PACKED_LINKER_5777_FONT_OFFSETS,
         PINNED_PAGED_MAP_5946_SOURCE_SHA256:ATTESTED_PAGED_MAP_5946_FONT_OFFSETS,
+        PINNED_PAGED_SYSTEM_5967_SOURCE_SHA256:ATTESTED_PAGED_SYSTEM_5967_FONT_OFFSETS,
     }
     expected=profiles.get(source_sha256.lower())
     if expected is None:
@@ -371,7 +385,8 @@ def main():
         PINNED_BATTLE_SCROLL_5556_SOURCE_SHA256,
         PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256,
         PINNED_PACKED_LINKER_5777_SOURCE_SHA256,
-        PINNED_PAGED_MAP_5946_SOURCE_SHA256):
+        PINNED_PAGED_MAP_5946_SOURCE_SHA256,
+        PINNED_PAGED_SYSTEM_5967_SOURCE_SHA256):
         p.error("source SHA256 has no attested v0.6 font geometry profile")
     if a.output and a.output.resolve() in {a.clean.resolve(),a.v04.resolve(),a.source_built.resolve()}:
         p.error("output must not overwrite source or donor ROM")
