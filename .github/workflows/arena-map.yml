@@ -2581,6 +2581,47 @@ jobs:
           PY
           echo "New page-locked system strings integrated into experimental ROM, source linker verified, STOCK font only, NOT a playable Vietnamese-font release." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Add source-owned static zero-page system dialogues (font unchanged)
+        run: |
+          # Continue from the independently verified 5967 source build.
+          # English symbols, authored words, font banks, and map owners
+          # remain guarded; a failed owner match is skipped, not repointed.
+          cp -a paged-system-additive-source-trial zero-page-system-additive-source-trial
+          python3 tools/stage_static_zero_page_system_text.py \
+            --workspace zero-page-system-additive-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_STAGE.json \
+            --exclude-report artifact/SOURCE_BIRCH_NARRATIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_BIRCH_DYNAMIC_STAGE.json \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_SECOND_STAGE.json \
+            --exclude-report artifact/SOURCE_SYSTEM_SCROLL_REFLOW_STAGE.json \
+            --exclude-report artifact/SOURCE_PAGED_SYSTEM_ADDITIVE_STAGE.json \
+            --limit 750 --width 26 --apply \
+            --report artifact/SOURCE_ZERO_PAGE_SYSTEM_ADDITIVE_STAGE.json
+          make -C zero-page-system-additive-source-trial -j2
+          test -s zero-page-system-additive-source-trial/pokeemerald.gba
+          arm-none-eabi-nm -n zero-page-system-additive-source-trial/pokeemerald.elf \
+            > artifact/SOURCE_ZERO_PAGE_SYSTEM_ADDITIVE.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom zero-page-system-additive-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_ZERO_PAGE_SYSTEM_ADDITIVE.sym \
+            --out artifact/SOURCE_ZERO_PAGE_SYSTEM_ADDITIVE_FONT_AUDIT.json
+          python3 tools/audit_source_rom_headroom.py \
+            --elf zero-page-system-additive-source-trial/pokeemerald.elf \
+            --rom zero-page-system-additive-source-trial/pokeemerald.gba \
+            --minimum-free-bytes 1048576 \
+            --out artifact/SOURCE_ZERO_PAGE_SYSTEM_ADDITIVE_HEADROOM.json
+          python3 tools/verify_zero_page_system_additive.py \
+            --workspace zero-page-system-additive-source-trial \
+            --artifact artifact \
+            --rom zero-page-system-additive-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_ZERO_PAGE_SYSTEM_ADDITIVE.sym \
+            --font-audit artifact/SOURCE_ZERO_PAGE_SYSTEM_ADDITIVE_FONT_AUDIT.json \
+            --headroom artifact/SOURCE_ZERO_PAGE_SYSTEM_ADDITIVE_HEADROOM.json \
+            --out artifact/SOURCE_ZERO_PAGE_SYSTEM_ADDITIVE_ATTESTATION.json
+          echo "Zero-page system text candidate: source and ELF/GBA byte attestation only; original stock font and no gameplay QA. Not a user release." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
