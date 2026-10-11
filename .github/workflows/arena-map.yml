@@ -2037,6 +2037,30 @@ jobs:
             --rom literal-lf-scroll-additive-trial/pokeemerald.gba \
             --minimum-free-bytes 49152 \
             --out artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_ROM_HEADROOM.json
+          python3 tools/audit_rom_internal_gaps.py \
+            --elf literal-lf-scroll-additive-trial/pokeemerald.elf \
+            --rom literal-lf-scroll-additive-trial/pokeemerald.gba \
+            --min-report-bytes 64 \
+            --out artifact/SOURCE_5777_ELF_INTERNAL_GAPS.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("artifact")
+          head=json.loads((root/"SOURCE_ADDITIVE_LITERAL_LF_SCROLL_ROM_HEADROOM.json").read_text())
+          gaps=json.loads((root/"SOURCE_5777_ELF_INTERNAL_GAPS.json").read_text())
+          assert head["source_ROM_sha256"]==gaps["source_ROM_sha256"],"different ROM source"
+          assert head["ELF_sha256"]==gaps["ELF_sha256"],"different ELF"
+          assert gaps["accounting_exact"]
+          assert gaps["linker_high_water_bytes"]==head["linker_occupied_bytes"]
+          assert gaps["linker_contiguous_tail_headroom_bytes"]==head["linker_free_bytes"]
+          assert gaps["total_ROM_capacity_bytes"]==head["capacity_bytes"]==33554432
+          assert gaps["ELF_uncovered_internal_bytes"]+gaps["linker_file_backed_bytes"]==head["linker_occupied_bytes"]
+          assert gaps["proved_safe_reclaimable_bytes"]==0
+          assert gaps["pointer_or_symbol_changes"]==0
+          assert gaps["ROM_or_font_modified"] is False
+          assert gaps["automatic_gap_insertion_permitted"] is False
+          print("PASS source SHA-paired ELF gaps and headroom; internal gaps NOT proven writable")
+          PY
           python3 - <<'PY'
           import json,sys
           from pathlib import Path
