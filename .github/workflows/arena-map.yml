@@ -3035,6 +3035,43 @@ jobs:
             --out artifact/SOURCE_POKEDEX_FOUR_LINE_ATTESTATION.json
           echo "Pokédex source four-line translations relinked and ELF/GBA-byte verified; user-approved Vietnamese v0.4 font NOT present, gameplay QA pending." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Compile bounded source-owned Ability and Match Call profile descriptions
+        run: |
+          # Only unique C source symbols with exact original English bytes.
+          # No text rewrite, dynamic token, font-art modification or raw ROM
+          # pointer patch; every accepted Vietnamese static line is no longer
+          # than its original rendered English UI text.
+          cp -a pokedex-four-line-source-trial ability-matchcall-one-line-source-trial
+          python3 tools/stage_ability_matchcall_source_text.py \
+            --workspace ability-matchcall-one-line-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --limit 450 --width 32 --apply \
+            --report artifact/SOURCE_ABILITY_MATCHCALL_ONE_LINE_STAGE.json
+          make -C ability-matchcall-one-line-source-trial -j2
+          test -s ability-matchcall-one-line-source-trial/pokeemerald.gba
+          arm-none-eabi-nm -n ability-matchcall-one-line-source-trial/pokeemerald.elf \
+            > artifact/SOURCE_ABILITY_MATCHCALL_ONE_LINE.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom ability-matchcall-one-line-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_ABILITY_MATCHCALL_ONE_LINE.sym \
+            --out artifact/SOURCE_ABILITY_MATCHCALL_ONE_LINE_FONT_AUDIT.json
+          python3 tools/audit_source_rom_headroom.py \
+            --elf ability-matchcall-one-line-source-trial/pokeemerald.elf \
+            --rom ability-matchcall-one-line-source-trial/pokeemerald.gba \
+            --minimum-free-bytes 1048576 \
+            --out artifact/SOURCE_ABILITY_MATCHCALL_ONE_LINE_HEADROOM.json
+          python3 tools/verify_ability_matchcall_source_text.py \
+            --workspace ability-matchcall-one-line-source-trial \
+            --artifact artifact \
+            --rom ability-matchcall-one-line-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_ABILITY_MATCHCALL_ONE_LINE.sym \
+            --font-audit artifact/SOURCE_ABILITY_MATCHCALL_ONE_LINE_FONT_AUDIT.json \
+            --headroom artifact/SOURCE_ABILITY_MATCHCALL_ONE_LINE_HEADROOM.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --out artifact/SOURCE_ABILITY_MATCHCALL_ONE_LINE_ATTESTATION.json
+          echo "Additional source-only Ability/Match Call Vietnamese labels independently ELF/GBA-verified. Approved v0.4 font NOT merged; no gameplay/visual QA." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
