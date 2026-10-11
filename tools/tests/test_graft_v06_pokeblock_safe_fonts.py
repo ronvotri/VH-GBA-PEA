@@ -300,6 +300,23 @@ class GraftV06Tests(unittest.TestCase):
             v06.require_pinned_target_symbols(
                 shifted,v06.PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256)
 
+    def test_packed_5777_rom_sha_is_strictly_paired_with_five_actual_fonts(self):
+        self.assertEqual(
+            v06.PINNED_PACKED_LINKER_5777_SOURCE_SHA256,
+            "5f80f5b8f8f18eebb158d500684283fe3cf5ccaf3c09b3bd1e05a4c40524cf1d")
+        pinned=v06.ATTESTED_PACKED_LINKER_5777_FONT_OFFSETS
+        self.assertEqual(pinned["gFontSmallNarrowLatinGlyphs"],0x7182AC)
+        self.assertEqual(pinned["gFontNormalLatinGlyphs"],0x738AAC)
+        self.assertEqual(pinned,v06.ATTESTED_LITERAL_LF_SCROLL_5777_FONT_OFFSETS)
+        v06.require_pinned_target_symbols(
+            pinned,v06.PINNED_PACKED_LINKER_5777_SOURCE_SHA256)
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(
+                v06.ATTESTED_BATTLE_SCROLL_5556_FONT_OFFSETS,
+                v06.PINNED_PACKED_LINKER_5777_SOURCE_SHA256)
+        with self.assertRaisesRegex(ValueError,"no attested font"):
+            v06.require_pinned_target_symbols(pinned,"0"*64)
+
     def test_unattested_source_sha_rejected(self):
         with self.assertRaisesRegex(ValueError,"no attested font profile"):
             v06.require_pinned_target_symbols(
