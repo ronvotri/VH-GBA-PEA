@@ -1,5 +1,14 @@
 # Emerald Arena — Pokédex four-line source integration checkpoint (11 October 2026)
 
+## CI result — completed and independently attested
+
+- [GitHub Actions **#38157439511**](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38157439511): **FULL PASS**. The new Pokédex stage compiled and checked **306 additional C-owned source symbols**, bringing the verified source-ROM total from **6.648 → 6.954**.
+- **183** Pokédex descriptions were automatically reflowed at word boundaries, preserving every original Vietnamese word in exactly four lines; the other **123** accepted descriptions retained their original line breaks.
+- All **6.648 previously attested source labels** were checked again by the chained verifier. All **306** new `g...PokedexText` symbols had their C initializer bytes re-encoded independently and compared to the actual ELF/GBA address.
+- The **81 skipped descriptions** were not silently modified. Rejection reasons: `ỳ` 26, `è` 11, `õ` 8, `°` 3, `Ở` 2, `Â` 2, `ỷ` 1, `ỹ` 1, `♀` 1, `♂` 1, `;` 1, plus **24** descriptions whose complete authored words could not fit within four 40-cell rows. The counts represent only the first failing gate per description.
+- Experimental **stock-font** GBA SHA256: `302698c36cbe35b057025133c741da71ae75ce2cffacd9b5f8ff58702aa8fcea`; contiguous linker headroom **1.815.684 bytes**. The verified script states `approved_v04_Vietnamese_font_imported=false` and `emulator_rendering_QA=false` — these are still release blockers.
+- Full source-label milestone is **6.954**, *not* a literal percentage of UI/gameplay fully localized. All **17.512** manifest items remain authored translations.
+
 ## Verified source-build baseline
 
 - Last **FULL PASS** before Pokédex: [GitHub Actions #38156331396](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38156331396). **6,648** distinct Vietnamese source strings proven in ELF/GBA.
