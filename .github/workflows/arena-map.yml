@@ -1983,6 +1983,37 @@ jobs:
           print("PASS PLAYER/RIVAL variable-safe ROM ELF payload checks",stage["labels_staged"])
           PY
 
+      - name: Add normalized literal-newline NPC dialogues with native GBA scroll (experimental additive)
+        run: |
+          # Previously proved 175 simple literal-LF texts are already in the
+          # 5556-source baseline. Only stage *additional* source owners which
+          # need third-line native GBA scroll after exact LF normalization.
+          cp -a battle-scroll-source-trial literal-lf-scroll-additive-trial
+          python3 tools/stage_source_map_translations.py \
+            --workspace literal-lf-scroll-additive-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --category map-story \
+            --source-prefix data/maps/ \
+            --exclude-report artifact/SOURCE_LEVEL_VIETNAMESE_PILOT.json \
+            --exclude-report artifact/SOURCE_EXPANDED_MAP_STAGE.json \
+            --exclude-report artifact/SOURCE_EXPANDED_MAP_LF_STAGE.json \
+            --exclude-report artifact/SOURCE_MAP_SCROLL_REFLOW_STAGE.json \
+            --only-literal-newlines --normalize-literal-newlines \
+            --auto-wrap --page-scroll-reflow --limit 1000 --apply \
+            --report artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_STAGE.json
+          python3 tools/verify_additive_literal_lf_scroll.py pre
+          make -C literal-lf-scroll-additive-trial -j2
+          test -s literal-lf-scroll-additive-trial/pokeemerald.gba
+          sha256sum literal-lf-scroll-additive-trial/pokeemerald.gba > artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_SHA256.txt
+          arm-none-eabi-nm -n literal-lf-scroll-additive-trial/pokeemerald.elf > artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_FONT.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom literal-lf-scroll-additive-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_FONT.sym \
+            --out artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_FONT_AUDIT.json
+          python3 tools/verify_additive_literal_lf_scroll.py post
+          echo "Additional LF-scroll map source labels are compiler/linker-attested. STOCK source font; no playable release or private v0.4 donor font in CI." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
