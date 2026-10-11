@@ -1,5 +1,15 @@
 # Pokémon Emerald Arena — bản giao việc NPC dynamic + Unicode (11/10/2026)
 
+## Cập nhật sau khi CI FULL PASS
+
+- [Actions **#38148731660**](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38148731660): **FULL PASS**, thêm **167** nhãn thoại NPC/map có biến động, đưa mốc xác minh lên **6.528** nhãn nguồn.
+- **1.552** nhãn hệ thống và **2.867** nhãn map cũ vẫn được so từng byte tại vị trí nguồn ELF/GBA; 167 nhãn mới cũng được xác minh.
+- Source ROM stock-font SHA256: `d79e18647a01bb7f639fc07c1a64dfd46ffb19ed7be8d963d9ba86111c5d8f45`; vùng đuôi linker trống **1.810.364 byte**. Chưa có font Việt v0.4 trong ROM này.
+- Glyph audit đầu PASS nhưng gắn nhầm các chuỗi C/UI không có ký hiệu kết thúc `# Pokémon Emerald Arena — bản giao việc NPC dynamic + Unicode (11/10/2026)
+
+ là "malformed GBA text terminator". **Bỏ số blocker 11.950/17.512 của audit đầu** vì trộn sai định dạng `.c` và `.inc`.
+- Đã sửa audit để dùng `source_file` phân biệt C/UI với GBA native text, có test hồi quy. [CI thử lại #38149462164](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38149462164) **đang chạy** khi ghi checkpoint. Chỉ dùng bảng glyph mới sau khi nó PASS; không điều chỉnh câu dịch cho vừa codebook.
+
 ## Mốc thật sự đã xác minh
 
 - **6.361** nhãn nguồn tiếng Việt được biên dịch và kiểm chứng ELF/GBA tại [CI #38146099792](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38146099792). Đây là mốc chắc chắn trước lượt mới.
