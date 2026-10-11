@@ -6,6 +6,8 @@ Dự án Việt hóa **Pokémon Emerald Arena 0.13.0** sang tiếng Việt có d
 
 ## Trạng thái hiện tại
 
+**Checkpoint mới nhất 2026-10-11 — source integration 5.777 nhãn:** CI [#38115481548](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38115481548) **PASS**: thêm **221 câu map/NPC dạng xuống dòng dài**, toàn bộ kiểm tra mã điều khiển và byte ở địa chỉ ELF/GBA tương ứng. Đây là bản build từ mã nguồn dùng **stock font**, không phải ROM Việt hóa có font v0.4 để chơi; chưa hoàn thiện runtime và chưa kiểm tra gameplay. Vùng ROM source build đang dùng ~99,81% dung lượng 32 MiB. Font v0.4 ổn định là bản dự phòng và tiêu chuẩn hình thức bắt buộc. Chi tiết: [checkpoint 5.777](docs/LITERAL_LF_SCROLL_5777_HANDOFF_2026-10-11.md).
+
 **Baseline làm việc: v0.4 – Text Cluster Pass**
 
 v0.4 được dựng trên baseline v0.3 đã xác nhận ổn định và **không ghi pointer mới**. Người chơi đã test thực tế qua phần đầu game, battle và tiếp tục đi sâu hơn trong game mà không gặp lại lỗi logo/crash/freeze của các test cũ.
