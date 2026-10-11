@@ -338,6 +338,26 @@ class GraftV06Tests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"not paired"):
             v06.require_pinned_target_symbols(bad,sha)
 
+    def test_page_locked_5967_system_source_font_SHA_and_geometry(self):
+        sha=v06.PINNED_PAGED_SYSTEM_5967_SOURCE_SHA256
+        self.assertEqual(
+            sha,"4e54dcdf20ce4fa6899400069c99feb17723147227cd3693ac4ca78feec2838a")
+        banks=v06.ATTESTED_PAGED_SYSTEM_5967_FONT_OFFSETS
+        self.assertEqual(banks["gFontSmallNarrowLatinGlyphs"],0x717360)
+        self.assertEqual(banks["gFontSmallLatinGlyphs"],0x71F560)
+        self.assertEqual(banks["gFontNarrowLatinGlyphs"],0x727760)
+        self.assertEqual(banks["gFontShortLatinGlyphs"],0x72F960)
+        self.assertEqual(banks["gFontNormalLatinGlyphs"],0x737B60)
+        v06.require_pinned_target_symbols(banks,sha)
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(v06.ATTESTED_PAGED_MAP_5946_FONT_OFFSETS,sha)
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(banks,v06.PINNED_PAGED_MAP_5946_SOURCE_SHA256)
+        bad=dict(banks)
+        bad["gFontNormalLatinGlyphs"]+=4
+        with self.assertRaisesRegex(ValueError,"not paired"):
+            v06.require_pinned_target_symbols(bad,sha)
+
     def test_unattested_source_sha_rejected(self):
         with self.assertRaisesRegex(ValueError,"no attested font profile"):
             v06.require_pinned_target_symbols(
