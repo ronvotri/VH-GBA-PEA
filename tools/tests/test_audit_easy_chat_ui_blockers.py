@@ -28,6 +28,14 @@ class AuditEasyChatTests(unittest.TestCase):
         self.assertFalse(r["font_art_generated"])
         self.assertFalse(r["safe_to_expand_UI_width_without_renderer_proof"])
 
+    def test_overlapping_width_and_missing_glyph_report_without_changing_primary_class(self):
+        r = audit([row("Many", "HI", "DÀI")], {"D": 1, "I": 2})
+        self.assertEqual(r["totals"]["translated_longer_than_english"], 1)
+        self.assertEqual(
+            r["overlapping_blockers"]["longer_than_english+missing_codebook_glyphs"], 1)
+        self.assertEqual(r["overlapping_blocker_examples"][0]["missing_glyphs"], ["À"])
+        self.assertFalse(r["source_text_modified"])
+
     def test_no_duplicates_and_unrelated_sources(self):
         with self.assertRaisesRegex(ValueError,"duplicate"):
             audit([row("One","A","B"),row("One","A","B")],{"B":1})
