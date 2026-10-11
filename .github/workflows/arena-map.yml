@@ -2999,6 +2999,42 @@ jobs:
             --out artifact/SOURCE_MAP_MULTI_DYNAMIC_LINE_SLOTS_ATTESTATION.json
           echo "Multi-variable NPC page slots source-linked and ELF/GBA byte-attested without rewriting approved v0.4 font or user words." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Bulk source-compile four-line Pokédex descriptions with original words
+        run: |
+          # Pokédex is a fixed original four-line C text window. Every
+          # Vietnamese word must remain; unknown accented glyphs are skipped
+          # until donor-compatible codebook+art are independently validated.
+          cp -a map-multi-dynamic-line-slots-source-trial pokedex-four-line-source-trial
+          python3 tools/stage_source_pokedex_text.py \
+            --workspace pokedex-four-line-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --limit 450 --width 40 --apply \
+            --report artifact/SOURCE_POKEDEX_FOUR_LINE_STAGE.json
+          make -C pokedex-four-line-source-trial -j2
+          test -s pokedex-four-line-source-trial/pokeemerald.gba
+          arm-none-eabi-nm -n pokedex-four-line-source-trial/pokeemerald.elf \
+            > artifact/SOURCE_POKEDEX_FOUR_LINE.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom pokedex-four-line-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_POKEDEX_FOUR_LINE.sym \
+            --out artifact/SOURCE_POKEDEX_FOUR_LINE_FONT_AUDIT.json
+          python3 tools/audit_source_rom_headroom.py \
+            --elf pokedex-four-line-source-trial/pokeemerald.elf \
+            --rom pokedex-four-line-source-trial/pokeemerald.gba \
+            --minimum-free-bytes 1048576 \
+            --out artifact/SOURCE_POKEDEX_FOUR_LINE_HEADROOM.json
+          python3 tools/verify_source_pokedex_four_line.py \
+            --workspace pokedex-four-line-source-trial \
+            --artifact artifact \
+            --rom pokedex-four-line-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_POKEDEX_FOUR_LINE.sym \
+            --font-audit artifact/SOURCE_POKEDEX_FOUR_LINE_FONT_AUDIT.json \
+            --headroom artifact/SOURCE_POKEDEX_FOUR_LINE_HEADROOM.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --out artifact/SOURCE_POKEDEX_FOUR_LINE_ATTESTATION.json
+          echo "Pokédex source four-line translations relinked and ELF/GBA-byte verified; user-approved Vietnamese v0.4 font NOT present, gameplay QA pending." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
