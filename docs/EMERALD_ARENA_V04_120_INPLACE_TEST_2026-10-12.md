@@ -1,6 +1,21 @@
 # Emerald Arena — private v0.4 120-line in-place TEST (2026-10-12)
 
-## Outcome: real donor ROM bytes changed; not a source-built label promotion
+## UPDATED PRIVATE TEST: +390 lines, supersedes +120 candidate
+
+The same exact user-supplied v0.4 binary was conservatively scanned for authored texts with original GBA native newline/page controls. This produced **270 further verified byte-in-place candidates** in addition to the earlier 120 simple one-line strings.
+
+**Superseding TEST output (private; never publish copyrighted ROM in repo):**
+- `Emerald-Arena-v0.4-390Cau-TEST.gba` SHA-256 `febc79588350e0c4112b3092742a38b2dc849b39dfa06c511f081ad7818ecf65`
+- `Emerald-Arena-v0.4-390Cau-TEST.ips` SHA-256 `a9c729989a138ed3b0f934f3cde5a42e17497d549333e8f442174654f127bb77`
+- 390 total authored exact text replacements: **228 map/story + 162 system text**, of which 120 have no controls and 270 preserve their original exact order of native `\\n`, `\\p`, and `\\l`.
+- Original donor bytes matched at every source-owned shipping offset before replacement. Vietnamese byte lengths never exceed the original source allocation, per-line limit 26, and substitutions preserve original Vietnamese wording and known v0.4 glyph assignments; no unsupported runtime variables accepted.
+- Rejected any source-owner overlap or possible interior pointer found scanning **all four byte alignments**.
+- **14,203** text bytes rewritten, **12,906** actual ROM byte changes. Exact IPS replay = SHA-matched test ROM.
+- ROM is 33,554,432 bytes unchanged size. Entire startup/title prefix below 0x1F0000, all five original font+width banks, and all bytes outside declared text regions are identical to stable v0.4. **0 pointer writes, 0 font modifications, 0 runtime-placeholder edits**.
+- This is still a **private untested candidate**, not the build with 7,134 source-linked labels and not emulator/release QA. Retain 7,134 as distinct source build count. The 390 ROM-in-place changes must NOT be added numerically to it.
+- This 390 candidate supersedes the earlier 120 candidate, which remains available only as the more limited fallback.
+
+## Earlier +120 conservative one-line candidate (superseded; retained for audit)
 
 The user supplied exact private stable `Emerald-Arena-0.13.0-VietHoa-v0.4-TextCluster-Pass(1).gba`, **33,554,432 bytes**, SHA-256 `c500bb1cdb0f2cf43d24c04a943854bbd9b1b83b0569f0a5f9c8d13480be83f9`, confirmed against the user's `Emerald-Arena-v0.4-audit.txt`.
 
