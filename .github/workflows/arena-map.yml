@@ -2751,6 +2751,51 @@ jobs:
             --out artifact/SOURCE_SAFE_DYNAMIC_SYSTEM_ADDITIVE_ATTESTATION.json
           echo "Engine-pinned system variables compiled from exact owner symbols without expanding static line widths. Still source/stock font only; not a playable release." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Reflow page-local PLAYER RIVAL KUN dialogue with verified runtime widths
+        run: |
+          # New source-only workspace, never patch donor v0.4 font or
+          # repoint ROM offsets. Unknown STR_VAR sizes are excluded.
+          cp -a safe-dynamic-system-additive-source-trial page-bounded-system-dynamic-source-trial
+          python3 tools/stage_page_bounded_system_dynamic.py \
+            --workspace page-bounded-system-dynamic-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_STAGE.json \
+            --exclude-report artifact/SOURCE_BIRCH_NARRATIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_BIRCH_DYNAMIC_STAGE.json \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_SECOND_STAGE.json \
+            --exclude-report artifact/SOURCE_SYSTEM_SCROLL_REFLOW_STAGE.json \
+            --exclude-report artifact/SOURCE_PAGED_SYSTEM_ADDITIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_ZERO_PAGE_SYSTEM_ADDITIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_LITERAL_LF_SYSTEM_ADDITIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_PAGED_LITERAL_LF_SYSTEM_ADDITIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_SAFE_DYNAMIC_SYSTEM_ADDITIVE_STAGE.json \
+            --limit 750 --width 26 --apply \
+            --report artifact/SOURCE_PAGE_BOUNDED_SYSTEM_DYNAMIC_STAGE.json
+          make -C page-bounded-system-dynamic-source-trial -j2
+          test -s page-bounded-system-dynamic-source-trial/pokeemerald.gba
+          arm-none-eabi-nm -n page-bounded-system-dynamic-source-trial/pokeemerald.elf \
+            > artifact/SOURCE_PAGE_BOUNDED_SYSTEM_DYNAMIC.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom page-bounded-system-dynamic-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_PAGE_BOUNDED_SYSTEM_DYNAMIC.sym \
+            --out artifact/SOURCE_PAGE_BOUNDED_SYSTEM_DYNAMIC_FONT_AUDIT.json
+          python3 tools/audit_source_rom_headroom.py \
+            --elf page-bounded-system-dynamic-source-trial/pokeemerald.elf \
+            --rom page-bounded-system-dynamic-source-trial/pokeemerald.gba \
+            --minimum-free-bytes 1048576 \
+            --out artifact/SOURCE_PAGE_BOUNDED_SYSTEM_DYNAMIC_HEADROOM.json
+          python3 tools/verify_page_bounded_system_dynamic.py \
+            --workspace page-bounded-system-dynamic-source-trial \
+            --artifact artifact \
+            --rom page-bounded-system-dynamic-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_PAGE_BOUNDED_SYSTEM_DYNAMIC.sym \
+            --font-audit artifact/SOURCE_PAGE_BOUNDED_SYSTEM_DYNAMIC_FONT_AUDIT.json \
+            --headroom artifact/SOURCE_PAGE_BOUNDED_SYSTEM_DYNAMIC_HEADROOM.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --out artifact/SOURCE_PAGE_BOUNDED_SYSTEM_DYNAMIC_ATTESTATION.json
+          echo "Page-local dynamic source reflow: known PLAYER/RIVAL=7 and KUN=0 display widths, all Vietnamese page words preserved; stock-font ROM only." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
