@@ -2,6 +2,16 @@
 
 **Date:** 2026-10-12. Repo: `ronvotri/VH-GBA-PEA`, branch `main`.
 
+## Final CI result: **7,091 source labels verified**
+
+[Actions **#38159804341**](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38159804341) **FULL PASS**. The new source C stage compiled **137 additional Vietnamese strings**: **39 Ability** descriptions in `src/data/text/abilities.h`, and **98 Match Call** profile fragments in `src/data/text/match_call_messages.h`. **All 6,954 prior integrated source labels** were also re-attested against the newly linked ROM; all new 137 source C payloads matched independently encoded Vietnamese bytes at their unique ELF/GBA addresses.
+
+- New total: **7,091** verified source-compiled Vietnamese labels; **not** a proven percentage of total playable user-interface coverage.
+- Latest source ROM SHA256: `50c51fdcb73a9361fbf771fb9556adbf4de1569ebe9979036e34ee7171febd4d`; contiguous ROM tail space: **1,816,092 bytes**.
+- New source stage refused **230** candidate items because Vietnamese text would exceed the original English line's static-cell budget; additional missing glyphs included uppercase Vietnamese such as `Ư`, `Ọ`, `Ệ`, `Ồ`. These were **not** rewritten or counted as compiled.
+- All five stock English pixel-font banks still unchanged. **Approved v0.4 Vietnamese art not imported, no emulator visual QA, not release-ready.**
+- The earlier estimated ~139 compatible candidates was a preliminary screen; the independently verified count is **137**.
+
 ## Most recently independently verified source ROM
 
 - [GitHub Actions **#38157439511**](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38157439511) FULL PASS: **6,954** independent source-owned Vietnamese strings in the experimental rebuilt GBA ROM, including 306 newly proven Pokédex descriptions.
