@@ -9,14 +9,7 @@ Dự án Việt hóa **Pokémon Emerald Arena 0.13.0** sang tiếng Việt có d
 **MỐC MỚI NHẤT — 6.648 NHÃN NGUỒN VIỆT HÓA ĐƯỢC XÁC MINH (11/10/2026):** [CI #38150623105](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38150623105) **FULL PASS**, thêm **120 lời thoại NPC/bản đồ** trong **21 file nguồn**, nhờ chuyển lại dấu ngắt dòng nhưng giữ nguyên mọi từ, thứ tự biến engine theo trang và ngân sách ô chữ tĩnh của dòng có biến. Trên ROM nguồn mới **1.552 nhãn system cũ** và **3.034 nhãn map cũ** được tái kiểm chứng chính xác tại ELF/GBA, cùng 120 nhãn mới. **17.512/17.512 mục là số mục dịch trong catalog, không phải độ phủ đã phát hành**. ROM source-built vẫn dùng **font pixel tiếng Anh stock**, chưa ghép nét **font Việt v0.4 người dùng đã duyệt** và chưa chơi thử. SHA256 ROM thử nghiệm: `19b1edd0168a9005dd8a6d5b08a15259ea6106646316e04f0bf5d1f29d86858a`. [Checkpoint](docs/EMERALD_ARENA_6528_NATIVE_LINE_REPAIR_HANDOFF_2026-10-11.md).
 
 
-**MỐC MỚI NHẤT — 6.528 NHÃN NGUỒN TIẾNG VIỆT ĐÃ KIỂM CHỨNG (11/10/2026):** [GitHub Actions #38148731660](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38148731660) **FULL PASS**. Thêm **167 câu NPC/bản đồ có biến STR_VAR/PLAYER/RIVAL/KUN** vào bản nguồn với chứng thực đúng từng nhãn ELF/GBA; **1.552** nhãn hệ thống cũ và **2.867** nhãn map cũ được xác minh lại. Font bản build vẫn là 5 bộ stock tiếng Anh, **chưa ghép nét font Việt v0.4 đã duyệt**; chưa QA chơi thử. Bộ kiểm kê glyph đầu đã hoàn tất nhưng đang sửa riêng quy tắc phân biệt chuỗi C/UI không có ký hiệu `# Pokémon Emerald Arena – Việt hóa
-
-Dự án Việt hóa **Pokémon Emerald Arena 0.13.0** sang tiếng Việt có dấu.
-
-> Repo này theo dõi mã vá, công cụ, tài liệu kỹ thuật và tiến độ. Không lưu ROM Pokémon gốc/ROM đầy đủ.
-
- với thoại GBA `.inc`, **không dùng số liệu blocker ban đầu để kết luận**. Catalog **17.512 mục dịch** vẫn không đồng nghĩa 17.512 mục đã tích hợp. [Checkpoint](docs/EMERALD_ARENA_6361_MAP_DYNAMIC_GLYPH_HANDOFF_2026-10-11.md).
-
+**MỐC 6.528 NHÃN NGUỒN ĐƯỢC KIỂM CHỨNG (11/10/2026):** [CI #38148731660](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38148731660) **FULL PASS**, thêm 167 câu NPC/bản đồ có STR_VAR/PLAYER/RIVAL/KUN; 1.552 nhãn hệ thống và 2.867 nhãn bản đồ cũ được kiểm chứng lại tại ELF/GBA. Bản build nguồn lúc đó vẫn dùng font stock tiếng Anh và chưa QA gameplay. [Checkpoint](docs/EMERALD_ARENA_6361_MAP_DYNAMIC_GLYPH_HANDOFF_2026-10-11.md).
 
 **MỐC MỚI NHẤT — 6.361 NHÃN NGUỒN TIẾNG VIỆT ĐÃ XÁC MINH (11/10/2026):** [CI #38146099792](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38146099792) **FULL PASS**. Thêm **271 câu thoại hệ thống có STR_VAR/PLAYER/RIVAL/KUN** trên **10 tệp nguồn**, áp dụng chia dòng chỉ trong cùng trang, giữ nguyên số ô chữ tĩnh tối đa của dòng tiếng Anh tương ứng và không đoán độ dài của biến STR_VAR. Tổng từ checkpoint 5.974 đầu lượt đến nay **+387 nhãn**. Tất cả bản build nguồn vẫn **dùng font tiếng Anh stock**, **chưa nhập bộ nét font Việt v0.4 đã duyệt**, chưa có QA đồ họa/gameplay; 17.512 bản dịch manifest **không đồng nghĩa** với 17.512 nhãn đã ghép vào game. [Checkpoint chi tiết](docs/EMERALD_ARENA_6361_DYNAMIC_STRVAR_PASS_2026-10-11.md).
 
