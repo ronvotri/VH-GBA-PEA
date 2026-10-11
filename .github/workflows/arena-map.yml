@@ -2012,6 +2012,23 @@ jobs:
             --sym artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_FONT.sym \
             --out artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_FONT_AUDIT.json
           python3 tools/verify_additive_literal_lf_scroll.py post
+          python3 - <<'PY'
+          import json,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          import graft_v06_pokeblock_safe_fonts as v
+          report=json.loads(Path("artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_FONT_AUDIT.json").read_text())
+          source_sha=report["source_rom_sha256"]
+          assert source_sha==v.PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256,source_sha
+          fonts={key:int(value,16) for key,value in report["source_font_offsets"].items()}
+          v.require_pinned_target_symbols(fonts,source_sha)
+          assert report["glyph_blocks_matched_clean"]==5
+          assert not report["donor_font_patched"]
+          stage=json.loads(Path("artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_ATTESTATION.json").read_text())
+          assert stage["combined_compiled_source_labels"]==5777,stage
+          assert stage["linked_ROM_payloads_verified"]
+          print("PASS immutable 5777 stock-source SHA, five Latin font symbols, and 221 ELF bytes")
+          PY
           echo "Additional LF-scroll map source labels are compiler/linker-attested. STOCK source font; no playable release or private v0.4 donor font in CI." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
