@@ -37,14 +37,16 @@ def validate_codebook(codebook: dict) -> dict[str, int]:
     return {char: int(raw, 16) for char, raw in glyphs.items()}
 
 
-def visible_glyphs(source: str) -> tuple[str, list[str]]:
-    """Scan a single .string value. Unknown escapes are separate controls."""
-    if not source or not source.endswith("$") or source.count("$") != 1:
+def visible_glyphs(source: str, *, require_terminator: bool = True) -> tuple[str, list[str]]:
+    """Scan native `.inc` strings and non-terminated C/UI strings safely."""
+    if not isinstance(source, str) or not source:
+        return "", ["empty source text"]
+    if require_terminator and (not source.endswith("$") or source.count("$") != 1):
         return "", ["malformed GBA text terminator"]
     i = 0
     chars = []
     control_issues = []
-    body = source[:-1]
+    body = source[:-1] if source.endswith("$") and source.count("$") == 1 else source
     while i < len(body):
         c = body[i]
         if c == "\\":
@@ -99,7 +101,8 @@ def summarize(rows: list[dict], glyphs: dict[str, int]) -> dict:
             raise ValueError(f"duplicate source owner in glyph report: {owner}")
         seen.add(owner)
         eligible += 1
-        visible, issues = visible_glyphs(vi)
+        visible, issues = visible_glyphs(
+            vi, require_terminator=file.endswith(".inc"))
         missing = set(visible) - glyphs.keys()
         if missing or issues:
             blocked += 1
