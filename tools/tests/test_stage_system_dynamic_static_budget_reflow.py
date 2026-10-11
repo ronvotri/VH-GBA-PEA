@@ -10,7 +10,7 @@ from stage_system_dynamic_static_budget_reflow import (
 )
 from stage_safe_system_dynamic_variables import VARIABLE_BYTES
 
-CODES = {ch: i + 1 for i, ch in enumerate(" abcdefghijklmnopqrstuvwxyz,.!?")}
+CODES = {ch: i + 1 for i, ch in enumerate(" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,.!?")}
 FILE = "data/text/trainers.inc"
 EN = r"Hello {STR_VAR_1}!\nHow are you?\pCome {PLAYER}!$"
 VI = r"Chao ban than men {STR_VAR_1}! Chuc vui ve\nHom nay the nao?\pXin moi {PLAYER} vao day nha!$"
