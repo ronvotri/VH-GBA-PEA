@@ -203,6 +203,19 @@ ATTESTED_PACKED_LINKER_5777_FONT_OFFSETS={
     "gFontNormalLatinGlyphs":0x738AAC,
 }
 
+# GitHub Actions #38134862518 FULL PASS: 155 additional paginated map strings
+# compiled in a compacted stock-font source ROM (5946 unique source labels).
+# Reflow changed the five glyph-bank *addresses*. Pair this SHA ONLY with its
+# own exact source offsets; do not reuse the 5777 packed font geometry.
+PINNED_PAGED_MAP_5946_SOURCE_SHA256="75bf824f8eb7ab5e3932de728c3af7e50bd87c5712386a62a1954d43d61db609"
+ATTESTED_PAGED_MAP_5946_FONT_OFFSETS={
+    "gFontSmallNarrowLatinGlyphs":0x717448,
+    "gFontSmallLatinGlyphs":0x71F648,
+    "gFontNarrowLatinGlyphs":0x727848,
+    "gFontShortLatinGlyphs":0x72FA48,
+    "gFontNormalLatinGlyphs":0x737C48,
+}
+
 def require_pinned_target_symbols(target_offsets:dict[str,int],
                                   source_sha256:str=PINNED_SOURCE_SHA256)->None:
     profiles={
@@ -221,6 +234,7 @@ def require_pinned_target_symbols(target_offsets:dict[str,int],
         PINNED_BATTLE_SCROLL_5556_SOURCE_SHA256:ATTESTED_BATTLE_SCROLL_5556_FONT_OFFSETS,
         PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256:ATTESTED_LITERAL_LF_SCROLL_5777_FONT_OFFSETS,
         PINNED_PACKED_LINKER_5777_SOURCE_SHA256:ATTESTED_PACKED_LINKER_5777_FONT_OFFSETS,
+        PINNED_PAGED_MAP_5946_SOURCE_SHA256:ATTESTED_PAGED_MAP_5946_FONT_OFFSETS,
     }
     expected=profiles.get(source_sha256.lower())
     if expected is None:
@@ -356,7 +370,8 @@ def main():
         PINNED_ARENA_NATIVE_5299_SOURCE_SHA256,
         PINNED_BATTLE_SCROLL_5556_SOURCE_SHA256,
         PINNED_LITERAL_LF_SCROLL_5777_SOURCE_SHA256,
-        PINNED_PACKED_LINKER_5777_SOURCE_SHA256):
+        PINNED_PACKED_LINKER_5777_SOURCE_SHA256,
+        PINNED_PAGED_MAP_5946_SOURCE_SHA256):
         p.error("source SHA256 has no attested v0.6 font geometry profile")
     if a.output and a.output.resolve() in {a.clean.resolve(),a.v04.resolve(),a.source_built.resolve()}:
         p.error("output must not overwrite source or donor ROM")
