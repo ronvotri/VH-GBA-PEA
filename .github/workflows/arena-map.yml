@@ -2457,6 +2457,130 @@ jobs:
           PY
           echo "Page-preserving source-owned map text compiled, but still STOCK-font / not an emulator-verified release." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Integrate page-locked system dialogues after 5946 source labels (isolated trial)
+        run: |
+          # Existing 5946 source ROM, 155 recent pagesafe NPC additions,
+          # and private approved donor font remain immutable in this stage.
+          cp -a paged-map-additive-source-trial paged-system-additive-source-trial
+          python3 tools/stage_static_paged_system_text.py \
+            --workspace paged-system-additive-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_STAGE.json \
+            --exclude-report artifact/SOURCE_BIRCH_NARRATIVE_STAGE.json \
+            --exclude-report artifact/SOURCE_BIRCH_DYNAMIC_STAGE.json \
+            --exclude-report artifact/SOURCE_SYSTEM_TEXT_SECOND_STAGE.json \
+            --exclude-report artifact/SOURCE_SYSTEM_SCROLL_REFLOW_STAGE.json \
+            --limit 500 --width 26 --apply \
+            --report artifact/SOURCE_PAGED_SYSTEM_ADDITIVE_STAGE.json
+          python3 - <<'PY'
+          import json,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from stage_static_paged_map_dialogues import page_words
+          from verify_compiled_source_strings import validate_stages
+          d=Path("artifact")
+          prev=json.loads((d/"SOURCE_PAGED_MAP_ADDITIVE_ATTESTATION.json").read_text())
+          stage=json.loads((d/"SOURCE_PAGED_SYSTEM_ADDITIVE_STAGE.json").read_text())
+          assert prev["combined_source_compiled_labels"]==5946
+          assert prev["independently_linker_byte_verified_map_dialogues"]==2867
+          assert stage["mode"]=="apply" and stage["category"]=="system-text"
+          assert stage["previously_compiled_system_owner_exclusions"]==1137,stage
+          n=stage["labels_staged"]
+          assert 1<=n<=500,("No additional safe system pages",stage["skipped_reasons"])
+          assert stage["page_count_and_page_words_preserved"]
+          assert stage["raw_ROM_pointer_writes"]==0
+          assert not stage["runtime_variables_admitted"] and not stage["unknown_escapes_admitted"]
+          for item in stage["translated"]:
+              assert item["source_file"].startswith("data/text/")
+              assert item["page_count"]>=2
+              assert item["vietnamese"].count(r"\p")==item["english"].count(r"\p")
+              assert page_words(item["english"],item["vietnamese"])==page_words(
+                  item["english"],item["authored_vietnamese"])
+              assert "{" not in item["vietnamese"] and "}" not in item["vietnamese"]
+          check=validate_stages(Path("paged-system-additive-source-trial"),{"system-text":stage})
+          assert check["checked_unique_source_labels"]==n
+          print("PASS new paginated static system text",n,"distinct source labels")
+          PY
+          make -C paged-system-additive-source-trial -j2
+          test -s paged-system-additive-source-trial/pokeemerald.gba
+          arm-none-eabi-nm -n paged-system-additive-source-trial/pokeemerald.elf \
+            > artifact/SOURCE_PAGED_SYSTEM_ADDITIVE.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom paged-system-additive-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_PAGED_SYSTEM_ADDITIVE.sym \
+            --out artifact/SOURCE_PAGED_SYSTEM_ADDITIVE_FONT_AUDIT.json
+          python3 tools/audit_source_rom_headroom.py \
+            --elf paged-system-additive-source-trial/pokeemerald.elf \
+            --rom paged-system-additive-source-trial/pokeemerald.gba \
+            --minimum-free-bytes 1048576 \
+            --out artifact/SOURCE_PAGED_SYSTEM_ADDITIVE_HEADROOM.json
+          python3 - <<'PY'
+          import json,re,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import extract_asm_payload,validate_byte_string
+          d=Path("artifact")
+          report_names=("SOURCE_SYSTEM_TEXT_STAGE.json",
+                        "SOURCE_BIRCH_NARRATIVE_STAGE.json",
+                        "SOURCE_BIRCH_DYNAMIC_STAGE.json",
+                        "SOURCE_SYSTEM_TEXT_SECOND_STAGE.json",
+                        "SOURCE_SYSTEM_SCROLL_REFLOW_STAGE.json",
+                        "SOURCE_PAGED_SYSTEM_ADDITIVE_STAGE.json")
+          stage=json.loads((d/"SOURCE_PAGED_SYSTEM_ADDITIVE_STAGE.json").read_text())
+          prev=json.loads((d/"SOURCE_PAGED_MAP_ADDITIVE_ATTESTATION.json").read_text())
+          font=json.loads((d/"SOURCE_PAGED_SYSTEM_ADDITIVE_FONT_AUDIT.json").read_text())
+          space=json.loads((d/"SOURCE_PAGED_SYSTEM_ADDITIVE_HEADROOM.json").read_text())
+          assert font["glyph_blocks_matched_clean"]==5
+          assert font["source_rom_sha256"]==space["source_ROM_sha256"]
+          assert space["linker_free_bytes"]>=1048576
+          owners=set()
+          for report_file in report_names:
+              report=json.loads((d/report_file).read_text())
+              rows=report["translated"]
+              assert report["mode"]=="apply" and len(rows)==report["labels_staged"]
+              for row in rows:
+                  owner=(row["source_file"],row["label"])
+                  assert owner not in owners,owner
+                  owners.add(owner)
+          new_count=stage["labels_staged"]
+          assert len(owners)==1137+new_count,len(owners)
+          rom=Path("paged-system-additive-source-trial/pokeemerald.gba").read_bytes()
+          sym=(d/"SOURCE_PAGED_SYSTEM_ADDITIVE.sym").read_text()
+          addresses={}
+          for address,name in re.findall(r"(?m)^([0-9A-Fa-f]+)\s+\w\s+([A-Za-z_][A-Za-z0-9_]*)$",sym):
+              addresses.setdefault(name,[]).append(int(address,16))
+          cached={}
+          for source_file,label in owners:
+              if source_file not in cached:
+                  cached[source_file]=(Path("paged-system-additive-source-trial")/source_file).read_text()
+              payload=extract_asm_payload(cached[source_file],label)
+              validate_byte_string(payload,label)
+              found=addresses.get(label,[])
+              assert len(found)==1,(label,found)
+              offset=found[0]-0x08000000
+              assert 0<=offset and rom[offset:offset+len(payload)]==payload,(
+                  "source-vs-linked GBA bytes mismatch",source_file,label)
+          att={
+              "prior_source_compiled_unique_labels":5946,
+              "added_page_locked_system_source_labels":new_count,
+              "total_unique_source_compiled_labels":5946+new_count,
+              "all_source_owned_system_rom_byte_arrays_verified":len(owners),
+              "prior_map_dialogue_ROM_bytes_verified":prev["independently_linker_byte_verified_map_dialogues"],
+              "page_breaks_and_page_local_vietnamese_words_preserved":True,
+              "all_five_clean_stock_font_banks_verified":True,
+              "source_ROM_SHA256":space["source_ROM_sha256"],
+              "ROM_contiguous_tail_bytes":space["linker_free_bytes"],
+              "no_pointer_guesses_or_raw_ROM_edits":True,
+              "actual_approved_v04_font_applied":False,
+              "emulator_visual_and_gameplay_QA":False,
+              "release_ready":False}
+          (d/"SOURCE_PAGED_SYSTEM_ADDITIVE_ATTESTATION.json").write_text(
+              json.dumps(att,indent=2)+"\n",encoding="utf-8")
+          print("PASS added page-locked system source translations",json.dumps(att,indent=2))
+          PY
+          echo "New page-locked system strings integrated into experimental ROM, source linker verified, STOCK font only, NOT a playable Vietnamese-font release." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
