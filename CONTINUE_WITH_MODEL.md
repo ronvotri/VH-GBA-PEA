@@ -1901,3 +1901,8 @@ This section supersedes older 5,556-source integration checkpoints **for compile
 - Source-build ROM memory **99.81% used** with ~63,948 bytes free. Do not blindly scale up text batches without ROM allocation/headroom plan.
 - Read `docs/LITERAL_LF_SCROLL_5777_HANDOFF_2026-10-11.md` for exact evidence, strict rejections and next priority. Keep 17,512 manifest coverage distinct from 5,777 compiled-source and unknown font-correct runtime coverage.
 - Still needed: validated private font artwork, correct variable-token handling (`{STR_VAR_*}`, `{B_*}`), Arena mini HUD, credit screenshot check and full intro→battle→post-battle→save→Arena runtime QA. No copyrighted ROM on public GitHub.
+
+
+### 2026-10-11 — HEADROOM GUARD CHECKPOINT (authoritative)
+
+GitHub Actions [#38124014069](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38124014069) FULL PASS. Latest 5,777 distinct source-integrated text labels (with 221 new source-owned normalized LF-scroll NPC/map strings). Added source ELF32 linker high-water checker `tools/audit_source_rom_headroom.py` + seven tests and required **49,152-byte** minimum ROM headroom in the source build workflow. Read-only, no pointer writes. Verified ELF linker ROM-used bytes **33,490,484**, actual ROM free bytes **63,948** out of **33,554,432**, **99.8094%** used, three ROM PT_LOAD segments. `artifact/SOURCE_ADDITIVE_LITERAL_LF_SCROLL_ROM_HEADROOM.json` and previous 5777 SHA/font/linker QA produced by CI. Next integration batches must honor this hard capacity guard; do not silently lower it to get more strings in. The accepted Vietnamese v0.4 visual font has NOT been paired with the source-built ROM and it has not passed emulator QA; still not a game-ready patch.
