@@ -3072,6 +3072,42 @@ jobs:
             --out artifact/SOURCE_ABILITY_MATCHCALL_ONE_LINE_ATTESTATION.json
           echo "Additional source-only Ability/Match Call Vietnamese labels independently ELF/GBA-verified. Approved v0.4 font NOT merged; no gameplay/visual QA." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Integrate authored Easy Chat words with exact per-symbol source and ROM QA
+        run: |
+          # Distinct source stage after verified 7091 C Ability/Match Call
+          # owners. Easy Chat menu words must fit both English length and
+          # 15 static cells; never create diacritic glyphs or alter v0.4 art.
+          cp -a ability-matchcall-one-line-source-trial easy-chat-source-trial
+          python3 tools/stage_easy_chat_word_groups.py \
+            --workspace easy-chat-source-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --limit 1200 --max-cells 15 --apply \
+            --report artifact/SOURCE_EASY_CHAT_WORD_GROUPS_STAGE.json
+          make -C easy-chat-source-trial -j2
+          test -s easy-chat-source-trial/pokeemerald.gba
+          arm-none-eabi-nm -n easy-chat-source-trial/pokeemerald.elf \
+            > artifact/SOURCE_EASY_CHAT_WORD_GROUPS.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom easy-chat-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_EASY_CHAT_WORD_GROUPS.sym \
+            --out artifact/SOURCE_EASY_CHAT_WORD_GROUPS_FONT_AUDIT.json
+          python3 tools/audit_source_rom_headroom.py \
+            --elf easy-chat-source-trial/pokeemerald.elf \
+            --rom easy-chat-source-trial/pokeemerald.gba \
+            --minimum-free-bytes 1048576 \
+            --out artifact/SOURCE_EASY_CHAT_WORD_GROUPS_HEADROOM.json
+          python3 tools/verify_easy_chat_word_groups.py \
+            --workspace easy-chat-source-trial \
+            --artifact artifact \
+            --rom easy-chat-source-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_EASY_CHAT_WORD_GROUPS.sym \
+            --font-audit artifact/SOURCE_EASY_CHAT_WORD_GROUPS_FONT_AUDIT.json \
+            --headroom artifact/SOURCE_EASY_CHAT_WORD_GROUPS_HEADROOM.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --out artifact/SOURCE_EASY_CHAT_WORD_GROUPS_ATTESTATION.json
+          echo "Easy Chat GBA source labels ELF/ROM-attested; stock English raster font only, no v0.4 donor graft, not a playable release." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned
