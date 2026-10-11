@@ -6,6 +6,8 @@ Dự án Việt hóa **Pokémon Emerald Arena 0.13.0** sang tiếng Việt có d
 
 ## Trạng thái hiện tại
 
+**CẬP NHẬT 11/10/2026 — Tối ưu ROM nguồn thành công:** [CI #38131970183](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38131970183) **PASS** bản thử đóng gói ROM bằng linker, tăng dung lượng trống cuối ROM từ **63.948 lên 1.803.676 byte** (+1.739.728 byte, khoảng 1,66 MiB). Vẫn giữ nguyên **5.777 câu nguồn đã biên dịch**, kiểm chứng lại đủ **2.698 thoại bản đồ** ở địa chỉ mới và 5 bộ font nguồn không đổi. **Đây chưa phải ROM Việt hóa chơi được**: bản build vẫn dùng font gốc, chưa ghép hình font v0.4 và chưa thử gameplay sau khi di chuyển đồ họa. Font v0.4 người dùng đã duyệt vẫn giữ làm bản dự phòng. [Chi tiết và cách tiếp tục](docs/ARENA_PACKED_LINKER_5777_HANDOFF_2026-10-11.md).
+
 **Checkpoint mới nhất 2026-10-11 — source integration 5.777 nhãn:** CI [#38115481548](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38115481548) **PASS**: thêm **221 câu map/NPC dạng xuống dòng dài**, toàn bộ kiểm tra mã điều khiển và byte ở địa chỉ ELF/GBA tương ứng. Đây là bản build từ mã nguồn dùng **stock font**, không phải ROM Việt hóa có font v0.4 để chơi; chưa hoàn thiện runtime và chưa kiểm tra gameplay. Vùng ROM source build đang dùng ~99,81% dung lượng 32 MiB. Font v0.4 ổn định là bản dự phòng và tiêu chuẩn hình thức bắt buộc. Chi tiết: [checkpoint 5.777](docs/LITERAL_LF_SCROLL_5777_HANDOFF_2026-10-11.md).
 
 **Baseline làm việc: v0.4 – Text Cluster Pass**
