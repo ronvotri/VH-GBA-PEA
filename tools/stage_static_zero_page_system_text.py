@@ -50,7 +50,7 @@ def stage_system_zero_page(
         if path not in sources:
             rejected["missing authorized source file"] += 1
             continue
-        if "\\n" in vi or "\\r" in vi:
+        if "\n" in vi or "\r" in vi:
             rejected["literal newline in authored system text"] += 1
             continue
         try:
