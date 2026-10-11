@@ -1857,6 +1857,102 @@ jobs:
           python3 tools/verify_additive_battle_scroll.py post
           echo "Static battle labels source-compiled and individually ELF/GBA byte-attested; v0.4 font and gameplay QA still pending." >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Continue PLAYER and RIVAL variable-safe map translation from 5556 source labels (experimental)
+        run: |
+          # Never patch player-name pointers or consume C battle macros as text.
+          cp -a battle-scroll-source-trial dynamic-player-rival-second-trial
+          python3 tools/stage_dynamic_map_translations.py \
+            --workspace dynamic-player-rival-second-trial \
+            --plan artifact/user-facing-integration-plan.json \
+            --codebook checkpoints/v06-pokeblock-safe-codebook.json \
+            --charmap dynamic-player-rival-second-trial/charmap.txt \
+            --source-prefix data/maps/ \
+            --exclude-report artifact/SOURCE_LEVEL_DYNAMIC_PILOT.json \
+            --auto-wrap \
+            --limit 200 \
+            --apply \
+            --report artifact/SOURCE_DYNAMIC_PLAYER_RIVAL_SECOND_STAGE.json
+          python3 - <<'PY'
+          import json,re,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from stage_dynamic_map_translations import signature,encode_dynamic
+          from resolve_shipping_catalog import parse_charmap
+          p=Path("artifact")
+          prev=json.loads((p/"SOURCE_BATTLE_SCROLL_REFLOW_ATTESTATION.json").read_text())
+          first=json.loads((p/"SOURCE_LEVEL_DYNAMIC_PILOT.json").read_text())
+          new=json.loads((p/"SOURCE_DYNAMIC_PLAYER_RIVAL_SECOND_STAGE.json").read_text())
+          assert prev["combined_unique_source_labels"]==5556,prev
+          assert first["mode"]=="apply" and first["labels_staged"]==len(first["accepted"])
+          n=new["labels_staged"]
+          assert new["mode"]=="apply" and 1<=n<=200,(n,new["rejected"])
+          assert new["previously_staged_label_exclusions"]==first["labels_staged"]
+          assert len(new["accepted"])==n
+          old={(r["file"],r["label"]) for r in first["accepted"]}
+          ours={(r["file"],r["label"]) for r in new["accepted"]}
+          assert len(ours)==n and not ours&old,"dynamic source owner duplicate"
+          cb=json.loads(Path("checkpoints/v06-pokeblock-safe-codebook.json").read_text())
+          codes={c:int(v,16) for c,v in cb["glyph_bytes"].items()}
+          _,tokens=parse_charmap(Path("dynamic-player-rival-second-trial/charmap.txt"))
+          root=Path("dynamic-player-rival-second-trial")
+          for row in new["accepted"]:
+              assert row["file"].startswith("data/maps/"),row
+              assert 0<len(row["dynamic"]) and all(x in ("PLAYER","RIVAL") for x in row["dynamic"])
+              assert signature(row["english"])==signature(row["vietnamese"])==tuple(row["dynamic"])
+              assert row["english"].count(r"\p")==row["vietnamese"].count(r"\p")
+              payload=encode_dynamic(row["compiled_vietnamese"],codes,tokens,26)
+              assert len(payload)==row["bytes"]
+          data={"previous_compiled_source_labels":5556,
+                "new_player_rival_source_labels":n,
+                "combined_unique_source_labels":5556+n,
+                "previously_staged_dynamic_excluded":first["labels_staged"],
+                "placeholder_sequence_unchanged":True,
+                "conservative_maximum_name_cells":7,
+                "engine_variable_width_safe":True,
+                "v04_donor_font_applied":False,
+                "emulator_tested":False,"release_ready":False}
+          (p/"SOURCE_DYNAMIC_PLAYER_RIVAL_SECOND_ATTESTATION.json").write_text(
+              json.dumps(data,ensure_ascii=False,indent=2)+"\n")
+          print("PASS staged next unique dynamic PLAYER/RIVAL labels",n)
+          PY
+          make -C dynamic-player-rival-second-trial -j2
+          test -s dynamic-player-rival-second-trial/pokeemerald.gba
+          sha256sum dynamic-player-rival-second-trial/pokeemerald.gba > artifact/SOURCE_DYNAMIC_PLAYER_RIVAL_SECOND_SHA256.txt
+          arm-none-eabi-nm -n dynamic-player-rival-second-trial/pokeemerald.elf > artifact/SOURCE_DYNAMIC_PLAYER_RIVAL_SECOND_FONT.sym
+          python3 tools/audit_source_font_layout.py \
+            --rom dynamic-player-rival-second-trial/pokeemerald.gba \
+            --sym artifact/SOURCE_DYNAMIC_PLAYER_RIVAL_SECOND_FONT.sym \
+            --out artifact/SOURCE_DYNAMIC_PLAYER_RIVAL_SECOND_FONT_AUDIT.json
+          python3 - <<'PY'
+          import json,re,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from verify_compiled_source_strings import extract_asm_payload
+          from stage_dynamic_map_translations import encode_dynamic
+          from resolve_shipping_catalog import parse_charmap
+          p=Path("artifact")
+          stage=json.loads((p/"SOURCE_DYNAMIC_PLAYER_RIVAL_SECOND_STAGE.json").read_text())
+          rom=Path("dynamic-player-rival-second-trial/pokeemerald.gba").read_bytes()
+          symbols=(p/"SOURCE_DYNAMIC_PLAYER_RIVAL_SECOND_FONT.sym").read_text()
+          syms={}
+          for addr,name in re.findall(r"(?m)^([0-9A-Fa-f]+)\s+\w\s+([A-Za-z_][A-Za-z0-9_]*)$",symbols):
+              syms.setdefault(name,[]).append(int(addr,16))
+          for row in stage["accepted"]:
+              addrs=syms.get(row["label"],[])
+              assert len(addrs)==1,(row["label"],addrs)
+              off=addrs[0]-0x08000000
+              assert 0<=off<len(rom),row
+              source=(Path("dynamic-player-rival-second-trial")/row["file"]).read_text()
+              payload=extract_asm_payload(source,row["label"])
+              assert rom[off:off+len(payload)]==payload,(row["label"],"actual linker GBA byte mismatch")
+          target=p/"SOURCE_DYNAMIC_PLAYER_RIVAL_SECOND_ATTESTATION.json"
+          a=json.loads(target.read_text())
+          a["exact_linked_GBA_payloads_verified"]=stage["labels_staged"]
+          a["all_new_dynamic_bytes_match_linker_symbols"]=True
+          target.write_text(json.dumps(a,ensure_ascii=False,indent=2)+"\n")
+          print("PASS PLAYER/RIVAL variable-safe ROM ELF payload checks",stage["labels_staged"])
+          PY
+
       - name: Independently compile safe literal-LF map texts (experimental; no donor font)
         run: |
           # Do not mutate source-localization-smoke: its independently pinned

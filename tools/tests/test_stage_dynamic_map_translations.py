@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from stage_dynamic_map_translations import encode_dynamic,signature,stage
+from stage_dynamic_map_translations import encode_dynamic,signature,stage,exclude_previous_dynamic
 
 CTRL={"PLAYER":b"\xFD\x01","RIVAL":b"\xFD\x06"}
 GLYPHS={"M":0xC7,"ẹ":0x5A,":":0xF0," ":0x00,
@@ -22,6 +22,19 @@ def row(label="LittlerootTown_Text_WaitPlayer",
 
 
 class DynamicMapTests(unittest.TestCase):
+    def test_dynamic_exclusions_require_exact_source_owners(self):
+        original=row()
+        prior={"mode":"apply","labels_staged":1,"accepted":[
+            {"file":original["source_file"],"label":original["source_label"]}]}
+        other=row(label="OtherText")
+        remaining,n=exclude_previous_dynamic([original,other],[prior])
+        self.assertEqual(n,1)
+        self.assertEqual(remaining,[other])
+        with self.assertRaisesRegex(ValueError,"duplicate"):
+            exclude_previous_dynamic([original,other],[prior,prior])
+        with self.assertRaisesRegex(ValueError,"missing"):
+            exclude_previous_dynamic([other],[prior])
+
     def test_pinned_placeholder_encoding(self):
         payload=encode_dynamic(r"Mẹ: {PLAYER}!$",GLYPHS,CTRL,26)
         self.assertIn(b"\xFD\x01",payload)

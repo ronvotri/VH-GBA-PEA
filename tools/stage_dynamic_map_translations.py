@@ -80,6 +80,29 @@ def encode_dynamic(text: str, glyphs: dict[str, int],
     return bytes(out)
 
 
+def exclude_previous_dynamic(rows:list[dict],reports:list[dict])->tuple[list[dict],int]:
+    """Previously emitted source owners must be disjoint; accept only exact
+    applied PLAYER/RIVAL manifests, not a guessed count or label-only match."""
+    seen=set()
+    for report in reports:
+        accepted=report.get("accepted")
+        if (report.get("mode")!="apply" or not isinstance(accepted,list)
+            or len(accepted)!=report.get("labels_staged")):
+            raise ValueError("invalid previous dynamic source owner report")
+        for item in accepted:
+            owner=(item.get("file"),item.get("label"))
+            if not all(owner) or not owner[0].startswith("data/maps/"):
+                raise ValueError("invalid dynamic owner identity")
+            if owner in seen:
+                raise ValueError("duplicate previously compiled dynamic owner")
+            seen.add(owner)
+    filtered=[r for r in rows
+              if (r.get("source_file"),r.get("source_label")) not in seen]
+    if len(filtered)!=len(rows)-len(seen):
+        raise ValueError("prior dynamic source owner missing from current catalog")
+    return filtered,len(seen)
+
+
 def stage(rows: list[dict], sources: dict[str, str], glyphs: dict[str, int],
           tokens: dict[str, bytes], prefix: str, limit: int = 30,
           max_segment: int = 26, auto_wrap: bool = False,
@@ -140,12 +163,16 @@ def main():
     ap.add_argument("--max-segment",type=int,default=26)
     ap.add_argument("--auto-wrap",action="store_true",help="Safe name-aware word reflow for overlong strings")
     ap.add_argument("--priority-source-prefix",action="append",default=[],help="Prioritize earliest-game script sources; repeatable")
+    ap.add_argument("--exclude-report",type=Path,action="append",default=[],
+                    help="Exact prior applied dynamic owner report; skip these source labels")
     ap.add_argument("--apply",action="store_true")
     ap.add_argument("--report",type=Path,required=True)
     args=ap.parse_args()
     if not 1<=args.limit<=200 or not 12<=args.max_segment<=30:
         ap.error("limit 1..200; max-segment 12..30")
     plan=json.loads(args.plan.read_text(encoding="utf-8"))
+    prior=[json.loads(p.read_text(encoding="utf-8")) for p in args.exclude_report]
+    plan,already_compiled=exclude_previous_dynamic(plan,prior)
     cb=json.loads(args.codebook.read_text(encoding="utf-8"))
     glyphs={ch:int(value,16) for ch,value in cb["glyph_bytes"].items()}
     _,tokens=parse_charmap(args.charmap)
@@ -173,6 +200,7 @@ def main():
     report={
         "mode":"apply" if args.apply else "dry-run",
         "labels_staged":len(accepted),
+        "previously_staged_label_exclusions":already_compiled,
         "files_changed":sum(sources[k]!=originals[k] for k in sources),
         "auto_wrapped_labels":sum(r["auto_wrapped"] for r in accepted),
         "source_symbol_labels_unchanged":True,
