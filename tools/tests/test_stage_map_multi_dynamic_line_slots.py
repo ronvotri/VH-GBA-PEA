@@ -58,7 +58,7 @@ class MultipleNativeVariableLineTests(unittest.TestCase):
         examples = [
             VI.replace("{STR_VAR_1}", "{STR_VAR_2}"),
             VI.replace("{PLAYER}", "{RIVAL}"),
-            VI.replace(r"\lWelcome", r"\l"),
+            VI.replace("{STR_VAR_1}! now later", "{STR_VAR_1}! {PLAYER} now later").replace("Welcome {PLAYER}!", "Welcome!"),
             VI.replace(r"\lWelcome", r"\pWelcome"),
             VI.replace(r"\lWelcome", " Welcome"),
             VI.replace("Hello", "Héllo"),
