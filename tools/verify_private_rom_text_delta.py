@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+from bisect import bisect_right
 from pathlib import Path
 
 
@@ -54,20 +55,21 @@ def verify(source: bytes, target: bytes, spans: list[dict],
         raise ValueError("non-text bytes changed outside approved ranges")
     # Count references into the interior of changed strings by all 4
     # possible source-pointer alignments, fail closed before declaring safe.
-    interior_pointers = 0
-    # 0x08 bank is 32 MiB GBA ROM; this guard is an informative read-only
-    # check, not comprehensive runtime pointer-proof.
-    for start, end, _, after in normalized:
-        if after == source[start:end]:
+    changed_interiors = sorted(
+        (start + 1, end) for start, end, before, after in normalized
+        if before != after and end - start > 1
+    )
+    starts = [start for start, _ in changed_interiors]
+    # One linear scan over candidate 32-bit little-endian pointers, not one
+    # full-ROM scan per text label (390 labels would be prohibitively slow).
+    for p in range(0, len(source) - 3):
+        value = int.from_bytes(source[p:p + 4], "little")
+        if not 0x08000000 <= value < 0x08000000 + len(source):
             continue
-        lo = 0x08000000 + start + 1
-        hi = 0x08000000 + end
-        for p in range(0, len(source) - 3):
-            if lo <= int.from_bytes(source[p:p + 4], "little") < hi:
-                interior_pointers += 1
-                break
-    if interior_pointers:
-        raise ValueError("potential source ROM pointer into modified text interior")
+        target_off = value - 0x08000000
+        pos = bisect_right(starts, target_off) - 1
+        if pos >= 0 and target_off < changed_interiors[pos][1]:
+            raise ValueError("potential source ROM pointer into modified text interior")
     return {
         "source_sha256": hashlib.sha256(source).hexdigest(),
         "target_sha256": hashlib.sha256(target).hexdigest(),
