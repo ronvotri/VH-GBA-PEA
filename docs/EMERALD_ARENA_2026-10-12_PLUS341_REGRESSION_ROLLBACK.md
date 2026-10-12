@@ -30,6 +30,10 @@ The private local script was created at `emerald_v5_early_dialogue_hotfix.py` in
 
 **SOURCE BUILD COUNT UNCHANGED: 7,134 / 17,512 authored labels.** This private v5 3-text rollback must not be numerically added to stock-font source compiler coverage.
 
+## Optional no-pointer continuation (NOT a substitute for rollback test)
+
+To preserve the 34+69 earlier no-pointer-only additions, exactly the same three early-text bytes were also applied to SHA-pinned `Emerald-Arena-v5-Votri-Valley-Plus69-NoPointer-TEST.gba` (SHA `9591c96ad5ad278eea081842d7e7887260319b840ae77af1d9ece902c4e7d873`). Output private `Emerald-Arena-v5-Plus69-Intro3Fix-NoPointer-TEST.gba` SHA-256 `c722e75471394d0281f95751036c92a9d90e90ceae45567df1f2d5a553a51423`. Diff is identical to the three-dialogue v5 rollback IPS (SHA `cfea53012f1487aa9e8933cc0315aff95135aff99a02cbb630bf134ccbdaecab`), writing 298 changed bytes and zero pointers. This variant is **not emulator certified**; user should first boot the original-v5+3 diagnostic rollback through the first battle, then optionally test this +69+3 only if the first passes. Never reuse +341.
+
 ## Next: actual remediation
 
 1. Obtain emulator gameplay evidence and reproduce the first post-battle freeze. Never infer runtime QA from byte checks.
