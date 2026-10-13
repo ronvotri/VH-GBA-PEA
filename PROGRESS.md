@@ -1,5 +1,8 @@
 # Tiến độ Việt hóa Pokémon Emerald Arena
 
+> **TRẠNG THÁI MỚI NHẤT — 13/10/2026:** Xem [CLAUDE.md](CLAUDE.md) và [bàn giao chính thức](docs/CLAUDE_HANDOFF_2026-10-13.md). **17.512/17.512 mục đã dịch ở cấp manifest; 7.134 nhãn đã được ELF/GBA source-build chứng thực** ([Actions #38161452509](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38161452509)). Bản source-build còn font stock tiếng Anh, chưa ghép font Việt v0.4. **Freeze sau battle chưa giải quyết trên các ROM TEST gần đây**; No$GBA sound output và đối chiếu mGBA còn phải kiểm tra. **+341 relocation bị loại.** Mọi câu «QA battle PASS» và «không còn crash» ở dưới chỉ mô tả **lịch sử những lần thử v0.4 trước đây, KHÔNG chứng minh các bản ROM mới chạy ổn**. Đừng lấy mốc 2026-10-07 bên dưới làm checkpoint hiện tại.
+
+
 Cập nhật: 2026-10-07 — map/story catalog hoàn tất 100%
 
 ## Baseline hiện tại
