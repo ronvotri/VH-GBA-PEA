@@ -1,5 +1,7 @@
 # AGENTS.md — Pokémon Emerald Arena localization
 
+> **2026-10-13 canonical Claude transfer:** Read [CLAUDE.md](CLAUDE.md) and [docs/CLAUDE_HANDOFF_2026-10-13.md](docs/CLAUDE_HANDOFF_2026-10-13.md) before any code/ROM changes. Latest confirmed source ELF/GBA label count **7,134** ([FULL PASS #38161452509](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38161452509)); latest subsequent workflow #38214295899 succeeded but has no confirmed higher count. Runtime **first-battle freeze NOT RESOLVED**, even on a private v0.4 intro recovery in No$GBA; [test Sound Output and mGBA independently](docs/EMERALD_ARENA_FIRST_BATTLE_TEST_GATE_2026-10-13.md). Discard +341 pointer-relocation experiment. Approved donor v0.4 glyphs are still absent from source build. Any lower checkpoints below are historical.
+
 ## Always resume from latest verified state
 
 1. Read the latest `main` commit FIRST, then its newest dated docs/checkpoints and completed GitHub Actions runs. The append-only `CONTINUE_WITH_MODEL.md` may end on an obsolete checkpoint. Never take an old number from memory/handoff as current.
