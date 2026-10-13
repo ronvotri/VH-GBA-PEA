@@ -1,5 +1,7 @@
 # CONTINUE WITH MODEL — Pokémon Emerald Arena Việt hóa
 
+> **BÀN GIAO CLAUDE CHÍNH THỨC — 13/10/2026:** Mở [CLAUDE.md](CLAUDE.md) và [docs/CLAUDE_HANDOFF_2026-10-13.md](docs/CLAUDE_HANDOFF_2026-10-13.md) trước. **17.512/17.512 là bản dịch nguồn**, **7.134 nhãn nguồn đã link/ELF/GBA attest**, **0 bằng chứng bản ROM hoàn chỉnh đã ghép font v0.4 và test gameplay**. Bản +341 đã bị từ chối do treo sau trận đầu. Kịch bản No$GBA Sound Output và mGBA chưa được xác nhận. Phần dưới đây là **lịch sử nhiều checkpoint đã cũ**, không làm theo «việc tiếp theo» ở những đoạn đầu mà chưa so HEAD mới nhất.
+
 Đọc file này đầu tiên khi mở phiên ChatGPT mới.
 
 ## Mục tiêu
