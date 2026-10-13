@@ -6,6 +6,9 @@ Dự án Việt hóa **Pokémon Emerald Arena 0.13.0** sang tiếng Việt có d
 
 ## Trạng thái hiện tại
 
+> **Điểm bắt đầu cho Claude (13/10/2026):** [CLAUDE.md](CLAUDE.md) · [Handoff đầy đủ](docs/CLAUDE_HANDOFF_2026-10-13.md) · [Cổng kiểm thử trận đầu](docs/EMERALD_ARENA_FIRST_BATTLE_TEST_GATE_2026-10-13.md). **17.512 mục catalog đã dịch; 7.134 nhãn nguồn được kiểm chứng qua GitHub Actions; chưa có bản phát hành chạy ổn với font v0.4.** +341 experiment **REJECTED** do lỗi freeze, không được dùng để build. Những dòng «MỐC MỚI NHẤT» thấp hơn ở dưới là **lịch sử**.
+
+
 **MỐC 7.134 NHÃN TIẾNG VIỆT ĐÃ BIÊN DỊCH VÀ KIỂM CHỨNG (12/10/2026):** [CI #38161452509](https://github.com/ronvotri/VH-GBA-PEA/actions/runs/38161452509) **FULL PASS**, thêm **43 từ Easy Chat** trên **15 nhóm nguồn** sau mốc 7.091. Nguyên văn bản dịch được giữ nguyên, nhãn và nội dung byte thực trong ELF/GBA khớp, đồng thời toàn bộ 7.091 nhãn trước được kiểm chứng lại. ROM nguồn thử nghiệm SHA256 `df7e47319aa9c054bd952d39ccb6cef8b2c36eedbc0ae1e7d1422cc558acf5fc`; còn **1.816.164 byte** trống liền ở đuôi linker. Nhóm Easy Chat có **373 bản dịch bị từ chối vì dài hơn độ rộng tĩnh tiếng Anh gốc**; thêm nhiều từ thiếu ký tự hoa có dấu trong codebook. Không bỏ dấu hoặc tự cắt chữ để tăng số. **Bản source-ROM vẫn dùng font tiếng Anh stock, chưa nhập font Việt v0.4 đã duyệt, chưa thử gameplay; không phải bản vá phát hành.** 17.512/17.512 là mục *đã có bản dịch*, không phải số nhãn đã vào game. [Checkpoint Easy Chat](docs/EMERALD_ARENA_7091_EASY_CHAT_HANDOFF_2026-10-12.md).
 
 
