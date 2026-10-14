@@ -1,0 +1,162 @@
+# New game -> Birch rescue -> first Arena battle -> back to overworld -> Birch's lab.
+# Recorded on the Vietnamese source build (boy, default name mashed as AAAAAAA, Torchic).
+# Input timing only; `shot` lines mark the checkpoints worth looking at.
+wait 600
+mash A 10 40
+mash START 3 60
+mash A 6 60
+mash A 3 60
+mash A 3 60
+wait 200
+mash A 4 60
+mash A 4 60
+mash A 4 60
+mash A 4 60
+mash A 12 60
+shot
+mash A 6 60
+shot
+mash A 6 60
+mash A 6 60
+mash A 6 60
+mash A 10 60
+mash A 10 60
+wait 600
+mash A 5 60
+wait 300
+mash A 2 40
+press RIGHT 120 60
+mash A 8 70
+mash A 8 70
+wait 300
+mash A 6 70
+mash B 3 40
+press RIGHT 200 60
+wait 400
+mash A 10 70
+shot
+mash A 10 70
+wait 400
+mash A 8 70
+wait 120
+mash B 2 30
+press UP 200 30
+press RIGHT 60 30
+press UP 100 60
+wait 200
+mash A 4 70
+mash B 2 30
+press UP 200 60
+wait 120
+press LEFT 80 20
+press UP 60 20
+mash A 3 60
+mash A 3 60
+mash B 2 30
+press UP 120 120
+press LEFT 16 30
+press LEFT 60 30
+press UP 60 30
+mash B 2 60
+press UP 100 150
+press LEFT 100 30
+press UP 60 30
+mash A 2 80
+press LEFT 34 20
+press UP 10 20
+mash A 2 80
+mash A 3 80
+shot
+mash A 4 80
+mash A 4 80
+press UP 4 30
+press A 4 200
+mash A 3 80
+press DOWN 40 20
+press RIGHT 60 20
+press UP 40 120
+wait 200
+mash A 6 80
+mash B 12 70
+wait 200
+press RIGHT 32 10
+press UP 30 150
+mash B 20 70
+wait 300
+mash B 20 70
+press DOWN 200 100
+wait 200
+press RIGHT 66 10
+press DOWN 120 150
+press DOWN 18 10
+press RIGHT 82 20
+press UP 140 60
+mash B 14 70
+press UP 100 60
+mash B 10 70
+press DOWN 112 10
+press RIGHT 48 10
+press UP 60 150
+mash B 16 70
+press UP 200 100
+press RIGHT 16 10
+press UP 40 200
+mash B 20 70
+wait 200
+mash B 10 70
+press UP 120 100
+press RIGHT 30 20
+press UP 60 150
+press DOWN 32 10
+press RIGHT 20 10
+mash A 2 60
+mash B 30 70
+wait 300
+mash B 20 70
+wait 200
+press LEFT 50 10
+press UP 40 150
+press DOWN 140 150
+press DOWN 30 100
+press LEFT 48 10
+press UP 130 60
+mash B 14 70
+wait 200
+press RIGHT 16 20
+press UP 60 150
+press DOWN 30 30
+press DOWN 100 150
+press DOWN 16 10
+press LEFT 48 10
+press UP 130 60
+mash B 16 70
+wait 200
+press UP 120 60
+mash B 12 70
+press UP 100 60
+mash B 6 70
+wait 300
+mash B 10 70
+press UP 80 30
+press LEFT 40 20
+press UP 40 20
+mash A 2 60
+wait 120
+press LEFT 24 20
+mash A 2 80
+wait 200
+mash A 1 80
+shot
+mash A 1 80
+mash A 1 120
+save @BEFORE_BATTLE
+shot
+wait 120
+press UP 60 5
+mash A 10 10
+press UP 40 5
+mash A 20 10
+shot
+mash A 30 10
+shot
+mash A 30 10
