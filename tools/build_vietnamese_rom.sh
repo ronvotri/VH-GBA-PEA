@@ -12,6 +12,12 @@ font="${2:-}"
 out="$repo/private/work"
 mkdir -p "$out"
 
+# Some translated strings (map names) live in headers generated from JSON at
+# build time; create them fresh before translating so none are missed or stale.
+make -C "$ws" clean-generated > /dev/null
+make -C "$ws" tools > "$out/make_tools.log" 2>&1
+make -C "$ws" generated >> "$out/make_tools.log" 2>&1
+
 python3 "$repo/tools/compact_arena_linker_gaps.py" --workspace "$ws" --apply \
   --report "$out/compact.json" > /dev/null
 python3 "$repo/tools/build_vietnamese_source_font.py" --workspace "$ws" \
