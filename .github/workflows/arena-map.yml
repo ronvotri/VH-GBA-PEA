@@ -1,11 +1,9 @@
 name: Build Arena symbol map
 
+# Superseded by vietnamese-source-build.yml. This incremental pipeline pins exact
+# label counts per stage, so any manifest edit fails it; it now runs only on demand
+# (it still produces the source text catalog and symbol map).
 on:
-  push:
-    paths:
-      - '.github/workflows/arena-map.yml'
-      - 'tools/**'
-      - 'translations/**'
   workflow_dispatch:
     inputs:
       experimental_synthetic_font_smoke:

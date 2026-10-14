@@ -59,3 +59,7 @@ Candidate ROM SHA-256 `4fb06c098b19558397c76aaaaf5a533b47cb20a3e91b11c31d770be85
 - 13,084 strings are now rewritten: the 10 strings of `src/arena_capture.inc` stay English at the user's request, because Arena's 3x5 HUD lettering has no accented letters and dropped them (`TRƯỢT!` rendered as `TR T!`).
 - Label policy decided by the user after playing: no abbreviations except `T.CÔNG` / `P.THỦ` on the stats screen. `--abbreviate-labels` exists in the applier but is off in the build script. The moves page header is `KỸ NĂNG`.
 - User report, not yet reproduced here: the screen goes black with sound only while a Poké Ball chosen from the bag is thrown, and for 1-2 s when using a Potion or switching. Arena's source hands those actions to the classic battle engine with the display blanked (`gRealtimeArenaQuietIntro` / `gRealtimeArenaQuietResult`), so this is probably stock mod behaviour; confirm by repeating it on the untranslated source build with the same save.
+
+### CI
+
+`.github/workflows/vietnamese-source-build.yml` builds the ROM with `tools/build_vietnamese_rom.sh` and runs `tools/qa/verify_first_battle.py`, which replays the recorded route and passes only if the player ends in Birch's lab holding a Pokémon. The older `arena-map.yml` pins exact label counts for each incremental stage (it failed on this branch with 3,776 instead of 3,774 after five manifests were edited), so it is now manual-only.

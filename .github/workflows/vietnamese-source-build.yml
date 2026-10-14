@@ -1,0 +1,111 @@
+name: Build and test Vietnamese source ROM
+
+# Builds the complete Vietnamese ROM from the pinned sources with
+# tools/build_vietnamese_rom.sh and replays the recorded new-game route through
+# the first Arena battle on libmgba. No ROM is uploaded.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/vietnamese-source-build.yml'
+      - 'tools/**'
+      - 'translations/**'
+  pull_request:
+    paths:
+      - '.github/workflows/vietnamese-source-build.yml'
+      - 'tools/**'
+      - 'translations/**'
+  workflow_dispatch:
+
+concurrency:
+  group: vietnamese-source-build-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-play:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unit tests
+        run: python3 -m unittest discover -s tools/tests -p 'test_*.py'
+
+      - name: Install build and emulator dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential binutils-arm-none-eabi libpng-dev git \
+            python3 python3-pil fonts-dejavu-core libmgba-dev
+
+      - name: Checkout exact sources
+        run: |
+          git clone https://github.com/pret/pokeemerald.git workspace
+          git -C workspace checkout 5eff78649e7170a877b961ef0b3da13b81a16038
+          git clone https://github.com/pret/agbcc.git agbcc
+          git -C agbcc checkout da598c1d918402c42c0c0d7128ba14567f3175e9
+          git clone --branch v0.13.0 --depth 1 https://github.com/GBurgardt/pokemon-emerald-arena.git arena
+
+      - name: Install agbcc
+        run: |
+          cd agbcc
+          ./build.sh
+          ./install.sh ../workspace
+
+      - name: Apply Emerald Arena 0.13.0
+        run: |
+          git -C workspace apply ../arena/game/native-engine.patch
+          cp -R arena/game/overlay/. workspace/
+          # Arena's host-side asset packers use hypot()/math on Linux.
+          sed -i 's/-lpng -o/-lpng -lm -o/g' workspace/tools/arena/dev.sh
+          sed -i 's/-Werror //g' workspace/tools/arena/dev.sh
+          # v0.13.0 source references this assembler label from C without a public declaration.
+          sed -i '1i extern const unsigned char BattleScript_ArenaEvolutionLearn[];' workspace/src/arena_evolution.inc
+
+      - name: Generate Arena assets
+        working-directory: workspace
+        run: ./tools/arena/dev.sh assets
+
+      - name: Build Vietnamese ROM
+        run: |
+          JOBS=4 bash tools/build_vietnamese_rom.sh workspace
+          mkdir -p artifact
+          cp private/work/apply.json artifact/apply-report.json
+          sha256sum workspace/pokeemerald.gba | cut -d' ' -f1 > artifact/ROM_SHA256.txt
+          python3 tools/audit_source_text_widths.py --workspace workspace \
+            --sites private/work/sites.json --out artifact/width-audit.json > /dev/null
+          python3 - <<'PY'
+          import json
+          r = json.load(open("artifact/apply-report.json", encoding="utf-8"))
+          assert not r["skipped"], r["skipped"]
+          assert not r["keys_not_found_in_source"], r["keys_not_found_in_source"][:10]
+          assert not r["manifest_key_conflicts"], r["manifest_key_conflicts"][:10]
+          print("applied sites:", r["applied_sites"], "of", r["manifest_entries"], "manifest entries")
+          PY
+
+      - name: First-battle gameplay gate
+        run: |
+          gcc -O2 -DUSE_PNG -o gba_runner tools/qa/gba_runner.c -lmgba -lpng
+          python3 tools/qa/verify_first_battle.py --rom workspace/pokeemerald.gba \
+            --elf workspace/pokeemerald.elf --runner ./gba_runner --workdir qa | tee artifact/first-battle.txt
+          cp qa/sheet.png artifact/first-battle-route.png
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "ROM SHA-256: \`$(cat artifact/ROM_SHA256.txt 2>/dev/null || echo 'not built')\`"
+            echo
+            echo '```'
+            tail -n 3 artifact/first-battle.txt 2>/dev/null || echo 'first-battle gate did not run'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vietnamese-source-build-report
+          path: artifact/
